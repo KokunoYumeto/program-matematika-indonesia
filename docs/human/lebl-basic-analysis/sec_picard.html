@@ -1,0 +1,648 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Picard’s theorem · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_picard">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Picard’s theorem</span>
+</h2>
+<section class="introduction" id="sec_picard-2">
+<div class="para" id="sec_picard-2-1">
+<em class="emphasis">Note: 1–2 lectures (can be safely skipped)</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_picard-2-2">A first semester course in analysis should have a <em class="emphasis">pièce de résistance</em> caliber theorem.  We pick a theorem whose proof combines everything we have learned.  It is more sophisticated than the fundamental theorem of calculus, the first highlight theorem of this course.  The theorem we are talking about is Picard’s theorem<details aria-live="polite" class="ptx-footnote" id="sec_picard-2-2-2"><summary class="ptx-footnote__number" title="Footnote 6.3.1"><sup> 1 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_picard-2-2-2">Named for the French mathematician <a class="external" href="https://en.wikipedia.org/wiki/\%C3\%89mile_Picard" target="_blank">Charles Émile Picard</a> (1856–1941).
+</div></details> on existence and uniqueness of a solution to an ordinary differential equation. Both the statement and the proof are beautiful examples of what one can do with the material we have mastered so far.  It is also a good example of how analysis is applied, as differential equations are indispensable in science of every stripe.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-2-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section>
+<section class="subsection" id="sec_picard-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.3.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">First order ordinary differential equation</span>
+</h3>
+<div class="para logical" id="sec_picard-3-2">
+<div class="para">Modern science is described in the language of <em class="emphasis">differential equations</em>. That is, equations involving not only the unknown, but also its derivatives.  The simplest nontrivial form of a differential equation is the <em class="emphasis">first order ordinary differential equation</em> </div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_sampleslopes.html" id="sec_picard-3-2-5">
+\begin{equation}
+y' = F(x,y) .
+\end{equation}
+</div>
+<div class="para">Generally, we also specify an <em class="emphasis">initial condition</em> <span class="process-math">\(y(x_0)=y_0\text{.}\)</span>  The solution of the equation is a function <span class="process-math">\(y(x)\)</span> such that <span class="process-math">\(y(x_0)=y_0\)</span> and <span class="process-math">\(y'(x) = F\bigl(x,y(x)\bigr)\text{.}\)</span>  See <a class="internal" href="sec_picard.html#fig_sampleslopes" title="Figure 6.8">Figure 6.8</a> for a graphical representation of this equation called a <em class="emphasis">slope field</em>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-3-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="fig_sampleslopes"><img alt="A piece of the xy-plane near the origin with a rectangular grid of slopes. On the left half of the plot the slopes go downward, but become flatter as we go up. On the right half of the plot they point upward, and again become flatter as we go up. A point (x sub 0, y sub 0) is given in the first quadrant. A graph of a solution is drawn that starts above the x-axis goes down and then goes back up and through the given point." class="raimg" role="img" src="figures/sampleslopes-mbx.svg" style="width:218pt; height:146pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>A \emph{slope field} giving the slope <span class="process-math">\(F(x,y)\)</span> at each point, in this case <span class="process-math">\(F(x,y)=x(1-y)\text{.}\)</span>  A solution is drawn going through the point <span class="process-math">\((x_0,y_0)=(1,0.3)\text{,}\)</span> notice how it follows the slopes.<div class="autopermalink" data-description="Figure 6.8"><a aria-label="Copy heading and permalink for Figure 6.8" href="#fig_sampleslopes" title="Copy heading and permalink for Figure 6.8">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para" id="sec_picard-3-6">When <span class="process-math">\(F\)</span> involves only the <span class="process-math">\(x\)</span> variable, the solution is given by the fundamental theorem of calculus.  On the other hand, when <span class="process-math">\(F\)</span> depends on both <span class="process-math">\(x\)</span> and <span class="process-math">\(y\text{,}\)</span> we need far more firepower.  It is not always true that a solution exists, and if it does, that it is the unique solution. Picard’s theorem gives us certain sufficient conditions for existence and uniqueness.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-3-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 6.3.1: First order ordinary differential equation"><a aria-label="Copy heading and permalink for Subsection 6.3.1: First order ordinary differential equation" href="#sec_picard-3" title="Copy heading and permalink for Subsection 6.3.1: First order ordinary differential equation">🔗</a></div>
+</section>
+<section class="subsection" id="sec_picard-4">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.3.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">The theorem</span>
+</h3>
+<div class="para" id="sec_picard-4-2">We need a definition of continuity in two variables.  A point in the plane <span class="process-math">\(\R^2 = \R \times \R\)</span> is denoted by an ordered pair <span class="process-math">\((x,y)\text{.}\)</span> For simplicity, we give the following sequential definition of continuity.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_picard-4-3"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.3.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_picard-4-3-1-1">
+<div class="para">Let <span class="process-math">\(U \subset \R^2\)</span> be a set, <span class="process-math">\(F \colon U \to \R\)</span> a function, and <span class="process-math">\((x,y) \in U\)</span> a point.  The function <span class="process-math">\(F\)</span> is <em class="emphasis">continuous at <span class="process-math">\((x,y)\)</span></em> if for every sequence <span class="process-math">\(\bigl\{ (x_n,y_n) \bigr\}_{n=1}^\infty\)</span> of points in <span class="process-math">\(U\)</span> such that <span class="process-math">\(\lim_{n\to\infty} x_n = x\)</span> and <span class="process-math">\(\lim_{n\to\infty} y_n = y\text{,}\)</span> we have</div>
+<div class="displaymath process-math" id="sec_picard-4-3-1-1-11">
+\begin{equation}
+\lim_{n \to \infty} F(x_n,y_n) = 
+F(x,y) .
+\end{equation}
+</div>
+<div class="para">We say <span class="process-math">\(F\)</span> is <em class="emphasis">continuous</em> if it is continuous at all points in <span class="process-math">\(U\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-4-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 6.3.1"><a aria-label="Copy heading and permalink for Definition 6.3.1" href="#sec_picard-4-3" title="Copy heading and permalink for Definition 6.3.1">🔗</a></div>
+</article>
+<article class="theorem theorem-like" id="thm_fs_picard"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.3.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Picard’s theorem on existence and uniqueness.</span>
+</h4>
+<div class="para logical" id="thm_fs_picard-4-1">
+<div class="para">Let <span class="process-math">\(I, J \subset \R\)</span> be closed bounded intervals, let <span class="process-math">\(I^\circ\)</span> and <span class="process-math">\(J^\circ\)</span> be their interiors<details aria-live="polite" class="ptx-footnote" id="thm_fs_picard-4-1-4"><summary class="ptx-footnote__number" title="Footnote 6.3.2"><sup> 2 </sup></summary>
+<div class="ptx-footnote__contents" id="thm_fs_picard-4-1-4">By interior of <span class="process-math">\([a,b]\text{,}\)</span> we mean <span class="process-math">\((a,b)\text{.}\)</span>
+</div></details>, and let <span class="process-math">\((x_0,y_0) \in I^\circ \times J^\circ\text{.}\)</span> Suppose <span class="process-math">\(F \colon I \times J \to \R\)</span> is continuous and Lipschitz in the second variable, that is, there exists an <span class="process-math">\(L \in \R\)</span> such that</div>
+<div class="displaymath process-math" id="thm_fs_picard-4-1-8">
+\begin{equation}
+\babs{F(x,y) - F(x,z)} \leq L \sabs{y-z}
+\qquad \text{for all } y,z \in J, x \in I .
+\end{equation}
+</div>
+<div class="para">Then there exists an <span class="process-math">\(h &gt; 0\)</span> such that <span class="process-math">\([x_0-h,x_0+h] \subset I\)</span> and a unique differentiable function <span class="process-math">\(f \colon [x_0 - h, x_0 + h] \to J \subset \R\)</span> such that</div>
+<div class="displaymath process-math" id="picard_diffeq">
+\begin{equation}
+f'(x) = F\bigl(x,f(x)\bigr) \qquad \text{and} \qquad f(x_0) = y_0.\tag{6.1}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#thm_fs_picard-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 6.3.2: Picard’s theorem on existence and uniqueness"><a aria-label="Copy heading and permalink for Theorem 6.3.2: Picard’s theorem on existence and uniqueness" href="#thm_fs_picard" title="Copy heading and permalink for Theorem 6.3.2: Picard’s theorem on existence and uniqueness">🔗</a></div>
+</article>
+<article class="proof" id="sec_picard-4-5"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_picard-4-5-1">
+<div class="para">Suppose we could find a solution <span class="process-math">\(f\text{.}\)</span>  Using the fundamental theorem of calculus, we integrate the equation <span class="process-math">\(f'(x) = F\bigl(x,f(x)\bigr)\text{,}\)</span> <span class="process-math">\(f(x_0) = y_0\text{,}\)</span> and write <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_picard.html#picard_diffeq" title="Equation 6.1">(6.1)</a> as the integral equation</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/picard_diffeq.html ./knowl/xref/picard_inteq.html ./knowl/xref/picard_inteq.html ./knowl/xref/picard_inteq.html ./knowl/xref/picard_diffeq.html" id="picard_inteq">
+\begin{equation}
+f(x) = y_0 + \int_{x_0}^x F\bigl(t,f(t)\bigr)\,dt .\tag{6.2}
+\end{equation}
+</div>
+<div class="para">The idea of our proof is that we try to plug in approximations to a solution to the right-hand side of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_picard.html#picard_inteq" title="Equation 6.2">(6.2)</a> to get better approximations on the left-hand side of  <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_picard.html#picard_inteq" title="Equation 6.2">(6.2)</a>.  We hope that in the end the sequence converges and solves <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_picard.html#picard_inteq" title="Equation 6.2">(6.2)</a> and hence <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_picard.html#picard_diffeq" title="Equation 6.1">(6.1)</a>. The technique below is called <em class="emphasis">Picard iteration</em>, and the individual functions <span class="process-math">\(f_k\)</span> are called the <em class="emphasis">Picard iterates</em>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-4-5-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_picard-4-5-2">
+<div class="para">Without loss of generality, suppose <span class="process-math">\(x_0 = 0\)</span> (exercise below). Another exercise tells us that <span class="process-math">\(F\)</span> is bounded as it is continuous. Therefore, pick some <span class="process-math">\(M &gt; 0\)</span> so that <span class="process-math">\(\babs{F(x,y)} \leq M\)</span> for all <span class="process-math">\((x,y) \in I\times J\text{.}\)</span> Pick <span class="process-math">\(\alpha &gt; 0\)</span> such that <span class="process-math">\([-\alpha,\alpha] \subset I\)</span> and <span class="process-math">\([y_0-\alpha, y_0 + \alpha] \subset J\text{.}\)</span> Define</div>
+<div class="displaymath process-math" id="sec_picard-4-5-2-9">
+\begin{equation}
+h \coloneqq \min \left\{ \alpha, \frac{\alpha}{M+L\alpha} \right\} .
+\end{equation}
+</div>
+<div class="para">Observe <span class="process-math">\([-h,h] \subset I\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-4-5-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_picard-4-5-3">
+<div class="para">Set <span class="process-math">\(f_0(x) \coloneqq y_0\text{.}\)</span> We define <span class="process-math">\(f_k\)</span> inductively. Assuming <span class="process-math">\(f_{k-1}([-h,h]) \subset [y_0-\alpha,y_0+\alpha]\text{,}\)</span> we see <span class="process-math">\(F\bigl(t,f_{k-1}(t)\bigr)\)</span> is a well-defined function of <span class="process-math">\(t\)</span> for <span class="process-math">\(t \in [-h,h]\text{.}\)</span> If <span class="process-math">\(f_{k-1}\)</span> is continuous on <span class="process-math">\([-h,h]\text{,}\)</span> then <span class="process-math">\(F\bigl(t,f_{k-1}(t)\bigr)\)</span> is continuous as a function of <span class="process-math">\(t\)</span> on <span class="process-math">\([-h,h]\)</span> (left as an exercise). Define</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/picard_inteq.html ./knowl/xref/picard_diffeq.html" id="sec_picard-4-5-3-12">
+\begin{equation}
+f_k(x) \coloneqq y_0+ \int_{0}^x F\bigl(t,f_{k-1}(t)\bigr)\,dt ,
+\end{equation}
+</div>
+<div class="para">and <span class="process-math">\(f_k\)</span> is continuous on <span class="process-math">\([-h,h]\)</span> by the fundamental theorem of calculus. To see that <span class="process-math">\(f_k\)</span> maps <span class="process-math">\([-h,h]\)</span> to <span class="process-math">\([y_0-\alpha,y_0+\alpha]\text{,}\)</span> we compute for <span class="process-math">\(x \in [-h,h]\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/picard_inteq.html ./knowl/xref/picard_diffeq.html" id="sec_picard-4-5-3-19">
+\begin{equation}
+\sabs{f_k(x) - y_0} = 
+\abs{\int_{0}^x F\bigl(t,f_{k-1}(t)\bigr)\,dt }
+\leq
+M\sabs{x}
+\leq
+Mh
+\leq
+M
+\frac{\alpha}{M+L\alpha}
+\leq \alpha .
+\end{equation}
+</div>
+<div class="para">We next define <span class="process-math">\(f_{k+1}\)</span> using <span class="process-math">\(f_k\)</span> and so on. Thus we have inductively defined a sequence <span class="process-math">\(\{ f_k \}_{k=1}^\infty\)</span> of continuous functions. We need to show that it converges to a function <span class="process-math">\(f\)</span> that solves the equation <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_picard.html#picard_inteq" title="Equation 6.2">(6.2)</a> and therefore <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_picard.html#picard_diffeq" title="Equation 6.1">(6.1)</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-4-5-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_picard-4-5-4">
+<div class="para">We wish to show that the sequence <span class="process-math">\(\{ f_k \}_{k=1}^\infty\)</span> converges uniformly to some function on <span class="process-math">\([-h,h]\text{.}\)</span>  First, for <span class="process-math">\(t \in [-h,h]\text{,}\)</span> we have the following useful bound</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/induction_thm.html ./knowl/xref/prop_uniformcauchy.html" id="sec_picard-4-5-4-4">
+\begin{equation}
+\Babs{F\bigl(t,f_{n}(t)\bigr) - 
+F\bigl(t,f_{k}(t)\bigr)}
+\leq
+L \babs{f_n(t)-f_k(t)}
+\leq
+L \snorm{f_n-f_k}_{[-h,h]} ,
+\end{equation}
+</div>
+<div class="para">where <span class="process-math">\(\snorm{f_n-f_k}_{[-h,h]}\)</span> is the uniform norm, that is, the supremum of <span class="process-math">\(\babs{f_n(t)-f_k(t)}\)</span> for <span class="process-math">\(t \in [-h,h]\text{.}\)</span> Now note that <span class="process-math">\(\sabs{x} \leq h \leq \frac{\alpha}{M+L\alpha}\text{.}\)</span> Therefore,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/induction_thm.html ./knowl/xref/prop_uniformcauchy.html" id="sec_picard-4-5-4-9">
+\begin{equation}
+\begin{split}
+\babs{f_n(x) - f_k(x)}
+&amp; =
+\abs{\int_{0}^x F\bigl(t,f_{n-1}(t)\bigr)\,dt 
+-
+\int_{0}^x F\bigl(t,f_{k-1}(t)\bigr)\,dt}
+\\
+&amp; =
+\abs{\int_{0}^x
+\Bigl(
+F\bigl(t,f_{n-1}(t)\bigr)-
+F\bigl(t,f_{k-1}(t)\bigr)
+\Bigr)
+\,dt}
+\\
+&amp; \leq
+L
+\,
+\snorm{f_{n-1}-f_{k-1}}_{[-h,h]}
+\,
+\sabs{x}
+\\
+&amp; \leq
+\frac{L\alpha}{M+L\alpha}
+\snorm{f_{n-1}-f_{k-1}}_{[-h,h]} .
+\end{split}
+\end{equation}
+</div>
+<div class="para">Let <span class="process-math">\(C \coloneqq \frac{L\alpha}{M+L\alpha}\)</span> and note that <span class="process-math">\(C &lt; 1\text{.}\)</span> Taking supremum on the left-hand side we get</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/induction_thm.html ./knowl/xref/prop_uniformcauchy.html" id="sec_picard-4-5-4-12">
+\begin{equation}
+\snorm{f_n-f_k}_{[-h,h]} \leq C \snorm{f_{n-1}-f_{k-1}}_{[-h,h]} .
+\end{equation}
+</div>
+<div class="para">Without loss of generality, suppose <span class="process-math">\(n \geq k\text{.}\)</span>  Then by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicset.html#induction_thm" title="Theorem 0.3.6: Principle of induction">induction</a> we can show</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/induction_thm.html ./knowl/xref/prop_uniformcauchy.html" id="sec_picard-4-5-4-15">
+\begin{equation}
+\snorm{f_n-f_k}_{[-h,h]} \leq C^{k} \snorm{f_{n-k}-f_{0}}_{[-h,h]} .
+\end{equation}
+</div>
+<div class="para">For <span class="process-math">\(x \in [-h,h]\text{,}\)</span> we have</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/induction_thm.html ./knowl/xref/prop_uniformcauchy.html" id="sec_picard-4-5-4-17">
+\begin{equation}
+\babs{f_{n-k}(x)-f_{0}(x)}
+=
+\babs{f_{n-k}(x)-y_0}
+\leq \alpha .
+\end{equation}
+</div>
+<div class="para">Therefore,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/induction_thm.html ./knowl/xref/prop_uniformcauchy.html" id="sec_picard-4-5-4-18">
+\begin{equation}
+\snorm{f_n-f_k}_{[-h,h]} \leq C^{k} \snorm{f_{n-k}-f_{0}}_{[-h,h]} \leq C^{k} \alpha .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(C &lt; 1\text{,}\)</span> <span class="process-math">\(\{f_n\}_{n=1}^\infty\)</span> is uniformly Cauchy. By <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_puconv.html#prop_uniformcauchy" title="Proposition 6.1.13">Proposition 6.1.13</a>, <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> converges uniformly on <span class="process-math">\([-h,h]\)</span> to some function <span class="process-math">\(f \colon [-h,h] \to \R\text{.}\)</span> The function <span class="process-math">\(f\)</span> is the uniform limit of continuous functions and thus continuous.  Furthermore, since <span class="process-math">\(f_n\bigl([-h,h]\bigr) \subset
+[y_0-\alpha,y_0+\alpha]\)</span> for all <span class="process-math">\(n\text{,}\)</span> then <span class="process-math">\(f\bigl([-h,h]\bigr) \subset [y_0-\alpha,y_0+\alpha]\)</span> (why?).</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-4-5-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_picard-4-5-5">
+<div class="para">We now need to show that <span class="process-math">\(f\)</span> solves <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_picard.html#picard_inteq" title="Equation 6.2">(6.2)</a>. First, as before, we notice</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/picard_inteq.html ./knowl/xref/thm_FTCv2.html" id="sec_picard-4-5-5-3">
+\begin{equation}
+\Babs{F\bigl(t,f_{n}(t)\bigr) - 
+F\bigl(t,f(t)\bigr)}
+\leq
+L \babs{f_n(t)-f(t)}
+\leq
+L \snorm{f_n-f}_{[-h,h]} .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(\snorm{f_n-f}_{[-h,h]}\)</span> converges to zero, <span class="process-math">\(F\bigl(t,f_n(t)\bigr)\)</span> converges uniformly to <span class="process-math">\(F\bigl(t,f(t)\bigr)\)</span> for <span class="process-math">\(t \in [-h,h]\text{.}\)</span>  Hence, for <span class="process-math">\(x \in [-h,h]\)</span> the convergence is uniform for <span class="process-math">\(t \in [0,x]\)</span> (or <span class="process-math">\([x,0]\)</span> if <span class="process-math">\(x &lt; 0\)</span>).  Therefore,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/picard_inteq.html ./knowl/xref/thm_FTCv2.html" id="sec_picard-4-5-5-12">
+\begin{equation}
+\begin{aligned}
+y_0
++
+\int_0^{x}
+F(t,f(t)\bigr)\,dt
+&amp; =
+y_0
++
+\int_0^{x}
+F\bigl(t,\lim_{n\to\infty} f_n(t)\bigr)\,dt
+&amp; &amp;
+\\
+&amp; =
+y_0
++
+\int_0^{x}
+\lim_{n\to\infty} F\bigl(t,f_n(t)\bigr)\,dt
+&amp; &amp; \text{(by continuity of } F\text{)}
+\\
+&amp; =
+\lim_{n\to\infty} 
+\left(
+y_0
++
+\int_0^{x}
+F\bigl(t,f_n(t)\bigr)\,dt
+\right)
+&amp; &amp; \text{(by uniform convergence)}
+\\
+&amp; =
+\lim_{n\to\infty} 
+f_{n+1}(x)
+=
+f(x) .
+&amp; &amp;
+\end{aligned}
+\end{equation}
+</div>
+<div class="para">We apply the fundamental theorem of calculus (<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_ftc.html#thm_FTCv2" title="Theorem 5.3.3">Theorem 5.3.3</a>) to show that <span class="process-math">\(f\)</span> is differentiable and its derivative is <span class="process-math">\(F\bigl(x,f(x)\bigr)\text{.}\)</span>  It is obvious that <span class="process-math">\(f(0) = y_0\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-4-5-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_picard-4-5-6">
+<div class="para">Finally, what is left to do is to show uniqueness.  Suppose <span class="process-math">\(g \colon [-h,h]
+\to J \subset \R\)</span> is another solution. As before we use the fact that <span class="process-math">\(\babs{F\bigl(t,f(t)\bigr) - F\bigl(t,g(t)\bigr)} \leq L \snorm{f-g}_{[-h,h]}\text{.}\)</span> Then</div>
+<div class="displaymath process-math" id="sec_picard-4-5-6-3">
+\begin{equation}
+\begin{split}
+\babs{f(x)-g(x)}
+&amp; =
+\abs{
+y_0
++
+\int_0^{x}
+F\bigl(t,f(t)\bigr)\,dt
+-
+\left(
+y_0
++
+\int_0^{x}
+F\bigl(t,g(t)\bigr)\,dt
+\right)
+}
+\\
+&amp; =
+\abs{
+\int_0^{x}
+\Bigl(
+F\bigl(t,f(t)\bigr)
+-
+F\bigl(t,g(t)\bigr)
+\Bigr)
+\,dt
+}
+\\
+&amp; \leq
+L\snorm{f-g}_{[-h,h]}\sabs{x}
+\leq
+Lh\snorm{f-g}_{[-h,h]}
+\leq
+\frac{L\alpha}{M+L\alpha}\snorm{f-g}_{[-h,h]} .
+\end{split}
+\end{equation}
+</div>
+<div class="para">As before, <span class="process-math">\(C = \frac{L\alpha}{M+L\alpha} &lt; 1\text{.}\)</span>  By taking supremum over <span class="process-math">\(x \in
+[-h,h]\)</span> on the left-hand side we obtain</div>
+<div class="displaymath process-math" id="sec_picard-4-5-6-6">
+\begin{equation}
+\snorm{f-g}_{[-h,h]} \leq C \snorm{f-g}_{[-h,h]} .
+\end{equation}
+</div>
+<div class="para">This is only possible if <span class="process-math">\(\snorm{f-g}_{[-h,h]} = 0\text{.}\)</span>  Therefore, <span class="process-math">\(f=g\text{,}\)</span> and the solution is unique.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-4-5-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 6.3.2.1"><a aria-label="Copy heading and permalink for Proof 6.3.2.1" href="#sec_picard-4-5" title="Copy heading and permalink for Proof 6.3.2.1">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 6.3.2: The theorem"><a aria-label="Copy heading and permalink for Subsection 6.3.2: The theorem" href="#sec_picard-4" title="Copy heading and permalink for Subsection 6.3.2: The theorem">🔗</a></div>
+</section>
+<section class="subsection" id="sec_picard-5">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.3.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Examples</span>
+</h3>
+<div class="para" id="sec_picard-5-2">Let us look at some examples.  The proof of the theorem gives us an explicit way to find an <span class="process-math">\(h\)</span> that works.  It does not, however, give us the best <span class="process-math">\(h\text{.}\)</span>  It is often possible to find a much larger <span class="process-math">\(h\)</span> for which the conclusion of the theorem holds.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-5-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_picard-5-3">The proof also gives us the Picard iterates as approximations to the solution.  So the proof actually tells us how to obtain the solution, not just that the solution exists.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-5-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="example_picardexponential"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.3.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="example_picardexponential-1-1">
+<div class="para">Consider</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/sec_logandexp.html ./knowl/xref/fig_exp.html" id="example_picardexponential-1-1-1">
+\begin{equation}
+f'(x) = f(x), \qquad f(0) = 1 .
+\end{equation}
+</div>
+<div class="para">That is, we suppose <span class="process-math">\(F(x,y) = y\text{,}\)</span> and we are looking for a function <span class="process-math">\(f\)</span> such that <span class="process-math">\(f'(x) = f(x)\text{.}\)</span> Let us forget for the moment that we solved this equation in <a class="internal" href="sec_logandexp.html" title="Section 5.4: The logarithm and the exponential">Section 5.4</a>.  See also <a class="internal" href="sec_logandexp.html#fig_exp" title="Figure 5.7">Figure 5.7</a> for a plot of both the equation, showing the slope <span class="process-math">\(F(x,y)=y\)</span> at each point, and the solution, the exponential, that satisfies <span class="process-math">\(f(0)=1\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_picardexponential-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="example_picardexponential-1-2">
+<div class="para">We pick any <span class="process-math">\(I\)</span> that contains 0 in the interior. We pick an arbitrary <span class="process-math">\(J\)</span> that contains 1 in its interior.  We can use <span class="process-math">\(L = 1\text{.}\)</span> The theorem guarantees an <span class="process-math">\(h &gt; 0\)</span> such that there exists a unique solution <span class="process-math">\(f \colon [-h,h] \to \R\text{.}\)</span>  This solution is usually denoted by</div>
+<div class="displaymath process-math" id="example_picardexponential-1-2-6">
+\begin{equation}
+e^x \coloneqq f(x) .
+\end{equation}
+</div>
+<div class="para">We leave it to the reader to verify that by picking <span class="process-math">\(I\)</span> and <span class="process-math">\(J\)</span> large enough the proof of the theorem guarantees that we are able to pick <span class="process-math">\(\alpha\)</span> such that we get any <span class="process-math">\(h\)</span> we want as long as <span class="process-math">\(h &lt; \nicefrac{1}{2}\text{.}\)</span>  We omit the calculation. Of course, we know this function exists as a function for all <span class="process-math">\(x\text{,}\)</span> so an arbitrary <span class="process-math">\(h\)</span> ought to work, but the theorem’s proof only provides <span class="process-math">\(h &lt; \nicefrac{1}{2}\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_picardexponential-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="example_picardexponential-1-3">By the same reasoning as above, no matter what <span class="process-math">\(x_0\)</span> and <span class="process-math">\(y_0\)</span> are, the proof guarantees an arbitrary <span class="process-math">\(h\)</span> as long as <span class="process-math">\(h &lt; \nicefrac{1}{2}\text{.}\)</span> Fix such an <span class="process-math">\(h\text{.}\)</span> We get a unique function defined on <span class="process-math">\([x_0-h,x_0+h]\text{.}\)</span>  After defining the function on <span class="process-math">\([-h,h]\)</span> we find a solution on the interval <span class="process-math">\([0,2h]\)</span> and notice that the two functions must coincide on <span class="process-math">\([0,h]\)</span> by uniqueness. We thus iteratively construct the exponential for all <span class="process-math">\(x \in \R\text{.}\)</span> Therefore, Picard’s theorem could be used to prove the existence and uniqueness of the exponential.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_picardexponential-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="example_picardexponential-1-4">
+<div class="para">Let us compute the Picard iterates. We start with the constant function <span class="process-math">\(f_0(x) \coloneqq 1\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_exppicard.html" id="example_picardexponential-1-4-2">
+\begin{equation}
+\begin{aligned}
+f_1(x) &amp; = 1 + \int_0^x f_0(s)\,ds =
+1+x, \\
+f_2(x) &amp; = 1 + \int_0^x f_1(s)\,ds =
+1 + \int_0^x (1+s)\,ds = 1 + x + \frac{x^2}{2}, \\
+f_3(x) &amp; = 1 + \int_0^x f_2(s)\,ds =
+1 + \int_0^x \left(1+ s + \frac{s^2}{2} \right)\,ds =
+1 + x + \frac{x^2}{2} + \frac{x^3}{6} .
+\end{aligned}
+\end{equation}
+</div>
+<div class="para">We recognize the beginning of the Taylor series for the exponential. See <a class="internal" href="sec_picard.html#fig_exppicard" title="Figure 6.9">Figure 6.9</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_picardexponential-1-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <hr class="rahr"/>
+<figure class="figure figure-like" id="fig_exppicard"><img alt="A graph of the exponential function as a solid curve in the region for x between a bit less than minus 1 and a bit more than 1. Several dashed curves give approximations. They all go through the point (0,1). First a horizontal line. Then a line with the same slope as the exponential at (0,1). Then two further curved approximations that get yet closer to the exponential, especially near x equals 0." class="raimg" role="img" src="figures/exppicardfig-mbx.svg" style="width:218pt; height:164pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>The exponential (solid line) together with <span class="process-math">\(f_0\text{,}\)</span> <span class="process-math">\(f_1\text{,}\)</span> <span class="process-math">\(f_2\text{,}\)</span> <span class="process-math">\(f_3\)</span> (dashed).<div class="autopermalink" data-description="Figure 6.9"><a aria-label="Copy heading and permalink for Figure 6.9" href="#fig_exppicard" title="Copy heading and permalink for Figure 6.9">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="autopermalink" data-description="Example 6.3.3"><a aria-label="Copy heading and permalink for Example 6.3.3" href="#example_picardexponential" title="Copy heading and permalink for Example 6.3.3">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_picard-5-5"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.3.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_picard-5-5-1-1">
+<div class="para">Consider the equation</div>
+<div class="displaymath process-math" id="sec_picard-5-5-1-1-1">
+\begin{equation}
+f'(x) = {\bigl(f(x)\bigr)}^2 \qquad \text{and} \qquad f(0)=1.
+\end{equation}
+</div>
+<div class="para">From elementary differential equations we know</div>
+<div class="displaymath process-math" id="sec_picard-5-5-1-1-2">
+\begin{equation}
+f(x) = \frac{1}{1-x}
+\end{equation}
+</div>
+<div class="para">is the solution. The solution is only defined on <span class="process-math">\((-\infty,1)\text{.}\)</span>  That is, we are able to use <span class="process-math">\(h &lt; 1\text{,}\)</span> but never a larger <span class="process-math">\(h\text{.}\)</span> The function that takes <span class="process-math">\(y\)</span> to <span class="process-math">\(y^2\)</span> is not Lipschitz as a function on all of <span class="process-math">\(\R\text{.}\)</span> As we approach <span class="process-math">\(x=1\)</span> from the left, the solution becomes larger and larger.  The derivative of the solution grows as <span class="process-math">\(y^2\text{,}\)</span> and so the <span class="process-math">\(L\)</span> required has to be larger and larger as <span class="process-math">\(y_0\)</span> grows. If we apply the theorem with <span class="process-math">\(x_0\)</span> close to 1 and <span class="process-math">\(y_0 = \frac{1}{1-x_0}\)</span> we find that the <span class="process-math">\(h\)</span> that the proof guarantees is smaller and smaller as <span class="process-math">\(x_0\)</span> approaches 1.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-5-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_picard-5-5-1-2">The <span class="process-math">\(h\)</span> from the proof is not the best <span class="process-math">\(h\text{.}\)</span> By picking <span class="process-math">\(\alpha\)</span> correctly, the proof of the theorem guarantees <span class="process-math">\(h=1-\nicefrac{\sqrt{3}}{2} \approx 0.134\)</span> (we omit the calculation) for <span class="process-math">\(x_0=0\)</span> and <span class="process-math">\(y_0=1\text{,}\)</span> even though we saw above that any <span class="process-math">\(h &lt; 1\)</span> should work.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-5-5-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 6.3.4"><a aria-label="Copy heading and permalink for Example 6.3.4" href="#sec_picard-5-5" title="Copy heading and permalink for Example 6.3.4">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_picard-5-6"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.3.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_picard-5-6-1-1">
+<div class="para">Consider the equation</div>
+<div class="displaymath process-math" id="sec_picard-5-6-1-1-1">
+\begin{equation}
+f'(x) = 2 \sqrt{\babs{f(x)}}, \qquad f(0) = 0 .
+\end{equation}
+</div>
+<div class="para">The function <span class="process-math">\(F(x,y) = 2 \sqrt{\sabs{y}}\)</span> is continuous, but not Lipschitz in <span class="process-math">\(y\)</span> (why?). The equation does not satisfy the hypotheses of the theorem. The function</div>
+<div class="displaymath process-math" id="sec_picard-5-6-1-1-4">
+\begin{equation}
+f(x) =
+\begin{cases}
+x^2 &amp; \text{if } x \geq 0,\\
+-x^2 &amp; \text{if } x &lt; 0,
+\end{cases}
+\end{equation}
+</div>
+<div class="para">is a solution, but <span class="process-math">\(f(x) = 0\)</span> is also a solution. A solution exists, but is not unique.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-5-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 6.3.5"><a aria-label="Copy heading and permalink for Example 6.3.5" href="#sec_picard-5-6" title="Copy heading and permalink for Example 6.3.5">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_picard-5-7"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.3.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_picard-5-7-1-1">Consider <span class="process-math">\(y' = \varphi(x)\)</span> where <span class="process-math">\(\varphi(x) \coloneqq 0\)</span> if <span class="process-math">\(x \in \Q\)</span> and <span class="process-math">\(\varphi(x)\coloneqq 1\)</span> if <span class="process-math">\(x
+\notin \Q\text{.}\)</span>  In other words, the <span class="process-math">\(F(x,y) = \varphi(x)\)</span> is discontinuous. The equation has no solution regardless of the initial conditions. A solution would have derivative <span class="process-math">\(\varphi\text{,}\)</span> but <span class="process-math">\(\varphi\)</span> does not have the intermediate value property at any point (why?).  No solution exists by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvt.html#thm_darboux" title="Theorem 4.2.11: Darboux">Darboux’s theorem</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-5-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 6.3.6"><a aria-label="Copy heading and permalink for Example 6.3.6" href="#sec_picard-5-7" title="Copy heading and permalink for Example 6.3.6">🔗</a></div>
+</article>
+<div class="para" id="sec_picard-5-8">The examples show that without the Lipschitz condition, a solution might exist but not be unique, and without continuity of <span class="process-math">\(F\text{,}\)</span> we may not have a solution at all. It is in fact a theorem, the Peano existence theorem, that if <span class="process-math">\(F\)</span> is continuous a solution exists (but may not be unique).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-5-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="remark remark-like" id="sec_picard-5-9"><h4 class="heading">
+<span class="type">Remark</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.3.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_picard-5-9-1-1">It is possible to weaken what we mean by “solution to <span class="process-math">\(y' = F(x,y)\)</span>” by focusing on the integral equation <span class="process-math">\(f(x) = y_0 + \int_{x_0}^x F\bigl(t,f(t)\bigr) \, dt\text{.}\)</span>  For example, let <span class="process-math">\(H\)</span> be the Heaviside function<details aria-live="polite" class="ptx-footnote" id="sec_picard-5-9-1-1-4"><summary class="ptx-footnote__number" title="Footnote 6.3.3"><sup> 3 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_picard-5-9-1-1-4">Named for the English engineer, mathematician, and physicist <a class="external" href="https://en.wikipedia.org/wiki/Oliver_Heaviside" target="_blank">Oliver Heaviside</a> (1850–1925).
+</div></details>, that is <span class="process-math">\(H(x) \coloneqq 0\)</span> for <span class="process-math">\(x &lt; 0\)</span> and <span class="process-math">\(H(x) \coloneqq 1\)</span> for <span class="process-math">\(x \geq 0\text{.}\)</span> Then <span class="process-math">\(y' = H(x)\text{,}\)</span> <span class="process-math">\(y(0) = 0\text{,}\)</span> is a common equation. The “solution” is the ramp function <span class="process-math">\(f(x) \coloneqq 0\)</span> if <span class="process-math">\(x &lt; 0\)</span> and <span class="process-math">\(f(x) \coloneqq x\)</span> if <span class="process-math">\(x \geq 0\text{,}\)</span> since this function satisfies <span class="process-math">\(f(x) = \int_0^x H(t)\, dt\text{.}\)</span>  Notice, however, that <span class="process-math">\(f'(0)\)</span> does not exist, so <span class="process-math">\(f\)</span> is only what is called a <em class="emphasis">weak solution</em> to the differential equation.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-5-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Remark 6.3.7"><a aria-label="Copy heading and permalink for Remark 6.3.7" href="#sec_picard-5-9" title="Copy heading and permalink for Remark 6.3.7">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 6.3.3: Examples"><a aria-label="Copy heading and permalink for Subsection 6.3.3: Examples" href="#sec_picard-5" title="Copy heading and permalink for Subsection 6.3.3: Examples">🔗</a></div>
+</section>
+<section class="exercises" id="sec_picard-6">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.3.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_picard-6-1"><h4 class="heading"><span class="codenumber">6.3.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_picard-6-1-1-1">Let <span class="process-math">\(I, J \subset \R\)</span> be intervals. Let <span class="process-math">\(F \colon I \times J \to \R\)</span> be a continuous function of two variables and suppose <span class="process-math">\(f \colon I \to J\)</span> is a continuous function. Show that <span class="process-math">\(F\bigl(x,f(x)\bigr)\)</span> is a continuous function on <span class="process-math">\(I\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-6-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 6.3.1"><a aria-label="Copy heading and permalink for Exercise 6.3.1" href="#sec_picard-6-1" title="Copy heading and permalink for Exercise 6.3.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_picard-6-2"><h4 class="heading"><span class="codenumber">6.3.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_picard-6-2-1-1">Let <span class="process-math">\(I, J \subset \R\)</span> be closed bounded intervals. Show that if <span class="process-math">\(F \colon I \times J \to \R\)</span> is continuous, then <span class="process-math">\(F\)</span> is bounded.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-6-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 6.3.2"><a aria-label="Copy heading and permalink for Exercise 6.3.2" href="#sec_picard-6-2" title="Copy heading and permalink for Exercise 6.3.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_picard-6-3"><h4 class="heading"><span class="codenumber">6.3.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_picard-6-3-1-1">We proved Picard’s theorem under the assumption that <span class="process-math">\(x_0 = 0\text{.}\)</span> Prove the full statement of Picard’s theorem for an arbitrary <span class="process-math">\(x_0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-6-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 6.3.3"><a aria-label="Copy heading and permalink for Exercise 6.3.3" href="#sec_picard-6-3" title="Copy heading and permalink for Exercise 6.3.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_picard-6-4"><h4 class="heading"><span class="codenumber">6.3.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_picard-6-4-1-1">Let <span class="process-math">\(f'(x)=x f(x)\)</span> be our equation.  Start with the initial condition <span class="process-math">\(f(0)=2\)</span> and find the Picard iterates <span class="process-math">\(f_0,f_1,f_2,f_3,f_4\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-6-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 6.3.4"><a aria-label="Copy heading and permalink for Exercise 6.3.4" href="#sec_picard-6-4" title="Copy heading and permalink for Exercise 6.3.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_picard-6-5"><h4 class="heading"><span class="codenumber">6.3.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_picard-6-5-1-1">
+<div class="para">Suppose <span class="process-math">\(F \colon I \times J \to \R\)</span> is a function that is continuous in the first variable, that is, for every fixed <span class="process-math">\(y\)</span> the function that takes <span class="process-math">\(x\)</span> to <span class="process-math">\(F(x,y)\)</span> is continuous.  Further, suppose <span class="process-math">\(F\)</span> is Lipschitz in the second variable, that is, there exists a number <span class="process-math">\(L\)</span> such that</div>
+<div class="displaymath process-math" id="sec_picard-6-5-1-1-7">
+\begin{equation}
+\babs{F(x,y) - F(x,z)} \leq L \sabs{y-z}
+\qquad \text{for all } y,z \in J, x \in I .
+\end{equation}
+</div>
+<div class="para">Show that <span class="process-math">\(F\)</span> is continuous as a function of two variables.  Therefore, the hypotheses in the theorem could be made even weaker.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-6-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 6.3.5"><a aria-label="Copy heading and permalink for Exercise 6.3.5" href="#sec_picard-6-5" title="Copy heading and permalink for Exercise 6.3.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_picard-6-6"><h4 class="heading"><span class="codenumber">6.3.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_picard-6-6-1-1">
+<div class="para">A common type of equation is a <em class="emphasis">linear first order differential equation</em>, that is, an equation of the form</div>
+<div class="displaymath process-math" id="sec_picard-6-6-1-1-2">
+\begin{equation}
+y' + p(x) y = q(x) , \qquad y(x_0) = y_0 .
+\end{equation}
+</div>
+<div class="para">Prove Picard’s theorem for linear equations.  Suppose <span class="process-math">\(I\)</span> is an interval, <span class="process-math">\(x_0 \in I\text{,}\)</span> and <span class="process-math">\(p \colon I \to \R\)</span> and <span class="process-math">\(q \colon I \to \R\)</span> are continuous. Show that there exists a unique differentiable <span class="process-math">\(f \colon I \to \R\text{,}\)</span> such that <span class="process-math">\(y = f(x)\)</span> satisfies the equation and the initial condition. Hint: Assume existence of the exponential function and use the integrating factor formula for existence of <span class="process-math">\(f\)</span> (prove that it works and then that it is unique):</div>
+<div class="displaymath process-math" id="sec_picard-6-6-1-1-10">
+\begin{equation}
+f(x) \coloneqq e^{-\int_{x_0}^x p(s)\, ds} \left( \int_{x_0}^x e^{\int_{x_0}^t p(s)\, ds}
+q(t) \,dt + y_0 \right).
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-6-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 6.3.6"><a aria-label="Copy heading and permalink for Exercise 6.3.6" href="#sec_picard-6-6" title="Copy heading and permalink for Exercise 6.3.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_picard-6-7"><h4 class="heading"><span class="codenumber">6.3.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_picard-6-7-1-1">Consider the equation <span class="process-math">\(f'(x) = f(x)\text{,}\)</span> from <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_picard.html#example_picardexponential" title="Example 6.3.3">Example 6.3.3</a>.  Show that given any <span class="process-math">\(x_0\text{,}\)</span> any <span class="process-math">\(y_0\text{,}\)</span> and any positive <span class="process-math">\(h &lt; \nicefrac{1}{2}\text{,}\)</span> we can pick <span class="process-math">\(\alpha &gt;
+0\)</span> large enough that the proof of Picard’s theorem guarantees a solution for the initial condition <span class="process-math">\(f(x_0) = y_0\)</span> in the interval <span class="process-math">\([x_0-h,x_0+h]\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-6-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 6.3.7"><a aria-label="Copy heading and permalink for Exercise 6.3.7" href="#sec_picard-6-7" title="Copy heading and permalink for Exercise 6.3.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_picard-6-8"><h4 class="heading"><span class="codenumber">6.3.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_picard-6-8-1-1">Consider the equation <span class="process-math">\(y' = y^{1/3}x\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-6-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_picard-6-8-1-2">
+<li id="sec_picard-6-8-1-2-1">
+<div class="para" id="sec_picard-6-8-1-2-1-1">Show that for the initial condition <span class="process-math">\(y(1)=1\text{,}\)</span> Picard’s theorem applies. Find an <span class="process-math">\(\alpha &gt; 0\text{,}\)</span> <span class="process-math">\(M\text{,}\)</span> <span class="process-math">\(L\text{,}\)</span> and <span class="process-math">\(h\)</span> that would work in the proof.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-6-8-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 6.3.8.a"><a aria-label="Copy heading and permalink for Item 6.3.8.a" href="#sec_picard-6-8-1-2-1" title="Copy heading and permalink for Item 6.3.8.a">🔗</a></div>
+</li>
+<li id="sec_picard-6-8-1-2-2">
+<div class="para" id="sec_picard-6-8-1-2-2-1">Show that for the initial condition <span class="process-math">\(y(1) = 0\text{,}\)</span> Picard’s theorem does not apply.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-6-8-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 6.3.8.b"><a aria-label="Copy heading and permalink for Item 6.3.8.b" href="#sec_picard-6-8-1-2-2" title="Copy heading and permalink for Item 6.3.8.b">🔗</a></div>
+</li>
+<li id="sec_picard-6-8-1-2-3">
+<div class="para" id="sec_picard-6-8-1-2-3-1">Find a solution for <span class="process-math">\(y(1) = 0\)</span> anyway.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-6-8-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 6.3.8.c"><a aria-label="Copy heading and permalink for Item 6.3.8.c" href="#sec_picard-6-8-1-2-3" title="Copy heading and permalink for Item 6.3.8.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 6.3.8"><a aria-label="Copy heading and permalink for Exercise 6.3.8" href="#sec_picard-6-8" title="Copy heading and permalink for Exercise 6.3.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_picard-6-9"><h4 class="heading"><span class="codenumber">6.3.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_picard-6-9-1-1">Consider the equation <span class="process-math">\(x y' = 2y\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-6-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_picard-6-9-1-2">
+<li id="sec_picard-6-9-1-2-1">
+<div class="para" id="sec_picard-6-9-1-2-1-1">Show that <span class="process-math">\(y = Cx^2\)</span> is a solution for every constant <span class="process-math">\(C\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-6-9-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 6.3.9.a"><a aria-label="Copy heading and permalink for Item 6.3.9.a" href="#sec_picard-6-9-1-2-1" title="Copy heading and permalink for Item 6.3.9.a">🔗</a></div>
+</li>
+<li id="sec_picard-6-9-1-2-2">
+<div class="para" id="sec_picard-6-9-1-2-2-1">Show that for every <span class="process-math">\(x_0 \neq 0\)</span> and every <span class="process-math">\(y_0\text{,}\)</span> Picard’s theorem applies for the initial condition <span class="process-math">\(y(x_0) = y_0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-6-9-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 6.3.9.b"><a aria-label="Copy heading and permalink for Item 6.3.9.b" href="#sec_picard-6-9-1-2-2" title="Copy heading and permalink for Item 6.3.9.b">🔗</a></div>
+</li>
+<li id="sec_picard-6-9-1-2-3">
+<div class="para" id="sec_picard-6-9-1-2-3-1">Show that <span class="process-math">\(y(0) = y_0\)</span> is solvable if and only if <span class="process-math">\(y_0 = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_picard-6-9-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 6.3.9.c"><a aria-label="Copy heading and permalink for Item 6.3.9.c" href="#sec_picard-6-9-1-2-3" title="Copy heading and permalink for Item 6.3.9.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 6.3.9"><a aria-label="Copy heading and permalink for Exercise 6.3.9" href="#sec_picard-6-9" title="Copy heading and permalink for Exercise 6.3.9">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 6.3.4"><a aria-label="Copy heading and permalink for Exercises 6.3.4" href="#sec_picard-6" title="Copy heading and permalink for Exercises 6.3.4">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 6.3: Picard’s theorem"><a aria-label="Copy heading and permalink for Section 6.3: Picard’s theorem" href="#sec_picard" title="Copy heading and permalink for Section 6.3: Picard’s theorem">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_liminter.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="ms_chapter.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

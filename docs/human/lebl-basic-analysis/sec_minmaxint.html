@@ -1,0 +1,631 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Extreme and intermediate value theorems · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_minmaxint">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Extreme and intermediate value theorems</span>
+</h2>
+<section class="introduction" id="sec_minmaxint-2">
+<div class="para" id="sec_minmaxint-2-1">
+<em class="emphasis">Note: 1.5 lectures</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_minmaxint-2-2">Continuous functions on closed and bounded intervals are quite well behaved.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-2-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section>
+<section class="subsection" id="sec_minmaxint-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.3.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Min-max or extreme value theorem</span>
+</h3>
+<div class="para" id="sec_minmaxint-3-2">Recall that <span class="process-math">\(f \colon [a,b] \to \R\)</span> is <em class="emphasis">bounded</em> if there exists a <span class="process-math">\(B \in \R\)</span> such that <span class="process-math">\(\babs{f(x)} \leq B\)</span> for all <span class="process-math">\(x \in [a,b]\text{.}\)</span> For a continuous function on a closed and bounded interval, we have the following lemma.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-3-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="lemma theorem-like" id="sec_minmaxint-3-3"><h4 class="heading">
+<span class="type">Lemma</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.3.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_minmaxint-3-3-1-1">A continuous function <span class="process-math">\(f \colon [a,b] \to \R\)</span> is bounded.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-3-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Lemma 3.3.1"><a aria-label="Copy heading and permalink for Lemma 3.3.1" href="#sec_minmaxint-3-3" title="Copy heading and permalink for Lemma 3.3.1">🔗</a></div>
+</article>
+<article class="proof" id="sec_minmaxint-3-4"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_minmaxint-3-4-1">
+<div class="para">We prove the claim by contrapositive.  Suppose <span class="process-math">\(f\)</span> is not bounded. Then for each <span class="process-math">\(n \in \N\text{,}\)</span> there is an <span class="process-math">\(x_n \in [a,b]\)</span> such that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_bwseq.html" id="sec_minmaxint-3-4-1-4">
+\begin{equation}
+\babs{f(x_n)} \geq n .
+\end{equation}
+</div>
+<div class="para">The sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is bounded as <span class="process-math">\(a \leq x_n \leq b\text{.}\)</span> By the <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_bw.html#thm_bwseq" title="Theorem 2.3.8: Bolzano–Weierstrass">Bolzano–Weierstrass theorem</a>, there is a convergent subsequence <span class="process-math">\(\{ x_{n_i} \}_{i=1}^\infty\text{.}\)</span> Let <span class="process-math">\(x \coloneqq \lim_{i\to\infty} x_{n_i}\text{.}\)</span> Since <span class="process-math">\(a \leq x_{n_i} \leq b\)</span> for all <span class="process-math">\(i\text{,}\)</span> we have <span class="process-math">\(a \leq x \leq b\text{.}\)</span> The sequence <span class="process-math">\(\bigl\{ f(x_{n_i}) \bigr\}_{i=1}^\infty\)</span> is not bounded as <span class="process-math">\(\babs{f(x_{n_i})} \geq n_i \geq i\text{.}\)</span> Thus <span class="process-math">\(f\)</span> is not continuous at <span class="process-math">\(x\)</span> as</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_bwseq.html" id="sec_minmaxint-3-4-1-17">
+\begin{equation}
+f(x)
+=
+f\Bigl( \lim_{i\to\infty} x_{n_i} \Bigr) ,
+\qquad \text{but} \qquad
+\lim_{i\to\infty} f(x_{n_i}) \enspace \text{does not exist.} \qedhere
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-3-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 3.3.1.1"><a aria-label="Copy heading and permalink for Proof 3.3.1.1" href="#sec_minmaxint-3-4" title="Copy heading and permalink for Proof 3.3.1.1">🔗</a></div>
+</article>
+<div class="para" id="sec_minmaxint-3-5">Notice a key point of the proof. Boundedness of <span class="process-math">\([a,b]\)</span> allows us to use Bolzano–Weierstrass, while the fact that it is closed gives us that the limit is back in <span class="process-math">\([a,b]\text{.}\)</span> The technique is a common one: Find a sequence with a certain property, then use Bolzano–Weierstrass to make such a sequence that also converges.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-3-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_minmaxint-3-6">
+<div class="para">Recall from calculus that <span class="process-math">\(f \colon S \to \R\)</span> achieves an <em class="emphasis">absolute minimum</em> at <span class="process-math">\(c \in S\)</span> if</div>
+<div class="displaymath process-math" id="sec_minmaxint-3-6-6">
+\begin{equation}
+f(x) \geq f(c) \qquad \text{for all } x \in S.
+\end{equation}
+</div>
+<div class="para">On the other hand, <span class="process-math">\(f\)</span> achieves an <em class="emphasis">absolute maximum</em> at <span class="process-math">\(c \in S\)</span> if</div>
+<div class="displaymath process-math" id="sec_minmaxint-3-6-12">
+\begin{equation}
+f(x) \leq f(c) \qquad \text{for all } x \in S.
+\end{equation}
+</div>
+<div class="para">If such a <span class="process-math">\(c \in S\)</span> exists, then we say <span class="process-math">\(f\)</span> <em class="emphasis">achieves an absolute minimum (resp. absolute maximum) on <span class="process-math">\(S\)</span></em>, and we call <span class="process-math">\(f(c)\)</span> the <em class="emphasis">absolute minimum (resp. absolute maximum)</em>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-3-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="fig_minmax"><img alt="A graph of a function on the interval from a to b. The graph is between two horizontal lines, one marked as the absolute maximum of f which equals f of c, and one marked as the absolute minimum of f which equals f of d." class="raimg" role="img" src="figures/minmax-mbx.svg" style="width:297pt; height:79pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="process-math">\(f \colon [a,b] \to \R\)</span> achieves an absolute maximum <span class="process-math">\(f(c)\)</span> at <span class="process-math">\(c\text{,}\)</span> and an absolute minimum <span class="process-math">\(f(d)\)</span> at <span class="process-math">\(d\text{.}\)</span><div class="autopermalink" data-description="Figure 3.6"><a aria-label="Copy heading and permalink for Figure 3.6" href="#fig_minmax" title="Copy heading and permalink for Figure 3.6">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para" id="sec_minmaxint-3-10">If <span class="process-math">\(S\)</span> is a closed and bounded interval, then a continuous <span class="process-math">\(f\)</span> is not just bounded, it must achieve an absolute minimum and an absolute maximum on <span class="process-math">\(S\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-3-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="sec_minmaxint-3-11"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.3.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Minimum-maximum theorem / Extreme value theorem.</span>
+</h4>
+<div class="para" id="sec_minmaxint-3-11-5-1">A continuous function <span class="process-math">\(f \colon [a,b] \to \R\)</span> achieves both an absolute minimum and an absolute maximum on <span class="process-math">\([a,b]\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-3-11-5-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 3.3.2: Minimum-maximum theorem / Extreme value theorem"><a aria-label="Copy heading and permalink for Theorem 3.3.2: Minimum-maximum theorem / Extreme value theorem" href="#sec_minmaxint-3-11" title="Copy heading and permalink for Theorem 3.3.2: Minimum-maximum theorem / Extreme value theorem">🔗</a></div>
+</article>
+<div class="para" id="sec_minmaxint-3-12">Again, we remark that it is important that the domain of <span class="process-math">\(f\)</span> is a closed and bounded interval <span class="process-math">\([a,b]\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-3-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_minmaxint-3-13"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_minmaxint-3-13-1">
+<div class="para">The lemma says that <span class="process-math">\(f\)</span> is bounded, so the set <span class="process-math">\(f\bigl([a,b]\bigr) = \bigl\{ f(x) : x \in [a,b] \bigr\}\)</span> has a supremum and an infimum. There exist sequences in the set <span class="process-math">\(f\bigl([a,b]\bigr)\)</span> that approach its supremum and its infimum. That is, there are sequences <span class="process-math">\(\bigl\{ f(x_n) \bigr\}_{n=1}^\infty\)</span> and <span class="process-math">\(\bigl\{ f(y_n)
+\bigr\}_{n=1}^\infty\text{,}\)</span> where <span class="process-math">\(x_n\)</span> and <span class="process-math">\(y_n\)</span> are in <span class="process-math">\([a,b]\text{,}\)</span> such that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_bwseq.html" id="sec_minmaxint-3-13-1-9">
+\begin{equation}
+\lim_{n\to\infty} f(x_n) = \inf f\bigl([a,b]\bigr) \qquad \text{and} \qquad
+\lim_{n\to\infty} f(y_n) = \sup f\bigl([a,b]\bigr).
+\end{equation}
+</div>
+<div class="para">We are not done yet; we need to find where the minima and the maxima are. The problem is that the sequences <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> and <span class="process-math">\(\{ y_n \}_{n=1}^\infty\)</span> need not converge. We know <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> and <span class="process-math">\(\{ y_n \}_{n=1}^\infty\)</span> are bounded (their elements belong to a bounded interval <span class="process-math">\([a,b]\)</span>). Apply the <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_bw.html#thm_bwseq" title="Theorem 2.3.8: Bolzano–Weierstrass">Bolzano–Weierstrass theorem</a> to find convergent subsequences <span class="process-math">\(\{ x_{n_i} \}_{i=1}^\infty\)</span> and <span class="process-math">\(\{ y_{m_i} \}_{i=1}^\infty\text{.}\)</span>  Let</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_bwseq.html" id="sec_minmaxint-3-13-1-18">
+\begin{equation}
+x \coloneqq \lim_{i\to\infty} x_{n_i}
+\qquad \text{and} \qquad
+y \coloneqq \lim_{i\to\infty} y_{m_i}.
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(a \leq x_{n_i} \leq b\)</span> for all <span class="process-math">\(i\text{,}\)</span> we have <span class="process-math">\(a \leq x \leq b\text{.}\)</span> Similarly, <span class="process-math">\(a \leq y \leq b\text{.}\)</span>  So <span class="process-math">\(x\)</span> and <span class="process-math">\(y\)</span> are in <span class="process-math">\([a,b]\text{.}\)</span> For convergence sequences, a limit of a subsequence is the same as the limit of the sequence.  Also, we can take a limit past the continuous function <span class="process-math">\(f\text{.}\)</span>  So,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_bwseq.html" id="sec_minmaxint-3-13-1-27">
+\begin{equation}
+\inf f\bigl([a,b]\bigr) = \lim_{n\to\infty} f(x_n)
+= \lim_{i\to\infty} f(x_{n_i}) = 
+f \Bigl( \lim_{i\to\infty} x_{n_i} \Bigr) = f(x) .
+\end{equation}
+</div>
+<div class="para">Similarly,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_bwseq.html" id="sec_minmaxint-3-13-1-28">
+\begin{equation}
+\sup f\bigl([a,b]\bigr) = \lim_{n\to\infty} f(y_n)
+= \lim_{i\to\infty} f(y_{m_i}) = 
+f \Bigl( \lim_{i\to\infty} y_{m_i} \Bigr) = f(y) .
+\end{equation}
+</div>
+<div class="para">Hence, <span class="process-math">\(f\)</span> achieves an absolute minimum at <span class="process-math">\(x\)</span> and an absolute maximum at <span class="process-math">\(y\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-3-13-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 3.3.1.2"><a aria-label="Copy heading and permalink for Proof 3.3.1.2" href="#sec_minmaxint-3-13" title="Copy heading and permalink for Proof 3.3.1.2">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_minmaxint-3-14"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.3.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_minmaxint-3-14-1-1">The function <span class="process-math">\(f(x) \coloneqq x^2+1\)</span> defined on the interval <span class="process-math">\([-1,2]\)</span> achieves a minimum at <span class="process-math">\(x=0\)</span> when <span class="process-math">\(f(0) = 1\text{.}\)</span>  It achieves a maximum at <span class="process-math">\(x=2\)</span> where <span class="process-math">\(f(2) = 5\text{.}\)</span> Do note that the domain of definition matters.  If we instead took the domain to be <span class="process-math">\([-10,10]\text{,}\)</span> then <span class="process-math">\(f\)</span> would no longer have a maximum at <span class="process-math">\(x=2\text{.}\)</span> Instead, the maximum would be achieved at <span class="process-math">\(x=10\)</span> and also at <span class="process-math">\(x=-10\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-3-14-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 3.3.3"><a aria-label="Copy heading and permalink for Example 3.3.3" href="#sec_minmaxint-3-14" title="Copy heading and permalink for Example 3.3.3">🔗</a></div>
+</article>
+<div class="para" id="sec_minmaxint-3-15">We show by examples that the different hypotheses of the theorem are truly needed.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-3-15" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_minmaxint-3-16"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.3.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_minmaxint-3-16-1-1">The function <span class="process-math">\(f \colon \R \to \R\)</span> defined by <span class="process-math">\(f(x) \coloneqq x\)</span> achieves neither a minimum nor a maximum.  So it is important that we are looking at a bounded interval.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-3-16-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 3.3.4"><a aria-label="Copy heading and permalink for Example 3.3.4" href="#sec_minmaxint-3-16" title="Copy heading and permalink for Example 3.3.4">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_minmaxint-3-17"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.3.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_minmaxint-3-17-1-1">The function <span class="process-math">\(f \colon (0,1) \to \R\)</span> defined by <span class="process-math">\(f(x) \coloneqq \nicefrac{1}{x}\)</span> achieves neither a minimum, nor a maximum. It is continuous, but <span class="process-math">\((0,1)\)</span> is not closed. The values of the function are unbounded as we approach <span class="process-math">\(0\text{.}\)</span>  Also as we approach <span class="process-math">\(x=1\text{,}\)</span> the values of the function approach <span class="process-math">\(1\text{,}\)</span> but <span class="process-math">\(f(x) &gt; 1\)</span> for all <span class="process-math">\(x \in (0,1)\text{.}\)</span>  There is no <span class="process-math">\(x \in (0,1)\)</span> such that <span class="process-math">\(f(x) = 1\text{.}\)</span>  So it is important that we are looking at a closed interval.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-3-17-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 3.3.5"><a aria-label="Copy heading and permalink for Example 3.3.5" href="#sec_minmaxint-3-17" title="Copy heading and permalink for Example 3.3.5">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_minmaxint-3-18"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.3.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_minmaxint-3-18-1-1">Continuity is important. Define <span class="process-math">\(f \colon [0,1] \to \R\)</span> by <span class="process-math">\(f(x) \coloneqq \nicefrac{1}{x}\)</span> for <span class="process-math">\(x &gt; 0\)</span> and let <span class="process-math">\(f(0) \coloneqq 0\text{.}\)</span> The function does not achieve a maximum.  The domain <span class="process-math">\([0,1]\)</span> is closed and bounded, but the problem is that the function is not continuous at 0.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-3-18-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 3.3.6"><a aria-label="Copy heading and permalink for Example 3.3.6" href="#sec_minmaxint-3-18" title="Copy heading and permalink for Example 3.3.6">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 3.3.1: Min-max or extreme value theorem"><a aria-label="Copy heading and permalink for Subsection 3.3.1: Min-max or extreme value theorem" href="#sec_minmaxint-3" title="Copy heading and permalink for Subsection 3.3.1: Min-max or extreme value theorem">🔗</a></div>
+</section>
+<section class="subsection" id="sec_minmaxint-4">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.3.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Bolzano’s intermediate value theorem</span>
+</h3>
+<div class="para" id="sec_minmaxint-4-2">Bolzano’s intermediate value theorem is one of the cornerstones of analysis. It is sometimes only called the intermediate value theorem or just Bolzano’s theorem.  To prove Bolzano’s theorem we prove the following simpler lemma.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="lemma theorem-like" id="IVT_lemma"><h4 class="heading">
+<span class="type">Lemma</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.3.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="IVT_lemma-1-1">Let <span class="process-math">\(f \colon [a,b] \to \R\)</span> be a continuous function. Suppose <span class="process-math">\(f(a) &lt; 0\)</span> and <span class="process-math">\(f(b) &gt; 0\text{.}\)</span> Then there exists a number <span class="process-math">\(c \in (a,b)\)</span> such that <span class="process-math">\(f(c) = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#IVT_lemma-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Lemma 3.3.7"><a aria-label="Copy heading and permalink for Lemma 3.3.7" href="#IVT_lemma" title="Copy heading and permalink for Lemma 3.3.7">🔗</a></div>
+</article>
+<article class="proof" id="sec_minmaxint-4-4"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_minmaxint-4-4-1">We define two sequences <span class="process-math">\(\{ a_n \}_{n=1}^\infty\)</span> and <span class="process-math">\(\{ b_n \}_{n=1}^\infty\)</span> inductively:<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-4-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="sec_minmaxint-4-4-2">
+<li id="sec_minmaxint-4-4-2-1">
+<div class="para" id="sec_minmaxint-4-4-2-1-1">Let <span class="process-math">\(a_1 \coloneqq a\)</span> and <span class="process-math">\(b_1 \coloneqq b\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-4-4-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#sec_minmaxint-4-4-2-1" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="sec_minmaxint-4-4-2-2">
+<div class="para" id="sec_minmaxint-4-4-2-2-1">If <span class="process-math">\(f\left(\frac{a_n+b_n}{2}\right) \geq 0\text{,}\)</span> let <span class="process-math">\(a_{n+1} \coloneqq a_n\)</span> and <span class="process-math">\(b_{n+1} \coloneqq \frac{a_n+b_n}{2}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-4-4-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#sec_minmaxint-4-4-2-2" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+<li id="sec_minmaxint-4-4-2-3">
+<div class="para" id="sec_minmaxint-4-4-2-3-1">If <span class="process-math">\(f\left(\frac{a_n+b_n}{2}\right) &lt; 0\text{,}\)</span> let <span class="process-math">\(a_{n+1} \coloneqq \frac{a_n+b_n}{2}\)</span> and <span class="process-math">\(b_{n+1} \coloneqq b_n\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-4-4-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iii"><a aria-label="Copy heading and permalink for Item iii" href="#sec_minmaxint-4-4-2-3" title="Copy heading and permalink for Item iii">🔗</a></div>
+</li>
+</ol>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="bisectfig"><img alt="Graph of a function that crosses the x-axis at c going upwards. The interval a sub 1 to b sub 1 is marked and f is negative at a sub 1 and positive at b sub 1. Next interval is a sub 2 which is equal to a sub 1 and b sub 2 is in the middle of the previous interval. Again the function is negative at a sub 2 and positive at b sub 2. We continue with the intervals with f being negative on the left and positive on the right. The next interval is from a sub 3 which equals a sub 2 and b sub 3 which is in the middle of the previous interval.  For the next interval, a sub 4 is in the middle and b sub 4 is equal to b sub 3. The next a sub 5 is in the middle again and b sub 5 is equal to b sub 4. The number c is inside all of these intervals." class="raimg" role="img" src="figures/bisect-mbx.svg" style="width:222pt; height:198pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Finding roots (bisection method).<div class="autopermalink" data-description="Figure 3.7"><a aria-label="Copy heading and permalink for Figure 3.7" href="#bisectfig" title="Copy heading and permalink for Figure 3.7">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para logical" id="sec_minmaxint-4-4-6">
+<div class="para">See <a class="internal" href="sec_minmaxint.html#bisectfig" title="Figure 3.7">Figure 3.7</a> for an example of the first five steps. If <span class="process-math">\(a_n &lt; b_n\text{,}\)</span> then <span class="process-math">\(a_n &lt; \frac{a_n+b_n}{2} &lt; b_n\text{.}\)</span>  So <span class="process-math">\(a_{n+1} &lt; b_{n+1}\text{.}\)</span> As <span class="process-math">\(a_1 = a &lt; b = b_1\text{,}\)</span> <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicset.html#induction_thm" title="Theorem 0.3.6: Principle of induction">induction</a> gives that <span class="process-math">\(a_n &lt; b_n\)</span> for all <span class="process-math">\(n\text{.}\)</span> Furthermore, <span class="process-math">\(a_n \leq a_{n+1}\)</span> and <span class="process-math">\(b_n \geq b_{n+1}\)</span> for all <span class="process-math">\(n\text{,}\)</span> that is, the sequences are monotone. As <span class="process-math">\(a_n &lt; b_n \leq b_1 = b\)</span> and <span class="process-math">\(b_n &gt; a_n \geq a_1 = a\)</span> for all <span class="process-math">\(n\text{,}\)</span> the sequences are also bounded.  Therefore, the sequences converge. Let <span class="process-math">\(c \coloneqq \lim_{n\to\infty} a_n\)</span> and <span class="process-math">\(d \coloneqq \lim_{n\to\infty} b_n\text{,}\)</span> where also <span class="process-math">\(a \leq c \leq d \leq b\text{.}\)</span>  We need to show that <span class="process-math">\(c=d\text{.}\)</span> Notice</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/bisectfig.html ./knowl/xref/induction_thm.html ./knowl/xref/induction_thm.html" id="sec_minmaxint-4-4-6-19">
+\begin{equation}
+b_{n+1} - a_{n+1} = \frac{b_n-a_n}{2}.
+\end{equation}
+</div>
+<div class="para">By <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicset.html#induction_thm" title="Theorem 0.3.6: Principle of induction">induction</a>,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/bisectfig.html ./knowl/xref/induction_thm.html ./knowl/xref/induction_thm.html" id="sec_minmaxint-4-4-6-21">
+\begin{equation}
+b_n - a_n = \frac{b_1-a_1}{2^{n-1}} = 2^{1-n} (b-a) .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(2^{1-n}(b-a)\)</span> converges to zero, we take the limit as <span class="process-math">\(n\)</span> goes to infinity to get</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/bisectfig.html ./knowl/xref/induction_thm.html ./knowl/xref/induction_thm.html" id="sec_minmaxint-4-4-6-24">
+\begin{equation}
+d-c = \lim_{n\to\infty} (b_n - a_n) =
+\lim_{n\to\infty} 2^{1-n} (b-a) = 0.
+\end{equation}
+</div>
+<div class="para">In other words, <span class="process-math">\(c=d\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-4-4-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_minmaxint-4-4-7">
+<div class="para">By construction, for all <span class="process-math">\(n\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_minmaxint-4-4-7-2">
+\begin{equation}
+f(a_n) &lt; 0
+\qquad \text{and} \qquad
+f(b_n) \geq 0 .
+\end{equation}
+</div>
+<div class="para">Since <span class="process-math">\(\lim_{n\to\infty} a_n = \lim_{n\to\infty} b_n = c\)</span> and <span class="process-math">\(f\)</span> is continuous at <span class="process-math">\(c\text{,}\)</span> we may take limits in those inequalities:</div>
+<div class="displaymath process-math" id="sec_minmaxint-4-4-7-6">
+\begin{equation}
+f(c) = \lim_{n\to\infty} f(a_n) \leq 0
+\qquad \text{and} \qquad
+f(c) = \lim_{n\to\infty} f(b_n) \geq 0 .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(f(c) \geq 0\)</span> and <span class="process-math">\(f(c) \leq 0\text{,}\)</span> we conclude <span class="process-math">\(f(c) = 0\text{.}\)</span> Thus also <span class="process-math">\(c \neq a\)</span> and <span class="process-math">\(c \neq b\text{,}\)</span> so <span class="process-math">\(a &lt; c &lt; b\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-4-4-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 3.3.2.1"><a aria-label="Copy heading and permalink for Proof 3.3.2.1" href="#sec_minmaxint-4-4" title="Copy heading and permalink for Proof 3.3.2.1">🔗</a></div>
+</article>
+<article class="theorem theorem-like" id="IVT_thm"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.3.8</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Bolzano’s intermediate value theorem.</span>
+</h4>
+<div class="para" id="IVT_thm-5-1">Let <span class="process-math">\(f \colon [a,b] \to \R\)</span> be a continuous function. Suppose <span class="process-math">\(y \in \R\)</span> is such that <span class="process-math">\(f(a) &lt; y &lt; f(b)\)</span> or <span class="process-math">\(f(a) &gt; y &gt; f(b)\text{.}\)</span>  Then there exists a <span class="process-math">\(c \in (a,b)\)</span> such that <span class="process-math">\(f(c) = y\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#IVT_thm-5-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 3.3.8: Bolzano’s intermediate value theorem"><a aria-label="Copy heading and permalink for Theorem 3.3.8: Bolzano’s intermediate value theorem" href="#IVT_thm" title="Copy heading and permalink for Theorem 3.3.8: Bolzano’s intermediate value theorem">🔗</a></div>
+</article>
+<div class="para" id="sec_minmaxint-4-6">The theorem says that a continuous function on a closed interval achieves all the values between the values at the endpoints.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-4-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_minmaxint-4-7"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_minmaxint-4-7-1">If <span class="process-math">\(f(a) &lt; y &lt; f(b)\text{,}\)</span> then define <span class="process-math">\(g(x) \coloneqq f(x)-y\text{.}\)</span>  Then <span class="process-math">\(g(a) &lt; 0\)</span> and <span class="process-math">\(g(b) &gt; 0\text{,}\)</span> and we apply <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_minmaxint.html#IVT_lemma" title="Lemma 3.3.7">Lemma 3.3.7</a> to <span class="process-math">\(g\)</span> to find <span class="process-math">\(c\text{.}\)</span>  If <span class="process-math">\(g(c) = 0\text{,}\)</span> then <span class="process-math">\(f(c) = y\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-4-7-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_minmaxint-4-7-2">Similarly, if <span class="process-math">\(f(a) &gt; y &gt; f(b)\text{,}\)</span> then define <span class="process-math">\(g(x) \coloneqq y-f(x)\text{.}\)</span> Again, <span class="process-math">\(g(a) &lt; 0\)</span> and <span class="process-math">\(g(b) &gt; 0\text{,}\)</span> and we apply <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_minmaxint.html#IVT_lemma" title="Lemma 3.3.7">Lemma 3.3.7</a> to find <span class="process-math">\(c\text{.}\)</span> As before, if <span class="process-math">\(g(c) = 0\text{,}\)</span> then <span class="process-math">\(f(c) = y\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-4-7-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 3.3.2.2"><a aria-label="Copy heading and permalink for Proof 3.3.2.2" href="#sec_minmaxint-4-7" title="Copy heading and permalink for Proof 3.3.2.2">🔗</a></div>
+</article>
+<div class="para" id="sec_minmaxint-4-8">If a function is continuous, then the restriction to a subset is continuous; if <span class="process-math">\(f \colon S \to \R\)</span> is continuous and <span class="process-math">\([a,b] \subset S\text{,}\)</span> then <span class="process-math">\(f|_{[a,b]}\)</span> is also continuous.  We generally apply the theorem to a function continuous on some large set <span class="process-math">\(S\text{,}\)</span> but we restrict our attention to an interval.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-4-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_minmaxint-4-9">The proof of the lemma tells us how to find the root <span class="process-math">\(c\text{.}\)</span>  The proof is not only useful for us pure mathematicians, it is a useful idea in applied mathematics, where it is called the <em class="emphasis">bisection method</em>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-4-9" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_minmaxint-4-10"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.3.9</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_minmaxint-4-10-1-1">
+<em class="emphasis">(Bisection method)</em>   The polynomial <span class="process-math">\(f(x) \coloneqq x^3-2x^2+x-1\)</span> has a real root in <span class="process-math">\((1,2)\text{.}\)</span>  We simply notice that <span class="process-math">\(f(1) = -1\)</span> and <span class="process-math">\(f(2) = 1\text{.}\)</span>  Hence, there must exist a point <span class="process-math">\(c
+\in (1,2)\)</span> such that <span class="process-math">\(f(c) = 0\text{.}\)</span>  To find a better approximation of the root we follow the proof of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_minmaxint.html#IVT_lemma" title="Lemma 3.3.7">Lemma 3.3.7</a>. We look at 1.5 and find that <span class="process-math">\(f(1.5) = -0.625\text{.}\)</span>  Therefore, there is a root of the polynomial in <span class="process-math">\((1.5,2)\text{.}\)</span>  Next, we look at 1.75 and note that <span class="process-math">\(f(1.75) \approx -0.016\text{.}\)</span>  Hence, there is a root of <span class="process-math">\(f\)</span> in <span class="process-math">\((1.75,2)\text{.}\)</span>  Next, we look at 1.875 and find that <span class="process-math">\(f(1.875) \approx 0.44\text{,}\)</span> thus there is a root in <span class="process-math">\((1.75,1.875)\text{.}\)</span>  We follow this procedure until we gain sufficient precision.  In fact, the root is at <span class="process-math">\(c \approx 1.7549\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-4-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 3.3.9"><a aria-label="Copy heading and permalink for Example 3.3.9" href="#sec_minmaxint-4-10" title="Copy heading and permalink for Example 3.3.9">🔗</a></div>
+</article>
+<div class="para" id="sec_minmaxint-4-11">The technique is the simplest method of finding roots of polynomials, a common problem in applied mathematics. In general, finding roots is hard to do quickly, precisely, and automatically. There are other, faster methods of finding roots of polynomials, such as Newton’s method.  One advantage of the method above is its simplicity.  The moment we find an interval where the intermediate value theorem applies, we are guaranteed to find a root up to a desired precision in finitely many steps.  Furthermore, the bisection method finds roots of any continuous function, not just a polynomial.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-4-11" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_minmaxint-4-12">The theorem guarantees one <span class="process-math">\(c\)</span> such that <span class="process-math">\(f(c) = y\text{,}\)</span> but there may be other roots of the equation <span class="process-math">\(f(c) = y\text{.}\)</span>  If we follow the procedure of the proof, we are guaranteed to find approximations to one such root.  We need to work harder to find any other roots.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-4-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_minmaxint-4-13">Polynomials of even degree may not have any real roots. There is no real number <span class="process-math">\(x\)</span> such that <span class="process-math">\(x^2+1 = 0\text{.}\)</span>  Odd polynomials, on the other hand, always have at least one real root.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-4-13" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_minmaxint-4-14"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.3.10</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_minmaxint-4-14-1-1">Let <span class="process-math">\(f(x)\)</span> be a polynomial of odd degree.  Then <span class="process-math">\(f\)</span> has a real root.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-4-14-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 3.3.10"><a aria-label="Copy heading and permalink for Proposition 3.3.10" href="#sec_minmaxint-4-14" title="Copy heading and permalink for Proposition 3.3.10">🔗</a></div>
+</article>
+<article class="proof" id="sec_minmaxint-4-15"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_minmaxint-4-15-1">
+<div class="para">Suppose <span class="process-math">\(f\)</span> is a polynomial of odd degree <span class="process-math">\(d\text{.}\)</span>  We write</div>
+<div class="displaymath process-math" id="sec_minmaxint-4-15-1-3">
+\begin{equation}
+f(x) = a_d x^d + a_{d-1} x^{d-1} + \cdots + a_1 x + a_0 ,
+\end{equation}
+</div>
+<div class="para">where <span class="process-math">\(a_d \neq 0\text{.}\)</span>  We divide by <span class="process-math">\(a_d\)</span> to obtain a <em class="emphasis">monic polynomial</em><details aria-live="polite" class="ptx-footnote" id="sec_minmaxint-4-15-1-7"><summary class="ptx-footnote__number" title="Footnote 3.3.1"><sup> 1 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_minmaxint-4-15-1-7">The word <em class="emphasis">monic</em> means that the coefficient of <span class="process-math">\(x^d\)</span> is 1.
+</div></details>
+</div>
+<div class="displaymath process-math" id="sec_minmaxint-4-15-1-8">
+\begin{equation}
+g(x) \coloneqq x^d + b_{d-1} x^{d-1} + \cdots + b_1 x + b_0 ,
+\end{equation}
+</div>
+<div class="para">where <span class="process-math">\(b_k = \nicefrac{a_k}{a_d}\text{.}\)</span> Let us show that <span class="process-math">\(g(n)\)</span> is positive for some large <span class="process-math">\(n \in \N\text{.}\)</span> We first compare the highest order term with the rest:</div>
+<div class="displaymath process-math" id="sec_minmaxint-4-15-1-12">
+\begin{equation}
+\begin{split}
+\abs{\frac{b_{d-1} n^{d-1} + \cdots + b_1 n + b_0}{n^d}}
+&amp; =
+\frac{\sabs{b_{d-1} n^{d-1} + \cdots + b_1 n + b_0}}{n^d}
+\\
+&amp; \leq
+\frac{\sabs{b_{d-1}} n^{d-1} + \cdots + \sabs{b_1} n + \sabs{b_0}}{n^d}
+\\
+&amp; \leq
+\frac{\sabs{b_{d-1}} n^{d-1} + \cdots + \sabs{b_1} n^{d-1} + \sabs{b_0} n^{d-1}}{n^d}
+\\
+&amp; =
+\frac{n^{d-1}\bigl(\sabs{b_{d-1}} + \cdots + \sabs{b_1} + \sabs{b_0}\bigr)}{n^d}
+\\
+&amp; =
+\frac{1}{n}
+\bigl(\sabs{b_{d-1}} + \cdots + \sabs{b_1} + \sabs{b_0}\bigr) .
+\end{split}
+\end{equation}
+</div>
+<div class="para">Therefore,</div>
+<div class="displaymath process-math" id="sec_minmaxint-4-15-1-13">
+\begin{equation}
+\lim_{n\to\infty} \frac{b_{d-1} n^{d-1} + \cdots + b_1 n + b_0}{n^d}
+= 0 .
+\end{equation}
+</div>
+<div class="para">Thus there exists an <span class="process-math">\(M \in \N\)</span> such that</div>
+<div class="displaymath process-math" id="sec_minmaxint-4-15-1-15">
+\begin{equation}
+\abs{\frac{b_{d-1} M^{d-1} + \cdots + b_1 M + b_0}{M^d}} &lt; 1 ,
+\end{equation}
+</div>
+<div class="para">which implies</div>
+<div class="displaymath process-math" id="sec_minmaxint-4-15-1-16">
+\begin{equation}
+-(b_{d-1} M^{d-1} + \cdots + b_1 M + b_0) &lt; M^d .
+\end{equation}
+</div>
+<div class="para">Therefore, <span class="process-math">\(g(M) &gt; 0\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-4-15-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_minmaxint-4-15-2">Next, consider <span class="process-math">\(g(-n)\)</span> for <span class="process-math">\(n \in \N\text{.}\)</span>  By a similar argument, there exists a <span class="process-math">\(K \in \N\)</span> such that <span class="process-math">\(b_{d-1} {(-K)}^{d-1} + \cdots + b_1 (-K) + b_0 &lt; K^d\)</span> and therefore <span class="process-math">\(g(-K) &lt; 0\)</span> (see <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_minmaxint.html#exercise_odddegnegativeK" title="Exercise 3.3.5">Exercise 3.3.5</a>). In the proof, make sure you use the fact that <span class="process-math">\(d\)</span> is odd. In particular, if <span class="process-math">\(d\)</span> is odd, then <span class="process-math">\({(-n)}^d = -(n^d)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-4-15-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_minmaxint-4-15-3">We appeal to the intermediate value theorem to find a <span class="process-math">\(c \in (-K,M)\)</span> such that <span class="process-math">\(g(c) = 0\text{.}\)</span>  As <span class="process-math">\(g(x) = \frac{f(x)}{a_d}\text{,}\)</span> then <span class="process-math">\(f(c) = 0\text{,}\)</span> and the proof is done.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-4-15-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 3.3.2.3"><a aria-label="Copy heading and permalink for Proof 3.3.2.3" href="#sec_minmaxint-4-15" title="Copy heading and permalink for Proof 3.3.2.3">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_minmaxint-4-16"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.3.11</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_minmaxint-4-16-1-1">You may recall how hard we worked in <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_setofreals.html#example_sqrt2" title="Example 1.2.3">Example 1.2.3</a> to show that <span class="process-math">\(\sqrt{2}\)</span> exists. With Bolzano’s theorem, we can prove the existence of a <span class="process-math">\(k\)</span>th root of any positive number <span class="process-math">\(y &gt; 0\)</span> without any effort. We claim that for any <span class="process-math">\(k \in \N\)</span> and any <span class="process-math">\(y &gt; 0\text{,}\)</span> there exists a number <span class="process-math">\(x &gt; 0\)</span> such that <span class="process-math">\(x^k = y\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-4-16-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_minmaxint-4-16-1-2">Proof: If <span class="process-math">\(y=1\text{,}\)</span> then it is clear, so assume <span class="process-math">\(y\neq 1\text{.}\)</span> Similarly, assume <span class="process-math">\(k \geq 2\text{.}\)</span> Let <span class="process-math">\(f(x) \coloneqq x^k - y\text{.}\)</span>  We notice <span class="process-math">\(f(0) = -y &lt; 0\text{.}\)</span> If <span class="process-math">\(y &lt; 1\text{,}\)</span> then <span class="process-math">\(f(1) = 1^k -y &gt; 0\text{.}\)</span>  If <span class="process-math">\(y &gt; 1\text{,}\)</span> then <span class="process-math">\(f(y) = y^k-y = y(y^{k-1}-1) &gt; 0\text{.}\)</span> In either case, apply Bolzano’s theorem to find an <span class="process-math">\(x &gt; 0\)</span> such that <span class="process-math">\(f(x) = 0\text{,}\)</span> or in other words <span class="process-math">\(x^k = y\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-4-16-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 3.3.11"><a aria-label="Copy heading and permalink for Example 3.3.11" href="#sec_minmaxint-4-16" title="Copy heading and permalink for Example 3.3.11">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_minmaxint-4-17"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.3.12</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_minmaxint-4-17-1-1">
+<div class="para">Interestingly, there exist discontinuous functions with the intermediate value property. The function</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/figsin1x.html ./knowl/xref/exercise_meanvaluepropsin1x.html" id="sec_minmaxint-4-17-1-1-1">
+\begin{equation}
+f(x) \coloneqq
+\begin{cases}
+\sin(\nicefrac{1}{x}) &amp; \text{if } x \neq 0, \\
+0 &amp; \text{if } x=0,
+\end{cases}
+\end{equation}
+</div>
+<div class="para">is not continuous at <span class="process-math">\(0\text{;}\)</span> however, <span class="process-math">\(f\)</span> has the intermediate value property: Whenever <span class="process-math">\(a &lt; b\)</span> and <span class="process-math">\(y\)</span> is such that <span class="process-math">\(f(a) &lt; y &lt; f(b)\)</span> or <span class="process-math">\(f(a) &gt; y &gt; f(b)\text{,}\)</span> there exists a <span class="process-math">\(c \in (a,b)\)</span> such that <span class="process-math">\(f(c) = y\text{.}\)</span> See <a class="internal" href="sec_limoffunc.html#figsin1x" title="Figure 3.2">Figure 3.2</a> for a graph of <span class="process-math">\(\sin(\nicefrac{1}{x})\text{.}\)</span> The proof is left as <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_minmaxint.html#exercise_meanvaluepropsin1x" title="Exercise 3.3.4">Exercise 3.3.4</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-4-17-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 3.3.12"><a aria-label="Copy heading and permalink for Example 3.3.12" href="#sec_minmaxint-4-17" title="Copy heading and permalink for Example 3.3.12">🔗</a></div>
+</article>
+<div class="para" id="sec_minmaxint-4-18">The intermediate value theorem says that if <span class="process-math">\(f \colon [a,b] \to \R\)</span> is continuous, then <span class="process-math">\(f\bigl([a,b]\bigr)\)</span> contains all the values between <span class="process-math">\(f(a)\)</span> and <span class="process-math">\(f(b)\text{.}\)</span>  In fact, more is true.  Combining all the results of this section one can prove the following useful corollary whose proof is left as an exercise. Hint: See <a class="internal" href="sec_minmaxint.html#fig_imageinterval" title="Figure 3.8">Figure 3.8</a> and notice what the endpoints of the image interval are.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-4-18" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="corollary theorem-like" id="cor_imageofinterval"><h4 class="heading">
+<span class="type">Corollary</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.3.13</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="cor_imageofinterval-1-1">If <span class="process-math">\(f \colon [a,b] \to \R\)</span> is continuous, then the direct image <span class="process-math">\(f\bigl([a,b]\bigr)\)</span> is a closed and bounded interval or a single number.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#cor_imageofinterval-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Corollary 3.3.13"><a aria-label="Copy heading and permalink for Corollary 3.3.13" href="#cor_imageofinterval" title="Copy heading and permalink for Corollary 3.3.13">🔗</a></div>
+</article><hr class="rahr"/>
+<figure class="figure figure-like" id="fig_imageinterval"><img alt="A graph of a function y equals f of x on the interval from a to b marked in a bold line. On the vertical axis, the set of all values achieved by the function is marked as f of the closed interval from a to b." class="raimg" role="img" src="figures/figimageinterval-mbxpdft.svg" style="width:222pt; height:101pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>The image of a continuous <span class="process-math">\(f \colon [a,b] \to \R\text{.}\)</span><div class="autopermalink" data-description="Figure 3.8"><a aria-label="Copy heading and permalink for Figure 3.8" href="#fig_imageinterval" title="Copy heading and permalink for Figure 3.8">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="autopermalink" data-description="Subsection 3.3.2: Bolzano’s intermediate value theorem"><a aria-label="Copy heading and permalink for Subsection 3.3.2: Bolzano’s intermediate value theorem" href="#sec_minmaxint-4" title="Copy heading and permalink for Subsection 3.3.2: Bolzano’s intermediate value theorem">🔗</a></div>
+</section>
+<section class="exercises" id="sec_minmaxint-5">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.3.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_minmaxint-5-1"><h4 class="heading"><span class="codenumber">3.3.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_minmaxint-5-1-1-1">Find an example of a discontinuous function <span class="process-math">\(f \colon [0,1] \to \R\)</span> where the conclusion of the intermediate value theorem fails.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-5-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.3.1"><a aria-label="Copy heading and permalink for Exercise 3.3.1" href="#sec_minmaxint-5-1" title="Copy heading and permalink for Exercise 3.3.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_minmaxint-5-2"><h4 class="heading"><span class="codenumber">3.3.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_minmaxint-5-2-1-1">Find an example of a <em class="emphasis">bounded</em> discontinuous function <span class="process-math">\(f \colon [0,1]
+\to \R\)</span> that has neither an absolute minimum nor an absolute maximum.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-5-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.3.2"><a aria-label="Copy heading and permalink for Exercise 3.3.2" href="#sec_minmaxint-5-2" title="Copy heading and permalink for Exercise 3.3.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_minmaxint-5-3"><h4 class="heading"><span class="codenumber">3.3.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_minmaxint-5-3-1-1">Let <span class="process-math">\(f \colon (0,1) \to \R\)</span> be a continuous function such that <span class="process-math">\(\displaystyle \lim_{x\to 0} f(x) =
+\displaystyle \lim_{x\to 1} f(x) = 0\text{.}\)</span>  Show that <span class="process-math">\(f\)</span> achieves either an absolute minimum or an absolute maximum on <span class="process-math">\((0,1)\)</span> (but perhaps not both).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-5-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.3.3"><a aria-label="Copy heading and permalink for Exercise 3.3.3" href="#sec_minmaxint-5-3" title="Copy heading and permalink for Exercise 3.3.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_meanvaluepropsin1x"><h4 class="heading"><span class="codenumber">3.3.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="exercise_meanvaluepropsin1x-1-1">
+<div class="para">Let</div>
+<div class="displaymath process-math" id="exercise_meanvaluepropsin1x-1-1-1">
+\begin{equation}
+f(x) \coloneqq
+\begin{cases}
+\sin(\nicefrac{1}{x}) &amp; \text{if } x \neq 0, \\
+0 &amp; \text{if } x=0.
+\end{cases}
+\end{equation}
+</div>
+<div class="para">Show that <span class="process-math">\(f\)</span> has the intermediate value property. That is, whenever <span class="process-math">\(a &lt; b\text{,}\)</span> if there exists a <span class="process-math">\(y\)</span> such that <span class="process-math">\(f(a) &lt; y &lt; f(b)\)</span> or <span class="process-math">\(f(a) &gt; y &gt; f(b)\text{,}\)</span> then there exists a <span class="process-math">\(c \in (a,b)\)</span> such that <span class="process-math">\(f(c) = y\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_meanvaluepropsin1x-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.3.4"><a aria-label="Copy heading and permalink for Exercise 3.3.4" href="#exercise_meanvaluepropsin1x" title="Copy heading and permalink for Exercise 3.3.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_odddegnegativeK"><h4 class="heading"><span class="codenumber">3.3.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="exercise_odddegnegativeK-1-1">
+<div class="para">Suppose <span class="process-math">\(g(x)\)</span> is a monic polynomial of odd degree <span class="process-math">\(d\text{,}\)</span> that is,</div>
+<div class="displaymath process-math" id="exercise_odddegnegativeK-1-1-3">
+\begin{equation}
+g(x) = x^d + b_{d-1} x^{d-1} + \cdots + b_1 x + b_0 ,
+\end{equation}
+</div>
+<div class="para">for some real numbers <span class="process-math">\(b_{0}, b_1, \ldots, b_{d-1}\text{.}\)</span>  Show that there exists a <span class="process-math">\(K \in \N\)</span> such that <span class="process-math">\(g(-K) &lt; 0\text{.}\)</span>  Hint: Make sure to use the fact that <span class="process-math">\(d\)</span> is odd.  You will have to use that <span class="process-math">\({(-n)}^d = -(n^d)\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_odddegnegativeK-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.3.5"><a aria-label="Copy heading and permalink for Exercise 3.3.5" href="#exercise_odddegnegativeK" title="Copy heading and permalink for Exercise 3.3.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_minmaxint-5-6"><h4 class="heading"><span class="codenumber">3.3.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_minmaxint-5-6-1-1">
+<div class="para">Suppose <span class="process-math">\(g(x)\)</span> is a monic polynomial of positive even degree <span class="process-math">\(d\text{,}\)</span> that is,</div>
+<div class="displaymath process-math" id="sec_minmaxint-5-6-1-1-3">
+\begin{equation}
+g(x) = x^d + b_{d-1} x^{d-1} + \cdots + b_1 x + b_0 ,
+\end{equation}
+</div>
+<div class="para">for some real numbers <span class="process-math">\(b_{0}, b_1, \ldots, b_{d-1}\text{.}\)</span>  Suppose <span class="process-math">\(g(0) &lt; 0\text{.}\)</span>  Show that <span class="process-math">\(g\)</span> has at least two distinct real roots.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-5-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.3.6"><a aria-label="Copy heading and permalink for Exercise 3.3.6" href="#sec_minmaxint-5-6" title="Copy heading and permalink for Exercise 3.3.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_minmaxint-5-7"><h4 class="heading"><span class="codenumber">3.3.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_minmaxint-5-7-1-1">Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_minmaxint.html#cor_imageofinterval" title="Corollary 3.3.13">Corollary 3.3.13</a>: Suppose <span class="process-math">\(f \colon [a,b] \to \R\)</span> is a continuous function.  Prove that the direct image <span class="process-math">\(f\bigl([a,b]\bigr)\)</span> is a closed and bounded interval or a single number.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-5-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.3.7"><a aria-label="Copy heading and permalink for Exercise 3.3.7" href="#sec_minmaxint-5-7" title="Copy heading and permalink for Exercise 3.3.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_minmaxint-5-8"><h4 class="heading"><span class="codenumber">3.3.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_minmaxint-5-8-1-1">Suppose <span class="process-math">\(f \colon \R \to \R\)</span> is continuous and periodic with period <span class="process-math">\(P &gt; 0\text{.}\)</span>  That is, <span class="process-math">\(f(x+P) = f(x)\)</span> for all <span class="process-math">\(x \in \R\text{.}\)</span>  Show that <span class="process-math">\(f\)</span> achieves an absolute minimum and an absolute maximum.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-5-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.3.8"><a aria-label="Copy heading and permalink for Exercise 3.3.8" href="#sec_minmaxint-5-8" title="Copy heading and permalink for Exercise 3.3.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_minmaxint-5-9"><h4 class="heading"><span class="codenumber">3.3.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_minmaxint-5-9-1-1">
+<em class="emphasis">(Challenging)</em>   Suppose <span class="process-math">\(f(x)\)</span> is a bounded polynomial, in other words, there is an <span class="process-math">\(M\)</span> such that <span class="process-math">\(\babs{f(x)} \leq M\)</span> for all <span class="process-math">\(x \in \R\text{.}\)</span>  Prove that <span class="process-math">\(f\)</span> must be a constant.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-5-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.3.9"><a aria-label="Copy heading and permalink for Exercise 3.3.9" href="#sec_minmaxint-5-9" title="Copy heading and permalink for Exercise 3.3.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_minmaxint-5-10"><h4 class="heading"><span class="codenumber">3.3.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_minmaxint-5-10-1-1">Suppose <span class="process-math">\(f \colon [0,1] \to [0,1]\)</span> is continuous.  Show that <span class="process-math">\(f\)</span> has a fixed point, in other words, show that there exists an <span class="process-math">\(x \in [0,1]\)</span> such that <span class="process-math">\(f(x) = x\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-5-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.3.10"><a aria-label="Copy heading and permalink for Exercise 3.3.10" href="#sec_minmaxint-5-10" title="Copy heading and permalink for Exercise 3.3.10">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_minmaxint-5-11"><h4 class="heading"><span class="codenumber">3.3.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_minmaxint-5-11-1-1">Find an example of a continuous bounded function <span class="process-math">\(f \colon \R \to \R\)</span> that achieves neither an absolute minimum nor an absolute maximum on <span class="process-math">\(\R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-5-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.3.11"><a aria-label="Copy heading and permalink for Exercise 3.3.11" href="#sec_minmaxint-5-11" title="Copy heading and permalink for Exercise 3.3.11">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_minmaxint-5-12"><h4 class="heading"><span class="codenumber">3.3.12<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_minmaxint-5-12-1-1">Suppose <span class="process-math">\(f \colon \R \to \R\)</span> is continuous such that <span class="process-math">\(x \leq f(x) \leq x+1\)</span> for all <span class="process-math">\(x \in \R\text{.}\)</span>  Find <span class="process-math">\(f(\R)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-5-12-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.3.12"><a aria-label="Copy heading and permalink for Exercise 3.3.12" href="#sec_minmaxint-5-12" title="Copy heading and permalink for Exercise 3.3.12">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_minmaxint-5-13"><h4 class="heading"><span class="codenumber">3.3.13<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_minmaxint-5-13-1-1">True/False, prove or find a counterexample.  If <span class="process-math">\(f \colon \R \to
+\R\)</span> is a continuous function such that <span class="process-math">\(f|_{\Z}\)</span> is bounded, then <span class="process-math">\(f\)</span> is bounded.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-5-13-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.3.13"><a aria-label="Copy heading and permalink for Exercise 3.3.13" href="#sec_minmaxint-5-13" title="Copy heading and permalink for Exercise 3.3.13">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_minmaxint-5-14"><h4 class="heading"><span class="codenumber">3.3.14<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_minmaxint-5-14-1-1">Suppose <span class="process-math">\(f \colon [0,1] \to (0,1)\)</span> is a bijection.  Prove that <span class="process-math">\(f\)</span> is not continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-5-14-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.3.14"><a aria-label="Copy heading and permalink for Exercise 3.3.14" href="#sec_minmaxint-5-14" title="Copy heading and permalink for Exercise 3.3.14">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_minmaxint-5-15"><h4 class="heading"><span class="codenumber">3.3.15<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_minmaxint-5-15-1-1">Suppose <span class="process-math">\(f \colon \R \to \R\)</span> is continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-5-15-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_minmaxint-5-15-1-2">
+<li id="sec_minmaxint-5-15-1-2-1">
+<div class="para" id="sec_minmaxint-5-15-1-2-1-1">Prove that if there is a <span class="process-math">\(c\)</span> such that <span class="process-math">\(f(c)f(-c) &lt; 0\text{,}\)</span> then there is a <span class="process-math">\(d \in \R\)</span> such that <span class="process-math">\(f(d) = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-5-15-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 3.3.15.a"><a aria-label="Copy heading and permalink for Item 3.3.15.a" href="#sec_minmaxint-5-15-1-2-1" title="Copy heading and permalink for Item 3.3.15.a">🔗</a></div>
+</li>
+<li id="sec_minmaxint-5-15-1-2-2">
+<div class="para" id="sec_minmaxint-5-15-1-2-2-1">Find a continuous function <span class="process-math">\(f\)</span> such that <span class="process-math">\(f(\R) = \R\text{,}\)</span> but <span class="process-math">\(f(x)f(-x) \geq 0\)</span> for all <span class="process-math">\(x \in \R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-5-15-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 3.3.15.b"><a aria-label="Copy heading and permalink for Item 3.3.15.b" href="#sec_minmaxint-5-15-1-2-2" title="Copy heading and permalink for Item 3.3.15.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 3.3.15"><a aria-label="Copy heading and permalink for Exercise 3.3.15" href="#sec_minmaxint-5-15" title="Copy heading and permalink for Exercise 3.3.15">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_minmaxint-5-16"><h4 class="heading"><span class="codenumber">3.3.16<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_minmaxint-5-16-1-1">
+<div class="para">Suppose <span class="process-math">\(g(x)\)</span> is a monic polynomial of even degree <span class="process-math">\(d\text{,}\)</span> that is,</div>
+<div class="displaymath process-math" id="sec_minmaxint-5-16-1-1-3">
+\begin{equation}
+g(x) = x^d + b_{d-1} x^{d-1} + \cdots + b_1 x + b_0 ,
+\end{equation}
+</div>
+<div class="para">for some real numbers <span class="process-math">\(b_{0}, b_1, \ldots, b_{d-1}\text{.}\)</span> Show that <span class="process-math">\(g\)</span> achieves an absolute minimum on <span class="process-math">\(\R\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-5-16-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.3.16"><a aria-label="Copy heading and permalink for Exercise 3.3.16" href="#sec_minmaxint-5-16" title="Copy heading and permalink for Exercise 3.3.16">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_minmaxint-5-17"><h4 class="heading"><span class="codenumber">3.3.17<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_minmaxint-5-17-1-1">Suppose <span class="process-math">\(f(x)\)</span> is a polynomial of degree <span class="process-math">\(d\)</span> and <span class="process-math">\(f(\R) = \R\text{.}\)</span>  Show that <span class="process-math">\(d\)</span> is odd.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_minmaxint-5-17-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.3.17"><a aria-label="Copy heading and permalink for Exercise 3.3.17" href="#sec_minmaxint-5-17" title="Copy heading and permalink for Exercise 3.3.17">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 3.3.3"><a aria-label="Copy heading and permalink for Exercises 3.3.3" href="#sec_minmaxint-5" title="Copy heading and permalink for Exercises 3.3.3">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 3.3: Extreme and intermediate value theorems"><a aria-label="Copy heading and permalink for Section 3.3: Extreme and intermediate value theorems" href="#sec_minmaxint" title="Copy heading and permalink for Section 3.3: Extreme and intermediate value theorems">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_cont.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_unifcont.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

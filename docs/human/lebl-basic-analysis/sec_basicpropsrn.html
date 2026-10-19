@@ -1,0 +1,558 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Basic properties · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_basicpropsrn">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Basic properties</span>
+</h2>
+<div class="para" id="sec_basicpropsrn-2">
+<em class="emphasis">Note: 1.5 lectures</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_basicpropsrn-3">In analysis, the main object we work with is the set of real numbers.  As this set is so fundamental, much time is often spent formally constructing the set of real numbers.  However, we take an easier approach, and we will assume that a set with the correct properties exists. The three key properties of the real numbers are that it is an ordered set, it is complete with respect to this order, and it is a field compatible with this order. We start with order.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_basicpropsrn-4"><h3 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.1.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="sec_basicpropsrn-4-1-1">An <em class="emphasis">ordered set</em> is a set <span class="process-math">\(S\)</span> together with a relation <span class="process-math">\(&lt;\)</span> such that<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="sec_basicpropsrn-4-1-2">
+<li id="sec_basicpropsrn-4-1-2-1">
+<div class="para" id="sec_basicpropsrn-4-1-2-1-1">
+<em class="emphasis">(trichotomy)</em> For all <span class="process-math">\(x, y \in S\text{,}\)</span> exactly one of <span class="process-math">\(x &lt; y\text{,}\)</span> <span class="process-math">\(x=y\text{,}\)</span> or <span class="process-math">\(y &lt; x\)</span> holds.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-4-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#sec_basicpropsrn-4-1-2-1" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="sec_basicpropsrn-4-1-2-2">
+<div class="para" id="sec_basicpropsrn-4-1-2-2-1">
+<em class="emphasis">(transitivity)</em> If <span class="process-math">\(x,y,z \in S\)</span> are such that <span class="process-math">\(x &lt; y\)</span> and <span class="process-math">\(y
+&lt; z\text{,}\)</span> then <span class="process-math">\(x &lt; z\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-4-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#sec_basicpropsrn-4-1-2-2" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+</ol>
+<div class="para" id="sec_basicpropsrn-4-1-3">We write <span class="process-math">\(x \leq y\)</span> if <span class="process-math">\(x &lt; y\)</span> or <span class="process-math">\(x=y\text{.}\)</span>  We define <span class="process-math">\(&gt;\)</span> and <span class="process-math">\(\geq\)</span> in the obvious way.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-4-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 1.1.1"><a aria-label="Copy heading and permalink for Definition 1.1.1" href="#sec_basicpropsrn-4" title="Copy heading and permalink for Definition 1.1.1">🔗</a></div>
+</article>
+<div class="para" id="sec_basicpropsrn-5">The set of rational numbers <span class="process-math">\(\Q\)</span> is an ordered set: We say <span class="process-math">\(x &lt; y\)</span> if and only if <span class="process-math">\(y-x\)</span> is a positive rational number, that is, if <span class="process-math">\(y-x = \nicefrac{p}{q}\)</span> where <span class="process-math">\(p,q \in \N\text{.}\)</span>  Similarly, <span class="process-math">\(\N\)</span> and <span class="process-math">\(\Z\)</span> are also ordered sets.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_basicpropsrn-6">There are ordered sets other than sets of numbers.  For example, the set of countries can be ordered by landmass, so India <span class="process-math">\(&gt;\)</span> Liechtenstein. A typical ordered set that you have used since primary school is the dictionary.  It is the ordered set of words where the order is called the lexicographic ordering.  Such ordered sets often appear, for example, in computer science.  In this book, we will mostly be interested in ordered sets of numbers.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_basicpropsrn-7"><h3 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.1.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="sec_basicpropsrn-7-1-1">Let <span class="process-math">\(E \subset S\text{,}\)</span> where <span class="process-math">\(S\)</span> is an ordered set.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="sec_basicpropsrn-7-1-2">
+<li id="sec_basicpropsrn-7-1-2-1">
+<div class="para" id="sec_basicpropsrn-7-1-2-1-1">If there exists a <span class="process-math">\(b \in S\)</span> such that <span class="process-math">\(x \leq b\)</span> for all <span class="process-math">\(x \in E\text{,}\)</span> then we say <span class="process-math">\(E\)</span> is <em class="emphasis">bounded above</em> and <span class="process-math">\(b\)</span> is an <em class="emphasis">upper bound</em> of <span class="process-math">\(E\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-7-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#sec_basicpropsrn-7-1-2-1" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="sec_basicpropsrn-7-1-2-2">
+<div class="para" id="sec_basicpropsrn-7-1-2-2-1">If there exists a <span class="process-math">\(b \in S\)</span> such that <span class="process-math">\(x \geq b\)</span> for all <span class="process-math">\(x \in E\text{,}\)</span> then we say <span class="process-math">\(E\)</span> is <em class="emphasis">bounded below</em> and <span class="process-math">\(b\)</span> is a <em class="emphasis">lower bound</em> of <span class="process-math">\(E\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-7-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#sec_basicpropsrn-7-1-2-2" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+<li id="sec_basicpropsrn-7-1-2-3">
+<div class="para logical" id="sec_basicpropsrn-7-1-2-3-1">
+<div class="para">If there exists an upper bound <span class="process-math">\(b_0\)</span> of <span class="process-math">\(E\)</span> such that <span class="process-math">\(b_0 \leq b\)</span> for all upper bounds <span class="process-math">\(b\)</span> of <span class="process-math">\(E\text{,}\)</span> then <span class="process-math">\(b_0\)</span> is called the <em class="emphasis">least upper bound</em> or the <em class="emphasis">supremum</em> of <span class="process-math">\(E\text{.}\)</span>  See <a class="internal" href="sec_basicpropsrn.html#fig_lub" title="Figure 1.1">Figure 1.1</a>.  We write</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_lub.html" id="sec_basicpropsrn-7-1-2-3-1-11">
+\begin{equation}
+\sup\, E \coloneqq b_0 .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-7-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iii"><a aria-label="Copy heading and permalink for Item iii" href="#sec_basicpropsrn-7-1-2-3" title="Copy heading and permalink for Item iii">🔗</a></div>
+</li>
+<li id="sec_basicpropsrn-7-1-2-4">
+<div class="para logical" id="sec_basicpropsrn-7-1-2-4-1">
+<div class="para">Similarly, if there exists a lower bound <span class="process-math">\(b_0\)</span> of <span class="process-math">\(E\)</span> such that <span class="process-math">\(b_0 \geq b\)</span> for all lower bounds <span class="process-math">\(b\)</span> of <span class="process-math">\(E\text{,}\)</span> then <span class="process-math">\(b_0\)</span> is called the <em class="emphasis">greatest lower bound</em> or the <em class="emphasis">infimum</em> of <span class="process-math">\(E\text{.}\)</span>  We write</div>
+<div class="displaymath process-math" id="sec_basicpropsrn-7-1-2-4-1-10">
+\begin{equation}
+\inf\, E \coloneqq b_0 .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-7-1-2-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iv"><a aria-label="Copy heading and permalink for Item iv" href="#sec_basicpropsrn-7-1-2-4" title="Copy heading and permalink for Item iv">🔗</a></div>
+</li>
+</ol>
+<div class="para" id="sec_basicpropsrn-7-1-3">When a set <span class="process-math">\(E\)</span> is both bounded above and bounded below, we say simply that <span class="process-math">\(E\)</span> is <em class="emphasis">bounded</em>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-7-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 1.1.2"><a aria-label="Copy heading and permalink for Definition 1.1.2" href="#sec_basicpropsrn-7" title="Copy heading and permalink for Definition 1.1.2">🔗</a></div>
+</article>
+<div class="para" id="sec_basicpropsrn-8">The notation <span class="process-math">\(\sup E\)</span> and <span class="process-math">\(\inf E\)</span> is justified as the supremum (or infimum) is unique (if it exists): If <span class="process-math">\(b\)</span> and <span class="process-math">\(b'\)</span> are suprema of <span class="process-math">\(E\text{,}\)</span> then <span class="process-math">\(b \leq b'\)</span> and <span class="process-math">\(b' \leq b\text{,}\)</span> because both <span class="process-math">\(b\)</span> and <span class="process-math">\(b'\)</span> are the least upper bounds, so <span class="process-math">\(b=b'\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="fig_lub"><img alt="A diagram of the set E on the real line as a horizontal line. An arrow on the left shows that numbers get smaller as we move to the left and another arrow on the right shows the numbers grow bigger as we move to the right. The set E is given as highlighted sections of the real line. Several vertical ticks that are all to the right of the set E are marked as upper bounds of E, while the smallest one of these which sits right at the edge of E is marked as the least upper bound of E." class="raimg" role="img" src="figures/lub-mbxpdft.svg" style="width:318pt; height:71pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>A set <span class="process-math">\(E\)</span> bounded above and the least upper bound of <span class="process-math">\(E\text{.}\)</span><div class="autopermalink" data-description="Figure 1.1"><a aria-label="Copy heading and permalink for Figure 1.1" href="#fig_lub" title="Copy heading and permalink for Figure 1.1">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para" id="sec_basicpropsrn-12">A simple example: Let <span class="process-math">\(S \coloneqq \{ a, b, c, d, e \}\)</span> be ordered as <span class="process-math">\(a &lt; b &lt; c &lt; d &lt; e\text{,}\)</span> and let <span class="process-math">\(E \coloneqq \{ a, c \}\text{.}\)</span>  Then <span class="process-math">\(c\text{,}\)</span> <span class="process-math">\(d\text{,}\)</span> and <span class="process-math">\(e\)</span> are upper bounds of <span class="process-math">\(E\text{,}\)</span> and <span class="process-math">\(c\)</span> is the least upper bound or supremum of <span class="process-math">\(E\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_basicpropsrn-13">A supremum or infimum for <span class="process-math">\(E\)</span> (even if it exists) need not be in <span class="process-math">\(E\text{.}\)</span>  The set <span class="process-math">\(E \coloneqq \{ x \in \Q : x &lt; 1 \}\)</span> has a least upper bound of 1, but 1 is not in the set <span class="process-math">\(E\)</span> itself. The set <span class="process-math">\(G \coloneqq \{ x \in \Q : x \leq 1 \}\)</span> also has an upper bound of 1, and in this case <span class="process-math">\(1 \in G\text{.}\)</span> The set <span class="process-math">\(P \coloneqq \{ x \in \Q : x \geq 0 \}\)</span> has no upper bound (why?) and therefore cannot have a least upper bound.  The set <span class="process-math">\(P\)</span> does have a greatest lower bound: 0.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-13" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="defn_lub"><h3 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.1.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="defn_lub-1-1">An ordered set <span class="process-math">\(S\)</span> has the <em class="emphasis">least-upper-bound property</em> if every nonempty subset <span class="process-math">\(E \subset S\)</span> that is bounded above has a least upper bound, that is, <span class="process-math">\(\sup\, E\)</span> exists in <span class="process-math">\(S\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#defn_lub-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 1.1.3"><a aria-label="Copy heading and permalink for Definition 1.1.3" href="#defn_lub" title="Copy heading and permalink for Definition 1.1.3">🔗</a></div>
+</article>
+<div class="para" id="sec_basicpropsrn-15">The <em class="emphasis">least-upper-bound property</em> is sometimes called the <em class="emphasis">completeness property</em> or the <em class="emphasis">Dedekind completeness property</em><details aria-live="polite" class="ptx-footnote" id="sec_basicpropsrn-15-4"><summary class="ptx-footnote__number" title="Footnote 1.1.1"><sup> 1 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_basicpropsrn-15-4">Named after the German mathematician <a class="external" href="https://en.wikipedia.org/wiki/Richard_Dedekind" target="_blank">Julius Wilhelm Richard Dedekind</a> (1831–1916).
+</div></details>. The real numbers have this property.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-15" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_basicpropsrn-16"><h3 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.1.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="sec_basicpropsrn-16-1-1">The set <span class="process-math">\(\Q\)</span> of rational numbers does not have the least-upper-bound property.  The subset <span class="process-math">\(\{ x \in \Q : x^2 &lt; 2 \}\)</span> does not have a supremum in <span class="process-math">\(\Q\text{.}\)</span>  We will see later (<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_setofreals.html#example_sqrt2" title="Example 1.2.3">Example 1.2.3</a>) that the supremum is <span class="process-math">\(\sqrt{2}\text{,}\)</span> which is not rational<details aria-live="polite" class="ptx-footnote" id="sec_basicpropsrn-16-1-1-6"><summary class="ptx-footnote__number" title="Footnote 1.1.2"><sup> 2 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_basicpropsrn-16-1-1-6">This is true for all other roots of 2, and interestingly, that <span class="process-math">\(\sqrt[k]{2}\)</span> is never rational for <span class="process-math">\(k &gt; 1\)</span> is related to the impossibility of tuning a piano perfectly in all keys.  See, for example: <a class="external" href="https://youtu.be/1Hqm0dYKUx4" target="_blank"><code class="code-inline tex2jax_ignore">https://youtu.be/1Hqm0dYKUx4</code></a>.
+</div></details>. Suppose <span class="process-math">\(x \in \Q\)</span> such that <span class="process-math">\(x^2 = 2\text{.}\)</span> Write <span class="process-math">\(x=\nicefrac{m}{n}\)</span> in lowest terms.  So <span class="process-math">\({(\nicefrac{m}{n})}^2 = 2\)</span> or <span class="process-math">\(m^2 = 2n^2\text{.}\)</span>  Hence, <span class="process-math">\(m^2\)</span> is divisible by 2, and so <span class="process-math">\(m\)</span> is divisible by 2.  Write <span class="process-math">\(m = 2k\)</span> and so <span class="process-math">\({(2k)}^2 = 2n^2\text{.}\)</span>  Divide by 2 and note that <span class="process-math">\(2k^2 = n^2\text{,}\)</span> and hence <span class="process-math">\(n\)</span> is divisible by 2.  But that is a contradiction as <span class="process-math">\(\nicefrac{m}{n}\)</span> is in lowest terms.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-16-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 1.1.4"><a aria-label="Copy heading and permalink for Example 1.1.4" href="#sec_basicpropsrn-16" title="Copy heading and permalink for Example 1.1.4">🔗</a></div>
+</article>
+<div class="para" id="sec_basicpropsrn-17">That <span class="process-math">\(\Q\)</span> does not have the least-upper-bound property is one of the most important reasons we work with <span class="process-math">\(\R\)</span> in analysis.  The set <span class="process-math">\(\Q\)</span> is just fine for algebraists.  But we analysts require the least-upper-bound property to do any work. We also require our real numbers to have many algebraic properties. In particular, we require that they be a field.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-17" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_basicpropsrn-18"><h3 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.1.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="sec_basicpropsrn-18-1-1">A set <span class="process-math">\(F\)</span> is called a <em class="emphasis">field</em> if it has two operations defined on it, addition <span class="process-math">\(x+y\)</span> and multiplication <span class="process-math">\(xy\text{,}\)</span> and if it satisfies the following axioms:<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-18-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <dl class="description-list">
+<dt id="sec_basicpropsrn-18-1-2-1">(A1)<div class="autopermalink" data-description="Item: (A1)"><a aria-label="Copy heading and permalink for Item: (A1)" href="#sec_basicpropsrn-18-1-2-1" title="Copy heading and permalink for Item: (A1)">🔗</a></div>
+</dt>
+<dd>
+<div class="para" id="sec_basicpropsrn-18-1-2-1-2">If <span class="process-math">\(x \in F\)</span> and <span class="process-math">\(y \in F\text{,}\)</span> then <span class="process-math">\(x+y \in F\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-18-1-2-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+</dd>
+<dt id="sec_basicpropsrn-18-1-2-2">(A2)<div class="autopermalink" data-description="Item: (A2)"><a aria-label="Copy heading and permalink for Item: (A2)" href="#sec_basicpropsrn-18-1-2-2" title="Copy heading and permalink for Item: (A2)">🔗</a></div>
+</dt>
+<dd>
+<div class="para" id="sec_basicpropsrn-18-1-2-2-2">
+<em class="emphasis">(commutativity of addition)</em> <span class="process-math">\(x+y = y+x\)</span> for all <span class="process-math">\(x,y \in F\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-18-1-2-2-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+</dd>
+<dt id="sec_basicpropsrn-18-1-2-3">(A3)<div class="autopermalink" data-description="Item: (A3)"><a aria-label="Copy heading and permalink for Item: (A3)" href="#sec_basicpropsrn-18-1-2-3" title="Copy heading and permalink for Item: (A3)">🔗</a></div>
+</dt>
+<dd>
+<div class="para" id="sec_basicpropsrn-18-1-2-3-2">
+<em class="emphasis">(associativity of addition)</em> <span class="process-math">\((x+y)+z = x+(y+z)\)</span> for all <span class="process-math">\(x,y,z \in F\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-18-1-2-3-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+</dd>
+<dt id="sec_basicpropsrn-18-1-2-4">(A4)<div class="autopermalink" data-description="Item: (A4)"><a aria-label="Copy heading and permalink for Item: (A4)" href="#sec_basicpropsrn-18-1-2-4" title="Copy heading and permalink for Item: (A4)">🔗</a></div>
+</dt>
+<dd>
+<div class="para" id="sec_basicpropsrn-18-1-2-4-2">There exists an element <span class="process-math">\(0 \in F\)</span> such that <span class="process-math">\(0+x = x\)</span> for all <span class="process-math">\(x \in F\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-18-1-2-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+</dd>
+<dt id="sec_basicpropsrn-18-1-2-5">(A5)<div class="autopermalink" data-description="Item: (A5)"><a aria-label="Copy heading and permalink for Item: (A5)" href="#sec_basicpropsrn-18-1-2-5" title="Copy heading and permalink for Item: (A5)">🔗</a></div>
+</dt>
+<dd>
+<div class="para" id="sec_basicpropsrn-18-1-2-5-2">For every element <span class="process-math">\(x\in F\text{,}\)</span> there exists an element <span class="process-math">\(-x \in F\)</span> such that <span class="process-math">\(x + (-x) = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-18-1-2-5-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+</dd>
+</dl> <dl class="description-list">
+<dt id="sec_basicpropsrn-18-1-3-1">(M1)<div class="autopermalink" data-description="Item: (M1)"><a aria-label="Copy heading and permalink for Item: (M1)" href="#sec_basicpropsrn-18-1-3-1" title="Copy heading and permalink for Item: (M1)">🔗</a></div>
+</dt>
+<dd>
+<div class="para" id="sec_basicpropsrn-18-1-3-1-2">If <span class="process-math">\(x \in F\)</span> and <span class="process-math">\(y \in F\text{,}\)</span> then <span class="process-math">\(xy \in F\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-18-1-3-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+</dd>
+<dt id="sec_basicpropsrn-18-1-3-2">(M2)<div class="autopermalink" data-description="Item: (M2)"><a aria-label="Copy heading and permalink for Item: (M2)" href="#sec_basicpropsrn-18-1-3-2" title="Copy heading and permalink for Item: (M2)">🔗</a></div>
+</dt>
+<dd>
+<div class="para" id="sec_basicpropsrn-18-1-3-2-2">
+<em class="emphasis">(commutativity of multiplication)</em> <span class="process-math">\(xy = yx\)</span> for all <span class="process-math">\(x,y \in F\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-18-1-3-2-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+</dd>
+<dt id="sec_basicpropsrn-18-1-3-3">(M3)<div class="autopermalink" data-description="Item: (M3)"><a aria-label="Copy heading and permalink for Item: (M3)" href="#sec_basicpropsrn-18-1-3-3" title="Copy heading and permalink for Item: (M3)">🔗</a></div>
+</dt>
+<dd>
+<div class="para" id="sec_basicpropsrn-18-1-3-3-2">
+<em class="emphasis">(associativity of multiplication)</em> <span class="process-math">\((xy)z = x(yz)\)</span> for all <span class="process-math">\(x,y,z \in F\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-18-1-3-3-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+</dd>
+<dt id="sec_basicpropsrn-18-1-3-4">(M4)<div class="autopermalink" data-description="Item: (M4)"><a aria-label="Copy heading and permalink for Item: (M4)" href="#sec_basicpropsrn-18-1-3-4" title="Copy heading and permalink for Item: (M4)">🔗</a></div>
+</dt>
+<dd>
+<div class="para" id="sec_basicpropsrn-18-1-3-4-2">There exists an element <span class="process-math">\(1 \in F\)</span> (and <span class="process-math">\(1 \neq 0\)</span>) such that <span class="process-math">\(1x = x\)</span> for all <span class="process-math">\(x \in F\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-18-1-3-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+</dd>
+<dt id="sec_basicpropsrn-18-1-3-5">(M5)<div class="autopermalink" data-description="Item: (M5)"><a aria-label="Copy heading and permalink for Item: (M5)" href="#sec_basicpropsrn-18-1-3-5" title="Copy heading and permalink for Item: (M5)">🔗</a></div>
+</dt>
+<dd>
+<div class="para" id="sec_basicpropsrn-18-1-3-5-2">For every <span class="process-math">\(x\in F\)</span> such that <span class="process-math">\(x \neq 0\)</span> there exists an element <span class="process-math">\(\nicefrac{1}{x} \in F\)</span> such that <span class="process-math">\(x(\nicefrac{1}{x}) = 1\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-18-1-3-5-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+</dd>
+<dt id="sec_basicpropsrn-18-1-3-6">(D)<div class="autopermalink" data-description="Item: (D)"><a aria-label="Copy heading and permalink for Item: (D)" href="#sec_basicpropsrn-18-1-3-6" title="Copy heading and permalink for Item: (D)">🔗</a></div>
+</dt>
+<dd>
+<div class="para" id="sec_basicpropsrn-18-1-3-6-2">
+<em class="emphasis">(distributive law)</em> <span class="process-math">\(x(y+z) = xy+xz\)</span> for all <span class="process-math">\(x,y,z \in F\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-18-1-3-6-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+</dd>
+</dl>
+<div class="autopermalink" data-description="Definition 1.1.5"><a aria-label="Copy heading and permalink for Definition 1.1.5" href="#sec_basicpropsrn-18" title="Copy heading and permalink for Definition 1.1.5">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_basicpropsrn-19"><h3 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.1.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="sec_basicpropsrn-19-1-1">The set <span class="process-math">\(\Q\)</span> of rational numbers is a field.  On the other hand, <span class="process-math">\(\Z\)</span> is not a field, as it does not contain multiplicative inverses.  For instance, there is no <span class="process-math">\(x \in \Z\)</span> such that <span class="process-math">\(2x = 1\text{,}\)</span> so (M5) is not satisfied.  You can check that (M5) is the only property that fails<details aria-live="polite" class="ptx-footnote" id="sec_basicpropsrn-19-1-1-5"><summary class="ptx-footnote__number" title="Footnote 1.1.3"><sup> 3 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_basicpropsrn-19-1-1-5">An algebraist would say that <span class="process-math">\(\Z\)</span> is an ordered ring, or perhaps a commutative ordered ring.
+</div></details>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-19-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 1.1.6"><a aria-label="Copy heading and permalink for Example 1.1.6" href="#sec_basicpropsrn-19" title="Copy heading and permalink for Example 1.1.6">🔗</a></div>
+</article>
+<div class="para" id="sec_basicpropsrn-20">We will assume the basic facts about fields that are easily proved from the axioms.  For example, <span class="process-math">\(0x = 0\)</span> is easily proved by noting that <span class="process-math">\(xx = (0+x)x = 0x+xx\text{,}\)</span> using (A4), (D), and (M2).  Then using (A5) on <span class="process-math">\(xx\text{,}\)</span> along with (A2), (A3), and (A4), we obtain <span class="process-math">\(0 = 0x\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-20" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_basicpropsrn-21"><h3 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.1.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="sec_basicpropsrn-21-1-1">A field <span class="process-math">\(F\)</span> is said to be an <em class="emphasis">ordered field</em> if <span class="process-math">\(F\)</span> is also an ordered set such that<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-21-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="sec_basicpropsrn-21-1-2">
+<li id="defn_ordfield_i">
+<div class="para" id="defn_ordfield_i-1">For <span class="process-math">\(x,y,z \in F\text{,}\)</span> <span class="process-math">\(x &lt; y\)</span> implies <span class="process-math">\(x+z &lt;
+y+z\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#defn_ordfield_i-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#defn_ordfield_i" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="defn_ordfield_ii">
+<div class="para" id="defn_ordfield_ii-1">For <span class="process-math">\(x,y \in F\text{,}\)</span> <span class="process-math">\(x &gt; 0\)</span> and <span class="process-math">\(y &gt; 0\)</span> implies <span class="process-math">\(xy &gt; 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#defn_ordfield_ii-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#defn_ordfield_ii" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+</ol>
+<div class="para" id="sec_basicpropsrn-21-1-3">If <span class="process-math">\(x &gt; 0\text{,}\)</span> we say <span class="process-math">\(x\)</span> is <em class="emphasis">positive</em>. If <span class="process-math">\(x &lt; 0\text{,}\)</span> we say <span class="process-math">\(x\)</span> is <em class="emphasis">negative</em>. We also say <span class="process-math">\(x\)</span> is <em class="emphasis">nonnegative</em> if <span class="process-math">\(x \geq 0\text{,}\)</span> and <span class="process-math">\(x\)</span> is <em class="emphasis">nonpositive</em> if <span class="process-math">\(x \leq 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-21-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 1.1.7"><a aria-label="Copy heading and permalink for Definition 1.1.7" href="#sec_basicpropsrn-21" title="Copy heading and permalink for Definition 1.1.7">🔗</a></div>
+</article>
+<div class="para" id="sec_basicpropsrn-22">The rational numbers <span class="process-math">\(\Q\)</span> with the standard ordering is an ordered field. We leave the details to the interested reader.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-22" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_bordfield"><h3 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.1.8</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="prop_bordfield-1-1">Let <span class="process-math">\(F\)</span> be an ordered field and <span class="process-math">\(x,y,z,w \in F\text{.}\)</span>  Then<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_bordfield-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="prop_bordfield-1-2">
+<li id="prop_bordfield_i">
+<div class="para" id="prop_bordfield_i-1">If <span class="process-math">\(x &gt; 0\text{,}\)</span> then <span class="process-math">\(-x &lt; 0\)</span> (and vice versa).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_bordfield_i-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#prop_bordfield_i" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="prop_bordfield_ii">
+<div class="para" id="prop_bordfield_ii-1">If <span class="process-math">\(x &gt; 0\)</span> and <span class="process-math">\(y &lt; z\text{,}\)</span> then <span class="process-math">\(xy &lt; xz\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_bordfield_ii-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#prop_bordfield_ii" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+<li id="prop_bordfield_iii">
+<div class="para" id="prop_bordfield_iii-1">If <span class="process-math">\(x &lt; 0\)</span> and <span class="process-math">\(y &lt; z\text{,}\)</span> then <span class="process-math">\(xy &gt; xz\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_bordfield_iii-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iii"><a aria-label="Copy heading and permalink for Item iii" href="#prop_bordfield_iii" title="Copy heading and permalink for Item iii">🔗</a></div>
+</li>
+<li id="prop_bordfield_iv">
+<div class="para" id="prop_bordfield_iv-1">If <span class="process-math">\(x \neq 0\text{,}\)</span> then <span class="process-math">\(x^2 &gt; 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_bordfield_iv-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iv"><a aria-label="Copy heading and permalink for Item iv" href="#prop_bordfield_iv" title="Copy heading and permalink for Item iv">🔗</a></div>
+</li>
+<li id="prop_bordfield_v">
+<div class="para" id="prop_bordfield_v-1">If <span class="process-math">\(0 &lt; x &lt; y\text{,}\)</span> then <span class="process-math">\(0 &lt; \nicefrac{1}{y} &lt; \nicefrac{1}{x}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_bordfield_v-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item v"><a aria-label="Copy heading and permalink for Item v" href="#prop_bordfield_v" title="Copy heading and permalink for Item v">🔗</a></div>
+</li>
+<li id="prop_bordfield_vi">
+<div class="para" id="prop_bordfield_vi-1">If <span class="process-math">\(0 &lt; x &lt; y\text{,}\)</span> then <span class="process-math">\(x^2 &lt; y^2\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_bordfield_vi-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item vi"><a aria-label="Copy heading and permalink for Item vi" href="#prop_bordfield_vi" title="Copy heading and permalink for Item vi">🔗</a></div>
+</li>
+<li id="prop_bordfield_vii">
+<div class="para" id="prop_bordfield_vii-1">If <span class="process-math">\(x \leq y\)</span> and <span class="process-math">\(z \leq w\text{,}\)</span> then <span class="process-math">\(x + z \leq y + w\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_bordfield_vii-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item vii"><a aria-label="Copy heading and permalink for Item vii" href="#prop_bordfield_vii" title="Copy heading and permalink for Item vii">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Proposition 1.1.8"><a aria-label="Copy heading and permalink for Proposition 1.1.8" href="#prop_bordfield" title="Copy heading and permalink for Proposition 1.1.8">🔗</a></div>
+</article>
+<div class="para" id="sec_basicpropsrn-24">Note that <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicpropsrn.html#prop_bordfield_iv" title="Item iv">iv</a> implies, in particular, that <span class="process-math">\(1 &gt; 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-24" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_basicpropsrn-25"><h3 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h3>
+<div class="para" id="sec_basicpropsrn-25-1">Let us prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicpropsrn.html#prop_bordfield_i" title="Item i">i</a>.  The inequality <span class="process-math">\(x &gt; 0\)</span> implies by item <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicpropsrn.html#defn_ordfield_i" title="Item i">i</a> of the definition of ordered fields that <span class="process-math">\(x + (-x) &gt; 0 + (-x)\text{.}\)</span>  Apply the algebraic properties of fields to obtain <span class="process-math">\(0 &gt; -x\text{.}\)</span>  The “vice versa” follows by a similar calculation.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-25-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_basicpropsrn-25-2">For <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicpropsrn.html#prop_bordfield_ii" title="Item ii">ii</a>, note that <span class="process-math">\(y &lt; z\)</span> implies <span class="process-math">\(0 &lt; z - y\)</span> by item <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicpropsrn.html#defn_ordfield_i" title="Item i">i</a> of the definition of ordered fields. Apply item <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicpropsrn.html#defn_ordfield_ii" title="Item ii">ii</a> of the definition of ordered fields to obtain <span class="process-math">\(0 &lt; x(z-y)\text{.}\)</span>  By algebraic properties, <span class="process-math">\(0 &lt; xz - xy\text{.}\)</span> Again by item <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicpropsrn.html#defn_ordfield_i" title="Item i">i</a> of the definition, <span class="process-math">\(xy &lt; xz\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-25-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_basicpropsrn-25-3">Part <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicpropsrn.html#prop_bordfield_iii" title="Item iii">iii</a> is left as an exercise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-25-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_basicpropsrn-25-4">To prove part <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicpropsrn.html#prop_bordfield_iv" title="Item iv">iv</a>, first suppose <span class="process-math">\(x &gt; 0\text{.}\)</span> By item <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicpropsrn.html#defn_ordfield_ii" title="Item ii">ii</a> of the definition of ordered fields, <span class="process-math">\(x^2 &gt; 0\)</span> (use <span class="process-math">\(y=x\)</span>).  If <span class="process-math">\(x &lt; 0\text{,}\)</span> we use part <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicpropsrn.html#prop_bordfield_iii" title="Item iii">iii</a> of this proposition, where we plug in <span class="process-math">\(y=x\)</span> and <span class="process-math">\(z=0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-25-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_basicpropsrn-25-5">
+<div class="para">To prove part <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicpropsrn.html#prop_bordfield_v" title="Item v">v</a>, notice that <span class="process-math">\(\nicefrac{1}{x}\)</span> cannot be equal to zero (why?). Suppose <span class="process-math">\(\nicefrac{1}{x} &lt; 0\text{,}\)</span> then <span class="process-math">\(\nicefrac{-1}{x} &gt; 0\)</span> by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicpropsrn.html#prop_bordfield_i" title="Item i">i</a>. Apply part <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicpropsrn.html#defn_ordfield_ii" title="Item ii">ii</a> of the definition (as <span class="process-math">\(x &gt; 0\)</span>) to obtain <span class="process-math">\(x(\nicefrac{-1}{x}) &gt; 0\)</span> or <span class="process-math">\(-1 &gt; 0\text{,}\)</span> which contradicts <span class="process-math">\(1 &gt; 0\)</span> by using part <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicpropsrn.html#prop_bordfield_i" title="Item i">i</a> again.  Hence <span class="process-math">\(\nicefrac{1}{x} &gt; 0\text{.}\)</span> Similarly, <span class="process-math">\(\nicefrac{1}{y} &gt; 0\text{.}\)</span>  Thus <span class="process-math">\((\nicefrac{1}{x})(\nicefrac{1}{y}) &gt; 0\)</span> by definition of ordered field, and by part <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicpropsrn.html#prop_bordfield_ii" title="Item ii">ii</a>,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_bordfield_v.html ./knowl/xref/prop_bordfield_i.html ./knowl/xref/defn_ordfield_ii.html ./knowl/xref/prop_bordfield_i.html ./knowl/xref/prop_bordfield_ii.html" id="sec_basicpropsrn-25-5-16">
+\begin{equation}
+(\nicefrac{1}{x})(\nicefrac{1}{y})x &lt; (\nicefrac{1}{x})(\nicefrac{1}{y})y .
+\end{equation}
+</div>
+<div class="para">By algebraic properties, <span class="process-math">\(\nicefrac{1}{y} &lt; \nicefrac{1}{x}\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-25-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_basicpropsrn-25-6">Parts <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicpropsrn.html#prop_bordfield_vi" title="Item vi">vi</a> and <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicpropsrn.html#prop_bordfield_vii" title="Item vii">vii</a> are left as exercises.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-25-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 1.1.1"><a aria-label="Copy heading and permalink for Proof 1.1.1" href="#sec_basicpropsrn-25" title="Copy heading and permalink for Proof 1.1.1">🔗</a></div>
+</article>
+<div class="para" id="sec_basicpropsrn-26">The product of two positive numbers (elements of an ordered field) is positive by the definition of an ordered field. However, it is not true that if the product is positive, then each of the two factors must be positive.  For instance, <span class="process-math">\((-1)(-1) = 1 &gt; 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-26" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_basicpropsrn-27"><h3 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.1.9</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="sec_basicpropsrn-27-1-1">Let <span class="process-math">\(x,y \in F\text{,}\)</span> where <span class="process-math">\(F\)</span> is an ordered field.  If <span class="process-math">\(xy &gt; 0\text{,}\)</span> then either both <span class="process-math">\(x\)</span> and <span class="process-math">\(y\)</span> are positive, or both are negative.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-27-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 1.1.9"><a aria-label="Copy heading and permalink for Proposition 1.1.9" href="#sec_basicpropsrn-27" title="Copy heading and permalink for Proposition 1.1.9">🔗</a></div>
+</article>
+<article class="proof" id="sec_basicpropsrn-28"><h3 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h3>
+<div class="para" id="sec_basicpropsrn-28-1">We show the contrapositive: <em class="emphasis">If either <span class="process-math">\(x\)</span> or <span class="process-math">\(y\)</span> is zero, or if <span class="process-math">\(x\)</span> and <span class="process-math">\(y\)</span> have opposite signs, then <span class="process-math">\(xy\)</span> is not positive.</em> If <span class="process-math">\(x\)</span> or <span class="process-math">\(y\)</span> is zero, then <span class="process-math">\(xy\)</span> is zero and hence not positive. Hence assume that <span class="process-math">\(x\)</span> and <span class="process-math">\(y\)</span> are nonzero and have opposite signs. Without loss of generality, suppose <span class="process-math">\(x &gt; 0\)</span> and <span class="process-math">\(y &lt; 0\text{.}\)</span> Multiply <span class="process-math">\(y &lt; 0\)</span> by <span class="process-math">\(x\)</span> to get <span class="process-math">\(xy &lt; 0x = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-28-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 1.1.2"><a aria-label="Copy heading and permalink for Proof 1.1.2" href="#sec_basicpropsrn-28" title="Copy heading and permalink for Proof 1.1.2">🔗</a></div>
+</article>
+<article class="example example-like" id="example_complexfield"><h3 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.1.10</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="example_complexfield-1-1">The reader may have heard about the <em class="emphasis">complex numbers</em>, usually denoted by <span class="process-math">\(\C\text{.}\)</span> That is, <span class="process-math">\(\C\)</span> is the set of numbers of the form <span class="process-math">\(x + iy\text{,}\)</span> where <span class="process-math">\(x\)</span> and <span class="process-math">\(y\)</span> are real numbers, and <span class="process-math">\(i\)</span> is the imaginary number, a number such that <span class="process-math">\(i^2 = -1\text{.}\)</span>  The reader may remember from algebra that <span class="process-math">\(\C\)</span> is also a field; however, it is not an ordered field.  While one can make <span class="process-math">\(\C\)</span> into an ordered set in some way, it is not possible to put an order on <span class="process-math">\(\C\)</span> that would make it an ordered field: In every ordered field, <span class="process-math">\(-1 &lt; 0\)</span> and <span class="process-math">\(x^2 &gt; 0\)</span> for all nonzero <span class="process-math">\(x\text{,}\)</span> but in <span class="process-math">\(\C\text{,}\)</span> <span class="process-math">\(i^2 = -1\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_complexfield-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 1.1.10"><a aria-label="Copy heading and permalink for Example 1.1.10" href="#example_complexfield" title="Copy heading and permalink for Example 1.1.10">🔗</a></div>
+</article>
+<div class="para" id="sec_basicpropsrn-30">Finally, an ordered field that has the least-upper-bound property has the corresponding property for greatest lower bounds.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-30" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_basicpropsrn-31"><h3 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.1.11</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="sec_basicpropsrn-31-1-1">Let <span class="process-math">\(F\)</span> be an ordered field with the least-upper-bound property. Let <span class="process-math">\(A \subset F\)</span> be a nonempty set that is bounded below. Then <span class="process-math">\(\inf\, A\)</span> exists.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-31-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 1.1.11"><a aria-label="Copy heading and permalink for Proposition 1.1.11" href="#sec_basicpropsrn-31" title="Copy heading and permalink for Proposition 1.1.11">🔗</a></div>
+</article>
+<article class="proof" id="sec_basicpropsrn-32"><h3 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h3>
+<div class="para" id="sec_basicpropsrn-32-1">Let <span class="process-math">\(B \coloneqq \{ -x : x \in A \}\text{.}\)</span> Let <span class="process-math">\(b \in F\)</span> be a lower bound for <span class="process-math">\(A\text{:}\)</span> If <span class="process-math">\(x \in A\text{,}\)</span> then <span class="process-math">\(x \geq b\)</span> and hence <span class="process-math">\(-x \leq -b\text{.}\)</span>  So <span class="process-math">\(-b\)</span> is an upper bound for <span class="process-math">\(B\text{.}\)</span> Since <span class="process-math">\(F\)</span> has the least-upper-bound property, <span class="process-math">\(c\coloneqq\sup\, B\)</span> exists, and <span class="process-math">\(c \leq -b\text{.}\)</span> As <span class="process-math">\(y \leq c\)</span> for all <span class="process-math">\(y \in B\text{,}\)</span> we have <span class="process-math">\(-c \leq x\)</span> for all <span class="process-math">\(x \in A\text{.}\)</span> So <span class="process-math">\(-c\)</span> is a lower bound for <span class="process-math">\(A\text{.}\)</span>  As <span class="process-math">\(-c \geq b\)</span> and <span class="process-math">\(b\)</span> is an arbitrary lower bound for <span class="process-math">\(A\text{,}\)</span> the greatest lower bound of <span class="process-math">\(A\)</span> exists and equals <span class="process-math">\(-c\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-32-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 1.1.3"><a aria-label="Copy heading and permalink for Proof 1.1.3" href="#sec_basicpropsrn-32" title="Copy heading and permalink for Proof 1.1.3">🔗</a></div>
+</article>
+<section class="exercises" id="sec_basicpropsrn-33">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber"></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_basicpropsrn-33-1"><h4 class="heading"><span class="codenumber">1.1.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_basicpropsrn-33-1-1-1">Prove part <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicpropsrn.html#prop_bordfield_iii" title="Item iii">iii</a> of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicpropsrn.html#prop_bordfield" title="Proposition 1.1.8">Proposition 1.1.8</a>. That is, let <span class="process-math">\(F\)</span> be an ordered field and <span class="process-math">\(x,y,z \in F\text{.}\)</span>  Prove that if <span class="process-math">\(x &lt; 0\)</span> and <span class="process-math">\(y &lt; z\text{,}\)</span> then <span class="process-math">\(xy &gt; xz\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-33-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.1.1"><a aria-label="Copy heading and permalink for Exercise 1.1.1" href="#sec_basicpropsrn-33-1" title="Copy heading and permalink for Exercise 1.1.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_finitesethasminmax"><h4 class="heading"><span class="codenumber">1.1.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_finitesethasminmax-1-1">Let <span class="process-math">\(S\)</span> be an ordered set.  Let <span class="process-math">\(A \subset S\)</span> be a nonempty finite subset. Show that <span class="process-math">\(A\)</span> is bounded.  Furthermore, show that <span class="process-math">\(\inf\, A\)</span> exists and is in <span class="process-math">\(A\)</span> and <span class="process-math">\(\sup\, A\)</span> exists and is in <span class="process-math">\(A\text{.}\)</span> Hint: Use <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicset.html#induction_thm" title="Theorem 0.3.6: Principle of induction">induction</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_finitesethasminmax-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.1.2"><a aria-label="Copy heading and permalink for Exercise 1.1.2" href="#exercise_finitesethasminmax" title="Copy heading and permalink for Exercise 1.1.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_squareineq"><h4 class="heading"><span class="codenumber">1.1.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_squareineq-1-1">Prove part <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicpropsrn.html#prop_bordfield_vi" title="Item vi">vi</a> of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicpropsrn.html#prop_bordfield" title="Proposition 1.1.8">Proposition 1.1.8</a>. That is, let <span class="process-math">\(x, y \in F\text{,}\)</span> where <span class="process-math">\(F\)</span> is an ordered field, such that <span class="process-math">\(0 &lt; x &lt; y\text{.}\)</span>  Show that <span class="process-math">\(x^2 &lt; y^2\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_squareineq-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.1.3"><a aria-label="Copy heading and permalink for Exercise 1.1.3" href="#exercise_squareineq" title="Copy heading and permalink for Exercise 1.1.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_basicpropsrn-33-4"><h4 class="heading"><span class="codenumber">1.1.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_basicpropsrn-33-4-1-1">
+<div class="para">Let <span class="process-math">\(S\)</span> be an ordered set.  Let <span class="process-math">\(B \subset S\)</span> be bounded (above and below).  Let <span class="process-math">\(A \subset B\)</span> be a nonempty subset. Suppose all the <span class="process-math">\(\inf\)</span>s and <span class="process-math">\(\sup\)</span>s exist. Show that</div>
+<div class="displaymath process-math" id="sec_basicpropsrn-33-4-1-1-6">
+\begin{equation}
+\inf\, B \leq \inf\, A \leq \sup\, A \leq \sup\, B .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-33-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.1.4"><a aria-label="Copy heading and permalink for Exercise 1.1.4" href="#sec_basicpropsrn-33-4" title="Copy heading and permalink for Exercise 1.1.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_basicpropsrn-33-5"><h4 class="heading"><span class="codenumber">1.1.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_basicpropsrn-33-5-1-1">Let <span class="process-math">\(S\)</span> be an ordered set.  Let <span class="process-math">\(A \subset S\)</span> and suppose <span class="process-math">\(b\)</span> is an upper bound for <span class="process-math">\(A\text{.}\)</span>  Suppose <span class="process-math">\(b \in A\text{.}\)</span>  Show that <span class="process-math">\(b = \sup\, A\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-33-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.1.5"><a aria-label="Copy heading and permalink for Exercise 1.1.5" href="#sec_basicpropsrn-33-5" title="Copy heading and permalink for Exercise 1.1.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_basicpropsrn-33-6"><h4 class="heading"><span class="codenumber">1.1.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_basicpropsrn-33-6-1-1">Let <span class="process-math">\(S\)</span> be an ordered set.  Let <span class="process-math">\(A \subset S\)</span> be nonempty and bounded above. Suppose <span class="process-math">\(\sup\, A\)</span> exists and <span class="process-math">\(\sup\, A \notin A\text{.}\)</span> Show that <span class="process-math">\(A\)</span> contains a countably infinite subset.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-33-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.1.6"><a aria-label="Copy heading and permalink for Exercise 1.1.6" href="#sec_basicpropsrn-33-6" title="Copy heading and permalink for Exercise 1.1.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_basicpropsrn-33-7"><h4 class="heading"><span class="codenumber">1.1.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_basicpropsrn-33-7-1-1">Find a nonstandard ordering of the set of natural numbers <span class="process-math">\(\N\)</span> such that there exists a nonempty proper subset <span class="process-math">\(A \subsetneq \N\)</span> and such that <span class="process-math">\(\sup\, A\)</span> exists in <span class="process-math">\(\N\text{,}\)</span> but <span class="process-math">\(\sup\, A \notin A\text{.}\)</span> To keep things straight, it might be a good idea to use a different notation for the nonstandard ordering such as <span class="process-math">\(n \prec m\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-33-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.1.7"><a aria-label="Copy heading and permalink for Exercise 1.1.7" href="#sec_basicpropsrn-33-7" title="Copy heading and permalink for Exercise 1.1.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_basicpropsrn-33-8"><h4 class="heading"><span class="codenumber">1.1.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_basicpropsrn-33-8-1-1">Let <span class="process-math">\(F \coloneqq \{ 0, 1, 2 \}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-33-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_basicpropsrn-33-8-1-2">
+<li id="sec_basicpropsrn-33-8-1-2-1">
+<div class="para" id="sec_basicpropsrn-33-8-1-2-1-1">Prove that there is exactly one way to define addition and multiplication so that <span class="process-math">\(F\)</span> is a field if <span class="process-math">\(0\)</span> and <span class="process-math">\(1\)</span> have their usual meaning of (A4) and (M4).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-33-8-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1.1.8.a"><a aria-label="Copy heading and permalink for Item 1.1.8.a" href="#sec_basicpropsrn-33-8-1-2-1" title="Copy heading and permalink for Item 1.1.8.a">🔗</a></div>
+</li>
+<li id="sec_basicpropsrn-33-8-1-2-2">
+<div class="para" id="sec_basicpropsrn-33-8-1-2-2-1">Show that <span class="process-math">\(F\)</span> cannot be an ordered field.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-33-8-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1.1.8.b"><a aria-label="Copy heading and permalink for Item 1.1.8.b" href="#sec_basicpropsrn-33-8-1-2-2" title="Copy heading and permalink for Item 1.1.8.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 1.1.8"><a aria-label="Copy heading and permalink for Exercise 1.1.8" href="#sec_basicpropsrn-33-8" title="Copy heading and permalink for Exercise 1.1.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_dominatingb"><h4 class="heading"><span class="codenumber">1.1.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_dominatingb-1-1">Let <span class="process-math">\(S\)</span> be an ordered set and let <span class="process-math">\(A\)</span> be a nonempty subset such that <span class="process-math">\(\sup \, A\)</span> exists.  Suppose there is a <span class="process-math">\(B \subset A\)</span> such that whenever <span class="process-math">\(x \in A\)</span> there is a <span class="process-math">\(y \in B\)</span> such that <span class="process-math">\(x \leq y\text{.}\)</span>  Show that <span class="process-math">\(\sup \, B\)</span> exists and <span class="process-math">\(\sup \, B = \sup \, A\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_dominatingb-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.1.9"><a aria-label="Copy heading and permalink for Exercise 1.1.9" href="#exercise_dominatingb" title="Copy heading and permalink for Exercise 1.1.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_basicpropsrn-33-10"><h4 class="heading"><span class="codenumber">1.1.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_basicpropsrn-33-10-1-1">Let <span class="process-math">\(D\)</span> be the ordered set of all possible words (not just English words, all strings of letters of arbitrary length) using the Latin alphabet with only lowercase letters.  The order is the lexicographic order as in a dictionary (e.g. <em class="emphasis">aa</em> <span class="process-math">\(&lt;\)</span> <em class="emphasis">aaa</em> <span class="process-math">\(&lt;\)</span> <em class="emphasis">dog</em> <span class="process-math">\(&lt;\)</span> <em class="emphasis">door</em>). Let <span class="process-math">\(A\)</span> be the subset of <span class="process-math">\(D\)</span> containing the words whose first letter is `a’ (e.g. <em class="emphasis">a</em> <span class="process-math">\(\in A\text{,}\)</span> <em class="emphasis">abcd</em> <span class="process-math">\(\in A\)</span>). Show that <span class="process-math">\(A\)</span> has a supremum and find what it is.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-33-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.1.10"><a aria-label="Copy heading and permalink for Exercise 1.1.10" href="#sec_basicpropsrn-33-10" title="Copy heading and permalink for Exercise 1.1.10">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_basicpropsrn-33-11"><h4 class="heading"><span class="codenumber">1.1.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_basicpropsrn-33-11-1-1">Let <span class="process-math">\(F\)</span> be an ordered field and <span class="process-math">\(x,y,z,w \in F\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-33-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_basicpropsrn-33-11-1-2">
+<li id="sec_basicpropsrn-33-11-1-2-1">
+<div class="para" id="sec_basicpropsrn-33-11-1-2-1-1">Prove part <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicpropsrn.html#prop_bordfield_vii" title="Item vii">vii</a> of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicpropsrn.html#prop_bordfield" title="Proposition 1.1.8">Proposition 1.1.8</a>. That is, if <span class="process-math">\(x \leq y\)</span> and <span class="process-math">\(z \leq w\text{,}\)</span> then <span class="process-math">\(x+z \leq y+w\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-33-11-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1.1.11.a"><a aria-label="Copy heading and permalink for Item 1.1.11.a" href="#sec_basicpropsrn-33-11-1-2-1" title="Copy heading and permalink for Item 1.1.11.a">🔗</a></div>
+</li>
+<li id="sec_basicpropsrn-33-11-1-2-2">
+<div class="para" id="sec_basicpropsrn-33-11-1-2-2-1">Prove that if <span class="process-math">\(x &lt; y\)</span> and <span class="process-math">\(z \leq w\text{,}\)</span> then <span class="process-math">\(x+z &lt; y+w\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-33-11-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1.1.11.b"><a aria-label="Copy heading and permalink for Item 1.1.11.b" href="#sec_basicpropsrn-33-11-1-2-2" title="Copy heading and permalink for Item 1.1.11.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 1.1.11"><a aria-label="Copy heading and permalink for Exercise 1.1.11" href="#sec_basicpropsrn-33-11" title="Copy heading and permalink for Exercise 1.1.11">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_basicpropsrn-33-12"><h4 class="heading"><span class="codenumber">1.1.12<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_basicpropsrn-33-12-1-1">Prove that any ordered field must contain a countably infinite set.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-33-12-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.1.12"><a aria-label="Copy heading and permalink for Exercise 1.1.12" href="#sec_basicpropsrn-33-12" title="Copy heading and permalink for Exercise 1.1.12">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_basicpropsrn-33-13"><h4 class="heading"><span class="codenumber">1.1.13<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_basicpropsrn-33-13-1-1">Let <span class="process-math">\(\N_{\infty} \coloneqq \N \cup \{ \infty \}\text{,}\)</span> where the elements of <span class="process-math">\(\N\)</span> are ordered in the usual way amongst themselves, and <span class="process-math">\(k &lt; \infty\)</span> for every <span class="process-math">\(k \in \N\text{.}\)</span>  Show <span class="process-math">\(\N_{\infty}\)</span> is an ordered set and that every subset <span class="process-math">\(E \subset \N_{\infty}\)</span> has a supremum in <span class="process-math">\(\N_{\infty}\)</span> (make sure to also handle the case of an empty set). Remark: Note that the case of the empty set will be different if our ordered set is the real numbers or the extended real numbers from the next section.  It is important that our ordered set here is <span class="process-math">\(\N_{\infty}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-33-13-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.1.13"><a aria-label="Copy heading and permalink for Exercise 1.1.13" href="#sec_basicpropsrn-33-13" title="Copy heading and permalink for Exercise 1.1.13">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_basicpropsrn-33-14"><h4 class="heading"><span class="codenumber">1.1.14<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_basicpropsrn-33-14-1-1">Let <span class="process-math">\(S \coloneqq \{ a_k : k \in \N \} \cup \{ b_k : k \in \N \}\text{,}\)</span> ordered such that <span class="process-math">\(a_k &lt; b_j\)</span> for every <span class="process-math">\(k\)</span> and <span class="process-math">\(j\text{,}\)</span> <span class="process-math">\(a_k &lt; a_m\)</span> whenever <span class="process-math">\(k &lt; m\text{,}\)</span> and <span class="process-math">\(b_k &gt; b_m\)</span> whenever <span class="process-math">\(k &lt; m\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-33-14-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_basicpropsrn-33-14-1-2">
+<li id="sec_basicpropsrn-33-14-1-2-1">
+<div class="para" id="sec_basicpropsrn-33-14-1-2-1-1">Show that <span class="process-math">\(S\)</span> is an ordered set.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-33-14-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1.1.14.a"><a aria-label="Copy heading and permalink for Item 1.1.14.a" href="#sec_basicpropsrn-33-14-1-2-1" title="Copy heading and permalink for Item 1.1.14.a">🔗</a></div>
+</li>
+<li id="sec_basicpropsrn-33-14-1-2-2">
+<div class="para" id="sec_basicpropsrn-33-14-1-2-2-1">Show that every subset of <span class="process-math">\(S\)</span> is bounded (both above and below).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-33-14-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1.1.14.b"><a aria-label="Copy heading and permalink for Item 1.1.14.b" href="#sec_basicpropsrn-33-14-1-2-2" title="Copy heading and permalink for Item 1.1.14.b">🔗</a></div>
+</li>
+<li id="sec_basicpropsrn-33-14-1-2-3">
+<div class="para" id="sec_basicpropsrn-33-14-1-2-3-1">Find a bounded subset of <span class="process-math">\(S\)</span> that has no least upper bound.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_basicpropsrn-33-14-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1.1.14.c"><a aria-label="Copy heading and permalink for Item 1.1.14.c" href="#sec_basicpropsrn-33-14-1-2-3" title="Copy heading and permalink for Item 1.1.14.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 1.1.14"><a aria-label="Copy heading and permalink for Exercise 1.1.14" href="#sec_basicpropsrn-33-14" title="Copy heading and permalink for Exercise 1.1.14">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 1.1.1"><a aria-label="Copy heading and permalink for Exercises 1.1.1" href="#sec_basicpropsrn-33" title="Copy heading and permalink for Exercises 1.1.1">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 1.1: Basic properties"><a aria-label="Copy heading and permalink for Section 1.1: Basic properties" href="#sec_basicpropsrn" title="Copy heading and permalink for Section 1.1: Basic properties">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="rn_chapter.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_setofreals.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

@@ -1,0 +1,424 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Change of variables · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_mvchangeofvars">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.7</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Change of variables</span>
+</h2>
+<div class="para" id="sec_mvchangeofvars-2">
+<em class="emphasis">Note: 1 lecture</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvchangeofvars-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_mvchangeofvars-3">
+<div class="para">In one variable, we have the familiar change of variables, the <span class="process-math">\(u\)</span>-substitution,</div>
+<div class="displaymath process-math" id="sec_mvchangeofvars-3-2">
+\begin{equation}
+\int_a^b f\bigl(g(x)\bigr) g'(x)\, dx = 
+\int_{g(a)}^{g(b)} f(u) \, du .
+\end{equation}
+</div>
+<div class="para">The analogue in higher dimensions is quite a bit more complicated.  The first complication is orientation.  If we use the definition of integral from this chapter, then we do not have the notion of <span class="process-math">\(\int_a^b\)</span> versus <span class="process-math">\(\int_b^a\text{.}\)</span>  We are simply integrating over an interval <span class="process-math">\([a,b]\text{.}\)</span>  With this notation, and assuming <span class="process-math">\(g\)</span> is one-to-one, the change of variables becomes</div>
+<div class="displaymath process-math" id="sec_mvchangeofvars-3-7">
+\begin{equation}
+\int_{[a,b]} f\bigl(g(x)\bigr) \, \babs{g'(x)}\, dx = 
+\int_{g([a,b])} f(u) \, du .
+\end{equation}
+</div>
+<div class="para">In this section we will obtain the several-variable analogue of this form.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvchangeofvars-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_mvchangeofvars-4">Let us remark on the role of <span class="process-math">\(\babs{g'(x)}\)</span> in the formula. The integral measures volumes in general, so in one dimension it measures length. Notice that <span class="process-math">\(\babs{g'(x)}\)</span> scales the <span class="process-math">\(dx\)</span> and so it scales the lengths. If our <span class="process-math">\(g\)</span> is linear, that is, <span class="process-math">\(g(x)=Lx\text{,}\)</span> then <span class="process-math">\(g'(x) = L\)</span> and the length of the interval <span class="process-math">\(g([a,b])\)</span> is simply <span class="process-math">\(\sabs{L}(b-a)\text{.}\)</span>  That is because <span class="process-math">\(g([a,b])\)</span> is either <span class="process-math">\([La,Lb]\)</span> or <span class="process-math">\([Lb,La]\text{.}\)</span>  This property holds in higher dimension with <span class="process-math">\(\sabs{L}\)</span> replaced by the absolute value of the determinant.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvchangeofvars-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_volrectdet"><h3 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.7.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="prop_volrectdet-1-1">Suppose <span class="process-math">\(R \subset \R^n\)</span> is a rectangle and <span class="process-math">\(A \colon \R^n \to \R^n\)</span> is linear.  Then <span class="process-math">\(A(R)\)</span> is Jordan measurable and <span class="process-math">\(V\bigl(A(R)\bigr) = \babs{\det (A)} \, V(R)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_volrectdet-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 10.7.1"><a aria-label="Copy heading and permalink for Proposition 10.7.1" href="#prop_volrectdet" title="Copy heading and permalink for Proposition 10.7.1">🔗</a></div>
+</article>
+<article class="proof" id="sec_mvchangeofvars-6"><h3 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h3>
+<div class="para" id="sec_mvchangeofvars-6-1">It is enough to prove for elementary matrices.  The proof is left as an exercise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvchangeofvars-6-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 10.7.1"><a aria-label="Copy heading and permalink for Proof 10.7.1" href="#sec_mvchangeofvars-6" title="Copy heading and permalink for Proof 10.7.1">🔗</a></div>
+</article>
+<div class="para" id="sec_mvchangeofvars-7">Let us prove that the absolute value of the Jacobian determinant <span class="process-math">\(\babs{J_g(x)} = \babs{\det \bigl(g'(x)\bigr)}\)</span> is the replacement of <span class="process-math">\(\babs{g'(x)}\)</span> for multiple dimensions in the change of variables formula. The following theorem holds in more generality, but this statement is sufficient for many uses.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvchangeofvars-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="sec_mvchangeofvars-8"><h3 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.7.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para logical" id="sec_mvchangeofvars-8-1-1">
+<div class="para">Suppose <span class="process-math">\(U \subset \R^n\)</span> is open, <span class="process-math">\(S \subset U\)</span> is a compact Jordan measurable set, and <span class="process-math">\(g \colon U \to \R^n\)</span> is a one-to-one continuously differentiable mapping, such that <span class="process-math">\(J_g\)</span> is never zero on <span class="process-math">\(S\text{.}\)</span> Suppose <span class="process-math">\(f \colon g(S) \to \R\)</span> is Riemann integrable. Then <span class="process-math">\(f \circ g\)</span> is Riemann integrable on <span class="process-math">\(S\)</span> and</div>
+<div class="displaymath process-math" id="sec_mvchangeofvars-8-1-1-9">
+\begin{equation}
+\int_S f\bigl(g(x)\bigr) \, \babs{J_g(x)} \, dx
+=
+\int_{g(S)} f(u) \, du . 
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvchangeofvars-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 10.7.2"><a aria-label="Copy heading and permalink for Theorem 10.7.2" href="#sec_mvchangeofvars-8" title="Copy heading and permalink for Theorem 10.7.2">🔗</a></div>
+</article>
+<div class="para" id="sec_mvchangeofvars-9">The set <span class="process-math">\(g(S)\)</span> is Jordan measurable by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_jordansets.html#prop_imagejordanmeas" title="Proposition 10.5.9">Proposition 10.5.9</a>, so the left-hand side does make sense. That the right-hand side makes sense follows by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_riemannlebesgue.html#cor_closednessofriemannintegrable" title="Corollary 10.4.4">Corollary 10.4.4</a> (actually <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_jordansets.html#exercise_closednessofriemannintegrable" title="Exercise 10.5.7">Exercise 10.5.7</a>).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvchangeofvars-9" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_mvchangeofvars-10"><h3 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h3>
+<div class="para" id="sec_mvchangeofvars-10-1">The set <span class="process-math">\(S\)</span> can be covered by finitely many closed rectangles <span class="process-math">\(P_1,P_2,\ldots,P_k\text{,}\)</span> whose interiors do not overlap such that each <span class="process-math">\(P_j \subset U\)</span> (<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvchangeofvars.html#mv_changeofvarcoverbyrects" title="Exercise 10.7.2">Exercise 10.7.2</a>). Proving the theorem for <span class="process-math">\(P_j \cap S\)</span> instead of <span class="process-math">\(S\)</span> is enough as we can simply add up the integrals. Define <span class="process-math">\(f(y) \coloneqq 0\)</span> for all <span class="process-math">\(y \notin g(S)\text{.}\)</span> The new <span class="process-math">\(f\)</span> is Riemann integrable as <span class="process-math">\(g(S)\)</span> is Jordan measurable. We can now replace the integrals over <span class="process-math">\(S\)</span> with integrals over the whole rectangle. We therefore assume without loss of generality that <span class="process-math">\(S\)</span> is a closed rectangle.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvchangeofvars-10-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_mvchangeofvars-10-2">The matrix <span class="process-math">\(g'(x)\)</span> is invertible for every <span class="process-math">\(x \in S\text{,}\)</span> and it is continuous.  Therefore, <span class="process-math">\({\bigl(g'(x)\bigr)}^{-1}\)</span> and consequently <span class="process-math">\(\bnorm{{\bigl(g'(x)\bigr)}^{-1}}\)</span> is continuous and never zero. As <span class="process-math">\(S\)</span> is compact, then there exists an <span class="process-math">\(M &gt; 1\)</span> so that <span class="process-math">\(\bnorm{{\bigl(g'(x)\bigr)}^{-1}} \leq M\)</span> for all <span class="process-math">\(x \in S\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvchangeofvars-10-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_mvchangeofvars-10-3">
+<div class="para">Let <span class="process-math">\(\epsilon &gt; 0\)</span> be given. For every <span class="process-math">\(x \in S\text{,}\)</span> let</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/mv_changeofvarWxopen.html ./knowl/xref/ms_lebesgue.html" id="sec_mvchangeofvars-10-3-3">
+\begin{equation}
+W_x \coloneqq
+\left\{ y \in U : \bnorm{g'(x)-g'(y)} &lt; \frac{\epsilon}{2M} \right\} .
+\end{equation}
+</div>
+<div class="para">By <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvchangeofvars.html#mv_changeofvarWxopen" title="Exercise 10.7.3">Exercise 10.7.3</a>, <span class="process-math">\(W_x\)</span> is open. As <span class="process-math">\(x \in W_x\)</span> for every <span class="process-math">\(x\text{,}\)</span> we have an open cover. By the Lebesgue covering lemma (<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metcompact.html#ms_lebesgue" title="Lemma 7.4.10: Lebesgue covering lemma">Lemma 7.4.10</a>), there exists a <span class="process-math">\(\delta &gt; 0\)</span> such that for every <span class="process-math">\(y \in S\text{,}\)</span> there is an <span class="process-math">\(x\)</span> such that <span class="process-math">\(B(y,\delta) \subset W_x\text{.}\)</span> In other words, if <span class="process-math">\(Q\)</span> is a rectangle of maximum side length less than <span class="process-math">\(\frac{\delta}{\sqrt{n}}\)</span> and <span class="process-math">\(y \in Q\text{,}\)</span> then <span class="process-math">\(Q \subset
+B(y,\delta) \subset W_x\text{.}\)</span>  By the triangle inequality, <span class="process-math">\(\bnorm{g'(\xi)-g'(\eta)} &lt; \nicefrac{\epsilon}{M}\)</span> for all <span class="process-math">\(\xi, \eta \in Q\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvchangeofvars-10-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_mvchangeofvars-10-4">Let <span class="process-math">\(\varphi(x) \coloneqq f\bigl(g(x)\bigr) \babs{J_g(x)}\text{.}\)</span> There exists a partition <span class="process-math">\(P\)</span> of <span class="process-math">\(S\)</span> such that <span class="process-math">\(\epsilon + \int_S \varphi \geq U(P,\varphi)\text{.}\)</span> We can assume <span class="process-math">\(\delta\)</span> is sufficiently small relative to the side of each subrectangle of the partition <span class="process-math">\(P\)</span> so that we can cut each such subrectangle into further subrectangles each of whose sides <span class="process-math">\(s\)</span> satisfies <span class="process-math">\(\frac{\delta}{2\sqrt{n}} \leq s \leq \frac{\delta}{\sqrt{n}}\)</span> (<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvchangeofvars.html#mv_changeofvarrectside" title="Exercise 10.7.4">Exercise 10.7.4</a>). Denote these subrectangles by <span class="process-math">\(R_1,R_2,\ldots,R_N\text{.}\)</span> For each <span class="process-math">\(j=1,2,\dots,N\text{,}\)</span> find <span class="process-math">\(x_j \in R_j\)</span> so that <span class="process-math">\(\sabs{J_g(x_j)} \leq \sabs{J_g(x)}\)</span> for all <span class="process-math">\(x \in R_j\text{,}\)</span> which is possible as <span class="process-math">\(\sabs{J_g(x)}\)</span> is continuous and <span class="process-math">\(R_j\)</span> is compact.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvchangeofvars-10-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_mvchangeofvars-10-5">
+<div class="para">Consider some <span class="process-math">\(R_j\text{.}\)</span> First suppose <span class="process-math">\(x_j=0\text{,}\)</span> <span class="process-math">\(g(0) = 0\text{,}\)</span> and <span class="process-math">\(g'(0) = I\text{.}\)</span> We claim that <span class="process-math">\(g(R_j)\)</span> is contained in a rectangle of volume at most <span class="process-math">\(V(R_j) \, {\bigl(1+4\sqrt{n} \, \epsilon\bigr)}^n\text{.}\)</span> Let us prove this claim. For any given <span class="process-math">\(y \in R_j\text{,}\)</span> apply the fundamental theorem of calculus to the function <span class="process-math">\(t \mapsto g(ty)\)</span> to find <span class="process-math">\(g(y) = \int_0^1 g'(ty)y \,dt\text{.}\)</span>  As the side of <span class="process-math">\(R_j\)</span> is at most <span class="process-math">\(\frac{\delta}{\sqrt{n}}\text{,}\)</span> we have <span class="process-math">\(\snorm{y} \leq \delta\text{.}\)</span> We note that <span class="process-math">\(\bnorm{g'(x)-I} &lt; \epsilon\)</span> as <span class="process-math">\(M &gt; 1\)</span> and so</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/changeofvarssq_fig.html" id="sec_mvchangeofvars-10-5-15">
+\begin{equation}
+\begin{aligned}
+\bnorm{g(y)-y}
+=
+\norm{\int_0^1 \bigl(g'(ty) y - y\bigr) \,dt}
+&amp;
+\leq
+\int_0^1 \bnorm{g'(ty) y - y} \,dt
+\\
+&amp;
+\leq
+\snorm{y} \int_0^1 \bnorm{g'(ty) - I} \,dt
+\leq
+\delta \epsilon .
+\end{aligned}
+\end{equation}
+</div>
+<div class="para">Therefore, <span class="process-math">\(g(R_j) \subset \widetilde{R}_j\text{,}\)</span> where <span class="process-math">\(\widetilde{R}_j\)</span> is a rectangle obtained from <span class="process-math">\(R_j\)</span> by extending by <span class="process-math">\(\delta \epsilon\)</span> on all sides.  See <a class="internal" href="sec_mvchangeofvars.html#changeofvarssq_fig" title="Figure 10.17">Figure 10.17</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvchangeofvars-10-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="changeofvarssq_fig"><img alt="A diagram of a gray rectangle R sub j inside a dashed rectangle tilde R sub j. A bold figure g of R sub j that is a deformed version of the gray rectangle is given and lies completely inside the dashed rectangle. The horizontal side of the gray rectangle is labeled as s sub 1 and the vertical side is labeled as s sub 2. The distance between the sides of the gray square and the dashed square is labeled as delta epsilon. A point inside all the rectangles is labeled as x sub j equals zero equals g of x sub j. A point y is labeled on the side of the gray rectangle and a nearby point within delta epsilon and on the side of the black rectangle is marked g of y." class="raimg" role="img" src="figures/changeofvarssq-mbxpdft.svg" style="width:303pt; height:165pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.17<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Image of <span class="process-math">\(R_j\)</span> under <span class="process-math">\(g\)</span> lies inside <span class="process-math">\(\widetilde{R}_j\text{.}\)</span>  A sample point <span class="process-math">\(y \in R_j\)</span> (on the boundary of <span class="process-math">\(R_j\)</span> in fact) is marked and <span class="process-math">\(g(y)\)</span> must lie within with a radius of <span class="process-math">\(\delta\epsilon\)</span> (also marked).<div class="autopermalink" data-description="Figure 10.17"><a aria-label="Copy heading and permalink for Figure 10.17" href="#changeofvarssq_fig" title="Copy heading and permalink for Figure 10.17">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para logical" id="sec_mvchangeofvars-10-9">
+<div class="para">If the sides of <span class="process-math">\(R_j\)</span> are <span class="process-math">\(s_1,s_2,\ldots,s_n\text{,}\)</span> then <span class="process-math">\(V(R_j) = s_1 s_2 \cdots s_n\text{.}\)</span>   Recall <span class="process-math">\(\delta \leq 2\sqrt{n} \, s_j\text{.}\)</span> Thus,</div>
+<div class="displaymath process-math" id="sec_mvchangeofvars-10-9-5">
+\begin{equation}
+\begin{split}
+V(\widetilde{R}_j) &amp; =
+(s_1+2\delta \epsilon )
+(s_2+2\delta \epsilon )
+\cdots
+(s_n+2\delta \epsilon )
+\\
+&amp; \leq
+\bigl(s_1+4 \sqrt{n}\,s_1 \epsilon \bigr)
+\bigl(s_2+4 \sqrt{n}\,s_2 \epsilon \bigr)
+\cdots
+\bigl(s_n+4 \sqrt{n}\,s_n \epsilon \bigr)
+\\
+&amp; =
+s_1 \bigl(1+4 \sqrt{n}\, \epsilon \bigr)
+\,
+s_2 \bigl(1+4 \sqrt{n}\, \epsilon \bigr)
+\cdots
+s_n \bigl(1+4 \sqrt{n}\, \epsilon \bigr)
+=
+V(R_j) \, {\bigl(1+4\sqrt{n} \, \epsilon\bigr)}^n .
+\end{split}
+\end{equation}
+</div>
+<div class="para">The claim is proved: <span class="process-math">\(g(R_j) \subset \widetilde{R}_j\)</span> and</div>
+<div class="displaymath process-math" id="sec_mvchangeofvars-10-9-7">
+\begin{equation}
+V\bigl(g(R_j)\bigr) \leq V(\widetilde{R}_j) \leq V(R_j) \,
+{\bigl(1+4\sqrt{n} \, \epsilon\bigr)}^n .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvchangeofvars-10-9" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_mvchangeofvars-10-10">
+<div class="para">Next, suppose <span class="process-math">\(A \coloneqq g'(0)\)</span> is not necessarily the identity. Write <span class="process-math">\(g = A \circ \widetilde{g}\)</span> where <span class="process-math">\(\widetilde{g}'(0) = I\text{.}\)</span> We have that <span class="process-math">\(\snorm{A^{-1}} \leq M\)</span> and so</div>
+<div class="displaymath process-math" id="sec_mvchangeofvars-10-10-5">
+\begin{equation}
+\bnorm{\widetilde{g}'(x)-I} =
+\bnorm{A^{-1}g'(x)-A^{-1}A} \leq
+\bnorm{A^{-1}}\,\bnorm{g'(x)-A} &lt; M \frac{\epsilon}{M} = \epsilon .
+\end{equation}
+</div>
+<div class="para">In other words, the claim above applies to <span class="process-math">\(\widetilde{g}\)</span> as what we needed in its proof was precisely that <span class="process-math">\(\bnorm{\widetilde{g}'(x)-I} &lt; \epsilon\text{.}\)</span> Therefore, we have that <span class="process-math">\(\widetilde{g}(R_j)\)</span> is contained in a rectangle <span class="process-math">\(\widetilde{R}_j\)</span> with <span class="process-math">\(V(\widetilde{R}_j) \leq V(R_j) \, {\bigl(1+4\sqrt{n} \, \epsilon\bigr)}^n\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvchangeofvars-10-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_mvchangeofvars-10-11">
+<div class="para">By <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvchangeofvars.html#prop_volrectdet" title="Proposition 10.7.1">Proposition 10.7.1</a>, <span class="process-math">\(V\bigl(A(\widetilde{R}_j)\bigr) = \babs{\det(A)} \, V(\widetilde{R}_j)\text{,}\)</span> and hence</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_volrectdet.html" id="sec_mvchangeofvars-10-11-3">
+\begin{equation}
+\begin{split}
+V\bigl(g(R_j)\bigr) &amp; =
+V\bigl(A\bigl(\widetilde{g}(R_j)\bigr)\bigr)
+\\
+&amp; \leq
+V\bigl(A(\widetilde{R}_j)\bigr)
+\\
+&amp; \leq
+\babs{\det(A)} \, V(R_j) \,
+{\bigl(1+4\sqrt{n} \, \epsilon\bigr)}^n \\
+&amp; =
+\babs{J_g(0)} \, V(R_j) \,
+{\bigl(1+4\sqrt{n} \, \epsilon\bigr)}^n .
+\end{split}
+\end{equation}
+</div>
+<div class="para">Translation does not change volume, and therefore for every <span class="process-math">\(R_j\text{,}\)</span> and <span class="process-math">\(x_j \in R_j\text{,}\)</span> including when <span class="process-math">\(x_j \neq 0\)</span> and <span class="process-math">\(g(x_j)
+\neq 0\text{,}\)</span> we find</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_volrectdet.html" id="sec_mvchangeofvars-10-11-8">
+\begin{equation}
+V\bigl(g(R_j)\bigr) \leq
+\babs{J_g(x_j)} \, V(R_j) \,
+{\bigl(1+4\sqrt{n} \, \epsilon\bigr)}^n .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvchangeofvars-10-11" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_mvchangeofvars-10-12">
+<div class="para">Write <span class="process-math">\(f\)</span> as <span class="process-math">\(f = f_+ - f_-\)</span> for two nonnegative Riemann integrable functions <span class="process-math">\(f_+\)</span> and <span class="process-math">\(f_-\text{:}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_mvchangeofvars-10-12-5">
+\begin{equation}
+f_+(u) \coloneqq \max \bigl\{ f(u) , 0 \bigr\}, \qquad
+f_-(u) \coloneqq \max \bigl\{ -f(u) , 0 \bigr\} .
+\end{equation}
+</div>
+<div class="para">So, if we prove the theorem for a nonnegative <span class="process-math">\(f\text{,}\)</span> we obtain the theorem for arbitrary <span class="process-math">\(f\text{.}\)</span> Therefore, suppose without loss of generality that <span class="process-math">\(f(u) \geq 0\)</span> for all <span class="process-math">\(u \in g(S)\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvchangeofvars-10-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_mvchangeofvars-10-13">
+<div class="para">As the rectangles <span class="process-math">\(R_1,R_2,\ldots,R_N\)</span> give a refinement of the partition <span class="process-math">\(P\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_mvchangeofvars-10-13-3">
+\begin{equation}
+\begin{split}
+\epsilon + \int_S f\bigl(g(x)\bigr) \, \babs{J_g(x)} \, dx
+&amp; \geq
+\sum_{j=1}^N \biggl(\sup_{x \in R_j} f\bigl(g(x)\bigr) \, \babs{J_g(x)} \biggr) \, V(R_j)
+\\
+&amp; \geq
+\sum_{j=1}^N \biggl(\sup_{x \in R_j} f\bigl(g(x)\bigr) \biggr) \, \babs{J_g(x_j)} \, V(R_j)
+\\
+&amp; \geq
+\sum_{j=1}^N \biggl(\sup_{u \in g(R_j)} f(u) \biggr) \,
+V\bigl(g(R_j)\bigr)
+\frac{1}{{(1+4\sqrt{n} \, \epsilon)}^n}
+\\
+&amp; \geq
+\sum_{j=1}^N \left(\int_{g(R_j)}f(u) \,du \right)
+\frac{1}{{(1+4\sqrt{n} \, \epsilon)}^n}
+\\
+&amp; =
+\frac{1}{{(1+4\sqrt{n} \, \epsilon)}^n}
+\int_{g(S)} f(u) \,du .
+\end{split}
+\end{equation}
+</div>
+<div class="para">The last equality follows because the overlaps of the rectangles are their boundaries, which are of measure zero, and hence the image of their boundaries is also measure zero. Let <span class="process-math">\(\epsilon\)</span> go to zero to find</div>
+<div class="displaymath process-math" id="sec_mvchangeofvars-10-13-5">
+\begin{equation}
+\int_S f\bigl(g(x)\bigr) \, \babs{J_g(x)} \, dx \geq \int_{g(S)} f(u) \,du .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvchangeofvars-10-13" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_mvchangeofvars-10-14">
+<div class="para">Recall that <span class="process-math">\(g^{-1}\)</span> exists and <span class="process-math">\(g^{-1}\bigl(g(S)\bigr) = S\text{.}\)</span> Also, <span class="process-math">\(1 = J_{g\circ g^{-1}} = J_g\bigl(g^{-1}(u)\bigr) \,J_{g^{-1}}(u)\)</span> for <span class="process-math">\(u \in g(S)\text{.}\)</span> So</div>
+<div class="displaymath process-math" id="sec_mvchangeofvars-10-14-5">
+\begin{equation}
+\begin{split}
+\int_{g(S)} f(u) \, du
+&amp; =
+\int_{g(S)} f\Bigl(g\bigl(g^{-1}(u)\bigr)\Bigr) \,
+\Babs{J_g\bigl(g^{-1}(u)\bigr)} \, \babs{J_{g^{-1}}(u)} \, du
+\\
+&amp; \geq
+\int_{g^{-1}(g(S))} f\bigl(g(x)\bigr) \, \babs{J_g(x)} \, dx
+=
+\int_{S} f\bigl(g(x)\bigr) \, \babs{J_g(x)} \, dx .
+\qedhere
+\end{split}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvchangeofvars-10-14" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 10.7.2"><a aria-label="Copy heading and permalink for Proof 10.7.2" href="#sec_mvchangeofvars-10" title="Copy heading and permalink for Proof 10.7.2">🔗</a></div>
+</article>
+<section class="exercises" id="sec_mvchangeofvars-11">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber"></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_mvchangeofvars-11-1"><h4 class="heading"><span class="codenumber">10.7.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_mvchangeofvars-11-1-1-1">Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvchangeofvars.html#prop_volrectdet" title="Proposition 10.7.1">Proposition 10.7.1</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvchangeofvars-11-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.7.1"><a aria-label="Copy heading and permalink for Exercise 10.7.1" href="#sec_mvchangeofvars-11-1" title="Copy heading and permalink for Exercise 10.7.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="mv_changeofvarcoverbyrects"><h4 class="heading"><span class="codenumber">10.7.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="mv_changeofvarcoverbyrects-1-1">Suppose <span class="process-math">\(U \subset \R^n\)</span> is open and <span class="process-math">\(S \subset U\)</span> is a compact Jordan measurable set. Show that there exist finitely many closed rectangles <span class="process-math">\(P_1,P_2, \ldots, P_k\)</span> such that <span class="process-math">\(P_j \subset U\text{,}\)</span> <span class="process-math">\(S \subset P_1 \cup P_2 \cup \cdots \cup P_k\text{,}\)</span> and the interiors are mutually disjoint, that is, <span class="process-math">\(P_j^\circ \cap P^\circ_\ell = \emptyset\)</span> whenever <span class="process-math">\(j \neq \ell\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_changeofvarcoverbyrects-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.7.2"><a aria-label="Copy heading and permalink for Exercise 10.7.2" href="#mv_changeofvarcoverbyrects" title="Copy heading and permalink for Exercise 10.7.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="mv_changeofvarWxopen"><h4 class="heading"><span class="codenumber">10.7.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="mv_changeofvarWxopen-1-1">
+<div class="para">Suppose <span class="process-math">\(U \subset \R^n\)</span> is open, <span class="process-math">\(x \in U\text{,}\)</span> and <span class="process-math">\(g \colon U \to \R^n\)</span> is a continuously differentiable mapping. For every <span class="process-math">\(c &gt; 0\text{,}\)</span> show that</div>
+<div class="displaymath process-math" id="mv_changeofvarWxopen-1-1-5">
+\begin{equation}
+\bigl\{ y \in U : \bnorm{g'(x)-g'(y)} &lt; c \bigr\}
+\end{equation}
+</div>
+<div class="para">is an open set.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_changeofvarWxopen-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.7.3"><a aria-label="Copy heading and permalink for Exercise 10.7.3" href="#mv_changeofvarWxopen" title="Copy heading and permalink for Exercise 10.7.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="mv_changeofvarrectside"><h4 class="heading"><span class="codenumber">10.7.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="mv_changeofvarrectside-1-1">Suppose <span class="process-math">\(R \subset \R^n\)</span> is a closed rectangle. Show that if <span class="process-math">\(\delta &gt; 0\)</span> is sufficiently small relative to the sides of <span class="process-math">\(R\text{,}\)</span> then <span class="process-math">\(R\)</span> can be partitioned into subrectangles where each side <span class="process-math">\(s\)</span> of every subrectangle satisfies <span class="process-math">\(\frac{\delta}{2} \leq s \leq \delta\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_changeofvarrectside-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.7.4"><a aria-label="Copy heading and permalink for Exercise 10.7.4" href="#mv_changeofvarrectside" title="Copy heading and permalink for Exercise 10.7.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_mvchangeofvars-11-5"><h4 class="heading"><span class="codenumber">10.7.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_mvchangeofvars-11-5-1-1">
+<div class="para">Prove the following version of the theorem: <em class="emphasis">Suppose <span class="process-math">\(f \colon \R^n \to \R\)</span> is a Riemann integrable compactly supported function.  Suppose <span class="process-math">\(K \subset \R^n\)</span> is the support of <span class="process-math">\(f\text{,}\)</span> <span class="process-math">\(S\)</span> is a compact set, and <span class="process-math">\(g \colon \R^n \to \R^n\)</span> is a function that when restricted to a neighborhood <span class="process-math">\(U\)</span> of <span class="process-math">\(S\)</span> is one-to-one and continuously differentiable, <span class="process-math">\(g(S) = K\)</span> and <span class="process-math">\(J_g\)</span> is never zero on <span class="process-math">\(S\)</span> (in the formula assume <span class="process-math">\(J_g(x) = 0\)</span> if <span class="process-math">\(g\)</span> is not differentiable at <span class="process-math">\(x\text{,}\)</span> that is, when <span class="process-math">\(x \notin
+U\)</span>).  Then</em>
+</div>
+<div class="displaymath process-math" id="sec_mvchangeofvars-11-5-1-1-2">
+\begin{equation}
+\int_{\R^n} f\bigl(g(x)\bigr) \, \babs{J_g(x)} \, dx
+=
+\int_{\R^{n}} f(u) \, du .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvchangeofvars-11-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.7.5"><a aria-label="Copy heading and permalink for Exercise 10.7.5" href="#sec_mvchangeofvars-11-5" title="Copy heading and permalink for Exercise 10.7.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_mvchangeofvars-11-6"><h4 class="heading"><span class="codenumber">10.7.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_mvchangeofvars-11-6-1-1">
+<div class="para">Prove the following version of the theorem: <em class="emphasis">Suppose <span class="process-math">\(S \subset \R^n\)</span> is an open bounded Jordan measurable set, <span class="process-math">\(g \colon S \to \R^n\)</span> is a one-to-one continuously differentiable mapping such that <span class="process-math">\(J_g\)</span> is never zero on <span class="process-math">\(S\text{,}\)</span> and such that <span class="process-math">\(g(S)\)</span> is bounded and Jordan measurable (it is also open). Suppose <span class="process-math">\(f \colon g(S) \to \R\)</span> is Riemann integrable.  Then <span class="process-math">\(f \circ g\)</span> is Riemann integrable on <span class="process-math">\(S\)</span> and</em>
+</div>
+<div class="displaymath process-math" id="sec_mvchangeofvars-11-6-1-1-2">
+\begin{equation}
+\int_S f\bigl(g(x)\bigr) \, \babs{J_g(x)} \, dx
+=
+\int_{g(S)} f(u) \, du .
+\end{equation}
+</div>
+<div class="para">Hint: Write <span class="process-math">\(S\)</span> as an increasing union of compact Jordan measurable sets, then apply the theorem of the section to those.  Then prove that you can take the limit.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvchangeofvars-11-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.7.6"><a aria-label="Copy heading and permalink for Exercise 10.7.6" href="#sec_mvchangeofvars-11-6" title="Copy heading and permalink for Exercise 10.7.6">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 10.7.1"><a aria-label="Copy heading and permalink for Exercises 10.7.1" href="#sec_mvchangeofvars-11" title="Copy heading and permalink for Exercises 10.7.1">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 10.7: Change of variables"><a aria-label="Copy heading and permalink for Section 10.7: Change of variables" href="#sec_mvchangeofvars" title="Copy heading and permalink for Section 10.7: Change of variables">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_mvgreenstheorem.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="approx_chapter.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

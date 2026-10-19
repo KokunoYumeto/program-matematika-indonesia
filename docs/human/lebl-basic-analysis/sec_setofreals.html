@@ -1,0 +1,630 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>The set of real numbers · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_setofreals">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">The set of real numbers</span>
+</h2>
+<section class="introduction" id="sec_setofreals-2">
+<div class="para" id="sec_setofreals-2-1">
+<em class="emphasis">Note: 2 lectures, the extended real numbers are optional</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section>
+<section class="subsection" id="sec_setofreals-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.2.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">The set of real numbers</span>
+</h3>
+<div class="para" id="sec_setofreals-3-2">We finally get to the real number system.  To simplify matters, instead of constructing the real number set from the rational numbers, we simply state their existence as a theorem without proof.  Notice that <span class="process-math">\(\Q\)</span> is an ordered field.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-3-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="sec_setofreals-3-3"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.2.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_setofreals-3-3-1-1">There exists a unique<details aria-live="polite" class="ptx-footnote" id="sec_setofreals-3-3-1-1-1"><summary class="ptx-footnote__number" title="Footnote 1.2.1"><sup> 1 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_setofreals-3-3-1-1-1">Uniqueness is up to isomorphism, but we wish to avoid excessive use of algebra.  For us, it is simply enough to assume that a set of real numbers exists.  See Rudin <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="furtherreading_chapter.html#biblio-Rudin_baby" title="Bibliographic Entry R2: Principles of Mathematical Analysis">[R2]</a> for the construction and more details.
+</div></details> ordered field <span class="process-math">\(\R\)</span> with the <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicpropsrn.html#defn_lub" title="Definition 1.1.3">least-upper-bound property</a> such that <span class="process-math">\(\Q \subset \R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-3-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 1.2.1"><a aria-label="Copy heading and permalink for Theorem 1.2.1" href="#sec_setofreals-3-3" title="Copy heading and permalink for Theorem 1.2.1">🔗</a></div>
+</article>
+<div class="para" id="sec_setofreals-3-4">Note also that <span class="process-math">\(\N \subset \Q\text{.}\)</span>  We saw that <span class="process-math">\(1 &gt; 0\text{.}\)</span> By <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicset.html#induction_thm" title="Theorem 0.3.6: Principle of induction">induction</a> (exercise), we can prove that <span class="process-math">\(n &gt; 0\)</span> for all <span class="process-math">\(n \in \N\text{.}\)</span> Similarly, we verify simple statements about rational numbers. For example, we proved that if <span class="process-math">\(n &gt; 0\text{,}\)</span> then <span class="process-math">\(\nicefrac{1}{n} &gt; 0\text{.}\)</span> Then <span class="process-math">\(m &lt; k\)</span> implies <span class="process-math">\(\nicefrac{m}{n} &lt; \nicefrac{k}{n}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-3-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_setofreals-3-5">Analysis consists of proving inequalities, and the following proposition, or one of its many variations, is how an analyst proves a nonstrict inequality.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-3-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_setofreals-3-6"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.2.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_setofreals-3-6-1-1">If <span class="process-math">\(x \in \R\)</span> is such that <span class="process-math">\(x \leq \epsilon\)</span> for all <span class="process-math">\(\epsilon \in \R\)</span> where <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> then <span class="process-math">\(x \leq 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-3-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 1.2.2"><a aria-label="Copy heading and permalink for Proposition 1.2.2" href="#sec_setofreals-3-6" title="Copy heading and permalink for Proposition 1.2.2">🔗</a></div>
+</article>
+<article class="proof" id="sec_setofreals-3-7"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_setofreals-3-7-1">If <span class="process-math">\(x &gt; 0\text{,}\)</span> then <span class="process-math">\(0 &lt; \nicefrac{x}{2} &lt; x\)</span> (why?).  Take <span class="process-math">\(\epsilon = \nicefrac{x}{2}\)</span> to get a contradiction.  Thus <span class="process-math">\(x \leq 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-3-7-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 1.2.1.1"><a aria-label="Copy heading and permalink for Proof 1.2.1.1" href="#sec_setofreals-3-7" title="Copy heading and permalink for Proof 1.2.1.1">🔗</a></div>
+</article>
+<div class="para" id="sec_setofreals-3-8">For nonnegative <span class="process-math">\(x\text{,}\)</span> equality results: <em class="emphasis">If <span class="process-math">\(x \geq 0\)</span> is such that <span class="process-math">\(x \leq \epsilon\)</span> for all <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> then <span class="process-math">\(x = 0\text{.}\)</span></em> A common version uses the absolute value (see <a class="internal" href="sec_absval.html" title="Section 1.3: Absolute value and bounded functions">Section 1.3</a>): <em class="emphasis">If <span class="process-math">\(\sabs{x} \leq \epsilon\)</span> for all <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> then <span class="process-math">\(x = 0\text{.}\)</span></em> To prove <span class="process-math">\(x \geq 0\text{,}\)</span> an analyst might prove that <span class="process-math">\(x \geq -\epsilon\)</span> for all <span class="process-math">\(\epsilon &gt; 0\text{.}\)</span> From now on, when we say <span class="process-math">\(x \geq 0\)</span> or <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> we automatically mean that <span class="process-math">\(x \in \R\)</span> and <span class="process-math">\(\epsilon \in \R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-3-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_setofreals-3-9">The idea behind the proposition above is that any time we have two real numbers <span class="process-math">\(a &lt; b\text{,}\)</span> there is another real number <span class="process-math">\(c\)</span> such that <span class="process-math">\(a &lt; c &lt; b\text{.}\)</span>  Infinitely many such <span class="process-math">\(c\)</span> exist.  One of them is, for example, <span class="process-math">\(c = \frac{a+b}{2}\)</span> (why?). We will use this fact in the next example.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-3-9" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_setofreals-3-10">The most useful property of <span class="process-math">\(\R\)</span> for analysts is not just that it is an ordered field, but that it has the <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicpropsrn.html#defn_lub" title="Definition 1.1.3">least-upper-bound property</a>. Essentially, we want <span class="process-math">\(\Q\text{,}\)</span> but we also want to take suprema (and infima) willy-nilly. So what we do is take <span class="process-math">\(\Q\)</span> and throw in enough numbers to obtain <span class="process-math">\(\R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-3-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_setofreals-3-11">We mentioned already that <span class="process-math">\(\R\)</span> contains elements that are not in <span class="process-math">\(\Q\)</span> because of the <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicpropsrn.html#defn_lub" title="Definition 1.1.3">least-upper-bound property</a>.  Let us prove it. We saw there is no rational square root of two.  The set <span class="process-math">\(\{ x \in \Q : x^2 &lt; 2 \}\)</span> implies the existence of the real number <span class="process-math">\(\sqrt{2}\text{,}\)</span> although this fact requires a bit of work.  See also <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_setofreals.html#exercise_sqrt2QorR" title="Exercise 1.2.14">Exercise 1.2.14</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-3-11" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="example_sqrt2"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.2.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="example_sqrt2-1-1">Claim: <em class="emphasis">There exists a unique positive <span class="process-math">\(r \in \R\)</span> such that <span class="process-math">\(r^2 = 2\text{.}\)</span>  We denote <span class="process-math">\(r\)</span> by <span class="process-math">\(\sqrt{2}\text{.}\)</span></em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_sqrt2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="example_sqrt2-1-2"><h5 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="example_sqrt2-1-2-1">Take the set <span class="process-math">\(A \coloneqq \{ x \in \R : x^2 &lt; 2 \}\text{.}\)</span>  We first show that <span class="process-math">\(A\)</span> is bounded above and nonempty.  The inequality <span class="process-math">\(x \geq 2\)</span> implies <span class="process-math">\(x^2 \geq 4\)</span> (see <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicpropsrn.html#exercise_squareineq" title="Exercise 1.1.3">Exercise 1.1.3</a>). So if <span class="process-math">\(x^2 &lt; 2\text{,}\)</span> then <span class="process-math">\(x &lt; 2\text{.}\)</span>  So <span class="process-math">\(A\)</span> is bounded above. As <span class="process-math">\(1 \in A\text{,}\)</span> the set <span class="process-math">\(A\)</span> is nonempty.  The supremum, therefore, exists.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_sqrt2-1-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="example_sqrt2-1-2-2">Let <span class="process-math">\(r \coloneqq \sup\, A\text{.}\)</span>  We will show that <span class="process-math">\(r^2 = 2\)</span> by showing that <span class="process-math">\(r^2 \geq 2\)</span> and <span class="process-math">\(r^2 \leq 2\text{.}\)</span>  This is the way analysts show equality, by showing two inequalities. We already know that <span class="process-math">\(r \geq 1 &gt; 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_sqrt2-1-2-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="example_sqrt2-1-2-3">In the following, it may seem we are pulling certain expressions out of a hat.  When writing a proof such as this, we would, of course, come up with the expressions only after playing around with what we wish to prove.  The order in which we write the proof is not necessarily the order in which we come up with the proof.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_sqrt2-1-2-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="example_sqrt2-1-2-4">
+<div class="para">Let us first show that <span class="process-math">\(r^2 \geq 2\text{.}\)</span> Take a positive number <span class="process-math">\(s\)</span> such that <span class="process-math">\(s^2 &lt; 2\text{.}\)</span>  We wish to find an <span class="process-math">\(h &gt; 0\)</span> such that <span class="process-math">\({(s+h)}^2 &lt; 2\text{.}\)</span> As <span class="process-math">\(2-s^2 &gt; 0\text{,}\)</span> we have <span class="process-math">\(\frac{2-s^2}{2s+1} &gt; 0\text{.}\)</span> Choose an <span class="process-math">\(h \in \R\)</span> such that <span class="process-math">\(0 &lt; h &lt; \frac{2-s^2}{2s+1}\text{.}\)</span> Furthermore, assume <span class="process-math">\(h &lt; 1\text{.}\)</span>  Estimate,</div>
+<div class="displaymath process-math" id="example_sqrt2-1-2-4-11">
+\begin{equation}
+\begin{aligned}
+{(s+h)}^2 - s^2 &amp; = h(2s + h) \\
+&amp; &lt; h(2s+1) &amp; &amp; \quad \bigl(\text{since } h &lt; 1\bigr) \\
+&amp; &lt; 2-s^2 &amp; &amp; \quad \bigl(\text{since } h &lt; \tfrac{2-s^2}{2s+1} \bigr) .
+\end{aligned}
+\end{equation}
+</div>
+<div class="para">Therefore, <span class="process-math">\({(s+h)}^2 &lt; 2\text{.}\)</span>  Hence <span class="process-math">\(s+h \in A\text{,}\)</span> but as <span class="process-math">\(h &gt; 0\text{,}\)</span> we have <span class="process-math">\(s+h &gt; s\text{.}\)</span>  So <span class="process-math">\(s &lt; r = \sup\, A\text{.}\)</span>  As <span class="process-math">\(s\)</span> was an arbitrary positive number such that <span class="process-math">\(s^2 &lt; 2\text{,}\)</span> it follows that <span class="process-math">\(r^2 \geq 2\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_sqrt2-1-2-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="example_sqrt2-1-2-5">
+<div class="para">Now take a positive number <span class="process-math">\(s\)</span> such that <span class="process-math">\(s^2 &gt; 2\text{.}\)</span>  We wish to find an <span class="process-math">\(h &gt; 0\)</span> such that <span class="process-math">\({(s-h)}^2 &gt; 2\)</span> and <span class="process-math">\(s-h\)</span> is still positive. As <span class="process-math">\(s^2-2 &gt; 0\text{,}\)</span> we have <span class="process-math">\(\frac{s^2-2}{2s} &gt; 0\text{.}\)</span> Let <span class="process-math">\(h \coloneqq \frac{s^2-2}{2s}\text{,}\)</span> and check <span class="process-math">\(s-h=s-\frac{s^2-2}{2s} = \frac{s}{2}+\frac{1}{s} &gt; 0\text{.}\)</span> Estimate,</div>
+<div class="displaymath process-math" id="example_sqrt2-1-2-5-10">
+\begin{equation}
+\begin{aligned}
+s^2 - {(s-h)}^2 &amp; = 2sh - h^2 \\
+&amp; &lt; 2sh &amp; &amp; \quad \bigl( \text{since } h^2 &gt; 0 \text{ as } h \neq 0 \bigr) \\
+&amp; = s^2-2 &amp; &amp; \quad \bigl( \text{since } h = \tfrac{s^2-2}{2s} \bigr) .
+\end{aligned}
+\end{equation}
+</div>
+<div class="para">By subtracting <span class="process-math">\(s^2\)</span> from both sides and multiplying by <span class="process-math">\(-1\text{,}\)</span> we find <span class="process-math">\({(s-h)}^2 &gt; 2\text{.}\)</span>  Therefore, <span class="process-math">\(s-h \notin A\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_sqrt2-1-2-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="example_sqrt2-1-2-6">Moreover, if <span class="process-math">\(x \geq s-h\text{,}\)</span> then <span class="process-math">\(x^2 \geq {(s-h)}^2 &gt; 2\)</span> (as <span class="process-math">\(x &gt; 0\)</span> and <span class="process-math">\(s-h &gt; 0\)</span>) and so <span class="process-math">\(x \notin A\text{.}\)</span> Thus, <span class="process-math">\(s-h\)</span> is an upper bound for <span class="process-math">\(A\text{.}\)</span>  However, <span class="process-math">\(s-h &lt; s\text{,}\)</span> or in other words, <span class="process-math">\(s &gt; r = \sup\, A\text{.}\)</span>  Hence, <span class="process-math">\(r^2 \leq 2\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_sqrt2-1-2-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="example_sqrt2-1-2-7">Together, <span class="process-math">\(r^2 \geq 2\)</span> and <span class="process-math">\(r^2 \leq 2\)</span> imply <span class="process-math">\(r^2 = 2\text{.}\)</span>  The existence part is finished.  We still need to handle uniqueness.  Suppose <span class="process-math">\(s \in \R\)</span> is such that <span class="process-math">\(s^2 = 2\)</span> and <span class="process-math">\(s &gt; 0\text{.}\)</span> Thus, <span class="process-math">\(s^2 = r^2\text{.}\)</span>  However, if <span class="process-math">\(0 &lt; s &lt; r\text{,}\)</span> then <span class="process-math">\(s^2 &lt; r^2\text{.}\)</span>  Similarly, <span class="process-math">\(0 &lt; r &lt; s\)</span> implies <span class="process-math">\(r^2 &lt; s^2\text{.}\)</span>  Hence, <span class="process-math">\(s = r\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_sqrt2-1-2-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 1"><a aria-label="Copy heading and permalink for Proof 1" href="#example_sqrt2-1-2" title="Copy heading and permalink for Proof 1">🔗</a></div>
+</article><div class="autopermalink" data-description="Example 1.2.3"><a aria-label="Copy heading and permalink for Example 1.2.3" href="#example_sqrt2" title="Copy heading and permalink for Example 1.2.3">🔗</a></div>
+</article>
+<div class="para" id="sec_setofreals-3-13">The number <span class="process-math">\(\sqrt{2} \notin \Q\text{.}\)</span>  The set <span class="process-math">\(\R \setminus \Q\)</span> is called the set of <em class="emphasis">irrational</em> numbers.  We just proved that <span class="process-math">\(\R \setminus \Q\)</span> is nonempty.  Not only is it nonempty, as we will see, it is very large indeed.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-3-13" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_setofreals-3-14">Using the same technique as above, we can show that a positive real number <span class="process-math">\(x^{1/n}\)</span> exists for all <span class="process-math">\(n\in \N\)</span> and all <span class="process-math">\(x &gt; 0\text{.}\)</span> That is, for each <span class="process-math">\(x &gt; 0\text{,}\)</span> there exists a unique positive real number <span class="process-math">\(r\)</span> such that <span class="process-math">\(r^n = x\text{.}\)</span> The proof is left as an exercise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-3-14" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 1.2.1: The set of real numbers"><a aria-label="Copy heading and permalink for Subsection 1.2.1: The set of real numbers" href="#sec_setofreals-3" title="Copy heading and permalink for Subsection 1.2.1: The set of real numbers">🔗</a></div>
+</section>
+<section class="subsection" id="sec_setofreals-4">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.2.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Archimedean property</span>
+</h3>
+<div class="para" id="sec_setofreals-4-2">As we have seen, there are plenty of real numbers in any interval.  But there are also infinitely many rational numbers in any interval.  The following is one of the fundamental facts about the real numbers. The two parts of the next theorem are actually equivalent, even though it may not seem like that at first sight.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="thm_arch"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.2.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="thm_arch-1-1"><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#thm_arch-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div></div>
+<ol class="lower-roman ol-marker-2" id="thm_arch-1-2">
+<li id="thm_arch_i">
+<div class="para logical" id="thm_arch_i-1">
+<div class="para">
+<em class="emphasis">(Archimedean property)</em><details aria-live="polite" class="ptx-footnote" id="thm_arch_i-1-2"><summary class="ptx-footnote__number" title="Footnote 1.2.2"><sup> 2 </sup></summary>
+<div class="ptx-footnote__contents" id="thm_arch_i-1-2">Named after the Ancient Greek mathematician <a class="external" href="https://en.wikipedia.org/wiki/Archimedes" target="_blank">Archimedes of Syracuse</a> (c. 287 BC – c. 212 BC). This property is Axiom V from Archimedes’ “On the Sphere and Cylinder” (225 BC).
+</div></details> If <span class="process-math">\(x, y \in \R\)</span> and <span class="process-math">\(x &gt; 0\text{,}\)</span> then there exists an <span class="process-math">\(n \in \N\)</span> such that</div>
+<div class="displaymath process-math" id="thm_arch_i-1-6">
+\begin{equation}
+nx &gt; y .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#thm_arch_i-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#thm_arch_i" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="thm_arch_ii">
+<div class="para" id="thm_arch_ii-1">
+<em class="emphasis">(<span class="process-math">\(\Q\)</span> is dense in <span class="process-math">\(\R\)</span>)</em> If <span class="process-math">\(x, y \in \R\)</span> and <span class="process-math">\(x &lt; y\text{,}\)</span> then there exists an <span class="process-math">\(r \in \Q\)</span> such that <span class="process-math">\(x &lt; r &lt; y\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#thm_arch_ii-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#thm_arch_ii" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Theorem 1.2.4"><a aria-label="Copy heading and permalink for Theorem 1.2.4" href="#thm_arch" title="Copy heading and permalink for Theorem 1.2.4">🔗</a></div>
+</article>
+<article class="proof" id="sec_setofreals-4-4"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_setofreals-4-4-1">Let us prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_setofreals.html#thm_arch_i" title="Item i">i</a>.  Divide through by <span class="process-math">\(x\text{.}\)</span> Then <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_setofreals.html#thm_arch_i" title="Item i">i</a> says that for every real number <span class="process-math">\(t\coloneqq \nicefrac{y}{x}\text{,}\)</span> we can find <span class="process-math">\(n \in \N\)</span> such that <span class="process-math">\(n &gt; t\text{.}\)</span>  In other words, <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_setofreals.html#thm_arch_i" title="Item i">i</a> says that <span class="process-math">\(\N \subset \R\)</span> is not bounded above. Suppose for contradiction that <span class="process-math">\(\N\)</span> is bounded above.  Let <span class="process-math">\(b \coloneqq \sup \N\text{.}\)</span> The number <span class="process-math">\(b-1\)</span> cannot possibly be an upper bound for <span class="process-math">\(\N\)</span> as it is strictly less than <span class="process-math">\(b\)</span> (the least upper bound).  Thus there exists an <span class="process-math">\(m \in \N\)</span> such that <span class="process-math">\(m &gt; b-1\text{.}\)</span> Add one to obtain <span class="process-math">\(m+1 &gt; b\text{,}\)</span> contradicting <span class="process-math">\(b\)</span> being an upper bound.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-4-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="figdensofQ"><img alt="A diagram of the horizontal real line with several tall vertical ticks marked that are equally spaced with the distance between them being 1 over n. The second tick from the left is marked as m minus 1 all over n. After this tick there is the number x marked with a short tick. The next tall tick is marked with m over n. Then comes the number y and then a tall tick marked m plus 1 all over n. Then two more tall ticks are shown." class="raimg" role="img" src="figures/figdensofQ-mbxpdft.svg" style="width:217pt; height:63pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Idea of the proof of the density of <span class="process-math">\(\Q\text{:}\)</span> Find <span class="process-math">\(n\)</span> such that <span class="process-math">\(y-x &gt;
+\nicefrac{1}{n}\text{,}\)</span> then take the least <span class="process-math">\(m\)</span> such that <span class="process-math">\(\nicefrac{m}{n} &gt; x\text{.}\)</span><div class="autopermalink" data-description="Figure 1.2"><a aria-label="Copy heading and permalink for Figure 1.2" href="#figdensofQ" title="Copy heading and permalink for Figure 1.2">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para logical" id="sec_setofreals-4-4-5">
+<div class="para">Let us tackle <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_setofreals.html#thm_arch_ii" title="Item ii">ii</a>. See <a class="internal" href="sec_setofreals.html#figdensofQ" title="Figure 1.2">Figure 1.2</a> for a picture of the idea behind the proof. First assume <span class="process-math">\(x \geq 0\text{.}\)</span> Note that <span class="process-math">\(y-x &gt; 0\text{.}\)</span> By <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_setofreals.html#thm_arch_i" title="Item i">i</a>, there exists an <span class="process-math">\(n \in \N\)</span> such that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_arch_ii.html ./knowl/xref/figdensofQ.html ./knowl/xref/thm_arch_i.html ./knowl/xref/thm_arch_i.html ./knowl/xref/wop_link.html" id="sec_setofreals-4-4-5-7">
+\begin{equation}
+n(y-x) &gt; 1
+\qquad \text{or} \qquad
+y-x &gt; \nicefrac{1}{n}.
+\end{equation}
+</div>
+<div class="para">Again by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_setofreals.html#thm_arch_i" title="Item i">i</a>, the set <span class="process-math">\(A \coloneqq \{ k \in \N : k &gt; nx \}\)</span> is nonempty.  By the <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicset.html#wop_link" title="Axiom: Well ordering property of \N">well ordering property</a> of <span class="process-math">\(\N\text{,}\)</span> <span class="process-math">\(A\)</span> has a least element <span class="process-math">\(m\text{.}\)</span> As <span class="process-math">\(m \in A\text{,}\)</span> we have <span class="process-math">\(m &gt; nx\text{.}\)</span> Divide through by <span class="process-math">\(n\)</span> to get <span class="process-math">\(x &lt; \nicefrac{m}{n}\text{.}\)</span> As <span class="process-math">\(m\)</span> is the least element of <span class="process-math">\(A\text{,}\)</span> <span class="process-math">\(m-1 \notin A\text{.}\)</span> If <span class="process-math">\(m &gt; 1\text{,}\)</span> then <span class="process-math">\(m-1 \in \N\text{,}\)</span> but <span class="process-math">\(m-1 \notin A\)</span> and so <span class="process-math">\(m-1 \leq nx\text{.}\)</span> If <span class="process-math">\(m=1\text{,}\)</span> then <span class="process-math">\(m-1 = 0\text{,}\)</span> and <span class="process-math">\(m-1 \leq nx\)</span> still holds as <span class="process-math">\(x \geq 0\text{.}\)</span> In other words,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_arch_ii.html ./knowl/xref/figdensofQ.html ./knowl/xref/thm_arch_i.html ./knowl/xref/thm_arch_i.html ./knowl/xref/wop_link.html" id="sec_setofreals-4-4-5-29">
+\begin{equation}
+m-1 \leq nx \qquad \text{or} \qquad m \leq nx+1 .
+\end{equation}
+</div>
+<div class="para">On the other hand, from <span class="process-math">\(n(y-x) &gt; 1\)</span> we obtain <span class="process-math">\(ny &gt; 1+nx\text{.}\)</span> Hence <span class="process-math">\(ny &gt; 1+nx \geq m\text{,}\)</span> and therefore <span class="process-math">\(y &gt; \nicefrac{m}{n}\text{.}\)</span> Putting everything together, we obtain <span class="process-math">\(x &lt; \nicefrac{m}{n} &lt; y\text{.}\)</span> So take <span class="process-math">\(r = \nicefrac{m}{n}\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-4-4-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_setofreals-4-4-6">Now assume <span class="process-math">\(x &lt; 0\text{.}\)</span>  If <span class="process-math">\(y &gt; 0\text{,}\)</span> then just take <span class="process-math">\(r=0\text{.}\)</span>  If <span class="process-math">\(y \leq 0\text{,}\)</span> then <span class="process-math">\(0 \leq -y &lt; -x\text{,}\)</span> and we find a rational <span class="process-math">\(q\)</span> such that <span class="process-math">\(-y &lt; q &lt; -x\text{.}\)</span>  Then take <span class="process-math">\(r = -q\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-4-4-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 1.2.2.1"><a aria-label="Copy heading and permalink for Proof 1.2.2.1" href="#sec_setofreals-4-4" title="Copy heading and permalink for Proof 1.2.2.1">🔗</a></div>
+</article>
+<div class="para" id="sec_setofreals-4-5">Let us state and prove a simple but useful corollary of the <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_setofreals.html#thm_arch_i" title="Item i">Archimedean property</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-4-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="corollary theorem-like" id="sec_setofreals-4-6"><h4 class="heading">
+<span class="type">Corollary</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.2.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_setofreals-4-6-1-1">
+<span class="process-math">\(\inf \{ \nicefrac{1}{n} : n \in \N \} = 0\text{.}\)</span> See <a class="internal" href="sec_setofreals.html#fig_oneovernset" title="Figure 1.3">Figure 1.3</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-4-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Corollary 1.2.5"><a aria-label="Copy heading and permalink for Corollary 1.2.5" href="#sec_setofreals-4-6" title="Copy heading and permalink for Corollary 1.2.5">🔗</a></div>
+</article>
+<article class="proof" id="sec_setofreals-4-7"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_setofreals-4-7-1">Let <span class="process-math">\(A \coloneqq \{ \nicefrac{1}{n} : n \in \N \}\text{.}\)</span>  Obviously, <span class="process-math">\(A\)</span> is not empty. Furthermore, <span class="process-math">\(\nicefrac{1}{n} &gt; 0\)</span> for all <span class="process-math">\(n \in \N\text{,}\)</span> so <span class="process-math">\(0\)</span> is a lower bound and <span class="process-math">\(b \coloneqq \inf\, A\)</span> exists. As <span class="process-math">\(0\)</span> is a lower bound, <span class="process-math">\(b \geq 0\text{.}\)</span> Take an arbitrary <span class="process-math">\(a &gt; 0\text{.}\)</span>  By the <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_setofreals.html#thm_arch_i" title="Item i">Archimedean property</a>, there exists an <span class="process-math">\(n\)</span> such that <span class="process-math">\(na &gt; 1\text{,}\)</span> that is, <span class="process-math">\(a &gt; \nicefrac{1}{n} \in A\text{.}\)</span>  Therefore, <span class="process-math">\(a\)</span> cannot be a lower bound for <span class="process-math">\(A\text{.}\)</span>  Hence <span class="process-math">\(b=0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-4-7-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 1.2.2.2"><a aria-label="Copy heading and permalink for Proof 1.2.2.2" href="#sec_setofreals-4-7" title="Copy heading and permalink for Proof 1.2.2.2">🔗</a></div>
+</article><hr class="rahr"/>
+<figure class="figure figure-like" id="fig_oneovernset"><img alt="A diagram of the horizontal real line with vertical ticks marking the numbers 1, 1 over 2, 1 over 3, 1 over 4, etc. These ticks get closer and closer to 0, which is also marked, and they are so thick by the time we get to 0 that we only see a black rectangle there." class="raimg" role="img" src="figures/oneovernset-mbx.svg" style="width:264pt; height:26pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>The set <span class="process-math">\(\{ \nicefrac{1}{n} : n \in \N \}\)</span> and its infimum <span class="process-math">\(0\text{.}\)</span><div class="autopermalink" data-description="Figure 1.3"><a aria-label="Copy heading and permalink for Figure 1.3" href="#fig_oneovernset" title="Copy heading and permalink for Figure 1.3">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="autopermalink" data-description="Subsection 1.2.2: Archimedean property"><a aria-label="Copy heading and permalink for Subsection 1.2.2: Archimedean property" href="#sec_setofreals-4" title="Copy heading and permalink for Subsection 1.2.2: Archimedean property">🔗</a></div>
+</section>
+<section class="subsection" id="sec_setofreals-5">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.2.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Using supremum and infimum</span>
+</h3>
+<div class="para logical" id="sec_setofreals-5-2">
+<div class="para">Suprema and infima are compatible with algebraic operations.  For a set <span class="process-math">\(A \subset \R\)</span> and <span class="process-math">\(x \in \R\)</span> define</div>
+<div class="displaymath process-math" id="sec_setofreals-5-2-3">
+\begin{equation}
+\begin{aligned}
+x + A &amp; \coloneqq \{ x+y \in \R : y \in A \} , \\
+xA &amp; \coloneqq \{ xy \in \R : y \in A \} .
+\end{aligned}
+\end{equation}
+</div>
+<div class="para">For example, if <span class="process-math">\(A = \{ 1,2,3 \}\text{,}\)</span> then <span class="process-math">\(5+A = \{ 6,7,8 \}\)</span> and <span class="process-math">\(3A = \{ 3,6,9
+\}\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-5-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_supinfalg"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.2.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="prop_supinfalg-1-1">Let <span class="process-math">\(A \subset \R\)</span> be nonempty.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_supinfalg-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="prop_supinfalg-1-2">
+<li id="prop_supinfalg-1-2-1">
+<div class="para" id="prop_supinfalg-1-2-1-1">If <span class="process-math">\(x \in \R\)</span> and <span class="process-math">\(A\)</span> is bounded above, then <span class="process-math">\(\sup (x+A) = x + \sup\, A\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_supinfalg-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#prop_supinfalg-1-2-1" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="prop_supinfalg-1-2-2">
+<div class="para" id="prop_supinfalg-1-2-2-1">If <span class="process-math">\(x \in \R\)</span> and <span class="process-math">\(A\)</span> is bounded below, then <span class="process-math">\(\inf (x+A) = x + \inf\, A\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_supinfalg-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#prop_supinfalg-1-2-2" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+<li id="prop_supinfalg-1-2-3">
+<div class="para" id="prop_supinfalg-1-2-3-1">If <span class="process-math">\(x &gt; 0\)</span> and <span class="process-math">\(A\)</span> is bounded above, then <span class="process-math">\(\sup (xA) = x ( \sup\, A )\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_supinfalg-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iii"><a aria-label="Copy heading and permalink for Item iii" href="#prop_supinfalg-1-2-3" title="Copy heading and permalink for Item iii">🔗</a></div>
+</li>
+<li id="prop_supinfalg-1-2-4">
+<div class="para" id="prop_supinfalg-1-2-4-1">If <span class="process-math">\(x &gt; 0\)</span> and <span class="process-math">\(A\)</span> is bounded below, then <span class="process-math">\(\inf (xA) = x ( \inf\, A )\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_supinfalg-1-2-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iv"><a aria-label="Copy heading and permalink for Item iv" href="#prop_supinfalg-1-2-4" title="Copy heading and permalink for Item iv">🔗</a></div>
+</li>
+<li id="prop_supinfalg-1-2-5">
+<div class="para" id="prop_supinfalg-1-2-5-1">If <span class="process-math">\(x &lt; 0\)</span> and <span class="process-math">\(A\)</span> is bounded below, then <span class="process-math">\(\sup (xA) = x ( \inf\, A )\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_supinfalg-1-2-5-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item v"><a aria-label="Copy heading and permalink for Item v" href="#prop_supinfalg-1-2-5" title="Copy heading and permalink for Item v">🔗</a></div>
+</li>
+<li id="prop_supinfalg-1-2-6">
+<div class="para" id="prop_supinfalg-1-2-6-1">If <span class="process-math">\(x &lt; 0\)</span> and <span class="process-math">\(A\)</span> is bounded above, then <span class="process-math">\(\inf (xA) = x ( \sup\, A )\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_supinfalg-1-2-6-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item vi"><a aria-label="Copy heading and permalink for Item vi" href="#prop_supinfalg-1-2-6" title="Copy heading and permalink for Item vi">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Proposition 1.2.6"><a aria-label="Copy heading and permalink for Proposition 1.2.6" href="#prop_supinfalg" title="Copy heading and permalink for Proposition 1.2.6">🔗</a></div>
+</article>
+<div class="para" id="sec_setofreals-5-4">Note how multiplying a set by a negative number swaps suprema and infima. Also, as the proposition implies that the supremum (resp. infimum) of <span class="process-math">\(x+A\)</span> or <span class="process-math">\(xA\)</span> exists, it also implies that <span class="process-math">\(x+A\)</span> or <span class="process-math">\(xA\)</span> is nonempty and bounded above (resp. below).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-5-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_setofreals-5-5"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_setofreals-5-5-1">Let us only prove the first statement.  The rest are left as exercises.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-5-5-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_setofreals-5-5-2">
+<div class="para">Suppose <span class="process-math">\(b\)</span> is an upper bound for <span class="process-math">\(A\text{.}\)</span>  That is, <span class="process-math">\(y \leq b\)</span> for all <span class="process-math">\(y \in A\text{.}\)</span> Then <span class="process-math">\(x+y \leq x+b\)</span> for all <span class="process-math">\(y \in A\text{,}\)</span> and so <span class="process-math">\(x+b\)</span> is an upper bound for <span class="process-math">\(x+A\text{.}\)</span>  In particular, if <span class="process-math">\(b = \sup\, A\text{,}\)</span> then</div>
+<div class="displaymath process-math" id="sec_setofreals-5-5-2-10">
+\begin{equation}
+\sup (x+A) \leq x+b = x+ \sup\, A .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-5-5-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_setofreals-5-5-3">
+<div class="para">The opposite inequality is similar. If <span class="process-math">\(c\)</span> is an upper bound for <span class="process-math">\(x+A\text{,}\)</span> then <span class="process-math">\(x+y \leq c\)</span> for all <span class="process-math">\(y \in A\)</span> and so <span class="process-math">\(y \leq c-x\)</span> for all <span class="process-math">\(y \in A\text{.}\)</span> So <span class="process-math">\(c-x\)</span> is an upper bound for <span class="process-math">\(A\text{.}\)</span> If <span class="process-math">\(c = \sup (x+A)\text{,}\)</span> then</div>
+<div class="displaymath process-math" id="sec_setofreals-5-5-3-10">
+\begin{equation}
+\sup\, A \leq c-x = \sup (x+A) -x .
+\end{equation}
+</div>
+<div class="para">The result follows.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-5-5-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 1.2.3.1"><a aria-label="Copy heading and permalink for Proof 1.2.3.1" href="#sec_setofreals-5-5" title="Copy heading and permalink for Proof 1.2.3.1">🔗</a></div>
+</article>
+<div class="para" id="sec_setofreals-5-6">Sometimes we need to apply supremum or infimum twice.  Here is an example.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-5-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="infsupineq_prop"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.2.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="infsupineq_prop-1-1">Let <span class="process-math">\(A, B \subset \R\)</span> be nonempty sets such that <span class="process-math">\(x \leq y\)</span> whenever <span class="process-math">\(x \in A\)</span> and <span class="process-math">\(y \in B\text{.}\)</span>  Then <span class="process-math">\(A\)</span> is bounded above, <span class="process-math">\(B\)</span> is bounded below, and <span class="process-math">\(\sup\, A \leq \inf\, B\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#infsupineq_prop-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 1.2.7"><a aria-label="Copy heading and permalink for Proposition 1.2.7" href="#infsupineq_prop" title="Copy heading and permalink for Proposition 1.2.7">🔗</a></div>
+</article>
+<article class="proof" id="sec_setofreals-5-8"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_setofreals-5-8-1">Any <span class="process-math">\(x \in A\)</span> is a lower bound for <span class="process-math">\(B\text{.}\)</span> Therefore, <span class="process-math">\(x \leq \inf\, B\)</span> for all <span class="process-math">\(x \in A\text{,}\)</span> so <span class="process-math">\(\inf\, B\)</span> is an upper bound for <span class="process-math">\(A\text{.}\)</span> Hence, <span class="process-math">\(\sup\, A \leq \inf\, B\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-5-8-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 1.2.3.2"><a aria-label="Copy heading and permalink for Proof 1.2.3.2" href="#sec_setofreals-5-8" title="Copy heading and permalink for Proof 1.2.3.2">🔗</a></div>
+</article>
+<div class="para" id="sec_setofreals-5-9">We must be careful about strict inequalities and taking suprema and infima. Note that <span class="process-math">\(x &lt; y\)</span> whenever <span class="process-math">\(x \in A\)</span> and <span class="process-math">\(y \in B\)</span> still only implies <span class="process-math">\(\sup\, A \leq \inf\, B\text{,}\)</span> and not a strict inequality. For example, take <span class="process-math">\(A \coloneqq \{ 0 \}\)</span> and <span class="process-math">\(B \coloneqq \{ \nicefrac{1}{n}
+: n \in \N \}\text{.}\)</span> Then <span class="process-math">\(0 &lt; \nicefrac{1}{n}\)</span> for all <span class="process-math">\(n \in \N\text{.}\)</span>  However, <span class="process-math">\(\sup\, A = 0\)</span> and <span class="process-math">\(\inf\, B = 0\text{.}\)</span> This important subtle point comes up often.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-5-9" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_setofreals-5-10">The proof of the following often-used fact is left to the reader. A similar result holds for infima.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-5-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_existsxepsfromsup"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.2.8</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="prop_existsxepsfromsup-1-1">If <span class="process-math">\(S \subset \R\)</span> is nonempty and bounded above, then for every <span class="process-math">\(\epsilon &gt; 0\)</span> there exists an <span class="process-math">\(x \in S\)</span> such that <span class="process-math">\((\sup\, S) - \epsilon &lt; x \leq \sup\, S\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_existsxepsfromsup-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 1.2.8"><a aria-label="Copy heading and permalink for Proposition 1.2.8" href="#prop_existsxepsfromsup" title="Copy heading and permalink for Proposition 1.2.8">🔗</a></div>
+</article>
+<div class="para" id="sec_setofreals-5-12">To make using suprema and infima even easier, we may want to write <span class="process-math">\(\sup\, A\)</span> and <span class="process-math">\(\inf\, A\)</span> without worrying about <span class="process-math">\(A\)</span> being bounded and nonempty.  We make the following natural definitions.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-5-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_setofreals-5-13"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.2.9</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_setofreals-5-13-1-1">Let <span class="process-math">\(A \subset \R\)</span> be a set.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-5-13-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="sec_setofreals-5-13-1-2">
+<li id="sec_setofreals-5-13-1-2-1">
+<div class="para" id="sec_setofreals-5-13-1-2-1-1">If <span class="process-math">\(A\)</span> is empty, then <span class="process-math">\(\sup\, A \coloneqq -\infty\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-5-13-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#sec_setofreals-5-13-1-2-1" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="sec_setofreals-5-13-1-2-2">
+<div class="para" id="sec_setofreals-5-13-1-2-2-1">If <span class="process-math">\(A\)</span> is not bounded above, then <span class="process-math">\(\sup\, A \coloneqq \infty\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-5-13-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#sec_setofreals-5-13-1-2-2" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+<li id="sec_setofreals-5-13-1-2-3">
+<div class="para" id="sec_setofreals-5-13-1-2-3-1">If <span class="process-math">\(A\)</span> is empty, then <span class="process-math">\(\inf\, A \coloneqq \infty\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-5-13-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iii"><a aria-label="Copy heading and permalink for Item iii" href="#sec_setofreals-5-13-1-2-3" title="Copy heading and permalink for Item iii">🔗</a></div>
+</li>
+<li id="sec_setofreals-5-13-1-2-4">
+<div class="para" id="sec_setofreals-5-13-1-2-4-1">If <span class="process-math">\(A\)</span> is not bounded below, then <span class="process-math">\(\inf\, A \coloneqq -\infty\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-5-13-1-2-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iv"><a aria-label="Copy heading and permalink for Item iv" href="#sec_setofreals-5-13-1-2-4" title="Copy heading and permalink for Item iv">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Definition 1.2.9"><a aria-label="Copy heading and permalink for Definition 1.2.9" href="#sec_setofreals-5-13" title="Copy heading and permalink for Definition 1.2.9">🔗</a></div>
+</article>
+<div class="para logical" id="sec_setofreals-5-14">
+<div class="para">The statements in the definition above follow naturally if, instead of working in the ordered set <span class="process-math">\(\R\text{,}\)</span> we take suprema and infima in the ordered set <span class="process-math">\(\R^* \coloneqq \R \cup \{ -\infty , \infty\}\)</span> , where we let</div>
+<div class="displaymath process-math" id="sec_setofreals-5-14-3">
+\begin{equation}
+-\infty &lt; \infty \quad \text{and} \quad
+-\infty &lt; x \quad \text{and} \quad
+x &lt; \infty \quad \text{for all $x \in \R$}.
+\end{equation}
+</div>
+<div class="para">The set <span class="process-math">\(\R^*\)</span> is called the set of <em class="emphasis">extended real numbers</em>. For convenience, <span class="process-math">\(\infty\)</span> and <span class="process-math">\(-\infty\)</span> are sometimes treated as if they were numbers, except we do not allow arbitrary arithmetic with them. It is possible to define some arithmetic on <span class="process-math">\(\R^*\text{.}\)</span>  Most operations are extended in an obvious way, but we must leave <span class="process-math">\(\infty-\infty\text{,}\)</span> <span class="process-math">\(0 \cdot (\pm\infty)\text{,}\)</span> and <span class="process-math">\(\frac{\pm\infty}{\pm\infty}\)</span> undefined. We refrain from using this arithmetic; it leads to easy mistakes as <span class="process-math">\(\R^*\)</span> is not a field. Now we can take suprema and infima without fear of emptiness or unboundedness.  In this book, we mostly avoid using <span class="process-math">\(\R^*\)</span> outside of exercises and leave such generalizations to the interested reader.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-5-14" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 1.2.3: Using supremum and infimum"><a aria-label="Copy heading and permalink for Subsection 1.2.3: Using supremum and infimum" href="#sec_setofreals-5" title="Copy heading and permalink for Subsection 1.2.3: Using supremum and infimum">🔗</a></div>
+</section>
+<section class="subsection" id="sec_setofreals-6">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.2.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Maxima and minima</span>
+</h3>
+<div class="para logical" id="sec_setofreals-6-2">
+<div class="para">By <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicpropsrn.html#exercise_finitesethasminmax" title="Exercise 1.1.2">Exercise 1.1.2</a>, a finite set of numbers always has a supremum and an infimum and they are both contained in the set itself. In this case, we usually do not use the words supremum or infimum. When a set <span class="process-math">\(A\)</span> of real numbers is bounded above and <span class="process-math">\(\sup\, A \in A\text{,}\)</span> we can use the word <em class="emphasis">maximum</em> and the notation <span class="process-math">\(\max\, A\)</span> to denote the supremum. Similarly for infimum: When <span class="process-math">\(A\)</span> is bounded below and <span class="process-math">\(\inf\, A \in A\text{,}\)</span> we can use the word <em class="emphasis">minimum</em> and the notation <span class="process-math">\(\min\, A\text{.}\)</span> For example,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_finitesethasminmax.html" id="sec_setofreals-6-2-10">
+\begin{equation}
+\begin{aligned}
+&amp; \max \{ 1,2.4,\pi,100 \} = 100 , \\
+&amp; \min \{ 1,2.4,\pi,100 \} = 1 .
+\end{aligned}
+\end{equation}
+</div>
+<div class="para">While writing <span class="process-math">\(\sup\)</span> and <span class="process-math">\(\inf\)</span> may be technically correct in this situation, <span class="process-math">\(\max\)</span> and <span class="process-math">\(\min\)</span> are generally used to emphasize that the supremum or infimum is in the set itself, especially when the set is finite.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-6-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 1.2.4: Maxima and minima"><a aria-label="Copy heading and permalink for Subsection 1.2.4: Maxima and minima" href="#sec_setofreals-6" title="Copy heading and permalink for Subsection 1.2.4: Maxima and minima">🔗</a></div>
+</section>
+<section class="exercises" id="sec_setofreals-7">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.2.5</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_setofreals-7-1"><h4 class="heading"><span class="codenumber">1.2.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_setofreals-7-1-1-1">Prove that if <span class="process-math">\(t &gt; 0\)</span> (<span class="process-math">\(t \in \R\)</span>), then there exists an <span class="process-math">\(n \in \N\)</span> such that <span class="process-math">\(\dfrac{1}{n^2} &lt; t\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-7-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.2.1"><a aria-label="Copy heading and permalink for Exercise 1.2.1" href="#sec_setofreals-7-1" title="Copy heading and permalink for Exercise 1.2.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_setofreals-7-2"><h4 class="heading"><span class="codenumber">1.2.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_setofreals-7-2-1-1">Prove that if <span class="process-math">\(t \geq 0\)</span> (<span class="process-math">\(t \in \R\)</span>), then there exists an <span class="process-math">\(n \in \N\)</span> such that <span class="process-math">\(n-1 \leq t &lt; n\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-7-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.2.2"><a aria-label="Copy heading and permalink for Exercise 1.2.2" href="#sec_setofreals-7-2" title="Copy heading and permalink for Exercise 1.2.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_setofreals-7-3"><h4 class="heading"><span class="codenumber">1.2.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_setofreals-7-3-1-1">Finish the proof of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_setofreals.html#prop_supinfalg" title="Proposition 1.2.6">Proposition 1.2.6</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-7-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.2.3"><a aria-label="Copy heading and permalink for Exercise 1.2.3" href="#sec_setofreals-7-3" title="Copy heading and permalink for Exercise 1.2.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_setofreals-7-4"><h4 class="heading"><span class="codenumber">1.2.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_setofreals-7-4-1-1">Let <span class="process-math">\(x, y \in \R\text{.}\)</span>  Suppose <span class="process-math">\(x^2 + y^2 = 0\text{.}\)</span>  Prove that <span class="process-math">\(x = 0\)</span> and <span class="process-math">\(y = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-7-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.2.4"><a aria-label="Copy heading and permalink for Exercise 1.2.4" href="#sec_setofreals-7-4" title="Copy heading and permalink for Exercise 1.2.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_setofreals-7-5"><h4 class="heading"><span class="codenumber">1.2.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_setofreals-7-5-1-1">Show that <span class="process-math">\(\sqrt{3}\)</span> is irrational.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-7-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.2.5"><a aria-label="Copy heading and permalink for Exercise 1.2.5" href="#sec_setofreals-7-5" title="Copy heading and permalink for Exercise 1.2.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_setofreals-7-6"><h4 class="heading"><span class="codenumber">1.2.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_setofreals-7-6-1-1">Let <span class="process-math">\(n \in \N\text{.}\)</span> Show that <span class="process-math">\(\sqrt{n}\)</span> is either an integer or it is irrational.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-7-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.2.6"><a aria-label="Copy heading and permalink for Exercise 1.2.6" href="#sec_setofreals-7-6" title="Copy heading and permalink for Exercise 1.2.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_setofreals-7-7"><h4 class="heading"><span class="codenumber">1.2.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_setofreals-7-7-1-1">
+<div class="para">Prove the <em class="emphasis">arithmetic-geometric mean inequality</em>. For two positive real numbers <span class="process-math">\(x,y\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_setofreals-7-7-1-1-3">
+\begin{equation}
+\sqrt{xy} \leq \frac{x+y}{2} .
+\end{equation}
+</div>
+<div class="para">Furthermore, equality occurs if and only if <span class="process-math">\(x=y\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-7-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.2.7"><a aria-label="Copy heading and permalink for Exercise 1.2.7" href="#sec_setofreals-7-7" title="Copy heading and permalink for Exercise 1.2.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_setofreals-7-8"><h4 class="heading"><span class="codenumber">1.2.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_setofreals-7-8-1-1">Show that for every pair of real numbers <span class="process-math">\(x\)</span> and <span class="process-math">\(y\)</span> such that <span class="process-math">\(x &lt; y\text{,}\)</span> there exists an irrational number <span class="process-math">\(s\)</span> such that <span class="process-math">\(x &lt; s &lt; y\text{.}\)</span>  Hint: Apply the density of <span class="process-math">\(\Q\)</span> to <span class="process-math">\(\dfrac{x}{\sqrt{2}}\)</span> and <span class="process-math">\(\dfrac{y}{\sqrt{2}}\text{,}\)</span> but avoid zero.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-7-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.2.8"><a aria-label="Copy heading and permalink for Exercise 1.2.8" href="#sec_setofreals-7-8" title="Copy heading and permalink for Exercise 1.2.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_supofsum"><h4 class="heading"><span class="codenumber">1.2.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="exercise_supofsum-1-1">
+<div class="para">Let <span class="process-math">\(A\)</span> and <span class="process-math">\(B\)</span> be two nonempty bounded sets of real numbers.  Let <span class="process-math">\(C \coloneqq \{ a+b : a \in A, b \in B \}\text{.}\)</span> Show that <span class="process-math">\(C\)</span> is a bounded set and that</div>
+<div class="displaymath process-math" id="exercise_supofsum-1-1-5">
+\begin{equation}
+\sup\,C = \sup\,A + \sup\,B
+\qquad \text{and} \qquad
+\inf\,C = \inf\,A + \inf\,B .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_supofsum-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.2.9"><a aria-label="Copy heading and permalink for Exercise 1.2.9" href="#exercise_supofsum" title="Copy heading and permalink for Exercise 1.2.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_setofreals-7-10"><h4 class="heading"><span class="codenumber">1.2.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_setofreals-7-10-1-1">
+<div class="para">Let <span class="process-math">\(A\)</span> and <span class="process-math">\(B\)</span> be two nonempty bounded sets of nonnegative real numbers. Define the set <span class="process-math">\(C \coloneqq \{ ab : a \in A, b \in B \}\text{.}\)</span> Show that <span class="process-math">\(C\)</span> is a bounded set and that</div>
+<div class="displaymath process-math" id="sec_setofreals-7-10-1-1-5">
+\begin{equation}
+\sup\,C = (\sup\,A )( \sup\,B)
+\qquad \text{and} \qquad
+\inf\,C = (\inf\,A )( \inf\,B).
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-7-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.2.10"><a aria-label="Copy heading and permalink for Exercise 1.2.10" href="#sec_setofreals-7-10" title="Copy heading and permalink for Exercise 1.2.10">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_rootexistshard"><h4 class="heading"><span class="codenumber">1.2.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_rootexistshard-1-1">
+<em class="emphasis">(Hard)</em>   Given <span class="process-math">\(x &gt; 0\)</span> and <span class="process-math">\(n \in \N\text{,}\)</span> show that there exists a unique positive real number <span class="process-math">\(r\)</span> such that <span class="process-math">\(x = r^n\text{.}\)</span>  Usually, <span class="process-math">\(r\)</span> is denoted by <span class="process-math">\(x^{1/n}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_rootexistshard-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.2.11"><a aria-label="Copy heading and permalink for Exercise 1.2.11" href="#exercise_rootexistshard" title="Copy heading and permalink for Exercise 1.2.11">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_setofreals-7-12"><h4 class="heading"><span class="codenumber">1.2.12<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_setofreals-7-12-1-1">
+<em class="emphasis">(Easy)</em>   Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_setofreals.html#prop_existsxepsfromsup" title="Proposition 1.2.8">Proposition 1.2.8</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-7-12-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.2.12"><a aria-label="Copy heading and permalink for Exercise 1.2.12" href="#sec_setofreals-7-12" title="Copy heading and permalink for Exercise 1.2.12">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_bernoulliineq"><h4 class="heading"><span class="codenumber">1.2.13<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_bernoulliineq-1-1">Prove <em class="emphasis">Bernoulli’s inequality</em><details aria-live="polite" class="ptx-footnote" id="exercise_bernoulliineq-1-1-2"><summary class="ptx-footnote__number" title="Footnote 1.2.3"><sup> 3 </sup></summary>
+<div class="ptx-footnote__contents" id="exercise_bernoulliineq-1-1-2">Named after the Swiss mathematician <a class="external" href="https://en.wikipedia.org/wiki/Jacob_Bernoulli" target="_blank">Jacob Bernoulli</a> (1655–1705).
+</div></details>: If <span class="process-math">\(1+x &gt; 0\text{,}\)</span> then for all <span class="process-math">\(n \in \N\text{,}\)</span> we have <span class="process-math">\((1+x)^n \geq 1+nx\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_bernoulliineq-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.2.13"><a aria-label="Copy heading and permalink for Exercise 1.2.13" href="#exercise_bernoulliineq" title="Copy heading and permalink for Exercise 1.2.13">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_sqrt2QorR"><h4 class="heading"><span class="codenumber">1.2.14<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_sqrt2QorR-1-1">Prove <span class="process-math">\(\sup \{ x \in \Q : x^2 &lt; 2 \} = \sup \{ x \in \R : x^2 &lt; 2 \}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_sqrt2QorR-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.2.14"><a aria-label="Copy heading and permalink for Exercise 1.2.14" href="#exercise_sqrt2QorR" title="Copy heading and permalink for Exercise 1.2.14">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_Dedekind"><h4 class="heading"><span class="codenumber">1.2.15<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_Dedekind-1-1"><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_Dedekind-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div></div>
+<ol class="lower-alpha ol-marker-3" id="exercise_Dedekind-1-2">
+<li id="exercise_Dedekind-1-2-1">
+<div class="para" id="exercise_Dedekind-1-2-1-1">Prove that given <span class="process-math">\(y \in \R\text{,}\)</span> we have <span class="process-math">\(\sup \{ x \in \Q : x &lt; y \} = y\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_Dedekind-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1.2.15.a"><a aria-label="Copy heading and permalink for Item 1.2.15.a" href="#exercise_Dedekind-1-2-1" title="Copy heading and permalink for Item 1.2.15.a">🔗</a></div>
+</li>
+<li id="exercise_Dedekind-1-2-2">
+<div class="para" id="exercise_Dedekind-1-2-2-1">Let <span class="process-math">\(A \subset \Q\)</span> be a nonempty set that is bounded above such that whenever <span class="process-math">\(x
+\in A\)</span> and <span class="process-math">\(t \in \Q\)</span> with <span class="process-math">\(t &lt; x\text{,}\)</span> then <span class="process-math">\(t \in A\text{.}\)</span>  Further suppose <span class="process-math">\(\sup\, A \notin A\text{.}\)</span>  Show that there exists a <span class="process-math">\(y \in \R\)</span> such that <span class="process-math">\(A = \{ x \in \Q : x &lt; y \}\text{.}\)</span>  A set such as <span class="process-math">\(A\)</span> is called a <em class="emphasis">Dedekind cut</em>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_Dedekind-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1.2.15.b"><a aria-label="Copy heading and permalink for Item 1.2.15.b" href="#exercise_Dedekind-1-2-2" title="Copy heading and permalink for Item 1.2.15.b">🔗</a></div>
+</li>
+<li id="exercise_Dedekind-1-2-3">
+<div class="para" id="exercise_Dedekind-1-2-3-1">Show that there is a bijection between <span class="process-math">\(\R\)</span> and Dedekind cuts.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_Dedekind-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1.2.15.c"><a aria-label="Copy heading and permalink for Item 1.2.15.c" href="#exercise_Dedekind-1-2-3" title="Copy heading and permalink for Item 1.2.15.c">🔗</a></div>
+</li>
+</ol>
+<div class="para" id="exercise_Dedekind-1-3">Note: Dedekind used sets as in part b) in his construction of the real numbers.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_Dedekind-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.2.15"><a aria-label="Copy heading and permalink for Exercise 1.2.15" href="#exercise_Dedekind" title="Copy heading and permalink for Exercise 1.2.15">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_setofreals-7-16"><h4 class="heading"><span class="codenumber">1.2.16<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_setofreals-7-16-1-1">Prove that if <span class="process-math">\(A \subset \Z\)</span> is a nonempty subset bounded below, then there exists a least element in <span class="process-math">\(A\text{.}\)</span> Now describe why this statement would simplify the proof of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_setofreals.html#thm_arch" title="Theorem 1.2.4">Theorem 1.2.4</a> part <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_setofreals.html#thm_arch_ii" title="Item ii">ii</a> so that you do not have to assume <span class="process-math">\(x \geq 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_setofreals-7-16-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.2.16"><a aria-label="Copy heading and permalink for Exercise 1.2.16" href="#sec_setofreals-7-16" title="Copy heading and permalink for Exercise 1.2.16">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_realpower"><h4 class="heading"><span class="codenumber">1.2.17<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_realpower-1-1">Let us suppose we know <span class="process-math">\(x^{1/n}\)</span> exists for every <span class="process-math">\(x &gt; 0\)</span> and every <span class="process-math">\(n \in
+\N\)</span> (see <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_setofreals.html#exercise_rootexistshard" title="Exercise 1.2.11">Exercise 1.2.11</a> above). For integers <span class="process-math">\(p\)</span> and <span class="process-math">\(q &gt; 0\)</span> where <span class="process-math">\(\nicefrac{p}{q}\)</span> is in lowest terms, define <span class="process-math">\(x^{p/q} \coloneqq
+{(x^{1/q})}^p\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_realpower-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="exercise_realpower-1-2">
+<li id="exercise_realpower-1-2-1">
+<div class="para" id="exercise_realpower-1-2-1-1">Show that the power is well-defined even if the fraction is not in lowest terms: If <span class="process-math">\(\nicefrac{p}{q} =
+\nicefrac{m}{k}\)</span> where <span class="process-math">\(m\)</span> and <span class="process-math">\(k &gt; 0\)</span> are integers, then <span class="process-math">\({(x^{1/q})}^p = {(x^{1/k})}^m\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_realpower-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1.2.17.a"><a aria-label="Copy heading and permalink for Item 1.2.17.a" href="#exercise_realpower-1-2-1" title="Copy heading and permalink for Item 1.2.17.a">🔗</a></div>
+</li>
+<li id="exercise_realpower-1-2-2">
+<div class="para" id="exercise_realpower-1-2-2-1">Let <span class="process-math">\(x\)</span> and <span class="process-math">\(y\)</span> be two positive numbers and <span class="process-math">\(r\)</span> a rational number. Assuming <span class="process-math">\(r &gt; 0\text{,}\)</span> show <span class="process-math">\(x &lt; y\)</span> if and only if <span class="process-math">\(x^r &lt; y^r\text{.}\)</span>  Then suppose <span class="process-math">\(r &lt; 0\)</span> and show: <span class="process-math">\(x &lt; y\)</span> if and only if <span class="process-math">\(x^r &gt; y^r\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_realpower-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1.2.17.b"><a aria-label="Copy heading and permalink for Item 1.2.17.b" href="#exercise_realpower-1-2-2" title="Copy heading and permalink for Item 1.2.17.b">🔗</a></div>
+</li>
+<li id="exercise_realpower-1-2-3">
+<div class="para" id="exercise_realpower-1-2-3-1">Suppose <span class="process-math">\(x &gt; 1\)</span> and <span class="process-math">\(r,s\)</span> are rational numbers where <span class="process-math">\(r &lt; s\text{.}\)</span> Show <span class="process-math">\(x^r &lt; x^s\text{.}\)</span>  If <span class="process-math">\(0 &lt; x &lt; 1\)</span> and <span class="process-math">\(r &lt; s\text{,}\)</span> show that <span class="process-math">\(x^r &gt; x^s\text{.}\)</span> Hint: Write <span class="process-math">\(r\)</span> and <span class="process-math">\(s\)</span> with the same denominator.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_realpower-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1.2.17.c"><a aria-label="Copy heading and permalink for Item 1.2.17.c" href="#exercise_realpower-1-2-3" title="Copy heading and permalink for Item 1.2.17.c">🔗</a></div>
+</li>
+<li id="exercise_realpower-1-2-4">
+<div class="para" id="exercise_realpower-1-2-4-1">(Challenging)<details aria-live="polite" class="ptx-footnote" id="exercise_realpower-1-2-4-1-1"><summary class="ptx-footnote__number" title="Footnote 1.2.4"><sup> 4 </sup></summary>
+<div class="ptx-footnote__contents" id="exercise_realpower-1-2-4-1-1">In <a class="internal" href="sec_logandexp.html" title="Section 5.4: The logarithm and the exponential">Section 5.4</a> we will define the exponential and the logarithm and define <span class="process-math">\(x^z \coloneqq \exp(z \ln x)\text{.}\)</span>  We will then have sufficient machinery to make proofs of these assertions far easier.  At this point, however, we do not yet have these tools.
+</div></details> For an irrational <span class="process-math">\(z \in \R \setminus \Q\)</span> and <span class="process-math">\(x &gt; 1\)</span> define <span class="process-math">\(x^z \coloneqq \sup \{ x^r : r \leq z, r \in \Q \}\text{,}\)</span> for <span class="process-math">\(x=1\)</span> define <span class="process-math">\(1^z = 1\text{,}\)</span> and for <span class="process-math">\(0 &lt; x &lt; 1\)</span> define <span class="process-math">\(x^z \coloneqq \inf \{ x^r : r \leq z, r \in \Q \}\text{.}\)</span> Prove the two assertions of part b) for all real <span class="process-math">\(z\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_realpower-1-2-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1.2.17.d"><a aria-label="Copy heading and permalink for Item 1.2.17.d" href="#exercise_realpower-1-2-4" title="Copy heading and permalink for Item 1.2.17.d">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 1.2.17"><a aria-label="Copy heading and permalink for Exercise 1.2.17" href="#exercise_realpower" title="Copy heading and permalink for Exercise 1.2.17">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 1.2.5"><a aria-label="Copy heading and permalink for Exercises 1.2.5" href="#sec_setofreals-7" title="Copy heading and permalink for Exercises 1.2.5">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 1.2: The set of real numbers"><a aria-label="Copy heading and permalink for Section 1.2: The set of real numbers" href="#sec_setofreals" title="Copy heading and permalink for Section 1.2: The set of real numbers">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_basicpropsrn.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_absval.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

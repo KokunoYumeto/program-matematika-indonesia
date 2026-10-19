@@ -1,0 +1,1114 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vector spaces, linear mappings, and convexity · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_vectorspaces">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Vector spaces, linear mappings, and convexity</span>
+</h2>
+<section class="introduction" id="sec_vectorspaces-2">
+<div class="para" id="sec_vectorspaces-2-1">
+<em class="emphasis">Note: 3 lectures</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section>
+<section class="subsection" id="sec_vectorspaces-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.1.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Vector spaces</span>
+</h3>
+<div class="para" id="sec_vectorspaces-3-2">The euclidean space <span class="process-math">\(\R^n\)</span> has already made an appearance in the metric space chapter.  In this chapter, we extend the differential calculus we created for one variable to several variables.  The key idea in differential calculus is to approximate differentiable functions by linear functions (approximating the graph by a flat object such as a line or a plane). In several variables, we must introduce a little bit of linear algebra before we can move on. We start with vector spaces and linear mappings of vector spaces.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-3-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_vectorspaces-3-3">
+<div class="para">It is common to use <span class="process-math">\(\vec{v}\)</span> or the bold <span class="process-math">\(\mathbf{v}\)</span> for elements of <span class="process-math">\(\R^n\text{,}\)</span> especially in the applied sciences. We use just plain old <span class="process-math">\(v\text{,}\)</span> which is common in mathematics. That is, <span class="process-math">\(v \in \R^n\)</span> is a <em class="emphasis">vector</em>, which means <span class="process-math">\(v = (v_1,v_2,\ldots,v_n)\)</span> is an <span class="process-math">\(n\)</span>-tuple of real numbers.<details aria-live="polite" class="ptx-footnote" id="sec_vectorspaces-3-3-9"><summary class="ptx-footnote__number" title="Footnote 8.1.1"><sup> 1 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_vectorspaces-3-3-9">Subscripts are used for many purposes, so sometimes we may have several vectors that may also be identified by subscript, such as a finite or infinite sequence of vectors <span class="process-math">\(y_1,y_2,\ldots\text{.}\)</span>
+</div></details> At times, it is useful to write and treat vectors as <em class="emphasis">column vectors</em>, that is, <span class="process-math">\(n\)</span>-by-<span class="process-math">\(1\)</span> matrices:</div>
+<div class="displaymath process-math" id="sec_vectorspaces-3-3-13">
+\begin{equation}
+v =
+(v_1,v_2,\ldots,v_n) =
+{ \left[
+\begin{smallmatrix}
+v_1 \\ v_2 \\ \vdots \\ v_n
+\end{smallmatrix}
+\right]
+}
+\end{equation}
+</div>
+<div class="para">We do so when convenient. We call real numbers <em class="emphasis">scalars</em> to distinguish them from vectors.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-3-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_vectorspaces-3-4">We often think of vectors as a direction and a magnitude and draw the vector as an arrow.  The vector <span class="process-math">\((v_1,v_2,\ldots,v_n)\)</span> is represented by an arrow from the origin to the point <span class="process-math">\((v_1,v_2,\ldots,v_n)\text{.}\)</span> When we think of vectors as arrows, they are not necessarily based at the origin; a vector is simply the direction and the magnitude, and it does not know where it starts. There is a natural algebraic structure when thinking of vectors as arrows. We can add vectors as arrows by following one vector and then the other. And we can take scalar multiples of vectors as arrows by rescaling the magnitude.  See <a class="internal" href="sec_vectorspaces.html#fig_vecasarrow" title="Figure 8.1">Figure 8.1</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-3-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="fig_vecasarrow"><img alt="On the left a diagram of the vector (v sub 1, v sub 2) in the x sub 1 x sub 2 plane as an arrow from the origin to the point (v sub 1, v sub 2). On the right a diagram of vector addition and scalar multiplication. That is, first an image of an arrow v followed by a vector w placed at its head, and then the vector v plus w that starts at the tail of v and ends at the head of w. Then an image of an arrow v and an arrow 2 v, where the arrow 2 v is in the same direction but twice as long as v." class="raimg" role="img" src="figures/vecasarrow-mbxpdft.svg" style="width:253pt; height:60pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Vector as an arrow in <span class="process-math">\(\R^2\text{,}\)</span> and the meaning of addition and scalar multiplication.<div class="autopermalink" data-description="Figure 8.1"><a aria-label="Copy heading and permalink for Figure 8.1" href="#fig_vecasarrow" title="Copy heading and permalink for Figure 8.1">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para" id="sec_vectorspaces-3-8">A vector may also represent a point in <span class="process-math">\(\R^n\text{.}\)</span> Usually, we think of <span class="process-math">\(v \in \R^n\)</span> as a point if we are thinking of <span class="process-math">\(\R^n\)</span> as a metric space, and we think of it as an arrow if we think of the <em class="emphasis">vector space structure</em> on <span class="process-math">\(\R^n\)</span> (addition and scalar multiplication). Let us define the abstract notion of a vector space, as there are many other vector spaces than just <span class="process-math">\(\R^n\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-3-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_vectorspaces-3-9"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.1.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_vectorspaces-3-9-1-1">Let <span class="process-math">\(X\)</span> be a set together with the operations of addition, <span class="process-math">\(+ \colon X \times X \to X\text{,}\)</span> and multiplication, <span class="process-math">\(\cdot \colon \R \times X \to X\text{,}\)</span> (we usually write <span class="process-math">\(ax\)</span> instead of <span class="process-math">\(a \cdot x\)</span>). The set <span class="process-math">\(X\)</span> is called a <em class="emphasis">vector space</em> (or a <em class="emphasis">real vector space</em>) if the following conditions are satisfied:<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-3-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="sec_vectorspaces-3-9-1-2">
+<li id="sec_vectorspaces-3-9-1-2-1">
+<div class="para" id="sec_vectorspaces-3-9-1-2-1-1">(Addition is associative)     If <span class="process-math">\(u, v, w \in X\text{,}\)</span> then <span class="process-math">\(u+(v+w) = (u+v)+w\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-3-9-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#sec_vectorspaces-3-9-1-2-1" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="sec_vectorspaces-3-9-1-2-2">
+<div class="para" id="sec_vectorspaces-3-9-1-2-2-1">(Addition is commutative)     If <span class="process-math">\(u, v \in X\text{,}\)</span> then <span class="process-math">\(u+v = v+u\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-3-9-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#sec_vectorspaces-3-9-1-2-2" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+<li id="vecspacedefn_addidentity">
+<div class="para" id="vecspacedefn_addidentity-1">(Additive identity)     There is a <span class="process-math">\(0 \in X\)</span> such that <span class="process-math">\(v+0=v\)</span> for all <span class="process-math">\(v \in X\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#vecspacedefn_addidentity-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iii"><a aria-label="Copy heading and permalink for Item iii" href="#vecspacedefn_addidentity" title="Copy heading and permalink for Item iii">🔗</a></div>
+</li>
+<li id="vecspacedefn_addinverse">
+<div class="para" id="vecspacedefn_addinverse-1">(Additive inverse)     For each <span class="process-math">\(v \in X\text{,}\)</span> there is a <span class="process-math">\(-v \in X\)</span> such that <span class="process-math">\(v+(-v)=0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#vecspacedefn_addinverse-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iv"><a aria-label="Copy heading and permalink for Item iv" href="#vecspacedefn_addinverse" title="Copy heading and permalink for Item iv">🔗</a></div>
+</li>
+<li id="sec_vectorspaces-3-9-1-2-5">
+<div class="para" id="sec_vectorspaces-3-9-1-2-5-1">(Distributive law)     If <span class="process-math">\(a \in \R\text{,}\)</span> and <span class="process-math">\(u,v \in X\text{,}\)</span> then <span class="process-math">\(a(u+v) = au+av\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-3-9-1-2-5-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item v"><a aria-label="Copy heading and permalink for Item v" href="#sec_vectorspaces-3-9-1-2-5" title="Copy heading and permalink for Item v">🔗</a></div>
+</li>
+<li id="sec_vectorspaces-3-9-1-2-6">
+<div class="para" id="sec_vectorspaces-3-9-1-2-6-1">(Distributive law)     If <span class="process-math">\(a,b \in \R\text{,}\)</span> and <span class="process-math">\(v \in X\text{,}\)</span> then <span class="process-math">\((a+b)v = av+bv\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-3-9-1-2-6-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item vi"><a aria-label="Copy heading and permalink for Item vi" href="#sec_vectorspaces-3-9-1-2-6" title="Copy heading and permalink for Item vi">🔗</a></div>
+</li>
+<li id="sec_vectorspaces-3-9-1-2-7">
+<div class="para" id="sec_vectorspaces-3-9-1-2-7-1">(Multiplication is associative)     If <span class="process-math">\(a,b \in \R\text{,}\)</span> and <span class="process-math">\(v \in X\text{,}\)</span> then <span class="process-math">\((ab)v = a(bv)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-3-9-1-2-7-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item vii"><a aria-label="Copy heading and permalink for Item vii" href="#sec_vectorspaces-3-9-1-2-7" title="Copy heading and permalink for Item vii">🔗</a></div>
+</li>
+<li id="sec_vectorspaces-3-9-1-2-8">
+<div class="para" id="sec_vectorspaces-3-9-1-2-8-1">(Multiplicative identity)     <span class="process-math">\(1v = v\)</span> for all <span class="process-math">\(v \in X\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-3-9-1-2-8-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item viii"><a aria-label="Copy heading and permalink for Item viii" href="#sec_vectorspaces-3-9-1-2-8" title="Copy heading and permalink for Item viii">🔗</a></div>
+</li>
+</ol>
+<div class="para" id="sec_vectorspaces-3-9-1-3">Elements of a vector space are usually called <em class="emphasis">vectors</em>, even if they are not elements of <span class="process-math">\(\R^n\)</span> (vectors in the “traditional” sense). If <span class="process-math">\(Y \subset X\)</span> is a subset that is a vector space itself using the same operations, then <span class="process-math">\(Y\)</span> is called a <em class="emphasis">subspace</em> or a <em class="emphasis">vector subspace</em> of <span class="process-math">\(X\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-3-9-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 8.1.1"><a aria-label="Copy heading and permalink for Definition 8.1.1" href="#sec_vectorspaces-3-9" title="Copy heading and permalink for Definition 8.1.1">🔗</a></div>
+</article>
+<div class="para" id="sec_vectorspaces-3-10">Multiplication by scalars works as one would expect. For example, <span class="process-math">\(2v = (1+1)v = 1v + 1v = v+v\text{,}\)</span> similarly <span class="process-math">\(3v = v+v+v\text{,}\)</span> and so on. One particular fact we often use is that <span class="process-math">\(0 v = 0\text{,}\)</span> where the zero on the left is <span class="process-math">\(0 \in \R\)</span> and the zero on the right is <span class="process-math">\(0 \in X\text{.}\)</span> To see this, start with <span class="process-math">\(0v = (0+0)v = 0v + 0v\text{,}\)</span> and add <span class="process-math">\(-(0v)\)</span> to both sides to obtain <span class="process-math">\(0 = 0v\text{.}\)</span>  Similarly, <span class="process-math">\(-v = (-1)v\text{,}\)</span> which follows by <span class="process-math">\((-1)v+v = (-1)v + 1v = (-1+1)v = 0v = 0\text{.}\)</span> Such algebraic facts which follow quickly from the definition will be taken for granted from now on.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-3-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_vectorspaces-3-11"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.1.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_vectorspaces-3-11-1-1">
+<div class="para">The set <span class="process-math">\(\R^n\)</span> is a vector space; the zero vector is <span class="process-math">\((0,\ldots,0)\text{,}\)</span> addition and multiplication by a scalar are done componentwise: If <span class="process-math">\(a \in \R\text{,}\)</span> <span class="process-math">\(v = (v_1,v_2,\ldots,v_n) \in \R^n\text{,}\)</span> and <span class="process-math">\(w =
+(w_1,w_2,\ldots,w_n) \in \R^n\text{,}\)</span> then</div>
+<div class="displaymath process-math" id="sec_vectorspaces-3-11-1-1-6">
+\begin{equation}
+\begin{aligned}
+&amp; v+w \coloneqq
+(v_1,v_2,\ldots,v_n) +
+(w_1,w_2,\ldots,w_n) 
+=
+(v_1+w_1,v_2+w_2,\ldots,v_n+w_n) , \\
+&amp; a v \coloneqq
+a (v_1,v_2,\ldots,v_n) =
+(a v_1, a v_2,\ldots, a v_n) .
+\end{aligned}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-3-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 8.1.2"><a aria-label="Copy heading and permalink for Example 8.1.2" href="#sec_vectorspaces-3-11" title="Copy heading and permalink for Example 8.1.2">🔗</a></div>
+</article>
+<div class="para" id="sec_vectorspaces-3-12">We will mostly deal with “finite-dimensional” vector spaces that can be regarded as subsets of <span class="process-math">\(\R^n\text{,}\)</span> but other vector spaces are useful in analysis. It is better to think of even such simpler vector spaces abstractly rather than as <span class="process-math">\(\R^n\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-3-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_vectorspaces-3-13"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.1.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_vectorspaces-3-13-1-1">A trivial example of a vector space is <span class="process-math">\(X \coloneqq \{ 0 \}\text{.}\)</span>  The operations are defined in the obvious way: <span class="process-math">\(0 + 0 \coloneqq 0\)</span> and <span class="process-math">\(a0 \coloneqq 0\text{.}\)</span>  A zero vector must always exist, so all vector spaces are nonempty sets, and this <span class="process-math">\(X\)</span> is the smallest possible vector space.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-3-13-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 8.1.3"><a aria-label="Copy heading and permalink for Example 8.1.3" href="#sec_vectorspaces-3-13" title="Copy heading and permalink for Example 8.1.3">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_vectorspaces-3-14"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.1.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_vectorspaces-3-14-1-1">
+<div class="para">The space <span class="process-math">\(C([0,1],\R)\)</span> of continuous functions on the interval <span class="process-math">\([0,1]\)</span> is a vector space.  For two functions <span class="process-math">\(f\)</span> and <span class="process-math">\(g\)</span> in <span class="process-math">\(C([0,1],\R)\)</span> and <span class="process-math">\(a \in \R\text{,}\)</span> we make the obvious definitions of <span class="process-math">\(f+g\)</span> and <span class="process-math">\(af\text{:}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_vectorspaces-3-14-1-1-9">
+\begin{equation}
+(f+g)(x) \coloneqq f(x) + g(x), \qquad (af) (x) \coloneqq a\bigl(f(x)\bigr) .
+\end{equation}
+</div>
+<div class="para">The 0 is the function that is identically zero.  We leave it as an exercise to check that all the vector space conditions are satisfied. The space <span class="process-math">\(C^1([0,1],\R)\)</span> of continuously differentiable functions is a subspace of <span class="process-math">\(C([0,1],\R)\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-3-14-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 8.1.4"><a aria-label="Copy heading and permalink for Example 8.1.4" href="#sec_vectorspaces-3-14" title="Copy heading and permalink for Example 8.1.4">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_vectorspaces-3-15"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.1.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_vectorspaces-3-15-1-1">
+<div class="para">The space of polynomials <span class="process-math">\(c_0 + c_1 t + c_2 t^2 + \cdots + c_m t^m\)</span> (of arbitrary degree <span class="process-math">\(m\)</span>) is a vector space, denoted by <span class="process-math">\(\R[t]\)</span> (coefficients are real and the variable is <span class="process-math">\(t\)</span>).  The operations are defined in the same way as for functions above. Suppose there are two polynomials, one of degree <span class="process-math">\(m\)</span> and one of degree <span class="process-math">\(n\text{.}\)</span>  Assume <span class="process-math">\(n
+\geq m\)</span> for simplicity.  Then</div>
+<div class="displaymath process-math" id="sec_vectorspaces-3-15-1-1-9">
+\begin{multline*}
+(c_0 + c_1 t + c_2 t^2 + \cdots + c_m t^m)
++
+(d_0 + d_1 t + d_2 t^2 + \cdots + d_n t^n)
+= \\
+(c_0+d_0) + (c_1+d_1) t + (c_2 + d_2) t^2 + \cdots + (c_m+d_m) t^m
++ d_{m+1} t^{m+1} + \cdots + d_n t^n
+\end{multline*}
+</div>
+<div class="para">and</div>
+<div class="displaymath process-math" id="sec_vectorspaces-3-15-1-1-10">
+\begin{equation}
+a(c_0 + c_1 t + c_2 t^2 + \cdots + c_m t^m)
+=
+(ac_0) + (ac_1) t + (ac_2) t^2 + \cdots + (ac_m) t^m  .
+\end{equation}
+</div>
+<div class="para">Despite what it looks like, <span class="process-math">\(\R[t]\)</span> is not equivalent to <span class="process-math">\(\R^n\)</span> for any <span class="process-math">\(n\text{.}\)</span>  In particular, it is not “finite-dimensional.”  We will make this notion precise in just a little bit.  One can make a finite-dimensional vector subspace by restricting the degree.  For example, if <span class="process-math">\(\sP_n\)</span> is the set of polynomials of degree <span class="process-math">\(n\)</span> or less, then <span class="process-math">\(\sP_n\)</span> is a finite-dimensional vector space, and we could identify it with <span class="process-math">\(\R^{n+1}\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-3-15-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_vectorspaces-3-15-1-2">Above, the variable <span class="process-math">\(t\)</span> is really just a formal placeholder. By setting <span class="process-math">\(t\)</span> equal to a real number, we obtain a function. So the space <span class="process-math">\(\R[t]\)</span> can be thought of as a subspace of <span class="process-math">\(C(\R,\R)\text{.}\)</span> If we restrict the range of <span class="process-math">\(t\)</span> to <span class="process-math">\([0,1]\text{,}\)</span> <span class="process-math">\(\R[t]\)</span> can be identified with a subspace of <span class="process-math">\(C([0,1],\R)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-3-15-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 8.1.5"><a aria-label="Copy heading and permalink for Example 8.1.5" href="#sec_vectorspaces-3-15" title="Copy heading and permalink for Example 8.1.5">🔗</a></div>
+</article>
+<article class="proposition theorem-like" id="sec_vectorspaces-3-16"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.1.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_vectorspaces-3-16-1-1">For <span class="process-math">\(S \subset X\)</span> to be a vector subspace of a vector space <span class="process-math">\(X\text{,}\)</span> we only need to check:<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-3-16-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="decimal ol-marker-1" id="sec_vectorspaces-3-16-1-2">
+<li id="sec_vectorspaces-3-16-1-2-1">
+<div class="para" id="sec_vectorspaces-3-16-1-2-1-1">
+<span class="process-math">\(0 \in S\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-3-16-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1"><a aria-label="Copy heading and permalink for Item 1" href="#sec_vectorspaces-3-16-1-2-1" title="Copy heading and permalink for Item 1">🔗</a></div>
+</li>
+<li id="sec_vectorspaces-3-16-1-2-2">
+<div class="para" id="sec_vectorspaces-3-16-1-2-2-1">
+<span class="process-math">\(S\)</span> is closed under addition: If <span class="process-math">\(x,y \in S\text{,}\)</span> then <span class="process-math">\(x+y \in S\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-3-16-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2"><a aria-label="Copy heading and permalink for Item 2" href="#sec_vectorspaces-3-16-1-2-2" title="Copy heading and permalink for Item 2">🔗</a></div>
+</li>
+<li id="sec_vectorspaces-3-16-1-2-3">
+<div class="para" id="sec_vectorspaces-3-16-1-2-3-1">
+<span class="process-math">\(S\)</span> is closed under scalar multiplication: If <span class="process-math">\(x \in S\)</span> and <span class="process-math">\(a \in \R\text{,}\)</span> then <span class="process-math">\(ax \in S\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-3-16-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 3"><a aria-label="Copy heading and permalink for Item 3" href="#sec_vectorspaces-3-16-1-2-3" title="Copy heading and permalink for Item 3">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Proposition 8.1.6"><a aria-label="Copy heading and permalink for Proposition 8.1.6" href="#sec_vectorspaces-3-16" title="Copy heading and permalink for Proposition 8.1.6">🔗</a></div>
+</article>
+<div class="para" id="sec_vectorspaces-3-17">Items 2) and 3) ensure that addition and scalar multiplication are indeed defined on <span class="process-math">\(S\text{.}\)</span> Item 1) is required to fulfill item <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_vectorspaces.html#vecspacedefn_addidentity" title="Item iii">iii</a> from the definition of vector space.  Existence of additive inverse <span class="process-math">\(-v\text{,}\)</span> item <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_vectorspaces.html#vecspacedefn_addinverse" title="Item iv">iv</a>, follows because <span class="process-math">\(-v = (-1)v\)</span> and item 3) says that <span class="process-math">\(-v \in S\)</span> if <span class="process-math">\(v \in S\text{.}\)</span>  All other properties are certain equalities that are already satisfied in <span class="process-math">\(X\)</span> and thus must be satisfied in a subset.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-3-17" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_vectorspaces-3-18">It is possible to use other fields than <span class="process-math">\(\R\)</span> in the definition (for example, it is common to use the complex numbers <span class="process-math">\(\C\)</span>), but let us stick with the real numbers<details aria-live="polite" class="ptx-footnote" id="sec_vectorspaces-3-18-3"><summary class="ptx-footnote__number" title="Footnote 8.1.2"><sup> 2 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_vectorspaces-3-18-3">If you want a very funky vector space over a different field, <span class="process-math">\(\R\)</span> itself is a vector space over the field <span class="process-math">\(\Q\text{.}\)</span>
+</div></details>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-3-18" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 8.1.1: Vector spaces"><a aria-label="Copy heading and permalink for Subsection 8.1.1: Vector spaces" href="#sec_vectorspaces-3" title="Copy heading and permalink for Subsection 8.1.1: Vector spaces">🔗</a></div>
+</section>
+<section class="subsection" id="sec_vectorspaces-4">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.1.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Linear combinations and dimension</span>
+</h3>
+<article class="definition definition-like" id="sec_vectorspaces-4-2"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.1.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_vectorspaces-4-2-1-1">
+<div class="para">Suppose <span class="process-math">\(X\)</span> is a vector space, <span class="process-math">\(x_1, x_2, \ldots, x_m \in X\)</span> are vectors, and <span class="process-math">\(a_1, a_2, \ldots, a_m \in \R\)</span> are scalars.  Then</div>
+<div class="displaymath process-math" id="sec_vectorspaces-4-2-1-1-4">
+\begin{equation}
+a_1 x_1 + 
+a_2 x_2 +  \cdots
++ a_m x_m
+\end{equation}
+</div>
+<div class="para">is called a <em class="emphasis">linear combination</em> of the vectors <span class="process-math">\(x_1, x_2,
+\ldots, x_m\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-4-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_vectorspaces-4-2-1-2">For a subset <span class="process-math">\(Y \subset X\text{,}\)</span> let <span class="process-math">\(\spn(Y)\text{,}\)</span> or the <em class="emphasis">span</em> of <span class="process-math">\(Y\text{,}\)</span> be the set of all linear combinations of all finite subsets of <span class="process-math">\(Y\text{.}\)</span> We say <span class="process-math">\(Y\)</span> <em class="emphasis">spans</em> <span class="process-math">\(\spn(Y)\text{.}\)</span> By convention, define <span class="process-math">\(\spn(\emptyset) \coloneqq \{ 0 \}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-4-2-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 8.1.7"><a aria-label="Copy heading and permalink for Definition 8.1.7" href="#sec_vectorspaces-4-2" title="Copy heading and permalink for Definition 8.1.7">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_vectorspaces-4-3"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.1.8</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_vectorspaces-4-3-1-1">
+<div class="para">Let <span class="process-math">\(Y \coloneqq \bigl\{ (1,1) \bigr\} \subset \R^2\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" id="sec_vectorspaces-4-3-1-1-2">
+\begin{equation}
+\spn(Y)
+=
+\bigl\{ (x,x) \in \R^2 : x \in \R \bigr\} .
+\end{equation}
+</div>
+<div class="para">That is, <span class="process-math">\(\spn(Y)\)</span> is the line through the origin and the point <span class="process-math">\((1,1)\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-4-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 8.1.8"><a aria-label="Copy heading and permalink for Example 8.1.8" href="#sec_vectorspaces-4-3" title="Copy heading and permalink for Example 8.1.8">🔗</a></div>
+</article>
+<article class="example example-like" id="example_vecspr2span"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.1.9</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="example_vecspr2span-1-1">
+<div class="para">Let <span class="process-math">\(Y \coloneqq \bigl\{ (1,1), (0,1) \bigr\} \subset \R^2\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" id="example_vecspr2span-1-1-2">
+\begin{equation}
+\spn(Y)
+=
+\R^2 ,
+\end{equation}
+</div>
+<div class="para">as every point <span class="process-math">\((x,y) \in \R^2\)</span> can be written as a linear combination</div>
+<div class="displaymath process-math" id="example_vecspr2span-1-1-4">
+\begin{equation}
+(x,y) = x (1,1) + (y-x) (0,1) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_vecspr2span-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 8.1.9"><a aria-label="Copy heading and permalink for Example 8.1.9" href="#example_vecspr2span" title="Copy heading and permalink for Example 8.1.9">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_vectorspaces-4-5"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.1.10</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_vectorspaces-4-5-1-1">
+<div class="para">Let <span class="process-math">\(Y \coloneqq \{ 1, t, t^2, t^3, \ldots \} \subset \R[t]\)</span> and <span class="process-math">\(E \coloneqq \{ 1, t^2, t^4, t^6, \ldots \} \subset \R[t]\text{.}\)</span> The span of <span class="process-math">\(Y\)</span> is all polynomials,</div>
+<div class="displaymath process-math" id="sec_vectorspaces-4-5-1-1-4">
+\begin{equation}
+\spn(Y) = \R[t] .
+\end{equation}
+</div>
+<div class="para">The span of <span class="process-math">\(E\)</span> is the set of polynomials with even powers of <span class="process-math">\(t\)</span> only.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-4-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 8.1.10"><a aria-label="Copy heading and permalink for Example 8.1.10" href="#sec_vectorspaces-4-5" title="Copy heading and permalink for Example 8.1.10">🔗</a></div>
+</article>
+<div class="para logical" id="sec_vectorspaces-4-6">
+<div class="para">Suppose we have two linear combinations of vectors from <span class="process-math">\(Y\text{.}\)</span>  One linear combination uses the vectors <span class="process-math">\(\{ x_1,x_2,\ldots,x_m \}\text{,}\)</span> and the other uses <span class="process-math">\(\{ \widetilde{x}_1,\widetilde{x}_2,\ldots,\widetilde{x}_n \}\text{.}\)</span>  We can write their sum using vectors from the union <span class="process-math">\(\{ x_1,x_2,\ldots,x_m \} \cup
+\{ \widetilde{x}_1,\widetilde{x}_2,\ldots,\widetilde{x}_n \}\text{:}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_vectorspaces-4-6-5">
+\begin{multline*}
+(a_1 x_1 + 
+a_2 x_2 +  \cdots
++ a_m x_m)
++
+(b_1 \widetilde{x}_1 + 
+b_2 \widetilde{x}_2 +  \cdots
++ b_n \widetilde{x}_n)
+\\
+=
+a_1 x_1 + 
+a_2 x_2 +  \cdots
++ a_m x_m
++
+b_1 \widetilde{x}_1 + 
+b_2 \widetilde{x}_2 +  \cdots
++ b_n \widetilde{x}_n .
+\end{multline*}
+</div>
+<div class="para">So the sum is also a linear combination of vectors from <span class="process-math">\(Y\text{.}\)</span> Similarly, a scalar multiple of a linear combination of vectors from <span class="process-math">\(Y\)</span> is a linear combination of vectors from <span class="process-math">\(Y\text{:}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_vectorspaces-4-6-12">
+\begin{equation}
+b (a_1 x_1 + 
+a_2 x_2 +  \cdots
++ a_m x_m)
+=
+b a_1  x_1 + 
+b a_2 x_2 +  \cdots
++ b a_m x_m .
+\end{equation}
+</div>
+<div class="para">Finally, <span class="process-math">\(0 \in \spn(Y)\text{;}\)</span> if <span class="process-math">\(Y\)</span> is nonempty, <span class="process-math">\(0 = 0 v\)</span> for some <span class="process-math">\(v \in Y\text{.}\)</span> We have proved the following proposition.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-4-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_vectorspaces-4-7"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.1.11</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_vectorspaces-4-7-1-1">Let <span class="process-math">\(X\)</span> be a vector space and <span class="process-math">\(Y \subset X\)</span> a subset. Then the set <span class="process-math">\(\spn(Y)\)</span> is a vector subspace of <span class="process-math">\(X\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-4-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 8.1.11"><a aria-label="Copy heading and permalink for Proposition 8.1.11" href="#sec_vectorspaces-4-7" title="Copy heading and permalink for Proposition 8.1.11">🔗</a></div>
+</article>
+<div class="para" id="sec_vectorspaces-4-8">Every linear combination of elements in a subspace is an element of that subspace.  So <span class="process-math">\(\spn(Y)\)</span> is the smallest subspace that contains <span class="process-math">\(Y\text{.}\)</span> In particular, if <span class="process-math">\(Y\)</span> is already a vector subspace, then <span class="process-math">\(\spn(Y) = Y\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-4-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_vectorspaces-4-9"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.1.12</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_vectorspaces-4-9-1-1">
+<div class="para">A set of vectors <span class="process-math">\(\{ x_1, x_2, \ldots, x_m \} \subset X\)</span> is <em class="emphasis">linearly independent</em><details aria-live="polite" class="ptx-footnote" id="sec_vectorspaces-4-9-1-1-3"><summary class="ptx-footnote__number" title="Footnote 8.1.3"><sup> 3 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_vectorspaces-4-9-1-1-3">For an infinite set <span class="process-math">\(Y \subset X\text{,}\)</span> we say <span class="process-math">\(Y\)</span> is linearly independent if every finite subset of <span class="process-math">\(Y\)</span> is linearly independent in the sense given. However, this situation only comes up in infinitely many dimensions.
+</div></details> if the equation</div>
+<div class="displaymath process-math" id="eq_lincomb">
+\begin{equation}
+a_1 x_1 + a_2 x_2 + \cdots + a_m x_m = 0\tag{8.1}
+\end{equation}
+</div>
+<div class="para">has only the trivial solution <span class="process-math">\(a_1 = a_2 = \cdots = a_m = 0\text{.}\)</span> By convention, <span class="process-math">\(\emptyset\)</span> is linearly independent. A set that is not linearly independent is <em class="emphasis">linearly dependent</em>. A linearly independent set of vectors <span class="process-math">\(B \subset X\)</span> such that <span class="process-math">\(\spn(B) = X\)</span> is called a <em class="emphasis">basis</em> of <span class="process-math">\(X\text{.}\)</span> We generally consider the basis as not just a set, but as an ordered <span class="process-math">\(m\)</span>-tuple: <span class="process-math">\(x_1,x_2,\ldots,x_m\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-4-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_vectorspaces-4-9-1-2">Suppose <span class="process-math">\(d\)</span> is the largest integer for which <span class="process-math">\(X\)</span> contains a set of <span class="process-math">\(d\)</span> linearly independent vectors.  We then say <span class="process-math">\(d\)</span> is the <em class="emphasis">dimension</em> of <span class="process-math">\(X\text{,}\)</span> and we write <span class="process-math">\(\dim \, X \coloneqq d\text{.}\)</span> If <span class="process-math">\(X\)</span> contains a set of <span class="process-math">\(d\)</span> linearly independent vectors for arbitrarily large <span class="process-math">\(d\text{,}\)</span> we say <span class="process-math">\(X\)</span> is infinite-dimensional and write <span class="process-math">\(\dim \, X \coloneqq \infty\text{.}\)</span> For the trivial vector space <span class="process-math">\(\{ 0 \}\text{,}\)</span> we define <span class="process-math">\(\dim \, \{ 0 \} \coloneqq 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-4-9-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 8.1.12"><a aria-label="Copy heading and permalink for Definition 8.1.12" href="#sec_vectorspaces-4-9" title="Copy heading and permalink for Definition 8.1.12">🔗</a></div>
+</article>
+<div class="para" id="sec_vectorspaces-4-10">A subset of a linearly independent set is clearly linearly independent. So if a set contains <span class="process-math">\(d\)</span> linearly independent vectors, it also contains a set of <span class="process-math">\(m\)</span> linearly independent vectors for all <span class="process-math">\(m \leq d\text{.}\)</span> Moreover, if a set does not have <span class="process-math">\(d+1\)</span> linearly independent vectors, no set of more than <span class="process-math">\(d+1\)</span> vectors is linearly independent. So <span class="process-math">\(X\)</span> is of dimension <span class="process-math">\(d\)</span> if there is a set of <span class="process-math">\(d\)</span> linearly independent vectors, but no set of <span class="process-math">\(d+1\)</span> vectors is linearly independent.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-4-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_vectorspaces-4-11">No element of a linearly independent set can be zero, and a set with one nonzero element is always linearly independent. In particular, <span class="process-math">\(\{ 0 \}\)</span> is the only vector space of dimension <span class="process-math">\(0\text{.}\)</span> Every other vector space has a positive dimension or is infinite-dimensional. As the empty set is linearly independent, it is a basis of <span class="process-math">\(\{ 0 \}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-4-11" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_vectorspaces-4-12">As an example, the set <span class="process-math">\(Y\)</span> of the two vectors in <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_vectorspaces.html#example_vecspr2span" title="Example 8.1.9">Example 8.1.9</a> is a basis of <span class="process-math">\(\R^2\text{,}\)</span> and so <span class="process-math">\(\dim \, \R^2 \geq 2\text{.}\)</span> We will see in a moment that every vector subspace of <span class="process-math">\(\R^n\)</span> has a finite dimension, and that dimension is less than or equal to <span class="process-math">\(n\text{.}\)</span> So every set of 3 vectors in <span class="process-math">\(\R^2\)</span> is linearly dependent, and <span class="process-math">\(\dim \, \R^2 = 2\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-4-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_vectorspaces-4-13">
+<div class="para">If a set is linearly dependent, then one of the vectors is a linear combination of the others. In <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_vectorspaces.html#eq_lincomb" title="Equation 8.1">(8.1)</a>, if <span class="process-math">\(a_k \neq 0\text{,}\)</span> then we solve for <span class="process-math">\(x_k\text{:}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/eq_lincomb.html" id="sec_vectorspaces-4-13-4">
+\begin{equation}
+x_k = \frac{-a_1}{a_k} x_1 + \cdots + 
+\frac{-a_{k-1}}{a_k} x_{k-1} +
+\frac{-a_{k+1}}{a_k} x_{k+1} +
+\cdots + 
+\frac{-a_m}{a_m} x_m .
+\end{equation}
+</div>
+<div class="para">The vector <span class="process-math">\(x_k\)</span> has at least two different representations as linear combinations of the vectors <span class="process-math">\(\{ x_1,x_2,\ldots,x_m \}\text{.}\)</span> The one above and <span class="process-math">\(x_k\)</span> itself. For instance, the set <span class="process-math">\(\bigl\{ (0,1), (2,3), (1,0) \bigr\}\)</span> in <span class="process-math">\(\R^2\)</span> is linearly dependent:</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/eq_lincomb.html" id="sec_vectorspaces-4-13-10">
+\begin{equation}
+3(0,1) - (2,3) + 2(1,0) = 0 ,
+\qquad \text{so} \qquad
+(2,3) = 3(0,1) + 2(1,0) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-4-13" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_vectorspaces-4-14"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.1.13</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_vectorspaces-4-14-1-1">
+<div class="para">Suppose a vector space <span class="process-math">\(X\)</span> has a basis <span class="process-math">\(B = \{ x_1, x_2, \ldots, x_n \}\text{.}\)</span>  Then every <span class="process-math">\(y \in X\)</span> has a unique representation of the form</div>
+<div class="displaymath process-math" id="sec_vectorspaces-4-14-1-1-4">
+\begin{equation}
+y = \sum_{k=1}^n a_k \, x_k
+\end{equation}
+</div>
+<div class="para">for some scalars <span class="process-math">\(a_1, a_2, \ldots, a_n\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-4-14-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 8.1.13"><a aria-label="Copy heading and permalink for Proposition 8.1.13" href="#sec_vectorspaces-4-14" title="Copy heading and permalink for Proposition 8.1.13">🔗</a></div>
+</article>
+<article class="proof" id="sec_vectorspaces-4-15"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_vectorspaces-4-15-1">
+<div class="para">As <span class="process-math">\(X\)</span> is the span of <span class="process-math">\(B\text{,}\)</span> every <span class="process-math">\(y \in X\)</span> is a linear combination of elements of <span class="process-math">\(B\text{.}\)</span> Suppose</div>
+<div class="displaymath process-math" id="sec_vectorspaces-4-15-1-5">
+\begin{equation}
+y = \sum_{k=1}^n a_k \, x_k = \sum_{k=1}^n b_k \, x_k .
+\end{equation}
+</div>
+<div class="para">Then</div>
+<div class="displaymath process-math" id="sec_vectorspaces-4-15-1-6">
+\begin{equation}
+\sum_{k=1}^n (a_k-b_k) x_k = 0 .
+\end{equation}
+</div>
+<div class="para">By linear independence of the basis, <span class="process-math">\(a_k = b_k\)</span> for all <span class="process-math">\(k\text{,}\)</span> and so the representation is unique.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-4-15-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 8.1.2.1"><a aria-label="Copy heading and permalink for Proof 8.1.2.1" href="#sec_vectorspaces-4-15" title="Copy heading and permalink for Proof 8.1.2.1">🔗</a></div>
+</article>
+<div class="para logical" id="sec_vectorspaces-4-16">
+<div class="para">For <span class="process-math">\(\R^n\text{,}\)</span> we define the <em class="emphasis">standard basis</em> of <span class="process-math">\(\R^n\text{:}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_vectorspaces-4-16-4">
+\begin{equation}
+e_1 \coloneqq (1,0,0,\ldots,0) , \quad
+e_2 \coloneqq (0,1,0,\ldots,0) , \quad \ldots, \quad
+e_n \coloneqq (0,0,0,\ldots,1) .
+\end{equation}
+</div>
+<div class="para">We use the same letters <span class="process-math">\(e_k\)</span> for any <span class="process-math">\(\R^n\text{,}\)</span> and which space <span class="process-math">\(\R^n\)</span> we are working in is understood from context. A direct computation shows that <span class="process-math">\(\{ e_1, e_2, \ldots, e_n \}\)</span> really is a basis of <span class="process-math">\(\R^n\text{;}\)</span> it spans <span class="process-math">\(\R^n\)</span> and is linearly independent.  In fact,</div>
+<div class="displaymath process-math" id="sec_vectorspaces-4-16-11">
+\begin{equation}
+a = (a_1,a_2,\ldots,a_n) = \sum_{k=1}^n a_k \, e_k .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-4-16" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="mv_dimprop"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.1.14</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="mv_dimprop-1-1">Let <span class="process-math">\(X\)</span> be a vector space and <span class="process-math">\(d\)</span> a nonnegative integer.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_dimprop-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="mv_dimprop-1-2">
+<li id="mv_dimprop_i">
+<div class="para" id="mv_dimprop_i-1">If <span class="process-math">\(X\)</span> is spanned by <span class="process-math">\(d\)</span> vectors, then <span class="process-math">\(\dim \, X \leq d\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_dimprop_i-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#mv_dimprop_i" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="mv_dimprop_ii">
+<div class="para" id="mv_dimprop_ii-1">If <span class="process-math">\(T\)</span> is a linearly independent set and <span class="process-math">\(v \in X \setminus \spn (T)\text{,}\)</span> then <span class="process-math">\(T \cup \{ v \}\)</span> is linearly independent.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_dimprop_ii-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#mv_dimprop_ii" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+<li id="mv_dimprop_iii">
+<div class="para" id="mv_dimprop_iii-1">
+<span class="process-math">\(\dim \, X = d\)</span> if and only if <span class="process-math">\(X\)</span> has a basis of <span class="process-math">\(d\)</span> vectors. In particular, <span class="process-math">\(\dim \, \R^n = n\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_dimprop_iii-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iii"><a aria-label="Copy heading and permalink for Item iii" href="#mv_dimprop_iii" title="Copy heading and permalink for Item iii">🔗</a></div>
+</li>
+<li id="mv_dimprop_iv">
+<div class="para" id="mv_dimprop_iv-1">If <span class="process-math">\(Y \subset X\)</span> is a vector subspace and <span class="process-math">\(\dim \, X = d\text{,}\)</span> then <span class="process-math">\(\dim \, Y \leq d\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_dimprop_iv-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iv"><a aria-label="Copy heading and permalink for Item iv" href="#mv_dimprop_iv" title="Copy heading and permalink for Item iv">🔗</a></div>
+</li>
+<li id="mv_dimprop_v">
+<div class="para" id="mv_dimprop_v-1">If <span class="process-math">\(\dim \, X = d\)</span> and a set <span class="process-math">\(T\)</span> of <span class="process-math">\(d\)</span> vectors spans <span class="process-math">\(X\text{,}\)</span> then <span class="process-math">\(T\)</span> is linearly independent.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_dimprop_v-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item v"><a aria-label="Copy heading and permalink for Item v" href="#mv_dimprop_v" title="Copy heading and permalink for Item v">🔗</a></div>
+</li>
+<li id="mv_dimprop_vi">
+<div class="para" id="mv_dimprop_vi-1">If <span class="process-math">\(\dim \, X = d\)</span> and a set <span class="process-math">\(T\)</span> of <span class="process-math">\(m\)</span> vectors is linearly independent, then there is a set <span class="process-math">\(S\)</span> of <span class="process-math">\(d-m\)</span> vectors such that <span class="process-math">\(T \cup S\)</span> is a basis of <span class="process-math">\(X\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_dimprop_vi-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item vi"><a aria-label="Copy heading and permalink for Item vi" href="#mv_dimprop_vi" title="Copy heading and permalink for Item vi">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Proposition 8.1.14"><a aria-label="Copy heading and permalink for Proposition 8.1.14" href="#mv_dimprop" title="Copy heading and permalink for Proposition 8.1.14">🔗</a></div>
+</article>
+<div class="para" id="sec_vectorspaces-4-18">In particular, the last item says that if <span class="process-math">\(\dim X = d\)</span> and <span class="process-math">\(T\)</span> is a set of <span class="process-math">\(d\)</span> linearly independent vectors, then <span class="process-math">\(T\)</span> spans <span class="process-math">\(X\text{.}\)</span> Another thing to note is that item <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_vectorspaces.html#mv_dimprop_iii" title="Item iii">iii</a> implies that every basis of a finite-dimensional vector space has the same number of elements.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-4-18" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_vectorspaces-4-19"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_vectorspaces-4-19-1">All statements hold trivially when <span class="process-math">\(d=0\text{,}\)</span> so assume <span class="process-math">\(d \geq 1\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-4-19-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_vectorspaces-4-19-2">
+<div class="para">We start with <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_vectorspaces.html#mv_dimprop_i" title="Item i">i</a>. Suppose <span class="process-math">\(S \coloneqq \{ x_1 , x_2, \ldots, x_d \}\)</span> spans <span class="process-math">\(X\text{,}\)</span> and <span class="process-math">\(T \coloneqq \{ y_1, y_2, \ldots, y_m \}\)</span> is a linearly independent subset of <span class="process-math">\(X\text{.}\)</span>  We wish to show that <span class="process-math">\(m \leq d\text{.}\)</span> As <span class="process-math">\(S\)</span> spans <span class="process-math">\(X\text{,}\)</span> write</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/mv_dimprop_i.html" id="sec_vectorspaces-4-19-2-9">
+\begin{equation}
+y_1 = \sum_{k=1}^d a_{k,1} x_k ,
+\end{equation}
+</div>
+<div class="para">for some numbers <span class="process-math">\(a_{1,1},a_{2,1},\ldots,a_{d,1}\text{.}\)</span> One of the <span class="process-math">\(a_{k,1}\)</span> is nonzero, otherwise <span class="process-math">\(y_1\)</span> would be zero. Without loss of generality, suppose <span class="process-math">\(a_{1,1} \neq 0\text{.}\)</span>  Solve</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/mv_dimprop_i.html" id="sec_vectorspaces-4-19-2-14">
+\begin{equation}
+x_1 = \frac{1}{a_{1,1}} y_1 - \sum_{k=2}^d \frac{a_{k,1}}{a_{1,1}} x_k .
+\end{equation}
+</div>
+<div class="para">In particular, <span class="process-math">\(\{ y_1 , x_2, \ldots, x_d \}\)</span> spans <span class="process-math">\(X\text{,}\)</span> since <span class="process-math">\(x_1\)</span> can be obtained from <span class="process-math">\(\{ y_1 , x_2, \ldots, x_d \}\text{.}\)</span>  Therefore, there are some numbers <span class="process-math">\(a_{1,2},a_{2,2},\ldots,a_{d,2}\text{,}\)</span> such that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/mv_dimprop_i.html" id="sec_vectorspaces-4-19-2-20">
+\begin{equation}
+y_2 = a_{1,2} y_1 + \sum_{k=2}^d a_{k,2} x_k .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(T\)</span> is linearly independent—and so <span class="process-math">\(\{ y_1, y_2 \}\)</span> is linearly independent—one of the <span class="process-math">\(a_{k,2}\)</span> for <span class="process-math">\(k \geq 2\)</span> must be nonzero.  Without loss of generality suppose <span class="process-math">\(a_{2,2} \neq 0\text{.}\)</span>  Solve</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/mv_dimprop_i.html" id="sec_vectorspaces-4-19-2-26">
+\begin{equation}
+x_2 = \frac{1}{a_{2,2}} y_2 - \frac{a_{1,2}}{a_{2,2}} y_1 - \sum_{k=3}^d
+\frac{a_{k,2}}{a_{2,2}} x_k .
+\end{equation}
+</div>
+<div class="para">In particular, <span class="process-math">\(\{ y_1 , y_2, x_3, \ldots, x_d \}\)</span> spans <span class="process-math">\(X\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-4-19-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_vectorspaces-4-19-3">We continue this procedure.  If <span class="process-math">\(m &lt; d\text{,}\)</span> we are done.  Suppose <span class="process-math">\(m \geq d\text{.}\)</span> After <span class="process-math">\(d\)</span> steps, we obtain that <span class="process-math">\(\{ y_1 , y_2, \ldots, y_d \}\)</span> spans <span class="process-math">\(X\text{.}\)</span>  Any other vector <span class="process-math">\(v\)</span> in <span class="process-math">\(X\)</span> is a linear combination of <span class="process-math">\(\{ y_1 , y_2, \ldots, y_d \}\)</span> and hence cannot be in <span class="process-math">\(T\)</span> as <span class="process-math">\(T\)</span> is linearly independent.  So <span class="process-math">\(m = d\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-4-19-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_vectorspaces-4-19-4">We continue with <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_vectorspaces.html#mv_dimprop_ii" title="Item ii">ii</a>. Suppose <span class="process-math">\(T = \{x_1,x_2,\ldots,x_m\}\)</span> is linearly independent, does not span <span class="process-math">\(X\text{,}\)</span> and <span class="process-math">\(v \in X \setminus \spn (T)\text{.}\)</span> Suppose <span class="process-math">\(a_1 x_1 + a_2 x_2 + \cdots + a_m x_m + a_{m+1} v = 0\)</span> for some scalars <span class="process-math">\(a_1,a_2,\ldots,a_{m+1}\text{.}\)</span> If <span class="process-math">\(a_{m+1} \neq 0\text{,}\)</span> then <span class="process-math">\(v\)</span> would be a linear combination of <span class="process-math">\(T\text{,}\)</span> so <span class="process-math">\(a_{m+1} = 0\text{.}\)</span>  Then, as <span class="process-math">\(T\)</span> is linearly independent, <span class="process-math">\(a_1=a_2=\cdots=a_m = 0\text{.}\)</span> So <span class="process-math">\(T \cup \{ v \}\)</span> is linearly independent.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-4-19-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_vectorspaces-4-19-5">We move to <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_vectorspaces.html#mv_dimprop_iii" title="Item iii">iii</a>. If <span class="process-math">\(\dim \, X = d\text{,}\)</span> then there must exist some linearly independent set <span class="process-math">\(T\)</span> of <span class="process-math">\(d\)</span> vectors, and <span class="process-math">\(T\)</span> must span <span class="process-math">\(X\text{,}\)</span> otherwise we could choose a larger set of linearly independent vectors via <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_vectorspaces.html#mv_dimprop_ii" title="Item ii">ii</a>. So we have a basis of <span class="process-math">\(d\)</span> vectors. On the other hand, if we have a basis of <span class="process-math">\(d\)</span> vectors, the dimension is at least <span class="process-math">\(d\)</span> as a basis is linearly independent. A basis also spans <span class="process-math">\(X\text{,}\)</span> and so by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_vectorspaces.html#mv_dimprop_i" title="Item i">i</a> we know that dimension is at most <span class="process-math">\(d\text{.}\)</span> Hence the dimension of <span class="process-math">\(X\)</span> must equal <span class="process-math">\(d\text{.}\)</span> The “in particular” follows by noting that <span class="process-math">\(\{ e_1, e_2, \ldots, e_n \}\)</span> is a basis of <span class="process-math">\(\R^n\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-4-19-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_vectorspaces-4-19-6">To see <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_vectorspaces.html#mv_dimprop_iv" title="Item iv">iv</a>, suppose <span class="process-math">\(Y \subset X\)</span> is a vector subspace, where <span class="process-math">\(\dim \, X = d\text{.}\)</span>  As <span class="process-math">\(X\)</span> cannot contain <span class="process-math">\(d+1\)</span> linearly independent vectors, neither can <span class="process-math">\(Y\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-4-19-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_vectorspaces-4-19-7">For <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_vectorspaces.html#mv_dimprop_v" title="Item v">v</a>, suppose <span class="process-math">\(T\)</span> is a set of <span class="process-math">\(m\)</span> vectors that is linearly dependent and spans <span class="process-math">\(X\text{.}\)</span> We will show that <span class="process-math">\(m &gt; d\text{.}\)</span> One of the vectors is a linear combination of the others.  If we remove it from <span class="process-math">\(T\text{,}\)</span> we obtain a set of <span class="process-math">\(m-1\)</span> vectors that still span <span class="process-math">\(X\text{.}\)</span> Hence <span class="process-math">\(d = \dim \, X \leq m-1\)</span> by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_vectorspaces.html#mv_dimprop_i" title="Item i">i</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-4-19-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_vectorspaces-4-19-8">For <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_vectorspaces.html#mv_dimprop_vi" title="Item vi">vi</a> suppose <span class="process-math">\(T = \{ x_1, x_2, \ldots, x_m \}\)</span> is a linearly independent set.  First, <span class="process-math">\(m \leq d\)</span> by definition of dimension. If <span class="process-math">\(m=d\text{,}\)</span> the set <span class="process-math">\(T\)</span> must span <span class="process-math">\(X\)</span> as in the proof of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_vectorspaces.html#mv_dimprop_iii" title="Item iii">iii</a>, otherwise we could add another vector to <span class="process-math">\(T\text{.}\)</span> If <span class="process-math">\(m &lt; d\text{,}\)</span> <span class="process-math">\(T\)</span> cannot span <span class="process-math">\(X\)</span> by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_vectorspaces.html#mv_dimprop_iii" title="Item iii">iii</a>. So find <span class="process-math">\(v\)</span> not in the span of <span class="process-math">\(T\text{.}\)</span> Via <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_vectorspaces.html#mv_dimprop_ii" title="Item ii">ii</a>, the set <span class="process-math">\(T \cup \{ v \}\)</span> is a linearly independent set of <span class="process-math">\(m+1\)</span> elements. Therefore, we repeat this procedure <span class="process-math">\(d-m\)</span> times to find a set of <span class="process-math">\(d\)</span> linearly independent vectors. Again, they must span <span class="process-math">\(X\text{,}\)</span> otherwise we could add yet another vector.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-4-19-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 8.1.2.2"><a aria-label="Copy heading and permalink for Proof 8.1.2.2" href="#sec_vectorspaces-4-19" title="Copy heading and permalink for Proof 8.1.2.2">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 8.1.2: Linear combinations and dimension"><a aria-label="Copy heading and permalink for Subsection 8.1.2: Linear combinations and dimension" href="#sec_vectorspaces-4" title="Copy heading and permalink for Subsection 8.1.2: Linear combinations and dimension">🔗</a></div>
+</section>
+<section class="subsection" id="sec_vectorspaces-5">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.1.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Linear mappings</span>
+</h3>
+<div class="para" id="sec_vectorspaces-5-2">When <span class="process-math">\(Y \neq \R\text{,}\)</span> a function <span class="process-math">\(f \colon X \to Y\)</span> is often called a <em class="emphasis">mapping</em> or a <em class="emphasis">map</em> rather than a <em class="emphasis">function</em>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-5-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_vectorspaces-5-3"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.1.15</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_vectorspaces-5-3-1-1">
+<div class="para">A map <span class="process-math">\(A \colon X \to Y\)</span> of vector spaces <span class="process-math">\(X\)</span> and <span class="process-math">\(Y\)</span> is <em class="emphasis">linear</em> (we also say <span class="process-math">\(A\)</span> is a <em class="emphasis">linear transformation</em> or a <em class="emphasis">linear operator</em>) if for all <span class="process-math">\(a \in \R\)</span> and all <span class="process-math">\(x,y \in X\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_vectorspaces-5-3-1-1-12">
+\begin{equation}
+A(a x) = a A(x) \qquad \text{and} \qquad A(x+y) = A(x)+A(y) .
+\end{equation}
+</div>
+<div class="para">We usually write <span class="process-math">\(Ax\)</span> instead of <span class="process-math">\(A(x)\)</span> if <span class="process-math">\(A\)</span> is linear. If <span class="process-math">\(A\)</span> is one-to-one and onto, then we say <span class="process-math">\(A\)</span> is <em class="emphasis">invertible</em>, and we denote the inverse by <span class="process-math">\(A^{-1}\text{.}\)</span> If <span class="process-math">\(A \colon X \to X\)</span> is linear, then we say <span class="process-math">\(A\)</span> is a <em class="emphasis">linear operator on <span class="process-math">\(X\)</span></em>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-5-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_vectorspaces-5-3-1-2">
+<div class="para">We write <span class="process-math">\(L(X,Y)\)</span> for the set of linear maps from <span class="process-math">\(X\)</span> to <span class="process-math">\(Y\text{,}\)</span> and <span class="process-math">\(L(X)\)</span> for the set of linear operators on <span class="process-math">\(X\text{.}\)</span> If <span class="process-math">\(a \in \R\)</span> and <span class="process-math">\(A,B \in L(X,Y)\text{,}\)</span> define the maps <span class="process-math">\(aA\)</span> and <span class="process-math">\(A+B\)</span> by</div>
+<div class="displaymath process-math" id="sec_vectorspaces-5-3-1-2-10">
+\begin{equation}
+(aA)(x) \coloneqq aAx ,
+\qquad
+(A+B)(x) \coloneqq Ax + Bx .
+\end{equation}
+</div>
+<div class="para">If <span class="process-math">\(A \in L(Y,Z)\)</span> and <span class="process-math">\(B \in L(X,Y)\text{,}\)</span> define the map <span class="process-math">\(AB \colon X \to Z\)</span> as the composition <span class="process-math">\(A \circ B\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_vectorspaces-5-3-1-2-15">
+\begin{equation}
+ABx \coloneqq A(Bx) .
+\end{equation}
+</div>
+<div class="para">Finally, denote by <span class="process-math">\(I \in L(X)\)</span> the <em class="emphasis">identity</em>: the linear operator such that <span class="process-math">\(Ix = x\)</span> for all <span class="process-math">\(x\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-5-3-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 8.1.15"><a aria-label="Copy heading and permalink for Definition 8.1.15" href="#sec_vectorspaces-5-3" title="Copy heading and permalink for Definition 8.1.15">🔗</a></div>
+</article>
+<article class="proposition theorem-like" id="prop_LXYvs"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.1.16</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="prop_LXYvs-1-1">Let <span class="process-math">\(X\text{,}\)</span> <span class="process-math">\(Y\text{,}\)</span> and <span class="process-math">\(Z\)</span> be vector spaces.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_LXYvs-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="prop_LXYvs-1-2">
+<li id="prop_LXYvs-1-2-1">
+<div class="para" id="prop_LXYvs-1-2-1-1">If <span class="process-math">\(A \in L(X,Y)\text{,}\)</span> then <span class="process-math">\(A0 = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_LXYvs-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#prop_LXYvs-1-2-1" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="prop_LXYvs-1-2-2">
+<div class="para" id="prop_LXYvs-1-2-2-1">If <span class="process-math">\(A,B \in L(X,Y)\text{,}\)</span> then <span class="process-math">\(A+B \in L(X,Y)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_LXYvs-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#prop_LXYvs-1-2-2" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+<li id="prop_LXYvs-1-2-3">
+<div class="para" id="prop_LXYvs-1-2-3-1">If <span class="process-math">\(A \in L(X,Y)\)</span> and <span class="process-math">\(a \in \R\text{,}\)</span> then <span class="process-math">\(aA \in L(X,Y)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_LXYvs-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iii"><a aria-label="Copy heading and permalink for Item iii" href="#prop_LXYvs-1-2-3" title="Copy heading and permalink for Item iii">🔗</a></div>
+</li>
+<li id="prop_LXYvs-1-2-4">
+<div class="para" id="prop_LXYvs-1-2-4-1">If <span class="process-math">\(A \in L(Y,Z)\)</span> and <span class="process-math">\(B \in L(X,Y)\text{,}\)</span> then <span class="process-math">\(AB \in L(X,Z)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_LXYvs-1-2-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iv"><a aria-label="Copy heading and permalink for Item iv" href="#prop_LXYvs-1-2-4" title="Copy heading and permalink for Item iv">🔗</a></div>
+</li>
+<li id="prop_LXYvs-1-2-5">
+<div class="para" id="prop_LXYvs-1-2-5-1">If <span class="process-math">\(A \in L(X,Y)\)</span> is invertible, then <span class="process-math">\(A^{-1} \in L(Y,X)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_LXYvs-1-2-5-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item v"><a aria-label="Copy heading and permalink for Item v" href="#prop_LXYvs-1-2-5" title="Copy heading and permalink for Item v">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Proposition 8.1.16"><a aria-label="Copy heading and permalink for Proposition 8.1.16" href="#prop_LXYvs" title="Copy heading and permalink for Proposition 8.1.16">🔗</a></div>
+</article>
+<div class="para" id="sec_vectorspaces-5-5">In particular, <span class="process-math">\(L(X,Y)\)</span> is a vector space, where <span class="process-math">\(0 \in L(X,Y)\)</span> is the linear map that takes everything to <span class="process-math">\(0\text{.}\)</span> As <span class="process-math">\(L(X)\)</span> is not only a vector space, but also admits a product (composition), it is called an <em class="emphasis">algebra</em>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-5-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_vectorspaces-5-6"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_vectorspaces-5-6-1">
+<div class="para">We leave the first four items as a quick exercise, <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_vectorspaces.html#exercise_LXYvs" title="Exercise 8.1.20">Exercise 8.1.20</a>. Let us prove the last item. Let <span class="process-math">\(a \in \R\)</span> and <span class="process-math">\(y \in Y\text{.}\)</span>  As <span class="process-math">\(A\)</span> is onto, there is an <span class="process-math">\(x \in X\)</span> such that <span class="process-math">\(y = Ax\text{.}\)</span> As it is also one-to-one, <span class="process-math">\(A^{-1}(Az) = z\)</span> for all <span class="process-math">\(z \in X\text{.}\)</span> So</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_LXYvs.html" id="sec_vectorspaces-5-6-1-9">
+\begin{equation}
+A^{-1}(ay)
+=
+A^{-1}(aAx)
+=
+A^{-1}\bigl(A(ax)\bigr)
+= ax
+= aA^{-1}(y).
+\end{equation}
+</div>
+<div class="para">Similarly, let <span class="process-math">\(y_1,y_2 \in Y\)</span> and <span class="process-math">\(x_1, x_2 \in X\)</span> be such that <span class="process-math">\(Ax_1 = y_1\)</span> and <span class="process-math">\(Ax_2 = y_2\text{,}\)</span> then</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_LXYvs.html" id="sec_vectorspaces-5-6-1-14">
+\begin{equation}
+A^{-1}(y_1+y_2)
+=
+A^{-1}(Ax_1+Ax_2)
+=
+A^{-1}\bigl(A(x_1+x_2)\bigr)
+= x_1+x_2
+= A^{-1}(y_1) + A^{-1}(y_2). \qedhere
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-5-6-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 8.1.3.1"><a aria-label="Copy heading and permalink for Proof 8.1.3.1" href="#sec_vectorspaces-5-6" title="Copy heading and permalink for Proof 8.1.3.1">🔗</a></div>
+</article>
+<article class="proposition theorem-like" id="mv_lindefonbasis"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.1.17</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="mv_lindefonbasis-1-1">If <span class="process-math">\(A \in L(X,Y)\)</span> is linear, then it is completely determined by its values on a basis of <span class="process-math">\(X\text{.}\)</span> Furthermore, if <span class="process-math">\(B\)</span> is a basis of <span class="process-math">\(X\text{,}\)</span> then every function <span class="process-math">\(\widetilde{A} \colon B \to Y\)</span> extends to a linear function <span class="process-math">\(A\)</span> on <span class="process-math">\(X\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_lindefonbasis-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 8.1.17"><a aria-label="Copy heading and permalink for Proposition 8.1.17" href="#mv_lindefonbasis" title="Copy heading and permalink for Proposition 8.1.17">🔗</a></div>
+</article>
+<div class="para" id="sec_vectorspaces-5-8">We only prove this proposition for finite-dimensional spaces, as we do not need infinite-dimensional spaces.<details aria-live="polite" class="ptx-footnote" id="sec_vectorspaces-5-8-1"><summary class="ptx-footnote__number" title="Footnote 8.1.4"><sup> 4 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_vectorspaces-5-8-1">For infinite-dimensional spaces, the proof is essentially the same, but a little trickier to write. Moreover, we haven’t even defined what a basis is for infinite-dimensional spaces.
+</div></details><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-5-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_vectorspaces-5-9"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_vectorspaces-5-9-1">
+<div class="para">Let <span class="process-math">\(\{ x_1, x_2, \ldots, x_n \}\)</span> be a basis of <span class="process-math">\(X\text{,}\)</span> and let <span class="process-math">\(y_k \coloneqq A x_k\text{.}\)</span>  Every <span class="process-math">\(x \in X\)</span> has a unique representation</div>
+<div class="displaymath process-math" id="sec_vectorspaces-5-9-1-5">
+\begin{equation}
+x = \sum_{k=1}^n b_k \, x_k
+\end{equation}
+</div>
+<div class="para">for some numbers <span class="process-math">\(b_1,b_2,\ldots,b_n\text{.}\)</span>  By linearity,</div>
+<div class="displaymath process-math" id="sec_vectorspaces-5-9-1-7">
+\begin{equation}
+Ax = 
+A\sum_{k=1}^n b_k x_k
+=
+\sum_{k=1}^n b_k \, Ax_k
+=
+\sum_{k=1}^n b_k \, y_k .
+\end{equation}
+</div>
+<div class="para">The “furthermore” follows by setting <span class="process-math">\(y_k \coloneqq \widetilde{A}(x_k)\text{,}\)</span> and then for <span class="process-math">\(x = \sum_{k=1}^n b_k \, x_k\text{,}\)</span> defining the extension as <span class="process-math">\(A(x) \coloneqq \sum_{k=1}^n b_k \, y_k\text{.}\)</span>  The function is well-defined by uniqueness of the representation of <span class="process-math">\(x\text{.}\)</span> We leave it to the reader to check that <span class="process-math">\(A\)</span> is linear.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-5-9-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 8.1.3.2"><a aria-label="Copy heading and permalink for Proof 8.1.3.2" href="#sec_vectorspaces-5-9" title="Copy heading and permalink for Proof 8.1.3.2">🔗</a></div>
+</article>
+<div class="para" id="sec_vectorspaces-5-10">For a linear map, it is sufficient to check injectivity at the origin. That is, if the only <span class="process-math">\(x\)</span> such that <span class="process-math">\(Ax =0\)</span> is <span class="process-math">\(x=0\text{,}\)</span> then <span class="process-math">\(A\)</span> is one-to-one, because if <span class="process-math">\(Ay=Az\text{,}\)</span> then <span class="process-math">\(A(y-z) = 0\text{.}\)</span>  For this reason, one often studies the <em class="emphasis">nullspace</em> of <span class="process-math">\(A\text{,}\)</span> that is, <span class="process-math">\(\{ x \in X : Ax = 0 \}\text{.}\)</span> For finite-dimensional vector spaces (and only in finitely many dimensions) we have the following special case of the rank-nullity theorem from linear algebra.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-5-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="mv_prop_lin11onto"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.1.18</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="mv_prop_lin11onto-1-1">If <span class="process-math">\(X\)</span> is a finite-dimensional vector space and <span class="process-math">\(A \in L(X)\text{,}\)</span> then <span class="process-math">\(A\)</span> is one-to-one if and only if it is onto.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_prop_lin11onto-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 8.1.18"><a aria-label="Copy heading and permalink for Proposition 8.1.18" href="#mv_prop_lin11onto" title="Copy heading and permalink for Proposition 8.1.18">🔗</a></div>
+</article>
+<article class="proof" id="sec_vectorspaces-5-12"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_vectorspaces-5-12-1">
+<div class="para">Let <span class="process-math">\(\{ x_1,x_2,\ldots,x_n \}\)</span> be a basis for <span class="process-math">\(X\text{.}\)</span> First suppose <span class="process-math">\(A\)</span> is one-to-one.  Let <span class="process-math">\(c_1,c_2,\ldots,c_n\)</span> be scalars such that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/mv_dimprop.html" id="sec_vectorspaces-5-12-1-5">
+\begin{equation}
+0 =
+\sum_{k=1}^n c_k \, Ax_k =
+A\sum_{k=1}^n c_k \, x_k 
+.
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(A\)</span> is one-to-one, the only vector that is taken to 0 is 0 itself. Hence,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/mv_dimprop.html" id="sec_vectorspaces-5-12-1-7">
+\begin{equation}
+0 =
+\sum_{k=1}^n c_k \, x_k,
+\end{equation}
+</div>
+<div class="para">and so <span class="process-math">\(c_k = 0\)</span> for all <span class="process-math">\(k\)</span> as <span class="process-math">\(\{ x_1,x_2,\ldots,x_n \}\)</span> is a basis. So <span class="process-math">\(\{ Ax_1, Ax_2, \ldots, Ax_n \}\)</span> is linearly independent. By <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_vectorspaces.html#mv_dimprop" title="Proposition 8.1.14">Proposition 8.1.14</a> and the fact that the dimension is <span class="process-math">\(n\text{,}\)</span> we conclude <span class="process-math">\(\{ Ax_1, Ax_2, \ldots, Ax_n \}\)</span> spans <span class="process-math">\(X\text{.}\)</span>  Consequently, <span class="process-math">\(A\)</span> is onto, as any <span class="process-math">\(y \in X\)</span> can be written as</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/mv_dimprop.html" id="sec_vectorspaces-5-12-1-18">
+\begin{equation}
+y = \sum_{k=1}^n a_k \, Ax_k =
+A\sum_{k=1}^n a_k \, x_k .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-5-12-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_vectorspaces-5-12-2">
+<div class="para">For the other direction, suppose <span class="process-math">\(A\)</span> is onto. Suppose that for some <span class="process-math">\(c_1,c_2,\ldots,c_n\text{,}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/mv_dimprop.html" id="sec_vectorspaces-5-12-2-3">
+\begin{equation}
+0 = A\sum_{k=1}^n c_k \, x_k =
+\sum_{k=1}^n c_k \, Ax_k .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(A\)</span> is determined by the action on the basis, <span class="process-math">\(\{ Ax_1, Ax_2, \ldots, Ax_n \}\)</span> spans <span class="process-math">\(X\text{.}\)</span> So by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_vectorspaces.html#mv_dimprop" title="Proposition 8.1.14">Proposition 8.1.14</a>, the set is linearly independent, and <span class="process-math">\(c_k = 0\)</span> for all <span class="process-math">\(k\text{.}\)</span>  In other words, if <span class="process-math">\(Ax = 0\text{,}\)</span> then <span class="process-math">\(x=0\text{.}\)</span> Thus, <span class="process-math">\(A\)</span> is one-to-one.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-5-12-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 8.1.3.3"><a aria-label="Copy heading and permalink for Proof 8.1.3.3" href="#sec_vectorspaces-5-12" title="Copy heading and permalink for Proof 8.1.3.3">🔗</a></div>
+</article>
+<div class="para" id="sec_vectorspaces-5-13">We leave the proof of the next proposition as an exercise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-5-13" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_LXYfinitedim"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.1.19</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="prop_LXYfinitedim-1-1">If <span class="process-math">\(X\)</span> and <span class="process-math">\(Y\)</span> are finite-dimensional vector spaces, then <span class="process-math">\(L(X,Y)\)</span> is also finite-dimensional.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_LXYfinitedim-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 8.1.19"><a aria-label="Copy heading and permalink for Proposition 8.1.19" href="#prop_LXYfinitedim" title="Copy heading and permalink for Proposition 8.1.19">🔗</a></div>
+</article>
+<div class="para logical" id="sec_vectorspaces-5-15">
+<div class="para">We can identify a finite-dimensional vector space <span class="process-math">\(X\)</span> of dimension <span class="process-math">\(n\)</span> with <span class="process-math">\(\R^n\text{,}\)</span> provided we fix a basis <span class="process-math">\(\{ x_1, x_2, \ldots, x_n \}\)</span> in <span class="process-math">\(X\text{.}\)</span>  That is, we define a bijective linear map <span class="process-math">\(A \in L(X,\R^n)\)</span> by <span class="process-math">\(Ax_k \coloneqq e_k\text{,}\)</span> where <span class="process-math">\(\{ e_1, e_2, \ldots, e_n \}\)</span> is the standard basis in <span class="process-math">\(\R^n\text{.}\)</span>  We have the correspondence</div>
+<div class="displaymath process-math" id="sec_vectorspaces-5-15-10">
+\begin{equation}
+\sum_{k=1}^n c_k \, x_k \, \in X
+\quad
+\overset{A}{\mapsto}
+\quad
+(c_1,c_2,\ldots,c_n) \, \in \R^n .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-5-15" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 8.1.3: Linear mappings"><a aria-label="Copy heading and permalink for Subsection 8.1.3: Linear mappings" href="#sec_vectorspaces-5" title="Copy heading and permalink for Subsection 8.1.3: Linear mappings">🔗</a></div>
+</section>
+<section class="subsection" id="sec_vectorspaces-6">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.1.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Convexity</span>
+</h3>
+<div class="para" id="sec_vectorspaces-6-2">A subset <span class="process-math">\(U\)</span> of a vector space is <em class="emphasis">convex</em> if whenever <span class="process-math">\(x,y \in U\text{,}\)</span> the line segment from <span class="process-math">\(x\)</span> to <span class="process-math">\(y\)</span> lies in <span class="process-math">\(U\text{.}\)</span>  That is, if the <em class="emphasis">convex combination</em> <span class="process-math">\((1-t)x+ty\)</span> is in <span class="process-math">\(U\)</span> for all <span class="process-math">\(t \in [0,1]\text{.}\)</span> We write <span class="process-math">\([x,y]\)</span> for this line segment. See <a class="internal" href="sec_vectorspaces.html#mv_convexcomb" title="Figure 8.2">Figure 8.2</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-6-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="mv_convexcomb"><img alt="An oval shaded region labeled U. Two points, x and y, are marked inside and a line segment between them, which lies entirely inside U. A point somewhere in the middle of the segment is labeled as 1 minus t all times x plus t times y." class="raimg" role="img" src="figures/convexset-mbxpdft.svg" style="width:217pt; height:97pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Convexity.<div class="autopermalink" data-description="Figure 8.2"><a aria-label="Copy heading and permalink for Figure 8.2" href="#mv_convexcomb" title="Copy heading and permalink for Figure 8.2">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para" id="sec_vectorspaces-6-6">In <span class="process-math">\(\R\text{,}\)</span> convex sets are precisely the intervals, which are also precisely the connected sets. In two or more dimensions there are lots of nonconvex connected sets.  For example, the set <span class="process-math">\(\R^2 \setminus \{0\}\)</span> is connected, but not convex—for any <span class="process-math">\(x \in \R^2 \setminus \{0\}\)</span> where <span class="process-math">\(y \coloneqq -x\text{,}\)</span> we find <span class="process-math">\((\nicefrac{1}{2})x + (\nicefrac{1}{2})y = 0\text{,}\)</span> which is not in the set. Balls (in the standard metric) in <span class="process-math">\(\R^n\)</span> are convex.  It is a useful enough result to state as a proposition, but we leave its proof as an exercise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-6-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_vectorspaces-6-7"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.1.20</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_vectorspaces-6-7-1-1">Let <span class="process-math">\(x \in \R^n\)</span> and <span class="process-math">\(r &gt; 0\text{.}\)</span>  The ball <span class="process-math">\(B(x,r) \subset \R^n\)</span> is convex.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-6-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 8.1.20"><a aria-label="Copy heading and permalink for Proposition 8.1.20" href="#sec_vectorspaces-6-7" title="Copy heading and permalink for Proposition 8.1.20">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_vectorspaces-6-8"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.1.21</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_vectorspaces-6-8-1-1">A convex combination is, in particular, a linear combination. So every vector subspace <span class="process-math">\(V\)</span> of a vector space <span class="process-math">\(X\)</span> is convex.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-6-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 8.1.21"><a aria-label="Copy heading and permalink for Example 8.1.21" href="#sec_vectorspaces-6-8" title="Copy heading and permalink for Example 8.1.21">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_vectorspaces-6-9"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.1.22</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_vectorspaces-6-9-1-1">
+<div class="para">Let <span class="process-math">\(C([0,1],\R)\)</span> be the vector space of continuous real-valued functions on <span class="process-math">\(\R\text{.}\)</span> Let <span class="process-math">\(V \subset C([0,1],\R)\)</span> be the set of those <span class="process-math">\(f\)</span> such that</div>
+<div class="displaymath process-math" id="sec_vectorspaces-6-9-1-1-5">
+\begin{equation}
+\int_0^1 f(x)\,dx \leq 1 \qquad \text{and} \qquad
+f(x) \geq 0 \enspace \text{for all } x \in [0,1] .
+\end{equation}
+</div>
+<div class="para">Then <span class="process-math">\(V\)</span> is convex.  Take <span class="process-math">\(t \in [0,1]\text{,}\)</span> and note that if <span class="process-math">\(f,g \in V\text{,}\)</span> then <span class="process-math">\((1-t) f(x) + t g(x) \geq 0\)</span> for all <span class="process-math">\(x\text{.}\)</span>  Furthermore,</div>
+<div class="displaymath process-math" id="sec_vectorspaces-6-9-1-1-11">
+\begin{equation}
+\int_0^1 \bigl((1-t)f(x) + t g(x)\bigr) \,dx
+=
+(1-t) \int_0^1 f(x) \,dx
++ t \int_0^1 g(x) \,dx \leq 1 .
+\end{equation}
+</div>
+<div class="para">Note that <span class="process-math">\(V\)</span> is not a vector subspace of <span class="process-math">\(C([0,1],\R)\text{.}\)</span>  The function <span class="process-math">\(f(x) \coloneqq 1\)</span> is in <span class="process-math">\(V\text{,}\)</span> but <span class="process-math">\(2f\)</span> and <span class="process-math">\(-f\)</span> are not.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-6-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 8.1.22"><a aria-label="Copy heading and permalink for Example 8.1.22" href="#sec_vectorspaces-6-9" title="Copy heading and permalink for Example 8.1.22">🔗</a></div>
+</article>
+<article class="proposition theorem-like" id="prop_intersectionconvex"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.1.23</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="prop_intersectionconvex-1-1">
+<div class="para">The intersection of two convex sets is convex.  In fact, if <span class="process-math">\(\{ C_\lambda \}_{\lambda \in I}\)</span> is an arbitrary collection of convex sets in a vector space, then</div>
+<div class="displaymath process-math" id="prop_intersectionconvex-1-1-2">
+\begin{equation}
+C \coloneqq \bigcap_{\lambda \in I} C_\lambda
+\qquad \text{is convex.}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_intersectionconvex-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 8.1.23"><a aria-label="Copy heading and permalink for Proposition 8.1.23" href="#prop_intersectionconvex" title="Copy heading and permalink for Proposition 8.1.23">🔗</a></div>
+</article>
+<article class="proof" id="sec_vectorspaces-6-11"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_vectorspaces-6-11-1">If <span class="process-math">\(x, y \in C\text{,}\)</span> then <span class="process-math">\(x,y \in C_\lambda\)</span> for all <span class="process-math">\(\lambda \in I\text{,}\)</span> and hence if <span class="process-math">\(t \in [0,1]\text{,}\)</span> then <span class="process-math">\((1-t)x + ty \in
+C_\lambda\)</span> for all <span class="process-math">\(\lambda \in I\text{.}\)</span>  Therefore, <span class="process-math">\((1-t)x + ty \in C\)</span> and <span class="process-math">\(C\)</span> is convex.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-6-11-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 8.1.4.1"><a aria-label="Copy heading and permalink for Proof 8.1.4.1" href="#sec_vectorspaces-6-11" title="Copy heading and permalink for Proof 8.1.4.1">🔗</a></div>
+</article>
+<div class="para logical" id="sec_vectorspaces-6-12">
+<div class="para">A useful construction using intersections of convex sets is the <em class="emphasis">convex hull</em>.  Given a subset <span class="process-math">\(S\)</span> of a vector space <span class="process-math">\(X\text{,}\)</span> define the convex hull of <span class="process-math">\(S\)</span> as the intersection of all convex sets containing <span class="process-math">\(S\text{:}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_intersectionconvex.html" id="sec_vectorspaces-6-12-6">
+\begin{equation}
+\operatorname{co}(S) \coloneqq
+\bigcap \{ C \subset X : S \subset C, \text{ and } C \text{ is convex} \} .
+\end{equation}
+</div>
+<div class="para">That is, the convex hull is the smallest convex set containing <span class="process-math">\(S\text{.}\)</span> By <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_vectorspaces.html#prop_intersectionconvex" title="Proposition 8.1.23">Proposition 8.1.23</a>, the intersection of convex sets is convex. Hence the convex hull is convex.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-6-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_vectorspaces-6-13"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.1.24</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_vectorspaces-6-13-1-1">The convex hull of <span class="process-math">\(\{ 0, 1 \}\)</span> in <span class="process-math">\(\R\)</span> is <span class="process-math">\([0,1]\text{.}\)</span>  Proof: A convex set containing 0 and 1 must contain <span class="process-math">\([0,1]\text{,}\)</span> so <span class="process-math">\([0,1] \subset \operatorname{co}(\{0,1\})\text{.}\)</span> The set <span class="process-math">\([0,1]\)</span> is convex and contains <span class="process-math">\(\{0,1\}\text{,}\)</span> so <span class="process-math">\(\operatorname{co}(\{0,1\}) \subset [0,1]\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-6-13-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 8.1.24"><a aria-label="Copy heading and permalink for Example 8.1.24" href="#sec_vectorspaces-6-13" title="Copy heading and permalink for Example 8.1.24">🔗</a></div>
+</article>
+<div class="para" id="sec_vectorspaces-6-14">Linear mappings preserve convex sets.  So in some sense, convex sets are the right sort of sets when considering linear mappings or changes of coordinates.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-6-14" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_vectorspaces-6-15"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.1.25</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_vectorspaces-6-15-1-1">Let <span class="process-math">\(X,Y\)</span> be vector spaces, <span class="process-math">\(A \in L(X,Y)\text{,}\)</span> and let <span class="process-math">\(C \subset X\)</span> be convex. Then <span class="process-math">\(A(C)\)</span> is convex.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-6-15-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 8.1.25"><a aria-label="Copy heading and permalink for Proposition 8.1.25" href="#sec_vectorspaces-6-15" title="Copy heading and permalink for Proposition 8.1.25">🔗</a></div>
+</article>
+<article class="proof" id="sec_vectorspaces-6-16"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_vectorspaces-6-16-1">
+<div class="para">Take two points <span class="process-math">\(p,q \in A(C)\text{.}\)</span>  Pick <span class="process-math">\(u,v \in C\)</span> such that <span class="process-math">\(Au = p\)</span> and <span class="process-math">\(Av=q\text{.}\)</span>  As <span class="process-math">\(C\)</span> is convex, <span class="process-math">\((1-t)u+t v \in C\)</span> for all <span class="process-math">\(t \in [0,1]\text{.}\)</span>  So</div>
+<div class="displaymath process-math" id="sec_vectorspaces-6-16-1-8">
+\begin{equation}
+(1-t)p+t q 
+=
+(1-t)Au+tAv
+=
+A\bigl((1-t)u+tv\bigr)
+\in A(C) .  \qedhere
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-6-16-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 8.1.4.2"><a aria-label="Copy heading and permalink for Proof 8.1.4.2" href="#sec_vectorspaces-6-16" title="Copy heading and permalink for Proof 8.1.4.2">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 8.1.4: Convexity"><a aria-label="Copy heading and permalink for Subsection 8.1.4: Convexity" href="#sec_vectorspaces-6" title="Copy heading and permalink for Subsection 8.1.4: Convexity">🔗</a></div>
+</section>
+<section class="exercises" id="sec_vectorspaces-7">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.1.5</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_vectorspaces-7-1"><h4 class="heading"><span class="codenumber">8.1.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_vectorspaces-7-1-1-1">Show that in <span class="process-math">\(\R^n\)</span> (with the standard euclidean metric), for every <span class="process-math">\(x \in \R^n\)</span> and every <span class="process-math">\(r &gt; 0\text{,}\)</span> the ball <span class="process-math">\(B(x,r)\)</span> is convex.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-7-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.1.1"><a aria-label="Copy heading and permalink for Exercise 8.1.1" href="#sec_vectorspaces-7-1" title="Copy heading and permalink for Exercise 8.1.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_vectorspaces-7-2"><h4 class="heading"><span class="codenumber">8.1.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_vectorspaces-7-2-1-1">Verify that <span class="process-math">\(\R^n\)</span> is a vector space.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-7-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.1.2"><a aria-label="Copy heading and permalink for Exercise 8.1.2" href="#sec_vectorspaces-7-2" title="Copy heading and permalink for Exercise 8.1.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_vectorspaces-7-3"><h4 class="heading"><span class="codenumber">8.1.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_vectorspaces-7-3-1-1">
+<div class="para">Let <span class="process-math">\(X\)</span> be a vector space. Prove that a finite set of vectors <span class="process-math">\(\{ x_1,x_2,\ldots,x_n \} \subset X\)</span> is linearly independent if and only if for every <span class="process-math">\(k=1,2,\ldots,n\)</span>
+</div>
+<div class="displaymath process-math" id="sec_vectorspaces-7-3-1-1-4">
+\begin{equation}
+\spn\bigl( \{ x_1,\ldots,x_{k-1},x_{k+1},\ldots,x_n \}\bigr) \subsetneq
+\spn\bigl( \{ x_1,x_2,\ldots,x_n \}\bigr) .
+\end{equation}
+</div>
+<div class="para">That is, the span of the set with one vector removed is strictly smaller.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-7-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.1.3"><a aria-label="Copy heading and permalink for Exercise 8.1.3" href="#sec_vectorspaces-7-3" title="Copy heading and permalink for Exercise 8.1.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_intzerosubspace"><h4 class="heading"><span class="codenumber">8.1.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_intzerosubspace-1-1">Show that the set <span class="process-math">\(X \subset C([0,1],\R)\)</span> of those functions such that <span class="process-math">\(\int_0^1 f = 0\)</span> is a vector subspace. Compare <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_vectorspaces.html#exercise_intoneconvex" title="Exercise 8.1.16">Exercise 8.1.16</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_intzerosubspace-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.1.4"><a aria-label="Copy heading and permalink for Exercise 8.1.4" href="#exercise_intzerosubspace" title="Copy heading and permalink for Exercise 8.1.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_vectorspaces-7-5"><h4 class="heading"><span class="codenumber">8.1.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_vectorspaces-7-5-1-1">
+<em class="emphasis">(Challenging)</em>   Prove <span class="process-math">\(C([0,1],\R)\)</span> is an infinite-dimensional vector space where the operations are defined in the obvious way: <span class="process-math">\(s=f+g\)</span> and <span class="process-math">\(m=af\)</span> are defined as <span class="process-math">\(s(x) \coloneqq f(x)+g(x)\)</span> and <span class="process-math">\(m(x) \coloneqq a f(x)\text{.}\)</span> Hint: For the dimension, think of functions that are only nonzero on the interval <span class="process-math">\((\nicefrac{1}{n+1},\nicefrac{1}{n})\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-7-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.1.5"><a aria-label="Copy heading and permalink for Exercise 8.1.5" href="#sec_vectorspaces-7-5" title="Copy heading and permalink for Exercise 8.1.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_continuouskernel"><h4 class="heading"><span class="codenumber">8.1.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="exercise_continuouskernel-1-1">
+<div class="para">Let <span class="process-math">\(k \colon [0,1]^2 \to \R\)</span> be continuous.  Show that <span class="process-math">\(L \colon C([0,1],\R) \to C([0,1],\R)\)</span> defined by</div>
+<div class="displaymath process-math" id="exercise_continuouskernel-1-1-3">
+\begin{equation}
+Lf(y) \coloneqq \int_0^1 k(x,y)f(x)\,dx
+\end{equation}
+</div>
+<div class="para">is a linear operator.  That is, first show that <span class="process-math">\(L\)</span> is well-defined by showing that <span class="process-math">\(Lf\)</span> is continuous whenever <span class="process-math">\(f\)</span> is, and then showing that <span class="process-math">\(L\)</span> is linear.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_continuouskernel-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.1.6"><a aria-label="Copy heading and permalink for Exercise 8.1.6" href="#exercise_continuouskernel" title="Copy heading and permalink for Exercise 8.1.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_vectorspaces-7-7"><h4 class="heading"><span class="codenumber">8.1.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_vectorspaces-7-7-1-1">Let <span class="process-math">\(\sP_n\)</span> be the vector space of polynomials in one variable of degree <span class="process-math">\(n\)</span> or less.  Show that <span class="process-math">\(\sP_n\)</span> is a vector space of dimension <span class="process-math">\(n+1\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-7-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.1.7"><a aria-label="Copy heading and permalink for Exercise 8.1.7" href="#sec_vectorspaces-7-7" title="Copy heading and permalink for Exercise 8.1.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_vectorspaces-7-8"><h4 class="heading"><span class="codenumber">8.1.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_vectorspaces-7-8-1-1">Let <span class="process-math">\(\R[t]\)</span> be the vector space of polynomials in one variable <span class="process-math">\(t\text{.}\)</span>  Let <span class="process-math">\(D \colon \R[t] \to \R[t]\)</span> be the derivative operator (derivative in <span class="process-math">\(t\)</span>). Show that <span class="process-math">\(D\)</span> is a linear operator.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-7-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.1.8"><a aria-label="Copy heading and permalink for Exercise 8.1.8" href="#sec_vectorspaces-7-8" title="Copy heading and permalink for Exercise 8.1.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_vectorspaces-7-9"><h4 class="heading"><span class="codenumber">8.1.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_vectorspaces-7-9-1-1">Let us show that <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_vectorspaces.html#mv_prop_lin11onto" title="Proposition 8.1.18">Proposition 8.1.18</a> only works in finite dimensions.  Take the space of polynomials <span class="process-math">\(\R[t]\)</span> and define the operator <span class="process-math">\(A \colon \R[t] \to \R[t]\)</span> by <span class="process-math">\(A\bigl(P(t)\bigr) \coloneqq tP(t)\text{.}\)</span>  Show that <span class="process-math">\(A\)</span> is linear and one-to-one, but show that it is not onto.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-7-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.1.9"><a aria-label="Copy heading and permalink for Exercise 8.1.9" href="#sec_vectorspaces-7-9" title="Copy heading and permalink for Exercise 8.1.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_vectorspaces-7-10"><h4 class="heading"><span class="codenumber">8.1.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_vectorspaces-7-10-1-1">
+<div class="para">Finish the proof of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_vectorspaces.html#mv_lindefonbasis" title="Proposition 8.1.17">Proposition 8.1.17</a> in the finite-dimensional case. That is, suppose <span class="process-math">\(\{ x_1, x_2,\ldots x_n \}\)</span> is a basis of <span class="process-math">\(X\text{,}\)</span> <span class="process-math">\(\{ y_1, y_2,\ldots y_n \} \subset Y\text{,}\)</span> and define a function</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/mv_lindefonbasis.html" id="sec_vectorspaces-7-10-1-1-5">
+\begin{equation}
+A(x) \coloneqq \sum_{k=1}^n b_k y_k, \qquad \text{if} \quad x=\sum_{k=1}^n b_k x_k .
+\end{equation}
+</div>
+<div class="para">Prove that <span class="process-math">\(A \colon X \to Y\)</span> is linear.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-7-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.1.10"><a aria-label="Copy heading and permalink for Exercise 8.1.10" href="#sec_vectorspaces-7-10" title="Copy heading and permalink for Exercise 8.1.10">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_vectorspaces-7-11"><h4 class="heading"><span class="codenumber">8.1.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_vectorspaces-7-11-1-1">Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_vectorspaces.html#prop_LXYfinitedim" title="Proposition 8.1.19">Proposition 8.1.19</a>.  Hint: A linear transformation is determined by its action on a basis.  So given two bases <span class="process-math">\(\{ x_1,\ldots,x_n \}\)</span> and <span class="process-math">\(\{ y_1,\ldots,y_m \}\)</span> for <span class="process-math">\(X\)</span> and <span class="process-math">\(Y\)</span> respectively, consider the linear operators <span class="process-math">\(A_{jk}\)</span> that send <span class="process-math">\(A_{jk} x_j = y_k\text{,}\)</span> and <span class="process-math">\(A_{jk} x_\ell = 0\)</span> if <span class="process-math">\(\ell \neq j\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-7-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.1.11"><a aria-label="Copy heading and permalink for Exercise 8.1.11" href="#sec_vectorspaces-7-11" title="Copy heading and permalink for Exercise 8.1.11">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_vectorspaces-7-12"><h4 class="heading"><span class="codenumber">8.1.12<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_vectorspaces-7-12-1-1">
+<em class="emphasis">(Easy)</em>   Suppose <span class="process-math">\(X\)</span> and <span class="process-math">\(Y\)</span> are vector spaces and <span class="process-math">\(A \in L(X,Y)\)</span> is a linear mapping.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-7-12-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_vectorspaces-7-12-1-2">
+<li id="sec_vectorspaces-7-12-1-2-1">
+<div class="para" id="sec_vectorspaces-7-12-1-2-1-1">Show that the nullspace <span class="process-math">\(N \coloneqq \{ x \in X : Ax = 0 \}\)</span> is a vector space.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-7-12-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.1.12.a"><a aria-label="Copy heading and permalink for Item 8.1.12.a" href="#sec_vectorspaces-7-12-1-2-1" title="Copy heading and permalink for Item 8.1.12.a">🔗</a></div>
+</li>
+<li id="sec_vectorspaces-7-12-1-2-2">
+<div class="para" id="sec_vectorspaces-7-12-1-2-2-1">Show that the range <span class="process-math">\(R \coloneqq \{ y \in Y : Ax = y \text{ for some } x \in X \}\)</span> is a vector space.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-7-12-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.1.12.b"><a aria-label="Copy heading and permalink for Item 8.1.12.b" href="#sec_vectorspaces-7-12-1-2-2" title="Copy heading and permalink for Item 8.1.12.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 8.1.12"><a aria-label="Copy heading and permalink for Exercise 8.1.12" href="#sec_vectorspaces-7-12" title="Copy heading and permalink for Exercise 8.1.12">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_vectorspaces-7-13"><h4 class="heading"><span class="codenumber">8.1.13<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_vectorspaces-7-13-1-1">
+<em class="emphasis">(Easy)</em>   Show by example that a union of convex sets need not be convex.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-7-13-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.1.13"><a aria-label="Copy heading and permalink for Exercise 8.1.13" href="#sec_vectorspaces-7-13" title="Copy heading and permalink for Exercise 8.1.13">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_vectorspaces-7-14"><h4 class="heading"><span class="codenumber">8.1.14<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_vectorspaces-7-14-1-1">Compute the convex hull of the set of 3 points <span class="process-math">\(\bigl\{ (0,0), (0,1), (1,1) \bigr\}\)</span> in <span class="process-math">\(\R^2\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-7-14-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.1.14"><a aria-label="Copy heading and permalink for Exercise 8.1.14" href="#sec_vectorspaces-7-14" title="Copy heading and permalink for Exercise 8.1.14">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_vectorspaces-7-15"><h4 class="heading"><span class="codenumber">8.1.15<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_vectorspaces-7-15-1-1">Show that the set <span class="process-math">\(\bigl\{ (x,y) \in \R^2 : y &gt; x^2 \bigr\}\)</span> is a convex set.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-7-15-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.1.15"><a aria-label="Copy heading and permalink for Exercise 8.1.15" href="#sec_vectorspaces-7-15" title="Copy heading and permalink for Exercise 8.1.15">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_intoneconvex"><h4 class="heading"><span class="codenumber">8.1.16<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_intoneconvex-1-1">Show that the set <span class="process-math">\(X \subset C([0,1],\R)\)</span> of those functions such that <span class="process-math">\(\int_0^1 f = 1\)</span> is a convex set, but not a vector subspace. Compare <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_vectorspaces.html#exercise_intzerosubspace" title="Exercise 8.1.4">Exercise 8.1.4</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_intoneconvex-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.1.16"><a aria-label="Copy heading and permalink for Exercise 8.1.16" href="#exercise_intoneconvex" title="Copy heading and permalink for Exercise 8.1.16">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_vectorspaces-7-17"><h4 class="heading"><span class="codenumber">8.1.17<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_vectorspaces-7-17-1-1">Show that every convex set in <span class="process-math">\(\R^n\)</span> is connected using the standard topology on <span class="process-math">\(\R^n\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-7-17-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.1.17"><a aria-label="Copy heading and permalink for Exercise 8.1.17" href="#sec_vectorspaces-7-17" title="Copy heading and permalink for Exercise 8.1.17">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_vectorspaces-7-18"><h4 class="heading"><span class="codenumber">8.1.18<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_vectorspaces-7-18-1-1">Suppose <span class="process-math">\(K \subset \R^2\)</span> is a convex set such that the only point of the form <span class="process-math">\((x,0)\)</span> in <span class="process-math">\(K\)</span> is the point <span class="process-math">\((0,0)\text{.}\)</span>  Further suppose that <span class="process-math">\((0,1) \in K\)</span> and <span class="process-math">\((1,1) \in K\text{.}\)</span>  Show that if <span class="process-math">\((x,y) \in K\)</span> and <span class="process-math">\(x
+\neq 0\text{,}\)</span> then <span class="process-math">\(y &gt; 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-7-18-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.1.18"><a aria-label="Copy heading and permalink for Exercise 8.1.18" href="#sec_vectorspaces-7-18" title="Copy heading and permalink for Exercise 8.1.18">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_vectorspaces-7-19"><h4 class="heading"><span class="codenumber">8.1.19<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_vectorspaces-7-19-1-1">Prove that an arbitrary intersection of vector subspaces is a vector subspace. That is, if <span class="process-math">\(X\)</span> is a vector space and <span class="process-math">\(\{ V_\lambda \}_{\lambda \in I}\)</span> is an arbitrary collection of vector subspaces of <span class="process-math">\(X\text{,}\)</span> then <span class="process-math">\(\bigcap_{\lambda \in I} V_\lambda\)</span> is a vector subspace of <span class="process-math">\(X\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_vectorspaces-7-19-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.1.19"><a aria-label="Copy heading and permalink for Exercise 8.1.19" href="#sec_vectorspaces-7-19" title="Copy heading and permalink for Exercise 8.1.19">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_LXYvs"><h4 class="heading"><span class="codenumber">8.1.20<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_LXYvs-1-1">
+<em class="emphasis">(Easy)</em>   Finish the proof of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_vectorspaces.html#prop_LXYvs" title="Proposition 8.1.16">Proposition 8.1.16</a>, that is, prove the first four items of the proposition.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_LXYvs-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.1.20"><a aria-label="Copy heading and permalink for Exercise 8.1.20" href="#exercise_LXYvs" title="Copy heading and permalink for Exercise 8.1.20">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 8.1.5"><a aria-label="Copy heading and permalink for Exercises 8.1.5" href="#sec_vectorspaces-7" title="Copy heading and permalink for Exercises 8.1.5">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 8.1: Vector spaces, linear mappings, and convexity"><a aria-label="Copy heading and permalink for Section 8.1: Vector spaces, linear mappings, and convexity" href="#sec_vectorspaces" title="Copy heading and permalink for Section 8.1: Vector spaces, linear mappings, and convexity">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="pd_chapter.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_normsmatsdets.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

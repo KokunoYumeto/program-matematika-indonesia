@@ -1,0 +1,1321 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Analysis with vector spaces · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_normsmatsdets">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Analysis with vector spaces</span>
+</h2>
+<section class="introduction" id="sec_normsmatsdets-2">
+<div class="para" id="sec_normsmatsdets-2-1">
+<em class="emphasis">Note: 3 lectures</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section>
+<section class="subsection" id="sec_normsmatsdets-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.2.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Norms</span>
+</h3>
+<div class="para" id="sec_normsmatsdets-3-2">Let us start measuring the size of vectors and hence distance.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-3-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_normsmatsdets-3-3"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.2.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_normsmatsdets-3-3-1-1">If <span class="process-math">\(X\)</span> is a vector space, then we say a function <span class="process-math">\(\snorm{\cdot} \colon X \to \R\)</span> is a <em class="emphasis">norm</em> if<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-3-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="sec_normsmatsdets-3-3-1-2">
+<li id="defn_norm_i">
+<div class="para" id="defn_norm_i-1">
+<span class="process-math">\(\snorm{x} \geq 0\text{,}\)</span> with <span class="process-math">\(\snorm{x}=0\)</span> if and only if <span class="process-math">\(x=0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#defn_norm_i-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#defn_norm_i" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="defn_norm_ii">
+<div class="para" id="defn_norm_ii-1">
+<span class="process-math">\(\snorm{cx} = \sabs{c} \, \snorm{x}\)</span> for all <span class="process-math">\(c \in \R\)</span> and <span class="process-math">\(x \in X\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#defn_norm_ii-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#defn_norm_ii" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+<li id="defn_norm_iii">
+<div class="para" id="defn_norm_iii-1">
+<span class="process-math">\(\snorm{x+y} \leq \snorm{x}+\snorm{y}\)</span> for all <span class="process-math">\(x,y \in X\)</span>        (<em class="emphasis">triangle inequality</em>).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#defn_norm_iii-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iii"><a aria-label="Copy heading and permalink for Item iii" href="#defn_norm_iii" title="Copy heading and permalink for Item iii">🔗</a></div>
+</li>
+</ol>
+<div class="para" id="sec_normsmatsdets-3-3-1-3">A vector space equipped with a norm is called a <em class="emphasis">normed vector space</em>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-3-3-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 8.2.1"><a aria-label="Copy heading and permalink for Definition 8.2.1" href="#sec_normsmatsdets-3-3" title="Copy heading and permalink for Definition 8.2.1">🔗</a></div>
+</article>
+<div class="para logical" id="sec_normsmatsdets-3-4">
+<div class="para">Given a norm (any norm) on a vector space <span class="process-math">\(X\text{,}\)</span> define a distance <span class="process-math">\(d(x,y) \coloneqq \snorm{x-y}\text{,}\)</span> which makes <span class="process-math">\(X\)</span> into a metric space (exercise). So what you know about metric spaces applies to normed vector spaces. Before defining the standard norm on <span class="process-math">\(\R^n\text{,}\)</span> we define the standard scalar <em class="emphasis">dot product</em> on <span class="process-math">\(\R^n\text{.}\)</span> For <span class="process-math">\(x=(x_1,x_2,\ldots,x_n) \in \R^n\)</span> and <span class="process-math">\(y=(y_1,y_2,\ldots,y_n) \in \R^n\)</span> define</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/defn_norm_i.html ./knowl/xref/defn_norm_ii.html ./knowl/xref/defn_norm_iii.html" id="sec_normsmatsdets-3-4-9">
+\begin{equation}
+x \cdot y \coloneqq \sum_{k=1}^n x_k\, y_k .
+\end{equation}
+</div>
+<div class="para">Dot product is linear in each variable separately—in more fancy language, it is <em class="emphasis">bilinear</em>. That is, if <span class="process-math">\(y\)</span> is fixed, the map <span class="process-math">\(x \mapsto x \cdot y\)</span> is a linear map from <span class="process-math">\(\R^n\)</span> to <span class="process-math">\(\R\text{.}\)</span>  Similarly, if <span class="process-math">\(x\)</span> is fixed, <span class="process-math">\(y \mapsto x \cdot y\)</span> is linear. It is <em class="emphasis">symmetric</em> in the sense that <span class="process-math">\(x \cdot y = y \cdot x\text{.}\)</span> Define the <em class="emphasis">euclidean norm</em> as</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/defn_norm_i.html ./knowl/xref/defn_norm_ii.html ./knowl/xref/defn_norm_iii.html" id="sec_normsmatsdets-3-4-20">
+\begin{equation}
+\snorm{x} \coloneqq \snorm{x}_{\R^n} \coloneqq \sqrt{x \cdot x} = \sqrt{(x_1)^2+(x_2)^2 + \cdots + (x_n)^2}.
+\end{equation}
+</div>
+<div class="para">We will normally write <span class="process-math">\(\snorm{x}\text{.}\)</span> Only in the rare instance when it is necessary to emphasize that we are talking about the euclidean norm will we write <span class="process-math">\(\snorm{x}_{\R^n}\text{.}\)</span> Unless otherwise stated, if we talk about <span class="process-math">\(\R^n\)</span> as a normed vector space, we mean the standard euclidean norm. It is easy to see that the euclidean norm satisfies <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_normsmatsdets.html#defn_norm_i" title="Item i">i</a> and <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_normsmatsdets.html#defn_norm_ii" title="Item ii">ii</a>.  To prove that <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_normsmatsdets.html#defn_norm_iii" title="Item iii">iii</a> holds, the key inequality is the Cauchy–Schwarz inequality we saw before.  As this inequality is so important, we state and prove a slightly stronger version using the notation of this chapter.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-3-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="sec_normsmatsdets-3-5"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.2.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Cauchy–Schwarz inequality.</span>
+</h4>
+<div class="para logical" id="sec_normsmatsdets-3-5-2-1">
+<div class="para">If <span class="process-math">\(x, y \in \R^n\text{,}\)</span> then</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-3-5-2-1-2">
+\begin{equation}
+\sabs{x \cdot y} \leq \snorm{x} \, \snorm{y} = \sqrt{x\cdot x}\, \sqrt{y\cdot y},
+\end{equation}
+</div>
+<div class="para">with equality if and only if <span class="process-math">\(x = \lambda y\)</span> or <span class="process-math">\(y = \lambda x\)</span> for some <span class="process-math">\(\lambda \in \R\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-3-5-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 8.2.2: Cauchy–Schwarz inequality"><a aria-label="Copy heading and permalink for Theorem 8.2.2: Cauchy–Schwarz inequality" href="#sec_normsmatsdets-3-5" title="Copy heading and permalink for Theorem 8.2.2: Cauchy–Schwarz inequality">🔗</a></div>
+</article>
+<article class="proof" id="sec_normsmatsdets-3-6"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_normsmatsdets-3-6-1">If <span class="process-math">\(x=0\)</span> or <span class="process-math">\(y = 0\text{,}\)</span> then the theorem holds trivially. So assume <span class="process-math">\(x \neq 0\)</span> and <span class="process-math">\(y \neq 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-3-6-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_normsmatsdets-3-6-2">
+<div class="para">If <span class="process-math">\(x\)</span> is a scalar multiple of <span class="process-math">\(y\text{,}\)</span> that is, <span class="process-math">\(x = \lambda y\)</span> for some <span class="process-math">\(\lambda \in \R\text{,}\)</span> then the theorem holds with equality:</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-3-6-2-5">
+\begin{equation}
+\sabs{ x \cdot y } =
+\sabs{\lambda y \cdot y} = \sabs{\lambda} \, \sabs{y\cdot y} =
+\sabs{\lambda} \, \snorm{y}^2 = \snorm{\lambda y} \, \snorm{y}
+= \snorm{x} \, \snorm{y} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-3-6-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_normsmatsdets-3-6-3">
+<div class="para">Fixing <span class="process-math">\(x\)</span> and <span class="process-math">\(y\text{,}\)</span> <span class="process-math">\(\snorm{x+ty}^2\)</span> is a quadratic polynomial as a function of <span class="process-math">\(t\text{:}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-3-6-3-5">
+\begin{equation}
+\begin{aligned}
+\snorm{x+ty}^2
+=
+(x+ty) \cdot (x+ty)
+&amp;
+=
+x \cdot x + x \cdot ty + ty \cdot x + ty \cdot ty
+\\
+&amp;
+=
+\snorm{x}^2 + 2t(x \cdot y) + t^2 \snorm{y}^2 .
+\end{aligned}
+\end{equation}
+</div>
+<div class="para">If <span class="process-math">\(x\)</span> is not a scalar multiple of <span class="process-math">\(y\text{,}\)</span> then <span class="process-math">\(\snorm{x+ty}^2 &gt; 0\)</span> for all <span class="process-math">\(t\text{.}\)</span>  So the polynomial <span class="process-math">\(\snorm{x+ty}^2\)</span> is never zero. Elementary algebra says that the discriminant must be negative:</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-3-6-3-11">
+\begin{equation}
+4 {(x \cdot y)}^2 - 4 \snorm{x}^2\snorm{y}^2 &lt; 0.
+\end{equation}
+</div>
+<div class="para">In other words, <span class="process-math">\({(x \cdot y)}^2 &lt; \snorm{x}^2\snorm{y}^2\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-3-6-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 8.2.1.1"><a aria-label="Copy heading and permalink for Proof 8.2.1.1" href="#sec_normsmatsdets-3-6" title="Copy heading and permalink for Proof 8.2.1.1">🔗</a></div>
+</article>
+<div class="para logical" id="sec_normsmatsdets-3-7">
+<div class="para">Item <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_normsmatsdets.html#defn_norm_iii" title="Item iii">iii</a>, the triangle inequality in <span class="process-math">\(\R^n\text{,}\)</span> follows from:</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/defn_norm_iii.html" id="sec_normsmatsdets-3-7-3">
+\begin{equation}
+\snorm{x+y}^2 
+=
+x \cdot x + y \cdot y + 2 (x \cdot y)
+\leq
+\snorm{x}^2 + \snorm{y}^2 + 2 \bigl(\snorm{x} \,\snorm{y}\bigr)
+=
+{\bigl(\snorm{x} + \snorm{y}\bigr)}^2 .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-3-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_normsmatsdets-3-8">The distance <span class="process-math">\(d(x,y) \coloneqq \snorm{x-y}\)</span> is the standard distance (standard metric) on <span class="process-math">\(\R^n\)</span> that we used when we talked about metric spaces.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-3-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_normsmatsdets-3-9"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.2.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_normsmatsdets-3-9-1-1">
+<div class="para">Let <span class="process-math">\(A \in L(X,Y)\text{.}\)</span>  Define</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-3-9-1-1-2">
+\begin{equation}
+\snorm{A} \coloneqq
+\sup \bigl\{ \snorm{Ax} : x \in X \text{ with } \snorm{x} = 1 \bigr\} .
+\end{equation}
+</div>
+<div class="para">The number <span class="process-math">\(\snorm{A}\)</span> (possibly <span class="process-math">\(\infty\)</span>) is called the <em class="emphasis">operator norm</em>.  We will see below that it is indeed a norm on <span class="process-math">\(L(X,Y)\)</span> for finite-dimensional spaces. Again, when necessary to emphasize which norm we are talking about, we may write it as <span class="process-math">\(\snorm{A}_{L(X,Y)}\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-3-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 8.2.3"><a aria-label="Copy heading and permalink for Definition 8.2.3" href="#sec_normsmatsdets-3-9" title="Copy heading and permalink for Definition 8.2.3">🔗</a></div>
+</article>
+<div class="para" id="sec_normsmatsdets-3-10">For example, if <span class="process-math">\(X=\R^1\)</span> with norm <span class="process-math">\(\snorm{x}=\sabs{x}\text{,}\)</span> elements of <span class="process-math">\(L(X)\)</span> are multiplication by scalars, <span class="process-math">\(x \mapsto ax\text{,}\)</span> and we identify <span class="process-math">\(a \in \R\)</span> with the corresponding element of <span class="process-math">\(L(X)\text{.}\)</span>  If <span class="process-math">\(\snorm{x}=\sabs{x}=1\text{,}\)</span> then <span class="process-math">\(\sabs{a x} = \sabs{a}\text{,}\)</span> so the operator norm of <span class="process-math">\(a\)</span> is <span class="process-math">\(\sabs{a}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-3-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_normsmatsdets-3-11">
+<div class="para">By linearity, <span class="process-math">\(\norm{A \frac{x}{\snorm{x}}} = \frac{\snorm{Ax}}{\snorm{x}}\)</span> for all nonzero <span class="process-math">\(x \in X\text{.}\)</span> The vector <span class="process-math">\(\frac{x}{\snorm{x}}\)</span> is of norm 1. Therefore,</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-3-11-4">
+\begin{equation}
+\snorm{A} =
+\sup \bigl\{ \snorm{Ax} : x \in X \text{ with } \snorm{x} = 1 \bigr\}
+=
+\sup_{\substack{x \in X\\x\neq 0}} \frac{\snorm{Ax}}{\snorm{x}} .
+\end{equation}
+</div>
+<div class="para">This implies, assuming <span class="process-math">\(\snorm{A} \neq \infty\)</span> to avoid a technicality when <span class="process-math">\(x=0\text{,}\)</span> that for every <span class="process-math">\(x \in X\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-3-11-8">
+\begin{equation}
+\snorm{Ax} \leq \snorm{A}  \snorm{x} .
+\end{equation}
+</div>
+<div class="para">Conversely, if one shows <span class="process-math">\(\snorm{Ax} \leq C \snorm{x}\)</span> for all <span class="process-math">\(x\text{,}\)</span> then <span class="process-math">\(\snorm{A} \leq C\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-3-11" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_normsmatsdets-3-12">
+<div class="para">It is not hard to see from the definition that <span class="process-math">\(\snorm{A} = 0\)</span> if and only if <span class="process-math">\(A = 0\text{,}\)</span> where <span class="process-math">\(A=0\)</span> means that <span class="process-math">\(A\)</span> takes every vector to the zero vector. It is also not difficult to compute the operator norm of the identity operator:</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-3-12-5">
+\begin{equation}
+\snorm{I} =
+\sup_{\substack{x \in X\\x\neq 0}} \frac{\snorm{Ix}}{\snorm{x}} 
+=
+\sup_{\substack{x \in X\\x\neq 0}} \frac{\snorm{x}}{\snorm{x}} 
+= 1.
+\end{equation}
+</div>
+<div class="para">The operator norm is not always so easy to compute using the definition alone, nor is it easy to read off the form of the operator. Consider <span class="process-math">\(\R^2\)</span> and the operator <span class="process-math">\(A \in L(\R^2)\)</span> that takes <span class="process-math">\((x,y)\)</span> to <span class="process-math">\((x+y,2x)\text{.}\)</span> Unit norm vectors can be written as <span class="process-math">\(\bigl(\pm t, \pm \sqrt{1-t^2}\bigr)\)</span> for <span class="process-math">\(t \in [0,1]\)</span> (or perhaps <span class="process-math">\(\bigl(\cos(\theta), \sin(\theta) \bigr)\)</span>). One then maximizes</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-3-12-13">
+\begin{equation}
+\bnorm{A(x,y)} = \sqrt{{\left(t \pm \sqrt{1-t^2}\right)}^2+4t^2}
+\end{equation}
+</div>
+<div class="para">to find <span class="process-math">\(\snorm{A} = \sqrt{3+\sqrt{5}}\text{.}\)</span> More generally, one often does two steps.  For instance, consider the operator <span class="process-math">\(B \in L\bigl(C([0,1],\R),\R\bigr)\)</span> taking a continuous <span class="process-math">\(f\)</span> to <span class="process-math">\(f(0)\text{.}\)</span>  If <span class="process-math">\(\snorm{f} = 1\)</span> (the uniform norm), then clearly <span class="process-math">\(\babs{f(0)} \leq 1\text{,}\)</span> so <span class="process-math">\(\sabs{Bf} \leq 1\text{,}\)</span> meaning <span class="process-math">\(\snorm{B} \leq 1\text{.}\)</span> To prove it is equal to <span class="process-math">\(1\text{,}\)</span> note that the constant function <span class="process-math">\(1\)</span> has norm <span class="process-math">\(1\text{,}\)</span> so <span class="process-math">\(B1 = 1\text{,}\)</span> meaning <span class="process-math">\(\snorm{B} \geq 1\text{.}\)</span> So <span class="process-math">\(\snorm{B}=1\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-3-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_normsmatsdets-3-13">The operator norm is not always a norm on <span class="process-math">\(L(X,Y)\text{.}\)</span> In particular, <span class="process-math">\(\snorm{A}\)</span> is not always finite for <span class="process-math">\(A \in L(X,Y)\text{.}\)</span> We prove below that <span class="process-math">\(\snorm{A}\)</span> is finite when <span class="process-math">\(X\)</span> is finite-dimensional. The operator norm being finite is equivalent to <span class="process-math">\(A\)</span> being continuous. For infinite-dimensional spaces, neither statement needs to be true. For an example, consider the vector space of continuously differentiable functions on <span class="process-math">\([0,2\pi]\)</span> using the uniform norm.  The functions <span class="process-math">\(t \mapsto \sin(n t)\)</span> have norm 1, but their derivatives have norm <span class="process-math">\(n\text{.}\)</span>  So differentiation, which is a linear operator valued in the space of continuous functions, has infinite operator norm on this space. We will stick to finite-dimensional spaces.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-3-13" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_normsmatsdets-3-14">Given a finite-dimensional vector space <span class="process-math">\(X\text{,}\)</span> we often think of <span class="process-math">\(\R^n\text{,}\)</span> although if we have a norm on <span class="process-math">\(X\text{,}\)</span> the norm might not be the standard euclidean norm.  In the exercises, you can prove that every norm on <span class="process-math">\(\R^n\)</span> is “equivalent” to the euclidean norm in that the topology it generates is the same.  For simplicity, we only prove the following proposition for euclidean spaces, and the proof for general finite-dimensional spaces is left as an exercise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-3-14" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_finitedimpropnormfin"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.2.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="prop_finitedimpropnormfin-1-1">Let <span class="process-math">\(X\)</span> and <span class="process-math">\(Y\)</span> be normed vector spaces with <span class="process-math">\(X\)</span> finite-dimensional, and let <span class="process-math">\(A \in L(X,Y)\text{.}\)</span> Then <span class="process-math">\(\snorm{A} &lt; \infty\text{,}\)</span> and <span class="process-math">\(A\)</span> is uniformly continuous (Lipschitz with constant <span class="process-math">\(\snorm{A}\)</span>).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_finitedimpropnormfin-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 8.2.4"><a aria-label="Copy heading and permalink for Proposition 8.2.4" href="#prop_finitedimpropnormfin" title="Copy heading and permalink for Proposition 8.2.4">🔗</a></div>
+</article>
+<article class="proof" id="sec_normsmatsdets-3-16"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_normsmatsdets-3-16-1">As we said we only prove the proposition for euclidean spaces, so suppose that <span class="process-math">\(X = \R^n\)</span> and the norm is the standard euclidean norm. The general case is left as an exercise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-3-16-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_normsmatsdets-3-16-2">
+<div class="para">Let <span class="process-math">\(\{ e_1,e_2,\ldots,e_n \}\)</span> be the standard basis of <span class="process-math">\(\R^n\text{.}\)</span> Write <span class="process-math">\(x \in \R^n\text{,}\)</span> with <span class="process-math">\(\snorm{x} = 1\text{,}\)</span> as</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-3-16-2-5">
+\begin{equation}
+x = \sum_{k=1}^n c_k \, e_k .
+\end{equation}
+</div>
+<div class="para">Since <span class="process-math">\(e_k \cdot e_\ell = 0\)</span> whenever <span class="process-math">\(k \neq \ell\)</span> and <span class="process-math">\(e_k \cdot e_k = 1\text{,}\)</span> we have <span class="process-math">\(c_k = x \cdot e_k\text{.}\)</span>  By Cauchy–Schwarz,</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-3-16-2-10">
+\begin{equation}
+\sabs{c_k} = \sabs{ x \cdot e_k }
+\leq \snorm{x} \, \snorm{e_k} = 1 .
+\end{equation}
+</div>
+<div class="para">Then</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-3-16-2-11">
+\begin{equation}
+\snorm{Ax} =
+\norm{\sum_{k=1}^n c_k \, Ae_k}
+\leq
+\sum_{k=1}^n \sabs{c_k} \, \snorm{Ae_k} 
+\leq
+\sum_{k=1}^n \snorm{Ae_k} .
+\end{equation}
+</div>
+<div class="para">The right-hand side does not depend on <span class="process-math">\(x\text{.}\)</span>  We found a finite upper bound for <span class="process-math">\(\snorm{Ax}\)</span> independent of <span class="process-math">\(x\text{,}\)</span> so <span class="process-math">\(\snorm{A} &lt; \infty\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-3-16-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_normsmatsdets-3-16-3">
+<div class="para">Take normed vector spaces <span class="process-math">\(X\)</span> and <span class="process-math">\(Y\text{,}\)</span> and <span class="process-math">\(A \in L(X,Y)\)</span> with <span class="process-math">\(\snorm{A} &lt; \infty\text{.}\)</span> For <span class="process-math">\(v,w \in X\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-3-16-3-6">
+\begin{equation}
+\snorm{Av - Aw} =
+\bnorm{A(v-w)} \leq \snorm{A} \, \snorm{v-w} .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(\snorm{A} &lt; \infty\text{,}\)</span> the inequality above says that <span class="process-math">\(A\)</span> is Lipschitz with constant <span class="process-math">\(\snorm{A}\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-3-16-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 8.2.1.2"><a aria-label="Copy heading and permalink for Proof 8.2.1.2" href="#sec_normsmatsdets-3-16" title="Copy heading and permalink for Proof 8.2.1.2">🔗</a></div>
+</article>
+<article class="proposition theorem-like" id="prop_finitedimpropnorm"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.2.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="prop_finitedimpropnorm-1-1">Let <span class="process-math">\(X\text{,}\)</span> <span class="process-math">\(Y\text{,}\)</span> and <span class="process-math">\(Z\)</span> be finite-dimensional normed vector spaces<details aria-live="polite" class="ptx-footnote" id="prop_finitedimpropnorm-1-1-4"><summary class="ptx-footnote__number" title="Footnote 8.2.1"><sup> 1 </sup></summary>
+<div class="ptx-footnote__contents" id="prop_finitedimpropnorm-1-1-4">If we strike the “In particular” part and interpret the algebra with infinite operator norms properly, namely decree that <span class="process-math">\(0\)</span> times <span class="process-math">\(\infty\)</span> is 0, then this result also holds for infinite-dimensional spaces.
+</div></details>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_finitedimpropnorm-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="prop_finitedimpropnorm-1-2">
+<li id="item_finitedimpropnorm_i">
+<div class="para logical" id="item_finitedimpropnorm_i-1">
+<div class="para">If <span class="process-math">\(A,B \in L(X,Y)\)</span> and <span class="process-math">\(c \in \R\text{,}\)</span> then</div>
+<div class="displaymath process-math" id="item_finitedimpropnorm_i-1-3">
+\begin{equation}
+\snorm{A+B} \leq \snorm{A}+\snorm{B}, \qquad \snorm{cA} = \sabs{c} \, \snorm{A} .
+\end{equation}
+</div>
+<div class="para">In particular, the operator norm is a norm on the vector space <span class="process-math">\(L(X,Y)\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#item_finitedimpropnorm_i-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#item_finitedimpropnorm_i" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="item_finitedimpropnorm_ii">
+<div class="para logical" id="item_finitedimpropnorm_ii-1">
+<div class="para">If <span class="process-math">\(A \in L(X,Y)\)</span> and <span class="process-math">\(B \in L(Y,Z)\text{,}\)</span> then</div>
+<div class="displaymath process-math" id="item_finitedimpropnorm_ii-1-3">
+\begin{equation}
+\snorm{BA} \leq \snorm{B} \, \snorm{A} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#item_finitedimpropnorm_ii-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#item_finitedimpropnorm_ii" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Proposition 8.2.5"><a aria-label="Copy heading and permalink for Proposition 8.2.5" href="#prop_finitedimpropnorm" title="Copy heading and permalink for Proposition 8.2.5">🔗</a></div>
+</article>
+<article class="proof" id="sec_normsmatsdets-3-18"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_normsmatsdets-3-18-1">First, since all the spaces are finite-dimensional, then all the operator norms are finite, and the statements make sense to begin with.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-3-18-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_normsmatsdets-3-18-2">
+<div class="para">For <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_normsmatsdets.html#item_finitedimpropnorm_i" title="Item i">i</a>, let <span class="process-math">\(x \in X\)</span> be arbitrary.  Then</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/item_finitedimpropnorm_i.html" id="sec_normsmatsdets-3-18-2-3">
+\begin{equation}
+\bnorm{(A+B)x} =
+\snorm{Ax+Bx} \leq
+\snorm{Ax}+\snorm{Bx} \leq
+\snorm{A} \, \snorm{x}+\snorm{B} \,\snorm{x} =
+\bigl(\snorm{A}+\snorm{B}\bigr) \snorm{x} .
+\end{equation}
+</div>
+<div class="para">So <span class="process-math">\(\snorm{A+B} \leq \snorm{A}+\snorm{B}\text{.}\)</span> Similarly,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/item_finitedimpropnorm_i.html" id="sec_normsmatsdets-3-18-2-5">
+\begin{equation}
+\bnorm{(cA)x} =
+\sabs{c} \, \snorm{Ax} \leq \bigl(\sabs{c} \,\snorm{A}\bigr) \snorm{x} .
+\end{equation}
+</div>
+<div class="para">Thus <span class="process-math">\(\snorm{cA} \leq \sabs{c} \, \snorm{A}\text{.}\)</span>  Next,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/item_finitedimpropnorm_i.html" id="sec_normsmatsdets-3-18-2-7">
+\begin{equation}
+\sabs{c} \,  \snorm{Ax}
+=
+\snorm{cAx} \leq \snorm{cA} \, \snorm{x} .
+\end{equation}
+</div>
+<div class="para">Hence <span class="process-math">\(\sabs{c} \, \snorm{A} \leq \snorm{cA}\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-3-18-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_normsmatsdets-3-18-3">
+<div class="para">For <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_normsmatsdets.html#item_finitedimpropnorm_ii" title="Item ii">ii</a>, write</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/item_finitedimpropnorm_ii.html" id="sec_normsmatsdets-3-18-3-2">
+\begin{equation}
+\snorm{BAx} \leq \snorm{B} \, \snorm{Ax} \leq \snorm{B} \, \snorm{A} \, \snorm{x} .
+\qedhere
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-3-18-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 8.2.1.3"><a aria-label="Copy heading and permalink for Proof 8.2.1.3" href="#sec_normsmatsdets-3-18" title="Copy heading and permalink for Proof 8.2.1.3">🔗</a></div>
+</article>
+<div class="para" id="sec_normsmatsdets-3-19">A norm defines a metric, giving a metric space topology on <span class="process-math">\(L(X,Y)\)</span> for finite-dimensional vector spaces. So, we can talk about open/closed sets, continuity, convergence, etc.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-3-19" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_finitedimpropinv"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.2.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="prop_finitedimpropinv-1-1">Let <span class="process-math">\(X\)</span> be a finite-dimensional normed vector space. Let <span class="process-math">\(GL(X) \subset L(X)\)</span> be the set of invertible linear operators.<details aria-live="polite" class="ptx-footnote" id="prop_finitedimpropinv-1-1-3"><summary class="ptx-footnote__number" title="Footnote 8.2.2"><sup> 2 </sup></summary>
+<div class="ptx-footnote__contents" id="prop_finitedimpropinv-1-1-3">
+<span class="process-math">\(GL(X)\)</span> is called the <em class="emphasis">general linear group</em>, that is where the acronym GL comes from.
+</div></details><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_finitedimpropinv-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="prop_finitedimpropinv-1-2">
+<li id="finitedimpropinv_i">
+<div class="para logical" id="finitedimpropinv_i-1">
+<div class="para">If <span class="process-math">\(A \in GL(X)\text{,}\)</span> <span class="process-math">\(B \in L(X)\text{,}\)</span> and</div>
+<div class="displaymath process-math" id="eqcontineq">
+\begin{equation}
+\snorm{A-B} &lt;  \frac{1}{\snorm{A^{-1}}},\tag{8.2}
+\end{equation}
+</div>
+<div class="para">then <span class="process-math">\(B \in GL(X)\text{,}\)</span> that is, <span class="process-math">\(B\)</span> is invertible. In particular, <span class="process-math">\(GL(X)\)</span> is open.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#finitedimpropinv_i-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#finitedimpropinv_i" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="finitedimpropinv_ii">
+<div class="para" id="finitedimpropinv_ii-1">
+<span class="process-math">\(A \mapsto A^{-1}\)</span> is a continuous function on <span class="process-math">\(GL(X)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#finitedimpropinv_ii-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#finitedimpropinv_ii" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Proposition 8.2.6"><a aria-label="Copy heading and permalink for Proposition 8.2.6" href="#prop_finitedimpropinv" title="Copy heading and permalink for Proposition 8.2.6">🔗</a></div>
+</article>
+<div class="para" id="sec_normsmatsdets-3-21">We illustrate this proposition on a simple example. Consider <span class="process-math">\(X=\R^1\text{,}\)</span> where linear operators are just numbers <span class="process-math">\(a\)</span> and the operator norm of <span class="process-math">\(a\)</span> is <span class="process-math">\(\sabs{a}\text{.}\)</span> The operator <span class="process-math">\(a\)</span> is invertible (<span class="process-math">\(a^{-1} = \nicefrac{1}{a}\)</span>) whenever <span class="process-math">\(a \neq 0\text{.}\)</span>  The condition <span class="process-math">\(\sabs{a-b} &lt; \frac{1}{\sabs{a^{-1}}}\)</span> indeed implies that <span class="process-math">\(b\)</span> is not zero.  Moreover, <span class="process-math">\(a \mapsto \nicefrac{1}{a}\)</span> is a continuous function. When the dimension is <span class="process-math">\(2\)</span> or higher, there are other noninvertible operators than just zero, and things are a bit more difficult.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-3-21" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_normsmatsdets-3-22"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_normsmatsdets-3-22-1">
+<div class="para">Let us prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_normsmatsdets.html#finitedimpropinv_i" title="Item i">i</a>.   We know something about <span class="process-math">\(A^{-1}\)</span> and <span class="process-math">\(A-B\text{;}\)</span> they are linear operators. So apply them to a vector:</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/finitedimpropinv_i.html ./knowl/xref/eqcontineq.html ./knowl/xref/mv_prop_lin11onto.html" id="sec_normsmatsdets-3-22-1-4">
+\begin{equation}
+A^{-1}(A-B)x
+=
+x-A^{-1}Bx .
+\end{equation}
+</div>
+<div class="para">Therefore,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/finitedimpropinv_i.html ./knowl/xref/eqcontineq.html ./knowl/xref/mv_prop_lin11onto.html" id="sec_normsmatsdets-3-22-1-5">
+\begin{equation}
+\begin{split}
+\snorm{x} 
+&amp; =
+\bnorm{A^{-1} (A-B)x + A^{-1}Bx}
+\\
+&amp; \leq
+\snorm{A^{-1}}\,\snorm{A-B}\, \snorm{x} + \snorm{A^{-1}}\,\snorm{Bx} .
+\end{split}
+\end{equation}
+</div>
+<div class="para">Assume <span class="process-math">\(x \neq 0\)</span> and so <span class="process-math">\(\snorm{x} \neq 0\text{.}\)</span> Using <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_normsmatsdets.html#eqcontineq" title="Equation 8.2">(8.2)</a>, we obtain</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/finitedimpropinv_i.html ./knowl/xref/eqcontineq.html ./knowl/xref/mv_prop_lin11onto.html" id="sec_normsmatsdets-3-22-1-9">
+\begin{equation}
+\snorm{x} &lt; \snorm{x} + \snorm{A^{-1}} \, \snorm{Bx} .
+\end{equation}
+</div>
+<div class="para">Thus <span class="process-math">\(\snorm{Bx} \neq 0\)</span> for all <span class="process-math">\(x \neq 0\text{,}\)</span> and consequently <span class="process-math">\(Bx \neq 0\)</span> for all <span class="process-math">\(x \neq 0\text{.}\)</span>  So <span class="process-math">\(B\)</span> is one-to-one; if <span class="process-math">\(Bx = By\text{,}\)</span> then <span class="process-math">\(B(x-y) = 0\text{,}\)</span> so <span class="process-math">\(x=y\text{.}\)</span> As <span class="process-math">\(B\)</span> is a one-to-one linear mapping from <span class="process-math">\(X\)</span> to <span class="process-math">\(X\text{,}\)</span> which is finite-dimensional, it is also onto by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_vectorspaces.html#mv_prop_lin11onto" title="Proposition 8.1.18">Proposition 8.1.18</a>. Therefore, <span class="process-math">\(B\)</span> is invertible. It follows that, in particular, <span class="process-math">\(GL(X)\)</span> is open.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-3-22-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_normsmatsdets-3-22-2">
+<div class="para">Let us prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_normsmatsdets.html#finitedimpropinv_ii" title="Item ii">ii</a>. We must show that the inverse is continuous. Fix an <span class="process-math">\(A \in GL(X)\text{.}\)</span>  Let <span class="process-math">\(B\)</span> be near <span class="process-math">\(A\text{,}\)</span> specifically <span class="process-math">\(\snorm{A-B} &lt; \frac{1}{2 \snorm{A^{-1}}}\text{.}\)</span> Then <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_normsmatsdets.html#eqcontineq" title="Equation 8.2">(8.2)</a> is satisfied and <span class="process-math">\(B\)</span> is invertible. A similar computation as above (using <span class="process-math">\(B^{-1}y\)</span> instead of <span class="process-math">\(x\)</span>) gives</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/finitedimpropinv_ii.html ./knowl/xref/eqcontineq.html" id="sec_normsmatsdets-3-22-2-10">
+\begin{equation}
+\snorm{B^{-1}y} \leq 
+\snorm{A^{-1}} \, \snorm{A-B} \,  \snorm{B^{-1}y} + \snorm{A^{-1}} \, \snorm{y}
+\leq
+\frac{1}{2} \snorm{B^{-1}y} + \snorm{A^{-1}}\,\snorm{y} ,
+\end{equation}
+</div>
+<div class="para">or</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/finitedimpropinv_ii.html ./knowl/xref/eqcontineq.html" id="sec_normsmatsdets-3-22-2-11">
+\begin{equation}
+\snorm{B^{-1}y} \leq 
+2\snorm{A^{-1}}\,\snorm{y} .
+\end{equation}
+</div>
+<div class="para">So <span class="process-math">\(\snorm{B^{-1}} \leq 2 \snorm{A^{-1}}
+\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-3-22-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_normsmatsdets-3-22-3">
+<div class="para">Now</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-3-22-3-1">
+\begin{equation}
+A^{-1}(A-B)B^{-1} = 
+A^{-1}(AB^{-1}-I) = 
+B^{-1}-A^{-1} ,
+\end{equation}
+</div>
+<div class="para">and</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-3-22-3-2">
+\begin{equation}
+\snorm{B^{-1}-A^{-1}} =
+\bnorm{A^{-1}(A-B)B^{-1}} \leq
+\snorm{A^{-1}}\,\snorm{A-B}\,\snorm{B^{-1}}
+\leq
+2\snorm{A^{-1}}^2
+\snorm{A-B} .
+\end{equation}
+</div>
+<div class="para">Therefore, as <span class="process-math">\(B\)</span> tends to <span class="process-math">\(A\text{,}\)</span> <span class="process-math">\(\snorm{B^{-1}-A^{-1}}\)</span> tends to 0, and so the inverse operation is a continuous function at <span class="process-math">\(A\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-3-22-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 8.2.1.4"><a aria-label="Copy heading and permalink for Proof 8.2.1.4" href="#sec_normsmatsdets-3-22" title="Copy heading and permalink for Proof 8.2.1.4">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 8.2.1: Norms"><a aria-label="Copy heading and permalink for Subsection 8.2.1: Norms" href="#sec_normsmatsdets-3" title="Copy heading and permalink for Subsection 8.2.1: Norms">🔗</a></div>
+</section>
+<section class="subsection" id="sec_normsmatsdets-4">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.2.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Matrices</span>
+</h3>
+<div class="para logical" id="sec_normsmatsdets-4-2">
+<div class="para">Once we fix a basis in a finite-dimensional vector space <span class="process-math">\(X\text{,}\)</span> we can represent a vector of <span class="process-math">\(X\)</span> as an <span class="process-math">\(n\)</span>-tuple of numbers—a vector in <span class="process-math">\(\R^n\text{.}\)</span> The same can be done with <span class="process-math">\(L(X,Y)\text{,}\)</span> bringing us to matrices, which are a convenient way to represent finite-dimensional linear transformations. Suppose <span class="process-math">\(\{ x_1, x_2, \ldots, x_n \}\)</span> and <span class="process-math">\(\{ y_1, y_2, \ldots, y_m \}\)</span> are bases for vector spaces <span class="process-math">\(X\)</span> and <span class="process-math">\(Y\)</span> respectively.  A linear operator is determined by its values on the basis.  Given <span class="process-math">\(A \in L(X,Y)\text{,}\)</span> <span class="process-math">\(A x_j\)</span> is an element of <span class="process-math">\(Y\text{.}\)</span>  Define the numbers <span class="process-math">\(a_{i,j}\)</span> via</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/eq_matrixrepresent.html" id="eq_matrixrepresent">
+\begin{equation}
+A x_j = \sum_{i=1}^m a_{i,j} \, y_i ,\tag{8.3}
+\end{equation}
+</div>
+<div class="para">and write them as a <em class="emphasis">matrix</em>, which we, by slight abuse of notation, also call <span class="process-math">\(A\text{,}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/eq_matrixrepresent.html" id="sec_normsmatsdets-4-2-17">
+\begin{equation}
+A =
+\begin{bmatrix}
+a_{1,1} &amp; a_{1,2} &amp; \cdots &amp; a_{1,n} \\
+a_{2,1} &amp; a_{2,2} &amp; \cdots &amp; a_{2,n} \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+a_{m,1} &amp; a_{m,2} &amp; \cdots &amp; a_{m,n}
+\end{bmatrix} .
+\end{equation}
+</div>
+<div class="para">We sometimes write <span class="process-math">\(A\)</span> as <span class="process-math">\([a_{i,j}]\text{.}\)</span> We say <span class="process-math">\(A\)</span> is an <span class="process-math">\(m\)</span>-by-<span class="process-math">\(n\)</span> matrix. The <span class="process-math">\(j\)</span>th <em class="emphasis">column</em> of the matrix contains precisely the coefficients that represent <span class="process-math">\(A x_j\)</span> in terms of the basis <span class="process-math">\(\{ y_1,y_2,\ldots,y_m \}\text{.}\)</span> Given the numbers <span class="process-math">\(a_{i,j}\text{,}\)</span> then via the formula <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_normsmatsdets.html#eq_matrixrepresent" title="Equation 8.3">(8.3)</a>, we find the corresponding linear operator, as it is determined by the action on a basis.  Hence, once we fix bases on <span class="process-math">\(X\)</span> and <span class="process-math">\(Y\text{,}\)</span> we have a one-to-one correspondence between <span class="process-math">\(L(X,Y)\)</span> and the <span class="process-math">\(m\)</span>-by-<span class="process-math">\(n\)</span> matrices. When</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/eq_matrixrepresent.html" id="sec_normsmatsdets-4-2-34">
+\begin{equation}
+z = \sum_{j=1}^n z_j \, x_j ,
+\end{equation}
+</div>
+<div class="para">then</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/eq_matrixrepresent.html" id="sec_normsmatsdets-4-2-35">
+\begin{equation}
+A z =
+\sum_{j=1}^n z_j \, A x_j 
+=
+\sum_{j=1}^n z_j \left( \sum_{i=1}^m  a_{i,j}\, y_i \right) 
+=
+\sum_{i=1}^m \left(\sum_{j=1}^n  a_{i,j}\, z_j \right) y_i ,
+\end{equation}
+</div>
+<div class="para">which gives rise to the familiar rule for matrix multiplication, thinking of <span class="process-math">\(z\)</span> as a column vector, that is, an <span class="process-math">\(n\)</span>-by-1 matrix. More generally, if <span class="process-math">\(B\)</span> is an <span class="process-math">\(n\)</span>-by-<span class="process-math">\(r\)</span> matrix with entries <span class="process-math">\(b_{j,k}\text{,}\)</span> then the matrix for <span class="process-math">\(C = AB\)</span> is an <span class="process-math">\(m\)</span>-by-<span class="process-math">\(r\)</span> matrix whose <span class="process-math">\((i,k)\)</span>th entry <span class="process-math">\(c_{i,k}\)</span> is</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/eq_matrixrepresent.html" id="sec_normsmatsdets-4-2-47">
+\begin{equation}
+c_{i,k} =
+\sum_{j=1}^n a_{i,j}\,b_{j,k} .
+\end{equation}
+</div>
+<div class="para">A way to remember it is if you order the indices as we do—<em class="emphasis">row, column</em>—and put the elements in the same order as the matrices, then the “middle index” is “summed-out.”</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_normsmatsdets-4-3">There is a one-to-one correspondence between matrices and linear operators in <span class="process-math">\(L(X,Y)\text{,}\)</span> once we fix bases in <span class="process-math">\(X\)</span> and <span class="process-math">\(Y\text{.}\)</span>  If we choose different bases, we get different matrices. This is an important distinction. The operator <span class="process-math">\(A\)</span> acts on elements of <span class="process-math">\(X\text{,}\)</span> while the matrix is something that works with <span class="process-math">\(n\)</span>-tuples of numbers, that is, vectors of <span class="process-math">\(\R^n\text{.}\)</span>  By convention, we use standard bases in <span class="process-math">\(\R^n\)</span> unless otherwise specified, and we identify <span class="process-math">\(L(\R^n,\R^m)\)</span> with the set of <span class="process-math">\(m\)</span>-by-<span class="process-math">\(n\)</span> matrices.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-4-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_normsmatsdets-4-4">A linear mapping changing one basis to another is represented by a square matrix in which the columns represent vectors of the second basis in terms of the first basis.  We call such a linear mapping a <em class="emphasis">change of basis</em>.  So for two choices of a basis in an <span class="process-math">\(n\)</span>-dimensional vector space, there is a linear mapping (a change of basis) taking one basis to the other, and this corresponds to an <span class="process-math">\(n\)</span>-by-<span class="process-math">\(n\)</span> matrix which does the corresponding operation on <span class="process-math">\(\R^n\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-4-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_normsmatsdets-4-5">
+<div class="para">Suppose <span class="process-math">\(X=\R^n\text{,}\)</span> <span class="process-math">\(Y=\R^m\text{,}\)</span> and all the bases are just the standard bases. Using the Cauchy–Schwarz inequality, with <span class="process-math">\(c=(c_1,c_2,\ldots,c_n) \in \R^n\text{,}\)</span> compute</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-4-5-4">
+\begin{equation}
+\snorm{Ac}^2
+=
+\sum_{i=1}^m { \left(\sum_{j=1}^n a_{i,j} \, c_j \right)}^2
+\leq
+\sum_{i=1}^m
+\left(
+\left(\sum_{j=1}^n {(a_{i,j})}^2 \right)
+\left(\sum_{j=1}^n {(c_j)}^2 \right)
+\right)
+=
+\left(
+\sum_{i=1}^m \sum_{j=1}^n {(a_{i,j})}^2 \right)
+\snorm{c}^2 .
+\end{equation}
+</div>
+<div class="para">In other words, we have a bound on the operator norm (note that equality rarely happens)</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-4-5-5">
+\begin{equation}
+\snorm{A} \leq
+\sqrt{\sum_{i=1}^m \sum_{j=1}^n {(a_{i,j})}^2} .
+\end{equation}
+</div>
+<div class="para">The right-hand side is the euclidean norm on <span class="process-math">\(\R^{nm}\text{,}\)</span> the space of all the entries of the matrix. If the entries go to zero, then <span class="process-math">\(\snorm{A}\)</span> goes to zero. Conversely,</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-4-5-8">
+\begin{equation}
+\sum_{i=1}^m \sum_{j=1}^n {(a_{i,j})}^2
+=
+\sum_{j=1}^n \snorm{A e_j}^2
+\leq
+\sum_{j=1}^n \snorm{A}^2
+= n \snorm{A}^2 .
+\end{equation}
+</div>
+<div class="para">So if the operator norm of <span class="process-math">\(A\)</span> goes to zero, so do the entries. In particular, if <span class="process-math">\(A\)</span> is fixed and <span class="process-math">\(B\)</span> is changing, then the entries of <span class="process-math">\(B\)</span> go to the entries of <span class="process-math">\(A\)</span> if and only if <span class="process-math">\(B\)</span> goes to <span class="process-math">\(A\)</span> in operator norm (<span class="process-math">\(\snorm{A-B}\)</span> goes to zero).  We have proved:</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-4-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_matrixcont"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.2.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="prop_matrixcont-1-1">The topology (the set of open sets) on <span class="process-math">\(L(\R^n,\R^m)\)</span> is the same whether we consider <span class="process-math">\(L(\R^n,\R^m)\)</span> as a metric space using the operator norm, or the euclidean metric of <span class="process-math">\(\R^{nm}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_matrixcont-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="prop_matrixcont-1-2">In particular, let <span class="process-math">\(S\)</span> be a metric space and let <span class="process-math">\(\pi \colon L(\R^n,\R^m) \to \R^{nm}\)</span> identify an operator with the <span class="process-math">\(nm\)</span>-tuple of entries of the corresponding matrix. Then <span class="process-math">\(f \colon S \to L(\R^n,\R^m)\)</span> is continuous if and only if <span class="process-math">\(\pi \circ f \colon S \to \R^{nm}\)</span> is continuous. Similarly for <span class="process-math">\(g \colon L(\R^n,\R^m) \to S\)</span> and <span class="process-math">\(g \circ \pi^{-1} \colon \R^{nm} \to S\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_matrixcont-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 8.2.7"><a aria-label="Copy heading and permalink for Proposition 8.2.7" href="#prop_matrixcont" title="Copy heading and permalink for Proposition 8.2.7">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 8.2.2: Matrices"><a aria-label="Copy heading and permalink for Subsection 8.2.2: Matrices" href="#sec_normsmatsdets-4" title="Copy heading and permalink for Subsection 8.2.2: Matrices">🔗</a></div>
+</section>
+<section class="subsection" id="sec_normsmatsdets-5">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.2.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Determinants</span>
+</h3>
+<div class="para" id="sec_normsmatsdets-5-2">A certain number can be assigned to square matrices that measures how the corresponding linear mapping stretches space.  In particular, this number, called the determinant, can be used to test for invertibility of a matrix.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-5-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_normsmatsdets-5-3">
+<div class="para">Define the symbol <span class="process-math">\(\operatorname{sgn}(x)\)</span> (read “sign of <span class="process-math">\(x\)</span>”) for a number <span class="process-math">\(x\)</span> by</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-5-3-4">
+\begin{equation}
+\operatorname{sgn}(x)
+\coloneqq
+\begin{cases}
+-1 &amp; \text{if } x &lt; 0 , \\
+0  &amp; \text{if } x = 0 , \\
+1  &amp; \text{if } x &gt; 0 .
+\end{cases}
+\end{equation}
+</div>
+<div class="para">A <em class="emphasis">permutation</em> <span class="process-math">\(\sigma = (\sigma_1,\sigma_2,\ldots,\sigma_n)\)</span> is a reordering of <span class="process-math">\((1,2,\ldots,n)\text{.}\)</span> Define</div>
+<div class="displaymath process-math" id="eq_sgndef">
+\begin{equation}
+\operatorname{sgn}(\sigma) = \operatorname{sgn}(\sigma_1,\ldots,\sigma_n)
+\coloneqq 
+\prod_{p &lt; q} \operatorname{sgn}(\sigma_q-\sigma_p) .\tag{8.4}
+\end{equation}
+</div>
+<div class="para">Here <span class="process-math">\(\prod\)</span> stands for multiplication, similarly to how <span class="process-math">\(\sum\)</span> stands for summation.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-5-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_normsmatsdets-5-4">Every permutation can be obtained by a sequence of transpositions (switchings of two elements). A permutation is <em class="emphasis">even</em> (resp. <em class="emphasis">odd</em>) if it takes an even (resp. odd) number of transpositions to get from <span class="process-math">\((1,2,\ldots,n)\)</span> to <span class="process-math">\(\sigma\text{.}\)</span> For instance, <span class="process-math">\((2,4,3,1)\)</span> is two transpositions away from <span class="process-math">\((1,2,3,4)\)</span> and is therefore even: <span class="process-math">\((1,2,3,4) \to (2,1,3,4) \to (2,4,3,1)\text{.}\)</span> Being even or odd is well-defined: <span class="process-math">\(\operatorname{sgn}(\sigma)\)</span> is <span class="process-math">\(1\)</span> if <span class="process-math">\(\sigma\)</span> is even and <span class="process-math">\(-1\)</span> if <span class="process-math">\(\sigma\)</span> is odd (exercise). This fact follows since applying a transposition changes the sign and <span class="process-math">\(\operatorname{sgn}(1,2,\ldots,n) = 1\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-5-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_normsmatsdets-5-5">
+<div class="para">Let <span class="process-math">\(S_n\)</span>  be the set of all permutations on <span class="process-math">\(n\)</span> elements (the <em class="emphasis">symmetric group</em>). Let <span class="process-math">\(A= [a_{i,j}]\)</span> be a square <span class="process-math">\(n\)</span>-by-<span class="process-math">\(n\)</span> matrix. Define the <em class="emphasis">determinant</em> of <span class="process-math">\(A\)</span> as</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-5-5-9">
+\begin{equation}
+\det(A) \coloneqq 
+\sum_{\sigma \in S_n}
+\operatorname{sgn} (\sigma) \prod_{i=1}^n a_{i,\sigma_i} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-5-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_normsmatsdets-5-6"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.2.8</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_normsmatsdets-5-6-1-1"><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-5-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div></div>
+<ol class="lower-roman ol-marker-2" id="sec_normsmatsdets-5-6-1-2">
+<li id="prop_det_i">
+<div class="para" id="prop_det_i-1">
+<span class="process-math">\(\det(I) = 1\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_det_i-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#prop_det_i" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="prop_det_ii">
+<div class="para" id="prop_det_ii-1">For every <span class="process-math">\(j=1,2,\ldots,n\text{,}\)</span> the function <span class="process-math">\(x_j
+\mapsto \det\bigl([x_1 ~~~ x_2 ~~~ \cdots ~~~ x_n ]\bigr)\)</span> is linear.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_det_ii-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#prop_det_ii" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+<li id="prop_det_iii">
+<div class="para" id="prop_det_iii-1">If two columns of a matrix are interchanged, then the determinant changes sign.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_det_iii-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iii"><a aria-label="Copy heading and permalink for Item iii" href="#prop_det_iii" title="Copy heading and permalink for Item iii">🔗</a></div>
+</li>
+<li id="prop_det_iv">
+<div class="para" id="prop_det_iv-1">If two columns of <span class="process-math">\(A\)</span> are equal, then <span class="process-math">\(\det(A) = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_det_iv-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iv"><a aria-label="Copy heading and permalink for Item iv" href="#prop_det_iv" title="Copy heading and permalink for Item iv">🔗</a></div>
+</li>
+<li id="prop_det_v">
+<div class="para" id="prop_det_v-1">If a column is zero, then <span class="process-math">\(\det(A) = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_det_v-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item v"><a aria-label="Copy heading and permalink for Item v" href="#prop_det_v" title="Copy heading and permalink for Item v">🔗</a></div>
+</li>
+<li id="prop_det_vi">
+<div class="para" id="prop_det_vi-1">
+<span class="process-math">\(A \mapsto \det(A)\)</span> is a continuous function on <span class="process-math">\(L(\R^n)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_det_vi-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item vi"><a aria-label="Copy heading and permalink for Item vi" href="#prop_det_vi" title="Copy heading and permalink for Item vi">🔗</a></div>
+</li>
+<li id="prop_det_vii">
+<div class="para" id="prop_det_vii-1">
+<span class="process-math">\(\det\left( \left[\begin{smallmatrix} a &amp; b \\ c
+&amp;d \end{smallmatrix}\right] \right)
+= ad-bc\text{,}\)</span> and <span class="process-math">\(\det \bigl( [a] \bigr) = a\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_det_vii-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item vii"><a aria-label="Copy heading and permalink for Item vii" href="#prop_det_vii" title="Copy heading and permalink for Item vii">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Proposition 8.2.8"><a aria-label="Copy heading and permalink for Proposition 8.2.8" href="#sec_normsmatsdets-5-6" title="Copy heading and permalink for Proposition 8.2.8">🔗</a></div>
+</article>
+<div class="para logical" id="sec_normsmatsdets-5-7">
+<div class="para">In fact, the determinant is the unique function that satisfies <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_normsmatsdets.html#prop_det_i" title="Item i">i</a>, <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_normsmatsdets.html#prop_det_ii" title="Item ii">ii</a>, and <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_normsmatsdets.html#prop_det_iii" title="Item iii">iii</a>, but we digress. By <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_normsmatsdets.html#prop_det_ii" title="Item ii">ii</a>, we mean that if we fix all the vectors <span class="process-math">\(x_1,\ldots,x_n\)</span> except for <span class="process-math">\(x_j\text{,}\)</span> and let <span class="process-math">\(v,w \in \R^n\)</span> be two vectors, and <span class="process-math">\(a,b \in \R\)</span> be scalars, then</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_det_i.html ./knowl/xref/prop_det_ii.html ./knowl/xref/prop_det_iii.html ./knowl/xref/prop_det_ii.html" id="sec_normsmatsdets-5-7-9">
+\begin{multline*}
+\det\bigl([x_1 ~~~ \cdots ~~~ x_{j-1} ~~~ (av+bw) ~~~ x_{j+1} ~~~
+\cdots ~~~ x_n]\bigr) =
+\\
+a \det\bigl([x_1 ~~~ \cdots ~~~ x_{j-1} ~~~ v ~~~ x_{j+1} ~~~
+\cdots ~~~ x_n]\bigr)
++
+b
+\det\bigl([x_1 ~~~ \cdots ~~~ x_{j-1} ~~~ w ~~~ x_{j+1} ~~~ \cdots
+~~~ x_n]\bigr) .
+\end{multline*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-5-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_normsmatsdets-5-8"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_normsmatsdets-5-8-1">We go through the proof quickly, as you have likely seen it before. Item <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_normsmatsdets.html#prop_det_i" title="Item i">i</a> is trivial.  For <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_normsmatsdets.html#prop_det_ii" title="Item ii">ii</a>, note that each term in the definition of the determinant contains exactly one factor from each column. Item <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_normsmatsdets.html#prop_det_iii" title="Item iii">iii</a> follows as switching two columns is switching the two corresponding numbers in every element in <span class="process-math">\(S_n\text{.}\)</span>  Hence, all the signs are changed. Item <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_normsmatsdets.html#prop_det_iv" title="Item iv">iv</a> follows because if two columns are equal, and we switch them, we get the same matrix back.  So item <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_normsmatsdets.html#prop_det_iii" title="Item iii">iii</a> says the determinant must be 0. Item <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_normsmatsdets.html#prop_det_v" title="Item v">v</a> follows because the product in each term in the definition includes one element from the zero column. Item <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_normsmatsdets.html#prop_det_vi" title="Item vi">vi</a> follows as <span class="process-math">\(\det\)</span> is a polynomial in the entries of the matrix and hence continuous (as a function of the entries of the matrix). A function defined on matrices is continuous in the operator norm if and only if it is continuous as a function of the entries (<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_normsmatsdets.html#prop_matrixcont" title="Proposition 8.2.7">Proposition 8.2.7</a>). Finally, item <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_normsmatsdets.html#prop_det_vii" title="Item vii">vii</a> is a direct computation.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-5-8-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 8.2.3.1"><a aria-label="Copy heading and permalink for Proof 8.2.3.1" href="#sec_normsmatsdets-5-8" title="Copy heading and permalink for Proof 8.2.3.1">🔗</a></div>
+</article>
+<div class="para" id="sec_normsmatsdets-5-9">The determinant tells us about areas and volumes, and how they change. For example, in the <span class="process-math">\(1\)</span>-by-<span class="process-math">\(1\)</span> case, a matrix is just a number, and the determinant is exactly this number.  It says how the linear mapping “stretches” the space.  Similarly, suppose <span class="process-math">\(A \in L(\R^2)\)</span> is a linear transformation. It can be checked directly that the area of the image of the unit square <span class="process-math">\(A\bigl([0,1]^2\bigr)\)</span> is <span class="process-math">\(\babs{\det(A)}\text{,}\)</span> see <a class="internal" href="sec_normsmatsdets.html#fig_imagesquare" title="Figure 8.3">Figure 8.3</a> for an example. This works with arbitrary figures, not just the unit square: The absolute value of the determinant tells us the stretch in the area. The sign of the determinant tells us if the image is flipped (changes orientation) or not. In <span class="process-math">\(\R^3\)</span> it tells us about the 3-dimensional volume, and in <span class="process-math">\(n\)</span> dimensions about the <span class="process-math">\(n\)</span>-dimensional volume.  We claim this without proof.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-5-9" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="fig_imagesquare"><img alt="Two diagrams of the plane are given. On the left one, there is a square with vertices (0,0), (1,0), (1,1), and (0,1). In the right one, there is a square with corresponding vertices (0,0), (1, minus 1), (2,0), and (1,1), where the correspondence is shown with arrows." class="raimg" role="img" src="figures/linalg-imagesquare-mbxpdft.svg" style="width:239pt; height:95pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Image of the unit square <span class="process-math">\({[0,1]}^2\)</span> via the matrix <span class="process-math">\(\left[\begin{smallmatrix}1 &amp; 1 \\ -1 &amp; 1\end{smallmatrix}\right]\text{.}\)</span> The image is a square of side <span class="process-math">\(\sqrt{2}\text{,}\)</span> thus of area 2, and the determinant of the matrix is 2.<div class="autopermalink" data-description="Figure 8.3"><a aria-label="Copy heading and permalink for Figure 8.3" href="#fig_imagesquare" title="Copy heading and permalink for Figure 8.3">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<article class="proposition theorem-like" id="sec_normsmatsdets-5-13"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.2.9</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_normsmatsdets-5-13-1-1">If <span class="process-math">\(A\)</span> and <span class="process-math">\(B\)</span> are <span class="process-math">\(n\)</span>-by-<span class="process-math">\(n\)</span> matrices, then <span class="process-math">\(\det(AB) = \det(A)\det(B)\text{.}\)</span> Furthermore, <span class="process-math">\(A\)</span> is invertible if and only if <span class="process-math">\(\det(A) \neq 0\)</span> and in this case, <span class="process-math">\(\det(A^{-1}) = \frac{1}{\det(A)}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-5-13-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 8.2.9"><a aria-label="Copy heading and permalink for Proposition 8.2.9" href="#sec_normsmatsdets-5-13" title="Copy heading and permalink for Proposition 8.2.9">🔗</a></div>
+</article>
+<article class="proof" id="sec_normsmatsdets-5-14"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_normsmatsdets-5-14-1">
+<div class="para">Let <span class="process-math">\(b_1,b_2,\ldots,b_n\)</span> be the columns of <span class="process-math">\(B\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-5-14-1-3">
+\begin{equation}
+AB = [ Ab_1 \quad Ab_2 \quad  \cdots \quad  Ab_n ] .
+\end{equation}
+</div>
+<div class="para">That is, the columns of <span class="process-math">\(AB\)</span> are <span class="process-math">\(Ab_1,Ab_2,\ldots,Ab_n\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-5-14-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_normsmatsdets-5-14-2">
+<div class="para">Let <span class="process-math">\(b_{j,k}\)</span> denote the elements of <span class="process-math">\(B\)</span> and <span class="process-math">\(a_j\)</span> the columns of <span class="process-math">\(A\text{.}\)</span> By linearity of the determinant,</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-5-14-2-5">
+\begin{equation}
+\begin{split}
+\det(AB) &amp; =  
+\det \bigl([ Ab_1 \quad Ab_2 \quad  \cdots \quad  Ab_n ] \bigr) =
+\det \left(\left[ \sum_{j=1}^n b_{j,1} a_j \quad Ab_2 \quad  \cdots \quad  Ab_n \right]\right) \\
+&amp; =
+\sum_{j=1}^n
+b_{j,1}
+\det \bigl([ a_j \quad Ab_2 \quad  \cdots \quad  Ab_n ]\bigr) \\
+&amp; =
+\sum_{1 \leq j_1,j_2,\ldots,j_n \leq n}
+b_{j_1,1}
+b_{j_2,2}
+\cdots
+b_{j_n,n}
+\det \bigl([ a_{j_1} \quad a_{j_2} \quad  \cdots \quad  a_{j_n} ]\bigr) \\
+&amp; =
+\left(
+\sum_{(j_1,j_2,\ldots,j_n) \in S_n}
+b_{j_1,1}
+b_{j_2,2}
+\cdots
+b_{j_n,n}
+\operatorname{sgn}(j_1,j_2,\ldots,j_n)
+\right)
+\det \bigl([ a_{1} \quad a_{2} \quad  \cdots \quad  a_{n} ]\bigr) .
+\end{split}
+\end{equation}
+</div>
+<div class="para">In the last equality, we sum over the elements of <span class="process-math">\(S_n\)</span> instead of all <span class="process-math">\(n\)</span>-tuples for integers between 1 and <span class="process-math">\(n\text{,}\)</span> because when two columns in the determinant are the same, then the determinant is zero.  Reordering the columns to the original ordering obtains the sgn.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-5-14-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_normsmatsdets-5-14-3">The conclusion that <span class="process-math">\(\det(AB) = \det(A)\det(B)\)</span> follows by recognizing that the expression in parentheses above is the determinant of <span class="process-math">\(B\text{.}\)</span> We obtain this by plugging in <span class="process-math">\(A=I\text{.}\)</span> The expression we get for the determinant of <span class="process-math">\(B\)</span> has rows and columns swapped, so as a bonus, we have also just proved that the determinant of a matrix and its transpose are equal.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-5-14-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_normsmatsdets-5-14-4">
+<div class="para">Let us prove the “Furthermore.” If <span class="process-math">\(A\)</span> is invertible, then <span class="process-math">\(A^{-1}A = I\text{.}\)</span> Consequently <span class="process-math">\(\det(A^{-1})\det(A) = \det(A^{-1}A) = \det(I) = 1\text{.}\)</span> If <span class="process-math">\(A\)</span> is not invertible, then it is not one-to-one, and so <span class="process-math">\(A\)</span> takes some nonzero vector to zero. In other words, the columns of <span class="process-math">\(A\)</span> are linearly dependent. Suppose</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-5-14-4-8">
+\begin{equation}
+\sum_{k=1}^n \gamma_k\, a_k = 0 ,
+\end{equation}
+</div>
+<div class="para">where not all <span class="process-math">\(\gamma_k\)</span> are equal to 0. Without loss of generality, suppose <span class="process-math">\(\gamma_1\neq 0\text{.}\)</span> Take</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-5-14-4-11">
+\begin{equation}
+B \coloneqq 
+\begin{bmatrix}
+\gamma_1 &amp; 0 &amp; 0 &amp; \cdots &amp; 0 \\
+\gamma_2 &amp; 1 &amp; 0 &amp; \cdots &amp; 0 \\
+\gamma_3 &amp; 0 &amp; 1 &amp; \cdots &amp; 0 \\
+\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+\gamma_n &amp; 0 &amp; 0 &amp; \cdots &amp; 1
+\end{bmatrix} .
+\end{equation}
+</div>
+<div class="para">Using the definition of the determinant (there is only a single permutation <span class="process-math">\(\sigma\)</span> for which <span class="process-math">\(\prod_{i=1}^n b_{i,\sigma_i}\)</span> is nonzero) we find <span class="process-math">\(\det(B) = \gamma_1 \neq 0\text{.}\)</span> Then <span class="process-math">\(\det(AB) = \det(A)\det(B) = \gamma_1\det(A)\text{.}\)</span> The first column of <span class="process-math">\(AB\)</span> is zero, and hence <span class="process-math">\(\det(AB) = 0\text{.}\)</span>  We conclude <span class="process-math">\(\det(A) = 0\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-5-14-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 8.2.3.2"><a aria-label="Copy heading and permalink for Proof 8.2.3.2" href="#sec_normsmatsdets-5-14" title="Copy heading and permalink for Proof 8.2.3.2">🔗</a></div>
+</article>
+<article class="proposition theorem-like" id="sec_normsmatsdets-5-15"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.2.10</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_normsmatsdets-5-15-1-1">
+<div class="para">The determinant is independent of the basis:  If <span class="process-math">\(A\)</span> and <span class="process-math">\(B\)</span> are <span class="process-math">\(n\)</span>-by-<span class="process-math">\(n\)</span> matrices and <span class="process-math">\(B\)</span> is invertible, then</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-5-15-1-1-6">
+\begin{equation}
+\det(A) = \det(B^{-1}AB) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-5-15-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 8.2.10"><a aria-label="Copy heading and permalink for Proposition 8.2.10" href="#sec_normsmatsdets-5-15" title="Copy heading and permalink for Proposition 8.2.10">🔗</a></div>
+</article>
+<article class="proof" id="sec_normsmatsdets-5-16"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_normsmatsdets-5-16-1">
+<span class="process-math">\(\det(B^{-1}AB) = 
+\det(B^{-1})\det(A)\det(B) =
+\frac{1}{\det(B)}\det(A)\det(B) = \det(A)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-5-16-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 8.2.3.3"><a aria-label="Copy heading and permalink for Proof 8.2.3.3" href="#sec_normsmatsdets-5-16" title="Copy heading and permalink for Proof 8.2.3.3">🔗</a></div>
+</article>
+<div class="para" id="sec_normsmatsdets-5-17">If in one basis <span class="process-math">\(A\)</span> is the matrix representing a linear operator, then for another basis we can find a matrix <span class="process-math">\(B\)</span> such that the matrix <span class="process-math">\(B^{-1}AB\)</span> takes us to the first basis, applies <span class="process-math">\(A\)</span> in the first basis, and takes us back to the basis we started with. Let <span class="process-math">\(X\)</span> be a finite-dimensional vector space. Let <span class="process-math">\(\Phi \in L(X,\R^n)\)</span> take a basis <span class="process-math">\(\{ x_1,\ldots,x_n \}\)</span> to the standard basis <span class="process-math">\(\{ e_1,\ldots,e_n \}\)</span> and let <span class="process-math">\(\Psi \in L(X,\R^n)\)</span> take another basis <span class="process-math">\(\{ y_1, \ldots, y_n \}\)</span> to the standard basis. Let <span class="process-math">\(T \in L(X)\)</span> be a linear operator and let a matrix <span class="process-math">\(A\)</span> represent the operator in the basis <span class="process-math">\(\{ x_1,\ldots,x_n \}\text{.}\)</span> Then <span class="process-math">\(B\)</span> would be such that we have the following diagram<details aria-live="polite" class="ptx-footnote" id="sec_normsmatsdets-5-17-15"><summary class="ptx-footnote__number" title="Footnote 8.2.3"><sup> 3 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_normsmatsdets-5-17-15">Such a picture is called <em class="emphasis">commutative diagram</em>. In a commutative diagram, following arrows in any way must end up with the same result.
+</div></details>: <img alt="A diagram of sets and mappings between them represented by arrows. First row has two sets, both the n dimensional euclidean space, R super n. Second row has two sets, both X. Third row has two sets, both the n dimensional euclidean space, R super n. The top left R super n has an arrow labeled B inverse A B to the top right R super n. The top left R super n has an arrow labeled B to the R super n on the bottom left The bottom right R super n has an arrow labeled B inverse from the R super n on the bottom right. The left X has an arrow labeled Psi to the top left R super n, an arrow labeled Phi to the bottom left R super n, and an arrow labeled T to the right X. The top right R super n has an arrow labeled Psi inverse to the right X, and the bottom right R super n has an arrow labeled Phi inverse to the right X. The bottom left R super n has an arrow labeled A to the bottom right R super n." class="raimg" role="img" src="figures/change_of_basis_cd-mbxpdft.svg" style="width:142pt; height:94pt; display:block;"/> The two <span class="process-math">\(\R^n\)</span>s on the bottom row represent <span class="process-math">\(X\)</span> in the first basis, and the <span class="process-math">\(\R^n\)</span>s on top represent <span class="process-math">\(X\)</span> in the second basis.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-5-17" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_normsmatsdets-5-18">
+<div class="para">If we compute the determinant of the matrix <span class="process-math">\(A\text{,}\)</span> we obtain the same determinant if we use any other basis; in the other basis the matrix would be <span class="process-math">\(B^{-1}AB\text{.}\)</span> Consequently,</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-5-18-3">
+\begin{equation}
+\det \colon L(X) \to \R
+\end{equation}
+</div>
+<div class="para">is a well-defined function without the need to fix a basis. That is, <span class="process-math">\(\det\)</span> is defined on <span class="process-math">\(L(X)\text{,}\)</span> not just on matrices.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-5-18" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_normsmatsdets-5-19">
+<div class="para">There are three types of what we call <em class="emphasis">elementary matrices</em>. Let <span class="process-math">\(e_1,e_2,\ldots,e_n\)</span> be the standard basis on <span class="process-math">\(\R^n\)</span> as usual. First, for <span class="process-math">\(j =
+1,2,\ldots,n\)</span> and <span class="process-math">\(\lambda \in \R\text{,}\)</span> <span class="process-math">\(\lambda \neq 0\text{,}\)</span> define the first type of an elementary matrix, an <span class="process-math">\(n\)</span>-by-<span class="process-math">\(n\)</span> matrix <span class="process-math">\(E\)</span> by</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-5-19-11">
+\begin{equation}
+Ee_i \coloneqq 
+\begin{cases}
+e_i &amp; \text{if } i \neq j , \\
+\lambda e_i &amp; \text{if } i = j .
+\end{cases}
+\end{equation}
+</div>
+<div class="para">Given any <span class="process-math">\(n\)</span>-by-<span class="process-math">\(m\)</span> matrix <span class="process-math">\(M\text{,}\)</span> the matrix <span class="process-math">\(EM\)</span> is the same matrix as <span class="process-math">\(M\)</span> except with the <span class="process-math">\(j\)</span>th row multiplied by <span class="process-math">\(\lambda\text{.}\)</span> It is an easy computation (exercise) that <span class="process-math">\(\det(E) = \lambda\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-5-19" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_normsmatsdets-5-20">
+<div class="para">Next, for <span class="process-math">\(j,k\)</span> with <span class="process-math">\(j\neq k\)</span> and <span class="process-math">\(\lambda \in \R\text{,}\)</span> define the second type of an elementary matrix <span class="process-math">\(E\)</span> by</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-5-20-5">
+\begin{equation}
+Ee_i \coloneqq 
+\begin{cases}
+e_i               &amp; \text{if } i \neq j , \\
+e_i + \lambda e_k &amp; \text{if } i = j .
+\end{cases}
+\end{equation}
+</div>
+<div class="para">Given any <span class="process-math">\(n\)</span>-by-<span class="process-math">\(m\)</span> matrix <span class="process-math">\(M\text{,}\)</span> the matrix <span class="process-math">\(EM\)</span> is the same matrix as <span class="process-math">\(M\)</span> except with <span class="process-math">\(\lambda\)</span> times the <span class="process-math">\(k\)</span>th row added to the <span class="process-math">\(j\)</span>th row. It is an easy computation (exercise) that <span class="process-math">\(\det(E) = 1\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-5-20" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_normsmatsdets-5-21">
+<div class="para">Finally, for <span class="process-math">\(j\)</span> and <span class="process-math">\(k\)</span> with <span class="process-math">\(j\neq k\text{,}\)</span> define the third type of an elementary matrix <span class="process-math">\(E\)</span> by</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-5-21-5">
+\begin{equation}
+Ee_i \coloneqq 
+\begin{cases}
+e_i &amp; \text{if } i \neq j \text{ and } i \neq k , \\
+e_k &amp; \text{if } i = j , \\
+e_j &amp; \text{if } i = k .
+\end{cases}
+\end{equation}
+</div>
+<div class="para">Given any <span class="process-math">\(n\)</span>-by-<span class="process-math">\(m\)</span> matrix <span class="process-math">\(M\text{,}\)</span> the matrix <span class="process-math">\(EM\)</span> is the same matrix with <span class="process-math">\(j\)</span>th and <span class="process-math">\(k\)</span>th rows swapped. It is an easy computation (exercise) that <span class="process-math">\(\det(E) = -1\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-5-21" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_elemmatrixdecomp"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.2.11</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="prop_elemmatrixdecomp-1-1">
+<div class="para">Let <span class="process-math">\(T\)</span> be an <span class="process-math">\(n\)</span>-by-<span class="process-math">\(n\)</span> invertible matrix.  Then there exists a finite sequence of elementary matrices <span class="process-math">\(E_1, E_2, \ldots, E_k\)</span> such that</div>
+<div class="displaymath process-math" id="prop_elemmatrixdecomp-1-1-5">
+\begin{equation}
+T = E_1 E_2 \cdots E_k ,
+\end{equation}
+</div>
+<div class="para">and</div>
+<div class="displaymath process-math" id="prop_elemmatrixdecomp-1-1-6">
+\begin{equation}
+\det(T) = \det(E_1)\det(E_2)\cdots \det(E_k) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_elemmatrixdecomp-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 8.2.11"><a aria-label="Copy heading and permalink for Proposition 8.2.11" href="#prop_elemmatrixdecomp" title="Copy heading and permalink for Proposition 8.2.11">🔗</a></div>
+</article>
+<div class="para" id="sec_normsmatsdets-5-23">The proof is left as an exercise. The proposition says we can compute the determinant via elementary row operations. We do not have to factor the matrix into a product of elementary matrices completely.  It is sufficient to do row operations until we find an <em class="emphasis">upper triangular matrix</em>, that is, a matrix <span class="process-math">\([a_{i,j}]\)</span> where <span class="process-math">\(a_{i,j} = 0\)</span> if <span class="process-math">\(i &gt; j\text{.}\)</span>  Computing determinant of such a matrix is not difficult (exercise).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-5-23" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_normsmatsdets-5-24">Factorization into elementary matrices (or variations on elementary matrices) is useful in proofs involving an arbitrary linear operator, by reducing to a proof for an elementary matrix, similarly as the computation of the determinant.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-5-24" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 8.2.3: Determinants"><a aria-label="Copy heading and permalink for Subsection 8.2.3: Determinants" href="#sec_normsmatsdets-5" title="Copy heading and permalink for Subsection 8.2.3: Determinants">🔗</a></div>
+</section>
+<section class="exercises" id="sec_normsmatsdets-6">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.2.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_normsmatsdets-6-1"><h4 class="heading"><span class="codenumber">8.2.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_normsmatsdets-6-1-1-1">For a vector space <span class="process-math">\(X\)</span> with a norm <span class="process-math">\(\snorm{\cdot}\text{,}\)</span> show that <span class="process-math">\(d(x,y) \coloneqq \snorm{x-y}\)</span> makes <span class="process-math">\(X\)</span> a metric space.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.2.1"><a aria-label="Copy heading and permalink for Exercise 8.2.1" href="#sec_normsmatsdets-6-1" title="Copy heading and permalink for Exercise 8.2.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_normsmatsdets-6-2"><h4 class="heading"><span class="codenumber">8.2.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_normsmatsdets-6-2-1-1">
+<em class="emphasis">(Easy)</em>   Show that for square matrices <span class="process-math">\(A\)</span> and <span class="process-math">\(B\text{,}\)</span> <span class="process-math">\(\det(AB) = \det(BA)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.2.2"><a aria-label="Copy heading and permalink for Exercise 8.2.2" href="#sec_normsmatsdets-6-2" title="Copy heading and permalink for Exercise 8.2.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_normsmatsdets-6-3"><h4 class="heading"><span class="codenumber">8.2.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_normsmatsdets-6-3-1-1">
+<div class="para">For <span class="process-math">\(x \in \R^n\text{,}\)</span> define</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-6-3-1-1-2">
+\begin{equation}
+\snorm{x}_{\infty} \coloneqq
+\max \bigl\{ \sabs{x_1}, \sabs{x_2}, \ldots, \sabs{x_n} \bigr\} ,
+\end{equation}
+</div>
+<div class="para">sometimes called the sup or the max norm.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_normsmatsdets-6-3-1-2">
+<li id="sec_normsmatsdets-6-3-1-2-1">
+<div class="para" id="sec_normsmatsdets-6-3-1-2-1-1">Show that <span class="process-math">\(\snorm{\cdot}_\infty\)</span> is a norm on <span class="process-math">\(\R^n\)</span> (defining a different distance).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-3-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.2.3.a"><a aria-label="Copy heading and permalink for Item 8.2.3.a" href="#sec_normsmatsdets-6-3-1-2-1" title="Copy heading and permalink for Item 8.2.3.a">🔗</a></div>
+</li>
+<li id="sec_normsmatsdets-6-3-1-2-2">
+<div class="para" id="sec_normsmatsdets-6-3-1-2-2-1">What is the unit ball <span class="process-math">\(B(0,1)\)</span> in this norm?<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-3-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.2.3.b"><a aria-label="Copy heading and permalink for Item 8.2.3.b" href="#sec_normsmatsdets-6-3-1-2-2" title="Copy heading and permalink for Item 8.2.3.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 8.2.3"><a aria-label="Copy heading and permalink for Exercise 8.2.3" href="#sec_normsmatsdets-6-3" title="Copy heading and permalink for Exercise 8.2.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_normsmatsdets-6-4"><h4 class="heading"><span class="codenumber">8.2.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_normsmatsdets-6-4-1-1">
+<div class="para">For <span class="process-math">\(x \in \R^n\text{,}\)</span> define</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-6-4-1-1-2">
+\begin{equation}
+\snorm{x}_{1} \coloneqq \sum_{k=1}^n \sabs{x_k},
+\end{equation}
+</div>
+<div class="para">sometimes called the <span class="process-math">\(1\)</span>-norm (or <span class="process-math">\(L^1\)</span> norm).</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_normsmatsdets-6-4-1-2">
+<li id="sec_normsmatsdets-6-4-1-2-1">
+<div class="para" id="sec_normsmatsdets-6-4-1-2-1-1">Show that <span class="process-math">\(\snorm{\cdot}_1\)</span> is a norm on <span class="process-math">\(\R^n\)</span> (defining a different distance, sometimes called the taxicab distance).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-4-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.2.4.a"><a aria-label="Copy heading and permalink for Item 8.2.4.a" href="#sec_normsmatsdets-6-4-1-2-1" title="Copy heading and permalink for Item 8.2.4.a">🔗</a></div>
+</li>
+<li id="sec_normsmatsdets-6-4-1-2-2">
+<div class="para" id="sec_normsmatsdets-6-4-1-2-2-1">What is the unit ball <span class="process-math">\(B(0,1)\)</span> in this norm? Think about what it is in <span class="process-math">\({\mathbb{R}}^2\)</span> and <span class="process-math">\(\mathbb{R}^3\text{.}\)</span> Hint: It is, for example, a convex hull of a finite number of points.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-4-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.2.4.b"><a aria-label="Copy heading and permalink for Item 8.2.4.b" href="#sec_normsmatsdets-6-4-1-2-2" title="Copy heading and permalink for Item 8.2.4.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 8.2.4"><a aria-label="Copy heading and permalink for Exercise 8.2.4" href="#sec_normsmatsdets-6-4" title="Copy heading and permalink for Exercise 8.2.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_normsmatsdets-6-5"><h4 class="heading"><span class="codenumber">8.2.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_normsmatsdets-6-5-1-1">Using the euclidean norm on <span class="process-math">\(\R^2\text{,}\)</span> compute the operator norm of the operators in <span class="process-math">\(L(\R^2)\)</span> given by the matrices:<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_normsmatsdets-6-5-1-2">a) <span class="process-math">\(\left[
+\begin{smallmatrix}
+1 &amp; 0 \\
+0 &amp; 2
+\end{smallmatrix}
+\right]\)</span>     b) <span class="process-math">\(\left[
+\begin{smallmatrix}
+0 &amp; 1 \\
+-1 &amp; 0
+\end{smallmatrix}
+\right]\)</span>     c) <span class="process-math">\(\left[
+\begin{smallmatrix}
+1 &amp; 1 \\
+0 &amp; 1
+\end{smallmatrix}
+\right]\)</span>     d) <span class="process-math">\(\left[
+\begin{smallmatrix}
+0 &amp; 1 \\
+0 &amp; 0
+\end{smallmatrix}
+\right]\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-5-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.2.5"><a aria-label="Copy heading and permalink for Exercise 8.2.5" href="#sec_normsmatsdets-6-5" title="Copy heading and permalink for Exercise 8.2.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_normonedim"><h4 class="heading"><span class="codenumber">8.2.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_normonedim-1-1">Using the standard euclidean norm <span class="process-math">\(\R^n\text{,}\)</span> show:<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_normonedim-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="exercise_normonedim-1-2">
+<li id="exercise_normonedim-1-2-1">
+<div class="para" id="exercise_normonedim-1-2-1-1">Suppose <span class="process-math">\(A \in L(\R,\R^n)\)</span> is defined for <span class="process-math">\(x \in \R\)</span> by <span class="process-math">\(Ax \coloneqq xa\)</span> for a vector <span class="process-math">\(a \in \R^n\text{.}\)</span> Then the operator norm <span class="process-math">\(\snorm{A}_{L(\R,\R^n)} = \snorm{a}_{\R^n}\text{.}\)</span> (That is, the operator norm of <span class="process-math">\(A\)</span> is the euclidean norm of <span class="process-math">\(a\text{.}\)</span>)<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_normonedim-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.2.6.a"><a aria-label="Copy heading and permalink for Item 8.2.6.a" href="#exercise_normonedim-1-2-1" title="Copy heading and permalink for Item 8.2.6.a">🔗</a></div>
+</li>
+<li id="exercise_normonedim-1-2-2">
+<div class="para" id="exercise_normonedim-1-2-2-1">Suppose <span class="process-math">\(B \in L(\R^n,\R)\)</span> is defined for <span class="process-math">\(x \in \R^n\)</span> by <span class="process-math">\(Bx \coloneqq b \cdot x\)</span> for a vector <span class="process-math">\(b \in \R^n\text{.}\)</span> Then the operator norm <span class="process-math">\(\snorm{B}_{L(\R^n,\R)} = \snorm{b}_{\R^n}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_normonedim-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.2.6.b"><a aria-label="Copy heading and permalink for Item 8.2.6.b" href="#exercise_normonedim-1-2-2" title="Copy heading and permalink for Item 8.2.6.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 8.2.6"><a aria-label="Copy heading and permalink for Exercise 8.2.6" href="#exercise_normonedim" title="Copy heading and permalink for Exercise 8.2.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_normsmatsdets-6-7"><h4 class="heading"><span class="codenumber">8.2.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_normsmatsdets-6-7-1-1">Suppose <span class="process-math">\(\sigma = (\sigma_1,\sigma_2,\ldots,\sigma_n)\)</span> is a permutation of <span class="process-math">\((1,2,\ldots,n)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_normsmatsdets-6-7-1-2">
+<li id="sec_normsmatsdets-6-7-1-2-1">
+<div class="para" id="sec_normsmatsdets-6-7-1-2-1-1">Show that we can make a finite number of transpositions (switching of two elements) to get to <span class="process-math">\((1,2,\ldots,n)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-7-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.2.7.a"><a aria-label="Copy heading and permalink for Item 8.2.7.a" href="#sec_normsmatsdets-6-7-1-2-1" title="Copy heading and permalink for Item 8.2.7.a">🔗</a></div>
+</li>
+<li id="sec_normsmatsdets-6-7-1-2-2">
+<div class="para" id="sec_normsmatsdets-6-7-1-2-2-1">Using the definition <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_normsmatsdets.html#eq_sgndef" title="Equation 8.4">(8.4)</a> show that <span class="process-math">\(\sigma\)</span> is even if <span class="process-math">\(\operatorname{sgn}(\sigma) = 1\)</span> and <span class="process-math">\(\sigma\)</span> is odd if <span class="process-math">\(\operatorname{sgn}(\sigma) = -1\text{.}\)</span>  In particular, showing that being odd or even is well-defined.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-7-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.2.7.b"><a aria-label="Copy heading and permalink for Item 8.2.7.b" href="#sec_normsmatsdets-6-7-1-2-2" title="Copy heading and permalink for Item 8.2.7.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 8.2.7"><a aria-label="Copy heading and permalink for Exercise 8.2.7" href="#sec_normsmatsdets-6-7" title="Copy heading and permalink for Exercise 8.2.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_normsmatsdets-6-8"><h4 class="heading"><span class="codenumber">8.2.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_normsmatsdets-6-8-1-1">Verify the computation of the determinant for the three types of elementary matrices.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.2.8"><a aria-label="Copy heading and permalink for Exercise 8.2.8" href="#sec_normsmatsdets-6-8" title="Copy heading and permalink for Exercise 8.2.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_normsmatsdets-6-9"><h4 class="heading"><span class="codenumber">8.2.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_normsmatsdets-6-9-1-1">Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_normsmatsdets.html#prop_elemmatrixdecomp" title="Proposition 8.2.11">Proposition 8.2.11</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.2.9"><a aria-label="Copy heading and permalink for Exercise 8.2.9" href="#sec_normsmatsdets-6-9" title="Copy heading and permalink for Exercise 8.2.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_normsmatsdets-6-10"><h4 class="heading"><span class="codenumber">8.2.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_normsmatsdets-6-10-1-1"><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div></div>
+<ol class="lower-alpha ol-marker-3" id="sec_normsmatsdets-6-10-1-2">
+<li id="sec_normsmatsdets-6-10-1-2-1">
+<div class="para" id="sec_normsmatsdets-6-10-1-2-1-1">Suppose <span class="process-math">\(D = [d_{i,j}]\)</span> is an <span class="process-math">\(n\)</span>-by-<span class="process-math">\(n\)</span> <em class="emphasis">diagonal matrix</em>, that is, <span class="process-math">\(d_{i,j} = 0\)</span> whenever <span class="process-math">\(i
+\neq j\text{.}\)</span>  Show that <span class="process-math">\(\det(D) = d_{1,1}d_{2,2} \cdots d_{n,n}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-10-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.2.10.a"><a aria-label="Copy heading and permalink for Item 8.2.10.a" href="#sec_normsmatsdets-6-10-1-2-1" title="Copy heading and permalink for Item 8.2.10.a">🔗</a></div>
+</li>
+<li id="sec_normsmatsdets-6-10-1-2-2">
+<div class="para" id="sec_normsmatsdets-6-10-1-2-2-1">Suppose <span class="process-math">\(A\)</span> is a diagonalizable matrix.  That is, there exists a matrix <span class="process-math">\(B\)</span> such that <span class="process-math">\(B^{-1}AB = D\)</span> for a diagonal matrix <span class="process-math">\(D = [d_{i,j}]\text{.}\)</span>  Show that <span class="process-math">\(\det(A) = d_{1,1}d_{2,2} \cdots d_{n,n}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-10-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.2.10.b"><a aria-label="Copy heading and permalink for Item 8.2.10.b" href="#sec_normsmatsdets-6-10-1-2-2" title="Copy heading and permalink for Item 8.2.10.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 8.2.10"><a aria-label="Copy heading and permalink for Exercise 8.2.10" href="#sec_normsmatsdets-6-10" title="Copy heading and permalink for Exercise 8.2.10">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_normsmatsdets-6-11"><h4 class="heading"><span class="codenumber">8.2.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_normsmatsdets-6-11-1-1">Take the vector space of polynomials <span class="process-math">\(\R[t]\)</span> and let <span class="process-math">\(D \in L(\R[t])\)</span> be differentiation (we proved in an earlier exercise that <span class="process-math">\(D\)</span> is a linear operator).  Given <span class="process-math">\(P(t) = c_0 + c_1 t + \cdots + c_n
+t^n \in \R[t]\)</span> define <span class="process-math">\(\snorm{P} \coloneqq \sup \bigl\{ \sabs{c_j} : j = 0,1,2,\ldots,n \bigr\}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_normsmatsdets-6-11-1-2">
+<li id="sec_normsmatsdets-6-11-1-2-1">
+<div class="para" id="sec_normsmatsdets-6-11-1-2-1-1">Show that <span class="process-math">\(\snorm{\cdot}\)</span> is a norm on <span class="process-math">\(\R[t]\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-11-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.2.11.a"><a aria-label="Copy heading and permalink for Item 8.2.11.a" href="#sec_normsmatsdets-6-11-1-2-1" title="Copy heading and permalink for Item 8.2.11.a">🔗</a></div>
+</li>
+<li id="sec_normsmatsdets-6-11-1-2-2">
+<div class="para" id="sec_normsmatsdets-6-11-1-2-2-1">Prove <span class="process-math">\(\snorm{D} = \infty\text{.}\)</span>  Hint: Consider the polynomials <span class="process-math">\(t^n\)</span> as <span class="process-math">\(n\)</span> tends to infinity.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-11-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.2.11.b"><a aria-label="Copy heading and permalink for Item 8.2.11.b" href="#sec_normsmatsdets-6-11-1-2-2" title="Copy heading and permalink for Item 8.2.11.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 8.2.11"><a aria-label="Copy heading and permalink for Exercise 8.2.11" href="#sec_normsmatsdets-6-11" title="Copy heading and permalink for Exercise 8.2.11">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_normsmatsdets-6-12"><h4 class="heading"><span class="codenumber">8.2.12<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_normsmatsdets-6-12-1-1">We finish the proof of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_normsmatsdets.html#prop_finitedimpropnormfin" title="Proposition 8.2.4">Proposition 8.2.4</a>. Let <span class="process-math">\(X\)</span> be a finite-dimensional normed vector space with basis <span class="process-math">\(\{ x_1,x_2,\ldots,x_n \}\text{.}\)</span>  Denote by <span class="process-math">\(\snorm{\cdot}_X\)</span> the norm on <span class="process-math">\(X\text{,}\)</span> by <span class="process-math">\(\snorm{\cdot}_{\R^n}\)</span> the standard euclidean norm on <span class="process-math">\(\R^n\text{,}\)</span> and by <span class="process-math">\(\snorm{\cdot}_{L(X,Y)}\)</span> the operator norm.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-12-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_normsmatsdets-6-12-1-2">
+<li id="sec_normsmatsdets-6-12-1-2-1">
+<div class="para logical" id="sec_normsmatsdets-6-12-1-2-1-1">
+<div class="para">Define <span class="process-math">\(f \colon \R^n \to \R\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-6-12-1-2-1-1-2">
+\begin{equation}
+f(c_1,c_2,\ldots,c_n) \coloneqq 
+\snorm{c_1 x_1 + c_2 x_2 + \cdots + c_n x_n}_X .
+\end{equation}
+</div>
+<div class="para">Show <span class="process-math">\(f\)</span> is continuous.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-12-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.2.12.a"><a aria-label="Copy heading and permalink for Item 8.2.12.a" href="#sec_normsmatsdets-6-12-1-2-1" title="Copy heading and permalink for Item 8.2.12.a">🔗</a></div>
+</li>
+<li id="sec_normsmatsdets-6-12-1-2-2">
+<div class="para" id="sec_normsmatsdets-6-12-1-2-2-1">Show that there exist numbers <span class="process-math">\(m\)</span> and <span class="process-math">\(M\)</span> such that if <span class="process-math">\(c = (c_1,c_2,\ldots,c_n) \in \R^n\)</span> with <span class="process-math">\(\snorm{c}_{\R^n} = 1\text{,}\)</span> then <span class="process-math">\(m \leq \snorm{c_1 x_1 + c_2 x_2 + \cdots + c_n x_n}_X \leq M\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-12-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.2.12.b"><a aria-label="Copy heading and permalink for Item 8.2.12.b" href="#sec_normsmatsdets-6-12-1-2-2" title="Copy heading and permalink for Item 8.2.12.b">🔗</a></div>
+</li>
+<li id="sec_normsmatsdets-6-12-1-2-3">
+<div class="para" id="sec_normsmatsdets-6-12-1-2-3-1">Show that there exists a number <span class="process-math">\(B\)</span> such that if <span class="process-math">\(\snorm{c_1 x_1 + c_2 x_2 + \cdots + c_n x_n}_X = 1\text{,}\)</span> then <span class="process-math">\(\sabs{c_j} \leq B\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-12-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.2.12.c"><a aria-label="Copy heading and permalink for Item 8.2.12.c" href="#sec_normsmatsdets-6-12-1-2-3" title="Copy heading and permalink for Item 8.2.12.c">🔗</a></div>
+</li>
+<li id="sec_normsmatsdets-6-12-1-2-4">
+<div class="para" id="sec_normsmatsdets-6-12-1-2-4-1">Use part c) to show that if <span class="process-math">\(X\)</span> is a finite-dimensional vector space and <span class="process-math">\(A \in L(X,Y)\text{,}\)</span> then <span class="process-math">\(\snorm{A}_{L(X,Y)} &lt; \infty\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-12-1-2-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.2.12.d"><a aria-label="Copy heading and permalink for Item 8.2.12.d" href="#sec_normsmatsdets-6-12-1-2-4" title="Copy heading and permalink for Item 8.2.12.d">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 8.2.12"><a aria-label="Copy heading and permalink for Exercise 8.2.12" href="#sec_normsmatsdets-6-12" title="Copy heading and permalink for Exercise 8.2.12">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_allnormsequiv"><h4 class="heading"><span class="codenumber">8.2.13<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_allnormsequiv-1-1">Let <span class="process-math">\(X\)</span> be a finite-dimensional vector space with basis <span class="process-math">\(\{ x_1,x_2,\ldots,x_n \}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_allnormsequiv-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="exercise_allnormsequiv-1-2">
+<li id="exercise_allnormsequiv-1-2-1">
+<div class="para logical" id="exercise_allnormsequiv-1-2-1-1">
+<div class="para">Let <span class="process-math">\(\snorm{\cdot}_X\)</span> be a norm on <span class="process-math">\(X\text{,}\)</span> <span class="process-math">\(c = (c_1,c_2,\ldots,c_n) \in \R^n\text{,}\)</span> and <span class="process-math">\(\snorm{\cdot}_{\R^n}\)</span> the standard euclidean norm on <span class="process-math">\(\R^n\text{.}\)</span> Prove that there exist numbers <span class="process-math">\(m,M &gt; 0\)</span> such that for all <span class="process-math">\(c \in \R^n\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="exercise_allnormsequiv-1-2-1-1-8">
+\begin{equation}
+m \snorm{c}_{\R^n}
+\leq
+\snorm{c_1 x_1 + c_2 x_2 + \cdots + c_n x_n}_X
+\leq
+M \snorm{c}_{\R^n} .
+\end{equation}
+</div>
+<div class="para">Hint: See the previous exercise.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_allnormsequiv-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.2.13.a"><a aria-label="Copy heading and permalink for Item 8.2.13.a" href="#exercise_allnormsequiv-1-2-1" title="Copy heading and permalink for Item 8.2.13.a">🔗</a></div>
+</li>
+<li id="exercise_allnormsequiv-1-2-2">
+<div class="para logical" id="exercise_allnormsequiv-1-2-2-1">
+<div class="para">Use part a) to show that if <span class="process-math">\(\snorm{\cdot}_1\)</span> and <span class="process-math">\(\snorm{\cdot}_2\)</span> are two norms on <span class="process-math">\(X\text{,}\)</span> then there exist numbers <span class="process-math">\(m,M &gt; 0\)</span> (perhaps different from above) such that for all <span class="process-math">\(x \in X\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="exercise_allnormsequiv-1-2-2-1-6">
+\begin{equation}
+m \snorm{x}_1
+\leq
+\snorm{x}_2
+\leq
+M \snorm{x}_1 .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_allnormsequiv-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.2.13.b"><a aria-label="Copy heading and permalink for Item 8.2.13.b" href="#exercise_allnormsequiv-1-2-2" title="Copy heading and permalink for Item 8.2.13.b">🔗</a></div>
+</li>
+<li id="exercise_allnormsequiv-1-2-3">
+<div class="para" id="exercise_allnormsequiv-1-2-3-1">Show that <span class="process-math">\(U \subset X\)</span> is open in the metric defined by <span class="process-math">\(\norm{x-y}_1\)</span> if and only if <span class="process-math">\(U\)</span> is open in the metric defined by <span class="process-math">\(\norm{x-y}_2\text{.}\)</span>  So convergence of sequences and continuity of functions is the same in either norm.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_allnormsequiv-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.2.13.c"><a aria-label="Copy heading and permalink for Item 8.2.13.c" href="#exercise_allnormsequiv-1-2-3" title="Copy heading and permalink for Item 8.2.13.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 8.2.13"><a aria-label="Copy heading and permalink for Exercise 8.2.13" href="#exercise_allnormsequiv" title="Copy heading and permalink for Exercise 8.2.13">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_normsmatsdets-6-14"><h4 class="heading"><span class="codenumber">8.2.14<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_normsmatsdets-6-14-1-1">Let <span class="process-math">\(A\)</span> be an upper triangular matrix.  Find a formula for the determinant of <span class="process-math">\(A\)</span> in terms of the diagonal entries, and prove that your formula works.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-14-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.2.14"><a aria-label="Copy heading and permalink for Exercise 8.2.14" href="#sec_normsmatsdets-6-14" title="Copy heading and permalink for Exercise 8.2.14">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_normsmatsdets-6-15"><h4 class="heading"><span class="codenumber">8.2.15<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_normsmatsdets-6-15-1-1">Given an <span class="process-math">\(n\)</span>-by-<span class="process-math">\(n\)</span> matrix <span class="process-math">\(A\text{,}\)</span> prove that <span class="process-math">\(\babs{\det(A)} \leq \snorm{A}^n\)</span> (the norm on <span class="process-math">\(A\)</span> is the operator norm). Hint: One way to do it is to first prove it in the case <span class="process-math">\(\snorm{A}=1\text{,}\)</span> which means that all columns are of norm 1 or less, then prove that this means that <span class="process-math">\(\babs{\det(A)} \leq 1\)</span> using linearity.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-15-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.2.15"><a aria-label="Copy heading and permalink for Exercise 8.2.15" href="#sec_normsmatsdets-6-15" title="Copy heading and permalink for Exercise 8.2.15">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_normsmatsdets-6-16"><h4 class="heading"><span class="codenumber">8.2.16<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_normsmatsdets-6-16-1-1">Consider <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_normsmatsdets.html#prop_finitedimpropinv" title="Proposition 8.2.6">Proposition 8.2.6</a> where <span class="process-math">\(X=\R^n\)</span> (for all <span class="process-math">\(n\)</span>) using the euclidean norm.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-16-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_normsmatsdets-6-16-1-2">
+<li id="sec_normsmatsdets-6-16-1-2-1">
+<div class="para" id="sec_normsmatsdets-6-16-1-2-1-1">Prove that the estimate <span class="process-math">\(\snorm{A-B} &lt; \frac{1}{\snorm{A^{-1}}}\)</span> is the best possible: For every <span class="process-math">\(A \in GL(\R^n)\text{,}\)</span> find a <span class="process-math">\(B\)</span> where equality is satisfied and <span class="process-math">\(B\)</span> is not invertible. Hint: Difficulty is that <span class="process-math">\(\snorm{A}\snorm{A^{-1}}\)</span> is not always <span class="process-math">\(1\text{.}\)</span> Prove that a vector <span class="process-math">\(x_1\)</span> can be completed to a basis <span class="process-math">\(\{ x_1,\ldots,x_n \}\)</span> such that <span class="process-math">\(x_1 \cdot x_j = 0\)</span> for <span class="process-math">\(j \geq 2\text{.}\)</span> For the right <span class="process-math">\(x_1\text{,}\)</span> make it so that <span class="process-math">\((A-B)x_j = 0\)</span> for <span class="process-math">\(j \geq 2\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-16-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.2.16.a"><a aria-label="Copy heading and permalink for Item 8.2.16.a" href="#sec_normsmatsdets-6-16-1-2-1" title="Copy heading and permalink for Item 8.2.16.a">🔗</a></div>
+</li>
+<li id="sec_normsmatsdets-6-16-1-2-2">
+<div class="para" id="sec_normsmatsdets-6-16-1-2-2-1">For every fixed <span class="process-math">\(A \in GL(\R^n)\text{,}\)</span> let <span class="process-math">\(\sM\)</span> denote the set of matrices <span class="process-math">\(B\)</span> such that <span class="process-math">\(\snorm{A-B} &lt; \frac{1}{\snorm{A^{-1}}}\text{.}\)</span> Prove that while every <span class="process-math">\(B \in \sM\)</span> is invertible, <span class="process-math">\(\snorm{B^{-1}}\)</span> is unbounded as a function of <span class="process-math">\(B\)</span> on <span class="process-math">\(\sM\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-16-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.2.16.b"><a aria-label="Copy heading and permalink for Item 8.2.16.b" href="#sec_normsmatsdets-6-16-1-2-2" title="Copy heading and permalink for Item 8.2.16.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 8.2.16"><a aria-label="Copy heading and permalink for Exercise 8.2.16" href="#sec_normsmatsdets-6-16" title="Copy heading and permalink for Exercise 8.2.16">🔗</a></div>
+</article>
+<div class="para logical" id="sec_normsmatsdets-6-17">
+<div class="para">Let <span class="process-math">\(A\)</span> be an <span class="process-math">\(n\)</span>-by-<span class="process-math">\(n\)</span> matrix. A <span class="process-math">\(\lambda \in \C\)</span> (possibly complex even for a real matrix) is an <em class="emphasis">eigenvalue</em> of <span class="process-math">\(A\)</span> if there is a nonzero (possibly complex) vector <span class="process-math">\(x \in \C^n\)</span> such that <span class="process-math">\(Ax = \lambda x\)</span> (the multiplication by complex vectors is the same as for real vectors; if <span class="process-math">\(x = a+ib\)</span> for real vectors <span class="process-math">\(a\)</span> and <span class="process-math">\(b\text{,}\)</span> and <span class="process-math">\(A\)</span> is a real matrix, then <span class="process-math">\(Ax = Aa + i Ab\)</span>). The number</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-6-17-14">
+\begin{equation}
+\rho(A) \coloneqq
+\sup \bigl\{ \sabs{\lambda} : \lambda \text{ is an eigenvalue of } A \bigr\}
+\end{equation}
+</div>
+<div class="para">is the <em class="emphasis">spectral radius</em> of <span class="process-math">\(A\text{.}\)</span>  Here <span class="process-math">\(\sabs{\lambda}\)</span> is the complex modulus.  We state without proof that at least one eigenvalue always exists, and there are no more than <span class="process-math">\(n\)</span> distinct eigenvalues of <span class="process-math">\(A\text{.}\)</span>  You can therefore assume that <span class="process-math">\(0 \leq \rho(A) &lt; \infty\text{.}\)</span> The exercises below hold for complex matrices, but feel free to assume they are real matrices.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-17" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="exercise exercise-like" id="sec_normsmatsdets-6-18"><h4 class="heading"><span class="codenumber">8.2.17<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_normsmatsdets-6-18-1-1">Let <span class="process-math">\(A,S\)</span> be <span class="process-math">\(n\)</span>-by-<span class="process-math">\(n\)</span> matrices, where <span class="process-math">\(S\)</span> is invertible. Prove that <span class="process-math">\(\lambda\)</span> is an eigenvalue of <span class="process-math">\(A\text{,}\)</span> if and only if it is an eigenvalue of <span class="process-math">\(S^{-1}AS\text{.}\)</span>  Then prove that <span class="process-math">\(\rho(S^{-1}AS) = \rho(A)\text{.}\)</span> In particular, <span class="process-math">\(\rho\)</span> is a well-defined function on <span class="process-math">\(L(X)\)</span> for every finite-dimensional vector space <span class="process-math">\(X\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-18-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.2.17"><a aria-label="Copy heading and permalink for Exercise 8.2.17" href="#sec_normsmatsdets-6-18" title="Copy heading and permalink for Exercise 8.2.17">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_normsmatsdets-6-19"><h4 class="heading"><span class="codenumber">8.2.18<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_normsmatsdets-6-19-1-1">Let <span class="process-math">\(A\)</span> be an <span class="process-math">\(n\)</span>-by-<span class="process-math">\(n\)</span> matrix.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-19-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_normsmatsdets-6-19-1-2">
+<li id="sec_normsmatsdets-6-19-1-2-1">
+<div class="para" id="sec_normsmatsdets-6-19-1-2-1-1">Prove <span class="process-math">\(\rho(A) \leq \snorm{A}\text{.}\)</span>  (See above for definition of <span class="process-math">\(\rho\text{.}\)</span>)<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-19-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.2.18.a"><a aria-label="Copy heading and permalink for Item 8.2.18.a" href="#sec_normsmatsdets-6-19-1-2-1" title="Copy heading and permalink for Item 8.2.18.a">🔗</a></div>
+</li>
+<li id="sec_normsmatsdets-6-19-1-2-2">
+<div class="para" id="sec_normsmatsdets-6-19-1-2-2-1">For every <span class="process-math">\(k \in \N\text{,}\)</span> prove <span class="process-math">\(\rho(A) \leq \snorm{A^k}^{1/k}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-19-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.2.18.b"><a aria-label="Copy heading and permalink for Item 8.2.18.b" href="#sec_normsmatsdets-6-19-1-2-2" title="Copy heading and permalink for Item 8.2.18.b">🔗</a></div>
+</li>
+<li id="sec_normsmatsdets-6-19-1-2-3">
+<div class="para" id="sec_normsmatsdets-6-19-1-2-3-1">Suppose <span class="process-math">\(\displaystyle \lim_{k\to\infty} A^k = 0\)</span> (limit in the operator norm). Prove that <span class="process-math">\(\rho(A) &lt; 1\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-19-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.2.18.c"><a aria-label="Copy heading and permalink for Item 8.2.18.c" href="#sec_normsmatsdets-6-19-1-2-3" title="Copy heading and permalink for Item 8.2.18.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 8.2.18"><a aria-label="Copy heading and permalink for Exercise 8.2.18" href="#sec_normsmatsdets-6-19" title="Copy heading and permalink for Exercise 8.2.18">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_normsmatsdets-6-20"><h4 class="heading"><span class="codenumber">8.2.19<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_normsmatsdets-6-20-1-1">We say a set <span class="process-math">\(C \subset \R^n\)</span> is <em class="emphasis">symmetric</em> if <span class="process-math">\(x \in C\)</span> implies <span class="process-math">\(-x \in C\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-20-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_normsmatsdets-6-20-1-2">
+<li id="sec_normsmatsdets-6-20-1-2-1">
+<div class="para" id="sec_normsmatsdets-6-20-1-2-1-1">Let <span class="process-math">\(\snorm{\cdot}\)</span> be any given norm on <span class="process-math">\(\R^n\text{.}\)</span>  Show that the closed unit ball <span class="process-math">\(C(0,1)\)</span> (using the metric induced by this norm) is a compact symmetric convex set.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-20-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.2.19.a"><a aria-label="Copy heading and permalink for Item 8.2.19.a" href="#sec_normsmatsdets-6-20-1-2-1" title="Copy heading and permalink for Item 8.2.19.a">🔗</a></div>
+</li>
+<li id="sec_normsmatsdets-6-20-1-2-2">
+<div class="para logical" id="sec_normsmatsdets-6-20-1-2-2-1">
+<div class="para">(Challenging) Let <span class="process-math">\(C \subset \R^n\)</span> be a compact symmetric convex set that spans <span class="process-math">\(\R^n\)</span> and <span class="process-math">\(0 \in C\text{.}\)</span>  Show that</div>
+<div class="displaymath process-math" id="sec_normsmatsdets-6-20-1-2-2-1-4">
+\begin{equation}
+\snorm{x} \coloneqq \inf \left\{ \lambda : \lambda &gt; 0 \text{ and } \frac{x}{\lambda} \in C \right\}
+\end{equation}
+</div>
+<div class="para">is a norm on <span class="process-math">\(\R^n\text{,}\)</span> and <span class="process-math">\(C = C(0,1)\)</span> (the closed unit ball) in the metric induced by this norm.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-20-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.2.19.b"><a aria-label="Copy heading and permalink for Item 8.2.19.b" href="#sec_normsmatsdets-6-20-1-2-2" title="Copy heading and permalink for Item 8.2.19.b">🔗</a></div>
+</li>
+</ol>
+<div class="para" id="sec_normsmatsdets-6-20-1-3">Hint: Feel free to use the result of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_normsmatsdets.html#exercise_allnormsequiv" title="Exercise 8.2.13">Exercise 8.2.13</a> part c).  In particular, whether a set is “compact” is independent of the norm.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_normsmatsdets-6-20-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.2.19"><a aria-label="Copy heading and permalink for Exercise 8.2.19" href="#sec_normsmatsdets-6-20" title="Copy heading and permalink for Exercise 8.2.19">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 8.2.4"><a aria-label="Copy heading and permalink for Exercises 8.2.4" href="#sec_normsmatsdets-6" title="Copy heading and permalink for Exercises 8.2.4">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 8.2: Analysis with vector spaces"><a aria-label="Copy heading and permalink for Section 8.2: Analysis with vector spaces" href="#sec_normsmatsdets" title="Copy heading and permalink for Section 8.2: Analysis with vector spaces">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_vectorspaces.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_svtheder.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

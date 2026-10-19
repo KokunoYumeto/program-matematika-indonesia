@@ -1,0 +1,619 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Equicontinuity and the Arzelà–Ascoli theorem · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_arzelaascoli">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.6</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Equicontinuity and the Arzelà–Ascoli theorem</span>
+</h2>
+<div class="para" id="sec_arzelaascoli-2">
+<em class="emphasis">Note: 2 lectures</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_arzelaascoli-3">We would like an analogue of Bolzano–Weierstrass.  Something to the tune of “every bounded sequence of functions (with some property) has a convergent subsequence.” Matters are not as simple even for continuous functions. Not every bounded sequence in the metric space <span class="process-math">\(C\bigl([0,1],\R\bigr)\)</span> has a convergent subsequence.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_arzelaascoli-4"><h3 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.6.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para logical" id="sec_arzelaascoli-4-1-1">
+<div class="para">Let <span class="process-math">\(X\)</span> be a set and <span class="process-math">\(f_n \colon X \to \C\)</span> be a sequence of functions.  We say that <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> is <em class="emphasis">pointwise bounded</em> if for every <span class="process-math">\(x \in X\text{,}\)</span> there is an <span class="process-math">\(M_x \in \R\)</span> such that</div>
+<div class="displaymath process-math" id="sec_arzelaascoli-4-1-1-7">
+\begin{equation}
+\babs{f_n(x)} \leq M_x \qquad \text{for all } n \in \N .
+\end{equation}
+</div>
+<div class="para">We say that <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> is <em class="emphasis">uniformly bounded</em> if there is an <span class="process-math">\(M \in \R\)</span> such that</div>
+<div class="displaymath process-math" id="sec_arzelaascoli-4-1-1-11">
+\begin{equation}
+\babs{f_n(x)} \leq M \qquad \text{for all } n \in \N \text{ and all } x \in X.
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 11.6.1"><a aria-label="Copy heading and permalink for Definition 11.6.1" href="#sec_arzelaascoli-4" title="Copy heading and permalink for Definition 11.6.1">🔗</a></div>
+</article>
+<div class="para" id="sec_arzelaascoli-5">If <span class="process-math">\(X\)</span> is a compact metric space, then a sequence in <span class="process-math">\(C(X,\C)\)</span> is uniformly bounded if it is bounded as a set in the metric space <span class="process-math">\(C(X,\C)\)</span> using the uniform norm.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_arzelaascoli-6"><h3 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.6.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="sec_arzelaascoli-6-1-1">There exist sequences of continuous functions on <span class="process-math">\([0,1]\)</span> that are uniformly bounded but contain no subsequence converging even pointwise. Let us state without proof that <span class="process-math">\(f_n(x) \coloneqq \sin (2\pi n x)\)</span> is one such sequence. Below we will show that there must always exist a subsequence converging at countably many points, but <span class="process-math">\([0,1]\)</span> is uncountable.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 11.6.2"><a aria-label="Copy heading and permalink for Example 11.6.2" href="#sec_arzelaascoli-6" title="Copy heading and permalink for Example 11.6.2">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_arzelaascoli-7"><h3 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.6.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="sec_arzelaascoli-7-1-1">The sequence <span class="process-math">\(f_n(x) \coloneqq x^n\)</span> of continuous functions on <span class="process-math">\([0,1]\)</span> is uniformly bounded, but contains no subsequence that converges uniformly, although the sequence converges pointwise (to a discontinuous function).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 11.6.3"><a aria-label="Copy heading and permalink for Example 11.6.3" href="#sec_arzelaascoli-7" title="Copy heading and permalink for Example 11.6.3">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_arzelaascoli-8"><h3 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.6.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="sec_arzelaascoli-8-1-1">The sequence <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> of functions in <span class="process-math">\(C\bigl([0,1],\R\bigr)\)</span> given by <span class="process-math">\(f_n(x) \coloneqq \frac{n^3x}{1+n^4x^2}\)</span> converges pointwise to the zero function (obvious at <span class="process-math">\(x=0\text{,}\)</span> and for <span class="process-math">\(x &gt; 0\text{,}\)</span> we have <span class="process-math">\(\frac{n^3x}{1+n^4x^2} \leq \frac{1}{nx}\)</span>). For each <span class="process-math">\(x\text{,}\)</span> <span class="process-math">\(\{f_n(x)\}_{n=1}^\infty\)</span> is bounded as it converges to 0. So <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> is pointwise bounded.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_arzelaascoli-8-1-2">
+<div class="para">Via calculus, we find that the maximum of <span class="process-math">\(f_n\)</span> on <span class="process-math">\([0,1]\)</span> occurs at the critical point <span class="process-math">\(x=\nicefrac{1}{n^2}\text{:}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_arzelaascoli-8-1-2-4">
+\begin{equation}
+\snorm{f_n}_{[0,1]}
+=
+f_n\left(\nicefrac{1}{n^2}\right)
+= \nicefrac{n}{2} .
+\end{equation}
+</div>
+<div class="para">So <span class="process-math">\(\lim_{n\to\infty} \snorm{f_n}_{[0,1]} = \infty\text{,}\)</span> and this sequence is not uniformly bounded.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-8-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 11.6.4"><a aria-label="Copy heading and permalink for Example 11.6.4" href="#sec_arzelaascoli-8" title="Copy heading and permalink for Example 11.6.4">🔗</a></div>
+</article>
+<div class="para" id="sec_arzelaascoli-9">When the domain is countable, we can locate a subsequence converging at least pointwise. The proof uses a very common and useful diagonal argument.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-9" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_subsequenceoncountableX"><h3 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.6.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="prop_subsequenceoncountableX-1-1">Let <span class="process-math">\(X\)</span> be a countable set and <span class="process-math">\(f_n \colon X \to \C\)</span> give a pointwise bounded sequence of functions.  Then <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> has a subsequence that converges pointwise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_subsequenceoncountableX-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 11.6.5"><a aria-label="Copy heading and permalink for Proposition 11.6.5" href="#prop_subsequenceoncountableX" title="Copy heading and permalink for Proposition 11.6.5">🔗</a></div>
+</article>
+<article class="proof" id="sec_arzelaascoli-11"><h3 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h3>
+<div class="para" id="sec_arzelaascoli-11-1">Let <span class="process-math">\(x_1,x_2,x_3,\ldots\)</span> be an enumeration of the elements of <span class="process-math">\(X\text{.}\)</span> The sequence <span class="process-math">\(\{ f_n(x_1) \}_{n=1}^\infty\)</span> is bounded and hence we have a subsequence of <span class="process-math">\(\{ f_n \}_{n=1}^{\infty}\text{,}\)</span> which we denote by <span class="process-math">\(\{ f_{1,k} \}_{k=1}^\infty\text{,}\)</span> such that <span class="process-math">\(\{ f_{1,k}(x_1) \}_{k=1}^\infty\)</span> converges. Next <span class="process-math">\(\{ f_{1,k}(x_2) \}_{k=1}^\infty\)</span> is bounded and so <span class="process-math">\(\{ f_{1,k} \}_{k=1}^\infty\)</span> has a subsequence <span class="process-math">\(\{ f_{2,k} \}_{k=1}^\infty\)</span> such that <span class="process-math">\(\{ f_{2,k}(x_2) \}_{k=1}^\infty\)</span> converges.  Note that <span class="process-math">\(\{ f_{2,k}(x_1) \}_{k=1}^\infty\)</span> is still convergent.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-11-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_arzelaascoli-11-2">In general, we have a sequence <span class="process-math">\(\{ f_{m,k} \}_{k=1}^\infty\text{,}\)</span> which is a subsequence of <span class="process-math">\(\{ f_{m-1,k} \}_{k=1}^\infty\text{,}\)</span> such that <span class="process-math">\(\{ f_{m,k}(x_j) \}_{k=1}^\infty\)</span> converges for <span class="process-math">\(j=1,2,\ldots, m\text{.}\)</span> We let <span class="process-math">\(\{ f_{m+1,k} \}_{k=1}^\infty\)</span> be a subsequence of <span class="process-math">\(\{ f_{m,k} \}_{k=1}^\infty\)</span> such that <span class="process-math">\(\{ f_{m+1,k}(x_{m+1}) \}_{k=1}^\infty\)</span> converges (and hence it converges for all <span class="process-math">\(x_j\)</span> for <span class="process-math">\(j=1,2,\ldots,m+1\)</span>).  Rinse and repeat.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-11-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_arzelaascoli-11-3">If <span class="process-math">\(X\)</span> is finite, we are done as the process stops at some point. If <span class="process-math">\(X\)</span> is countably infinite, we pick the sequence <span class="process-math">\(\{ f_{k,k} \}_{k=1}^\infty\text{.}\)</span> This is a subsequence of the original sequence <span class="process-math">\(\{ f_n \}_{n=1}^\infty\text{.}\)</span> For every <span class="process-math">\(m\text{,}\)</span> the tail <span class="process-math">\(\{ f_{k,k} \}_{k=m}^\infty\)</span> is a subsequence of <span class="process-math">\(\{ f_{m,k} \}_{k=1}^\infty\)</span> and hence for any <span class="process-math">\(m\)</span> the sequence <span class="process-math">\(\{ f_{k,k}(x_m) \}_{k=1}^\infty\)</span> converges.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-11-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 11.6.1"><a aria-label="Copy heading and permalink for Proof 11.6.1" href="#sec_arzelaascoli-11" title="Copy heading and permalink for Proof 11.6.1">🔗</a></div>
+</article>
+<div class="para" id="sec_arzelaascoli-12">For larger than countable sets, we need the functions of the sequence to be related.  When we look at continuous functions, the concept we need is equicontinuity.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_arzelaascoli-13"><h3 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.6.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para logical" id="sec_arzelaascoli-13-1-1">
+<div class="para">Let <span class="process-math">\((X,d)\)</span> be a metric space. A set <span class="process-math">\(S\)</span> of functions <span class="process-math">\(f \colon X \to \C\)</span> is <em class="emphasis">uniformly equicontinuous</em> if for every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there is a <span class="process-math">\(\delta &gt; 0\)</span> such that if <span class="process-math">\(x,y \in X\)</span> with <span class="process-math">\(d(x,y) &lt; \delta\text{,}\)</span> we have</div>
+<div class="displaymath process-math" id="sec_arzelaascoli-13-1-1-9">
+\begin{equation}
+\babs{f(x)-f(y)} &lt; \epsilon \qquad \text{for all } f \in S .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-13-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 11.6.6"><a aria-label="Copy heading and permalink for Definition 11.6.6" href="#sec_arzelaascoli-13" title="Copy heading and permalink for Definition 11.6.6">🔗</a></div>
+</article>
+<div class="para" id="sec_arzelaascoli-14">Notice that functions in a uniformly equicontinuous sequence are all uniformly continuous.  It is not hard to show that a finite set of uniformly continuous functions is uniformly equicontinuous.  The definition is really interesting if <span class="process-math">\(S\)</span> is infinite.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-14" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_arzelaascoli-15">Just as for continuity, one can define equicontinuity at a point. That is, <span class="process-math">\(S\)</span> is <em class="emphasis">equicontinuous</em> at <span class="process-math">\(x \in X\)</span> if for every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there is a <span class="process-math">\(\delta &gt; 0\)</span> such that for <span class="process-math">\(y \in X\)</span> with <span class="process-math">\(d(x,y) &lt; \delta\text{,}\)</span> we have <span class="process-math">\(\babs{f(x)-f(y)} &lt; \epsilon\)</span> for all <span class="process-math">\(f \in S\text{.}\)</span> We will only deal with compact <span class="process-math">\(X\)</span> here, and one can prove (exercise) that for a compact metric space <span class="process-math">\(X\text{,}\)</span> if <span class="process-math">\(S\)</span> is equicontinuous at every <span class="process-math">\(x \in X\text{,}\)</span> then it is uniformly equicontinuous.  For simplicity we stick to uniform equicontinuity.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-15" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_arzelaascoli-16"><h3 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.6.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="sec_arzelaascoli-16-1-1">Suppose <span class="process-math">\((X,d)\)</span> is a compact metric space, <span class="process-math">\(f_n \in C(X,\C)\text{,}\)</span> and <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> converges uniformly.  Then <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> is uniformly equicontinuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-16-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 11.6.7"><a aria-label="Copy heading and permalink for Proposition 11.6.7" href="#sec_arzelaascoli-16" title="Copy heading and permalink for Proposition 11.6.7">🔗</a></div>
+</article>
+<article class="proof" id="sec_arzelaascoli-17"><h3 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h3>
+<div class="para logical" id="sec_arzelaascoli-17-1">
+<div class="para">Let <span class="process-math">\(\epsilon &gt; 0\)</span> be given. As <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> converges uniformly, there is an <span class="process-math">\(N \in \N\)</span> such that for all <span class="process-math">\(n \geq N\)</span>
+</div>
+<div class="displaymath process-math" id="sec_arzelaascoli-17-1-5">
+\begin{equation}
+\babs{f_n(x)-f_N(x)} &lt; \nicefrac{\epsilon}{3} \qquad \text{for all } x \in X.
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(X\)</span> is compact, every continuous function is uniformly continuous. So <span class="process-math">\(\{ f_1,f_2,\ldots,f_N \}\)</span> is a finite set of uniformly continuous functions.  And so, as we mentioned above, the set is uniformly equicontinuous. Hence there is a <span class="process-math">\(\delta &gt; 0\)</span> such that</div>
+<div class="displaymath process-math" id="sec_arzelaascoli-17-1-9">
+\begin{equation}
+\babs{f_j(x)-f_j(y)} &lt; \nicefrac{\epsilon}{3} &lt; \epsilon
+\end{equation}
+</div>
+<div class="para">whenever <span class="process-math">\(d(x,y) &lt; \delta\)</span> and <span class="process-math">\(1 \leq j \leq N\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-17-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_arzelaascoli-17-2">
+<div class="para">Take <span class="process-math">\(n &gt; N\text{.}\)</span>  For <span class="process-math">\(d(x,y) &lt; \delta\text{,}\)</span> we have</div>
+<div class="displaymath process-math" id="sec_arzelaascoli-17-2-3">
+\begin{equation}
+\begin{aligned}
+\babs{f_n(x)-f_n(y)}
+&amp;
+\leq
+\babs{f_n(x)-f_N(x)}
++
+\babs{f_N(x)-f_N(y)}
++
+\babs{f_N(y)-f_n(y)}
+\\
+&amp;
+&lt;
+\nicefrac{\epsilon}{3}
++
+\nicefrac{\epsilon}{3}
++
+\nicefrac{\epsilon}{3}
+=\epsilon . \qedhere
+\end{aligned}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-17-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 11.6.2"><a aria-label="Copy heading and permalink for Proof 11.6.2" href="#sec_arzelaascoli-17" title="Copy heading and permalink for Proof 11.6.2">🔗</a></div>
+</article>
+<article class="proposition theorem-like" id="sec_arzelaascoli-18"><h3 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.6.8</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="sec_arzelaascoli-18-1-1">A compact metric space <span class="process-math">\((X,d)\)</span> contains a countable dense subset, that is, there exists a countable <span class="process-math">\(D \subset X\)</span> such that <span class="process-math">\(\widebar{D} = X\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-18-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 11.6.8"><a aria-label="Copy heading and permalink for Proposition 11.6.8" href="#sec_arzelaascoli-18" title="Copy heading and permalink for Proposition 11.6.8">🔗</a></div>
+</article>
+<article class="proof" id="sec_arzelaascoli-19"><h3 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h3>
+<div class="para logical" id="sec_arzelaascoli-19-1">
+<div class="para">For each <span class="process-math">\(n \in \N\)</span> there are finitely many balls of radius <span class="process-math">\(\nicefrac{1}{n}\)</span> that cover <span class="process-math">\(X\)</span> (as <span class="process-math">\(X\)</span> is compact). That is, for every <span class="process-math">\(n\text{,}\)</span> there exists a finite set of points <span class="process-math">\(x_{n,1},x_{n,2},\ldots,x_{n,k_n}\)</span> such that</div>
+<div class="displaymath process-math" id="sec_arzelaascoli-19-1-7">
+\begin{equation}
+X= \bigcup_{j=1}^{k_n} B(x_{n,j},\nicefrac{1}{n}) .
+\end{equation}
+</div>
+<div class="para">Let <span class="process-math">\(D \coloneqq \bigcup_{n=1}^\infty \{ x_{n,1},x_{n,2},\ldots,x_{n,k_n} \}\text{.}\)</span> The set <span class="process-math">\(D\)</span> is countable as it is a countable union of finite sets. For every <span class="process-math">\(x \in X\)</span> and every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there exists an <span class="process-math">\(n\)</span> such that <span class="process-math">\(\nicefrac{1}{n} &lt; \epsilon\)</span> and an <span class="process-math">\(x_{n,j} \in D\)</span> such that</div>
+<div class="displaymath process-math" id="sec_arzelaascoli-19-1-15">
+\begin{equation}
+x \in B(x_{n,j},\nicefrac{1}{n}) \subset B(x_{n,j},\epsilon) .
+\end{equation}
+</div>
+<div class="para">Hence <span class="process-math">\(x \in \widebar{D}\text{,}\)</span> so <span class="process-math">\(\widebar{D} = X\text{,}\)</span> and <span class="process-math">\(D\)</span> is dense.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-19-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 11.6.3"><a aria-label="Copy heading and permalink for Proof 11.6.3" href="#sec_arzelaascoli-19" title="Copy heading and permalink for Proof 11.6.3">🔗</a></div>
+</article>
+<div class="para" id="sec_arzelaascoli-20">We are now ready for the main result of this section, the Arzelà–Ascoli theorem<details aria-live="polite" class="ptx-footnote" id="sec_arzelaascoli-20-1"><summary class="ptx-footnote__number" title="Footnote 11.6.1"><sup> 1 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_arzelaascoli-20-1">Named after the Italian mathematicians <a class="external" href="https://en.wikipedia.org/wiki/Cesare_Arzel\%C3\%A0" target="_blank">Cesare Arzelà</a> (1847–1912), and <a class="external" href="https://en.wikipedia.org/wiki/Giulio_Ascoli" target="_blank">Giulio Ascoli</a> (1843–1896).
+</div></details> about existence of convergent subsequences.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-20" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="thm_arzelaascoli"><h3 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.6.9</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Arzelà–Ascoli.</span>
+</h3>
+<div class="para" id="thm_arzelaascoli-3-1">Let <span class="process-math">\((X,d)\)</span> be a compact metric space, and let <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> be pointwise bounded and uniformly equicontinuous sequence of functions <span class="process-math">\(f_n \in C(X,\C)\text{.}\)</span>  Then <span class="process-math">\(\{f_n\}_{n=1}^\infty\)</span> is uniformly bounded and <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> contains a uniformly convergent subsequence.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#thm_arzelaascoli-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 11.6.9: Arzelà–Ascoli"><a aria-label="Copy heading and permalink for Theorem 11.6.9: Arzelà–Ascoli" href="#thm_arzelaascoli" title="Copy heading and permalink for Theorem 11.6.9: Arzelà–Ascoli">🔗</a></div>
+</article>
+<div class="para" id="sec_arzelaascoli-22">Basically, a uniformly equicontinuous sequence in the metric space <span class="process-math">\(C(X,\C)\)</span> that is pointwise bounded is bounded (in <span class="process-math">\(C(X,\C)\)</span>) and furthermore contains a convergent subsequence in <span class="process-math">\(C(X,\C)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-22" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_arzelaascoli-23">As we mentioned before, because <span class="process-math">\(X\)</span> is compact, it is enough to assume that <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> is equicontinuous; uniform equicontinuity is automatic via an exercise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-23" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_arzelaascoli-24"><h3 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h3>
+<div class="para logical" id="sec_arzelaascoli-24-1">
+<div class="para">We first show that the sequence is uniformly bounded. By uniform equicontinuity, there is a <span class="process-math">\(\delta &gt; 0\)</span> such that for all <span class="process-math">\(x \in X\)</span> and all <span class="process-math">\(n \in \N\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_arzelaascoli-24-1-4">
+\begin{equation}
+B(x,\delta) \subset f_n^{-1}\bigl(B(f_n(x),1)\bigr) .
+\end{equation}
+</div>
+<div class="para">The space <span class="process-math">\(X\)</span> is compact, so there exist <span class="process-math">\(x_1,x_2,\ldots,x_k\)</span> such that</div>
+<div class="displaymath process-math" id="sec_arzelaascoli-24-1-7">
+\begin{equation}
+X = \bigcup_{j=1}^k B(x_j,\delta) .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> is pointwise bounded there exist <span class="process-math">\(M_1,M_2,\ldots,M_k\)</span> such that for <span class="process-math">\(j=1,2,\ldots,k\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_arzelaascoli-24-1-11">
+\begin{equation}
+\babs{f_n(x_j)} \leq M_j \qquad \text{for all } n.
+\end{equation}
+</div>
+<div class="para">Let <span class="process-math">\(M \coloneqq 1+ \max \{ M_1,M_2,\ldots,M_k \}\text{.}\)</span>  Given any <span class="process-math">\(x \in X\text{,}\)</span> there is a <span class="process-math">\(j\)</span> such that <span class="process-math">\(x \in B(x_j,\delta)\text{.}\)</span>  Therefore, for all <span class="process-math">\(n\text{,}\)</span> we have <span class="process-math">\(x \in f_n^{-1}\bigl(B(f_n(x_j),1)\bigr)\text{,}\)</span> or in other words</div>
+<div class="displaymath process-math" id="sec_arzelaascoli-24-1-18">
+\begin{equation}
+\babs{f_n(x)-f_n(x_j)} &lt; 1 .
+\end{equation}
+</div>
+<div class="para">By the reverse triangle inequality,</div>
+<div class="displaymath process-math" id="sec_arzelaascoli-24-1-19">
+\begin{equation}
+\babs{f_n(x)} &lt; 1+ \babs{f_n(x_j)} \leq 1+M_j \leq M .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(x\)</span> was arbitrary, <span class="process-math">\(\{f_n\}_{n=1}^\infty\)</span> is uniformly bounded.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-24-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_arzelaascoli-24-2">
+<div class="para">Next, pick a countable dense subset <span class="process-math">\(D \subset X\text{.}\)</span> By <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_arzelaascoli.html#prop_subsequenceoncountableX" title="Proposition 11.6.5">Proposition 11.6.5</a>, we find a subsequence <span class="process-math">\(\{ f_{n_j} \}_{j=1}^\infty\)</span> that converges pointwise on <span class="process-math">\(D\text{.}\)</span> Write <span class="process-math">\(g_j \coloneqq f_{n_j}\)</span> for simplicity. The sequence <span class="process-math">\(\{ g_n \}_{n=1}^\infty\)</span> is uniformly equicontinuous. Let <span class="process-math">\(\epsilon &gt; 0\)</span> be given, then there exists a <span class="process-math">\(\delta &gt; 0\)</span> such that for all <span class="process-math">\(x \in X\)</span> and all <span class="process-math">\(n \in \N\text{,}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_subsequenceoncountableX.html" id="sec_arzelaascoli-24-2-11">
+\begin{equation}
+B(x,\delta) \subset g_n^{-1}\bigl(B(g_n(x),\nicefrac{\epsilon}{3})\bigr).
+\end{equation}
+</div>
+<div class="para">By density of <span class="process-math">\(D\)</span> and because <span class="process-math">\(\delta\)</span> is fixed, every <span class="process-math">\(x \in X\)</span> is in <span class="process-math">\(B(y,\delta)\)</span> for some <span class="process-math">\(y \in D\text{.}\)</span>  By compactness of <span class="process-math">\(X\text{,}\)</span> there is a finite subset <span class="process-math">\(\{ x_1,x_2,\ldots,x_k \} \subset D\)</span> such that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_subsequenceoncountableX.html" id="sec_arzelaascoli-24-2-19">
+\begin{equation}
+X = \bigcup_{j=1}^k B(x_j,\delta) .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(\{ x_1,x_2,\ldots,x_k \}\)</span> is a finite set and <span class="process-math">\(\{ g_n \}_{n=1}^\infty\)</span> converges pointwise on <span class="process-math">\(D\text{,}\)</span> there exists a single <span class="process-math">\(N\)</span> such that for all <span class="process-math">\(n,m \geq N\text{,}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_subsequenceoncountableX.html" id="sec_arzelaascoli-24-2-25">
+\begin{equation}
+\babs{g_n(x_j)-g_m(x_j)} &lt; \nicefrac{\epsilon}{3}
+\qquad \text{for all } j=1,2,\ldots,k.
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-24-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_arzelaascoli-24-3">
+<div class="para">Let <span class="process-math">\(x \in X\)</span> be arbitrary.  There is some <span class="process-math">\(j\)</span> such that <span class="process-math">\(x \in B(x_j,\delta)\)</span> and so for all <span class="process-math">\(\ell \in \N\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_arzelaascoli-24-3-5">
+\begin{equation}
+\babs{g_\ell(x)-g_\ell(x_j)} &lt; \nicefrac{\epsilon}{3}.
+\end{equation}
+</div>
+<div class="para">So for <span class="process-math">\(n,m \geq N\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_arzelaascoli-24-3-7">
+\begin{equation}
+\begin{split}
+\babs{g_n(x)-g_m(x)} &amp; \leq
+\babs{g_n(x)-g_n(x_j)} +
+\babs{g_n(x_j)-g_m(x_j)} +
+\babs{g_m(x_j)-g_m(x)}
+\\
+&amp; &lt;
+\nicefrac{\epsilon}{3} +
+\nicefrac{\epsilon}{3} +
+\nicefrac{\epsilon}{3} = \epsilon .
+\end{split}
+\end{equation}
+</div>
+<div class="para">Hence, <span class="process-math">\(\{ g_n \}_{n=1}^\infty\)</span> is uniformly Cauchy.  By completeness of <span class="process-math">\(\C\text{,}\)</span> it is uniformly convergent.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-24-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 11.6.4"><a aria-label="Copy heading and permalink for Proof 11.6.4" href="#sec_arzelaascoli-24" title="Copy heading and permalink for Proof 11.6.4">🔗</a></div>
+</article>
+<article class="corollary theorem-like" id="sec_arzelaascoli-25"><h3 class="heading">
+<span class="type">Corollary</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.6.10</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="sec_arzelaascoli-25-1-1">Let <span class="process-math">\((X,d)\)</span> be a compact metric space. Let <span class="process-math">\(S \subset C(X,\C)\)</span> be a closed, bounded and uniformly equicontinuous set. Then <span class="process-math">\(S\)</span> is compact.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-25-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Corollary 11.6.10"><a aria-label="Copy heading and permalink for Corollary 11.6.10" href="#sec_arzelaascoli-25" title="Copy heading and permalink for Corollary 11.6.10">🔗</a></div>
+</article>
+<div class="para" id="sec_arzelaascoli-26">The theorem says that <span class="process-math">\(S\)</span> is sequentially compact and that means compact in a metric space. Recall that the closed unit ball in <span class="process-math">\(C\bigl([0,1],\R\bigr)\text{,}\)</span> and therefore also in <span class="process-math">\(C\bigl([0,1],\C\bigr)\text{,}\)</span> is not compact. Hence it cannot be a uniformly equicontinuous set.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-26" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="corollary theorem-like" id="sec_arzelaascoli-27"><h3 class="heading">
+<span class="type">Corollary</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.6.11</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="sec_arzelaascoli-27-1-1">Suppose <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> is a sequence of differentiable functions on <span class="process-math">\([a,b]\text{,}\)</span> <span class="process-math">\(\{ f_n' \}_{n=1}^\infty\)</span> is uniformly bounded, and there is an <span class="process-math">\(x_0 \in [a,b]\)</span> such that <span class="process-math">\(\{ f_n(x_0) \}_{n=1}^\infty\)</span> is bounded. Then there exists a uniformly convergent subsequence <span class="process-math">\(\{ f_{n_j} \}_{j=1}^\infty\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-27-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Corollary 11.6.11"><a aria-label="Copy heading and permalink for Corollary 11.6.11" href="#sec_arzelaascoli-27" title="Copy heading and permalink for Corollary 11.6.11">🔗</a></div>
+</article>
+<article class="proof" id="sec_arzelaascoli-28"><h3 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h3>
+<div class="para logical" id="sec_arzelaascoli-28-1">
+<div class="para">The trick is to use the mean value theorem.  If <span class="process-math">\(M\)</span> is the uniform bound on <span class="process-math">\(\{ f_n' \}_{n=1}^\infty\text{,}\)</span> then by the mean value theorem for every <span class="process-math">\(n\)</span>
+</div>
+<div class="displaymath process-math" id="sec_arzelaascoli-28-1-4">
+\begin{equation}
+\babs{f_n(x)-f_n(y)} \leq M \sabs{x-y} \qquad \text{for all } x,y \in X.
+\end{equation}
+</div>
+<div class="para">All the <span class="process-math">\(f_n\)</span> are Lipschitz with the same constant and hence the sequence is uniformly equicontinuous.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-28-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_arzelaascoli-28-2">
+<div class="para">Suppose <span class="process-math">\(\babs{f_n(x_0)} \leq M_0\)</span> for all <span class="process-math">\(n\text{.}\)</span> For all <span class="process-math">\(x \in [a,b]\text{,}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_arzelaascoli.html" id="sec_arzelaascoli-28-2-4">
+\begin{equation}
+\babs{f_n(x)} \leq \babs{f_n(x_0)}+ \babs{f_n(x)-f_n(x_0)} \leq M_0+ M \sabs{x-x_0}
+\leq M_0 + M(b-a) .
+\end{equation}
+</div>
+<div class="para">So <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> is uniformly bounded. We apply <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_arzelaascoli.html#thm_arzelaascoli" title="Theorem 11.6.9: Arzelà–Ascoli">Arzelà–Ascoli</a> to find the subsequence.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-28-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 11.6.5"><a aria-label="Copy heading and permalink for Proof 11.6.5" href="#sec_arzelaascoli-28" title="Copy heading and permalink for Proof 11.6.5">🔗</a></div>
+</article>
+<div class="para" id="sec_arzelaascoli-29">A classic application of the corollary above to Arzelà–Ascoli in the theory of differential equations is to prove the Peano existence theorem, that is, the existence of solutions to ordinary differential equations.  See <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_arzelaascoli.html#exercise_peanoexistence" title="Exercise 11.6.11">Exercise 11.6.11</a> below.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-29" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_arzelaascoli-30">
+<div class="para">Another application of Arzelà–Ascoli using the same idea as the corollary above is the following. Take a continuous <span class="process-math">\(k \colon [0,1] \times [0,1] \to \C\text{.}\)</span> For every <span class="process-math">\(f \in C\bigl([0,1],\C\bigr)\)</span> define</div>
+<div class="displaymath process-math" id="sec_arzelaascoli-30-3">
+\begin{equation}
+T\bigl(f\bigr)(x) \coloneqq  \int_0^1 f(t) \, k(x,t)\,dt .
+\end{equation}
+</div>
+<div class="para">In exercises for earlier sections you have shown that <span class="process-math">\(T\)</span> is a linear operator on <span class="process-math">\(C\bigl([0,1],\C\bigr)\text{.}\)</span> Via Arzelà–Ascoli, we also find (exercise) that the image of the unit ball of functions</div>
+<div class="displaymath process-math" id="sec_arzelaascoli-30-6">
+\begin{equation}
+T\bigl( B(0,1) \bigr) = 
+\bigl\{
+Tf \in C\bigl([0,1],\C\bigr) :  
+\snorm{f}_{[0,1]} &lt; 1
+\bigr\}
+\end{equation}
+</div>
+<div class="para">has compact closure, usually called <em class="emphasis">relatively compact</em>. Such an operator is called a <em class="emphasis">compact operator</em>. And they are very useful.  Generally operators defined by integration tend to be compact.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-30" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<section class="exercises" id="sec_arzelaascoli-31">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber"></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_arzelaascoli-31-1"><h4 class="heading"><span class="codenumber">11.6.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_arzelaascoli-31-1-1-1">Let <span class="process-math">\(f_n \colon [-1,1] \to \R\)</span> be given by <span class="process-math">\(f_n(x) \coloneqq \frac{nx}{1+{(nx)}^2}\text{.}\)</span> Prove that the sequence is uniformly bounded, converges pointwise to 0, yet there is no subsequence that converges uniformly. Which hypothesis of Arzelà–Ascoli is not satisfied?  Prove your assertion.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-31-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.6.1"><a aria-label="Copy heading and permalink for Exercise 11.6.1" href="#sec_arzelaascoli-31-1" title="Copy heading and permalink for Exercise 11.6.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_arzelaascoli-31-2"><h4 class="heading"><span class="codenumber">11.6.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_arzelaascoli-31-2-1-1">Define <span class="process-math">\(f_n \colon \R \to \R\)</span> by <span class="process-math">\(f_n(x) \coloneqq \frac{1}{{(x-n)}^2+1}\text{.}\)</span>  Prove that this sequence is uniformly bounded, uniformly equicontinuous, the sequence converges pointwise to zero, yet there is no subsequence that converges uniformly. Which hypothesis of Arzelà–Ascoli is not satisfied?  Prove your assertion.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-31-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.6.2"><a aria-label="Copy heading and permalink for Exercise 11.6.2" href="#sec_arzelaascoli-31-2" title="Copy heading and permalink for Exercise 11.6.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_arzelaascoli-31-3"><h4 class="heading"><span class="codenumber">11.6.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_arzelaascoli-31-3-1-1">Let <span class="process-math">\((X,d)\)</span> be a compact metric space, <span class="process-math">\(C &gt; 0\text{,}\)</span> <span class="process-math">\(0 &lt; \alpha \leq 1\text{,}\)</span> and suppose <span class="process-math">\(f_n \colon X \to \C\)</span> are functions such that <span class="process-math">\(\babs{f_n(x)-f_n(y)} \leq C {d(x,y)}^\alpha\)</span> for all <span class="process-math">\(x,y \in X\)</span> and <span class="process-math">\(n \in \N\text{.}\)</span>  Suppose also that there is a point <span class="process-math">\(p \in X\)</span> such that <span class="process-math">\(f_n(p) = 0\)</span> for all <span class="process-math">\(n\text{.}\)</span> Show that there exists a uniformly convergent subsequence converging to an <span class="process-math">\(f \colon X \to \C\)</span> that also satisfies <span class="process-math">\(f(p) = 0\)</span> and <span class="process-math">\(\babs{f(x)-f(y)} \leq C {d(x,y)}^\alpha\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-31-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.6.3"><a aria-label="Copy heading and permalink for Exercise 11.6.3" href="#sec_arzelaascoli-31-3" title="Copy heading and permalink for Exercise 11.6.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_arzelaascoli-31-4"><h4 class="heading"><span class="codenumber">11.6.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_arzelaascoli-31-4-1-1">
+<div class="para">Let <span class="process-math">\(T \colon C\bigl([0,1],\C\bigr) \to C\bigl([0,1],\C\bigr)\)</span> be the operator given by</div>
+<div class="displaymath process-math" id="sec_arzelaascoli-31-4-1-1-2">
+\begin{equation}
+T\bigl(f\bigr) (x) \coloneqq \int_0^x f(t)\, dt .
+\end{equation}
+</div>
+<div class="para">(That <span class="process-math">\(T\)</span> is linear and that <span class="process-math">\(Tf\)</span> is continuous follows from linearity of the integral and the fundamental theorem of calculus.)</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-31-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_arzelaascoli-31-4-1-2">
+<li id="sec_arzelaascoli-31-4-1-2-1">
+<div class="para" id="sec_arzelaascoli-31-4-1-2-1-1">Show that <span class="process-math">\(T\)</span> takes the unit ball centered at 0 in <span class="process-math">\(C\bigl([0,1],\C\bigr)\)</span> into a relatively compact set (a set with compact closure). That is, <span class="process-math">\(T\)</span> is a compact operator.<br/> Hint: See <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metcompact.html#exercise_relativelycompactseq" title="Exercise 7.4.20">Exercise 7.4.20</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-31-4-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 11.6.4.a"><a aria-label="Copy heading and permalink for Item 11.6.4.a" href="#sec_arzelaascoli-31-4-1-2-1" title="Copy heading and permalink for Item 11.6.4.a">🔗</a></div>
+</li>
+<li id="sec_arzelaascoli-31-4-1-2-2">
+<div class="para" id="sec_arzelaascoli-31-4-1-2-2-1">Let <span class="process-math">\(C \subset C\bigl([0,1],\C\bigr)\)</span> the closed unit ball, prove that the image <span class="process-math">\(T(C)\)</span> is not closed (though it is relatively compact).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-31-4-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 11.6.4.b"><a aria-label="Copy heading and permalink for Item 11.6.4.b" href="#sec_arzelaascoli-31-4-1-2-2" title="Copy heading and permalink for Item 11.6.4.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 11.6.4"><a aria-label="Copy heading and permalink for Exercise 11.6.4" href="#sec_arzelaascoli-31-4" title="Copy heading and permalink for Exercise 11.6.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_arzelaascoli-31-5"><h4 class="heading"><span class="codenumber">11.6.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_arzelaascoli-31-5-1-1">
+<div class="para">Given <span class="process-math">\(k \in C\bigl([0,1]\times [0,1],\C\bigr)\text{,}\)</span> define the operator <span class="process-math">\(T \colon C\bigl([0,1],\C\bigr) \to C\bigl([0,1],\C\bigr)\)</span> by</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_relativelycompactseq.html ./knowl/xref/exercise_continuouskernel.html" id="sec_arzelaascoli-31-5-1-1-3">
+\begin{equation}
+T\bigl(f\bigr)(x) \coloneqq  \int_0^1 f(t) \, k(x,t)\,dt .
+\end{equation}
+</div>
+<div class="para">Show that <span class="process-math">\(T\)</span> takes the unit ball centered at 0 in <span class="process-math">\(C\bigl([0,1],\C\bigr)\)</span> into a relatively compact set (a set with compact closure). That is, <span class="process-math">\(T\)</span> is a compact operator.<br/> Hint: See <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metcompact.html#exercise_relativelycompactseq" title="Exercise 7.4.20">Exercise 7.4.20</a>. <br/> Note: That <span class="process-math">\(T\)</span> is a well-defined linear operator was proved in <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_vectorspaces.html#exercise_continuouskernel" title="Exercise 8.1.6">Exercise 8.1.6</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-31-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.6.5"><a aria-label="Copy heading and permalink for Exercise 11.6.5" href="#sec_arzelaascoli-31-5" title="Copy heading and permalink for Exercise 11.6.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_arzelaascoli-31-6"><h4 class="heading"><span class="codenumber">11.6.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_arzelaascoli-31-6-1-1">
+<div class="para">Suppose <span class="process-math">\(S^1 \subset \C\)</span> is the unit circle, that is, the set where <span class="process-math">\(\sabs{z}=1\text{.}\)</span>  Suppose the continuous functions <span class="process-math">\(f_n \colon S^1 \to \C\)</span> are uniformly bounded. Let <span class="process-math">\(\gamma \colon [0,1] \to S^1\)</span> be a parametrization of <span class="process-math">\(S^1\text{,}\)</span> and <span class="process-math">\(g(z,w)\)</span> a continuous function on <span class="process-math">\(C(0,1) \times S^1\)</span> (here <span class="process-math">\(C(0,1) \subset \C\)</span> is the closed unit ball).  Define the functions <span class="process-math">\(F_n \colon C(0,1) \to \C\)</span> by the path integral (see <a class="internal" href="sec_pathintegral.html" title="Section 9.2: Path integrals">Section 9.2</a>)</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/sec_pathintegral.html" id="sec_arzelaascoli-31-6-1-1-11">
+\begin{equation}
+F_n(z) \coloneqq \int_\gamma f_n(w)\, g(z,w) \, ds(w) . 
+\end{equation}
+</div>
+<div class="para">Show that <span class="process-math">\(\{ F_n \}_{n=1}^\infty\)</span> has a uniformly convergent subsequence.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-31-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.6.6"><a aria-label="Copy heading and permalink for Exercise 11.6.6" href="#sec_arzelaascoli-31-6" title="Copy heading and permalink for Exercise 11.6.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_arzelaascoli-31-7"><h4 class="heading"><span class="codenumber">11.6.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_arzelaascoli-31-7-1-1">Suppose <span class="process-math">\((X,d)\)</span> is a compact metric space, <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> a uniformly equicontinuous sequence of functions in <span class="process-math">\(C(X,\C)\text{.}\)</span>  Suppose <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> converges pointwise.  Show that it converges uniformly.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-31-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.6.7"><a aria-label="Copy heading and permalink for Exercise 11.6.7" href="#sec_arzelaascoli-31-7" title="Copy heading and permalink for Exercise 11.6.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_arzelaascoli-31-8"><h4 class="heading"><span class="codenumber">11.6.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_arzelaascoli-31-8-1-1">Suppose that <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> is a uniformly equicontinuous uniformly bounded sequence of <span class="process-math">\(2\pi\)</span>-periodic functions <span class="process-math">\(f_n \colon \R \to \R\text{.}\)</span>  Show that there is a uniformly convergent subsequence.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-31-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.6.8"><a aria-label="Copy heading and permalink for Exercise 11.6.8" href="#sec_arzelaascoli-31-8" title="Copy heading and permalink for Exercise 11.6.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_arzelaascoli-31-9"><h4 class="heading"><span class="codenumber">11.6.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_arzelaascoli-31-9-1-1">Show that for a compact metric space <span class="process-math">\(X\text{,}\)</span> a sequence <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> that is equicontinuous at every <span class="process-math">\(x \in X\)</span> is uniformly equicontinuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-31-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.6.9"><a aria-label="Copy heading and permalink for Exercise 11.6.9" href="#sec_arzelaascoli-31-9" title="Copy heading and permalink for Exercise 11.6.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_arzelaascoli-31-10"><h4 class="heading"><span class="codenumber">11.6.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_arzelaascoli-31-10-1-1">Define <span class="process-math">\(f_n \colon [0,1] \to \C\)</span> by <span class="process-math">\(f_n(t) \coloneqq e^{i(2\pi t + n)}\text{,}\)</span> which gives a uniformly equicontinuous uniformly bounded sequence. Prove a stronger conclusion than that of Arzelà–Ascoli for this sequence. Let <span class="process-math">\(\gamma \in \R\)</span> be given, and define <span class="process-math">\(g(t) \coloneqq e^{i(2\pi t + \gamma)}\text{.}\)</span>  Show that there exists a subsequence of <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> converging uniformly to <span class="process-math">\(g\text{.}\)</span> <br/> Hint: Feel free to use the <em class="emphasis">Kronecker density theorem</em><details aria-live="polite" class="ptx-footnote" id="sec_arzelaascoli-31-10-1-1-10"><summary class="ptx-footnote__number" title="Footnote 11.6.2"><sup> 2 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_arzelaascoli-31-10-1-1-10">Named after the German mathematician <a class="external" href="https://en.wikipedia.org/wiki/Leopold_Kronecker" target="_blank">Leopold Kronecker</a> (1823–1891).
+</div></details>: The sequence <span class="process-math">\(\{ e^{in} \}_{n=1}^\infty\)</span> is dense in the unit circle.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_arzelaascoli-31-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.6.10"><a aria-label="Copy heading and permalink for Exercise 11.6.10" href="#sec_arzelaascoli-31-10" title="Copy heading and permalink for Exercise 11.6.10">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_peanoexistence"><h4 class="heading"><span class="codenumber">11.6.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_peanoexistence-1-1">Prove the <em class="emphasis">Peano existence theorem</em> (note the weaker hypotheses than Picard, but also the lack of uniqueness in this theorem):<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_peanoexistence-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="exercise_peanoexistence-1-2">
+<div class="para">
+<em class="alert">Theorem:</em> <em class="emphasis">Suppose <span class="process-math">\(F \colon I \times J \to \R\)</span> is a continuous function where <span class="process-math">\(I, J \subset \R\)</span> are closed bounded intervals, let <span class="process-math">\(I^\circ\)</span> and <span class="process-math">\(J^\circ\)</span> be their interiors, and let <span class="process-math">\((x_0,y_0) \in I^\circ \times J^\circ\text{.}\)</span> Then there exists an <span class="process-math">\(h &gt; 0\)</span> and a differentiable function <span class="process-math">\(f \colon [x_0 - h, x_0 + h] \to J \subset \R\text{,}\)</span> such that</em>
+</div>
+<div class="displaymath process-math" id="exercise_peanoexistence-1-2-3">
+\begin{equation}
+f'(x) = F\bigl(x,f(x)\bigr) \qquad \text{and} \qquad f(x_0) = y_0.
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_peanoexistence-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="exercise_peanoexistence-1-3">We can prove this theorem by applying Euler’s method for numerical solutions to ODE and showing that there is a subsequence of these approximations that converges.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_peanoexistence-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="exercise_peanoexistence-1-4">
+<li id="exercise_peanoexistence-1-4-1">
+<div class="para logical" id="exercise_peanoexistence-1-4-1-1">
+<div class="para">Show that there exists an <span class="process-math">\(h &gt; 0\)</span> so that the following functions <span class="process-math">\(f_n\)</span> and <span class="process-math">\(s_n\)</span> are well-defined on <span class="process-math">\([x_0,x_0+h]\)</span> for all <span class="process-math">\(n \in \N\text{.}\)</span> Define <span class="process-math">\(f_n(x_0) \coloneqq y_0\)</span> and <span class="process-math">\(s_n(x_0) \coloneqq F(x_0,y_0)\)</span> and for each <span class="process-math">\(\ell=0,1,\ldots,n-1\)</span> in turn for <span class="process-math">\(x \in \bigl(x_0+\frac{h\ell}{n},x_0+\frac{h(\ell+1)}{n}\bigr]\)</span> let <span class="process-math">\(s_n(x) \coloneqq F\bigl(x_0+\tfrac{h\ell}{n},
+f_n(x_0+\tfrac{h\ell}{n})\bigr)\)</span> and</div>
+<div class="displaymath process-math" id="exercise_peanoexistence-1-4-1-1-11">
+\begin{equation}
+\begin{split}
+f_n(x) &amp; \coloneqq f_n\bigl(x_0+\tfrac{h\ell}{n}\bigr)
++ \bigl(x-x_0-\tfrac{h\ell}{n}\bigr) F\bigl(x_0+\tfrac{h\ell}{n},
+f_n(x_0+\tfrac{h\ell}{n}) \bigr) \\
+&amp; = f_n\bigl(x_0+\tfrac{h\ell}{n}\bigr)
++ \int_{x_0+\tfrac{h\ell}{n}}^x s_n(t) \, dt \\
+&amp; = y_0
++ \int_{x_0}^x s_n(t) \, dt .
+\end{split}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_peanoexistence-1-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 11.6.11.a"><a aria-label="Copy heading and permalink for Item 11.6.11.a" href="#exercise_peanoexistence-1-4-1" title="Copy heading and permalink for Item 11.6.11.a">🔗</a></div>
+</li>
+<li id="exercise_peanoexistence-1-4-2">
+<div class="para" id="exercise_peanoexistence-1-4-2-1">Show that <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> is equicontinuous (in fact, Lipschitz with the same constant) and uniformly bounded. Arzelà–Ascoli then says that there exists a uniformly convergent subsequence <span class="process-math">\(\{ f_{n_k} \}_{k=1}^\infty\)</span> converging to a continuous <span class="process-math">\(f\)</span> defined on <span class="process-math">\([x_0,x_0+h]\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_peanoexistence-1-4-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 11.6.11.b"><a aria-label="Copy heading and permalink for Item 11.6.11.b" href="#exercise_peanoexistence-1-4-2" title="Copy heading and permalink for Item 11.6.11.b">🔗</a></div>
+</li>
+<li id="exercise_peanoexistence-1-4-3">
+<div class="para logical" id="exercise_peanoexistence-1-4-3-1">
+<div class="para">Prove that for all <span class="process-math">\(x \in [x_0,x_0+h]\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="exercise_peanoexistence-1-4-3-1-2">
+\begin{equation}
+\int_{x_0}^x s_{n_k}(t) \, dt
+\quad
+\text{converges to}
+\quad
+\int_{x_0}^x F\bigl(t,f(t)\bigr) \, dt ,
+\end{equation}
+</div>
+<div class="para">and therefore, by applying the fundamental theorem of calculus, <span class="process-math">\(f\)</span> is differentiable on <span class="process-math">\([x_0,x_0+h]\)</span> and <span class="process-math">\(f'(x) = F\bigl(x,f(x)\bigr)\text{.}\)</span> Hint 1: <span class="process-math">\(F\)</span> is uniformly continuous. Hint 2: Show that <span class="process-math">\(s_{n_k}\)</span> converges uniformly.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_peanoexistence-1-4-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 11.6.11.c"><a aria-label="Copy heading and permalink for Item 11.6.11.c" href="#exercise_peanoexistence-1-4-3" title="Copy heading and permalink for Item 11.6.11.c">🔗</a></div>
+</li>
+<li id="exercise_peanoexistence-1-4-4">
+<div class="para" id="exercise_peanoexistence-1-4-4-1">Use the solution above to show that <span class="process-math">\(f\)</span> can be defined in <span class="process-math">\([x_0-h,x_0]\)</span> as well, possibly for a smaller <span class="process-math">\(h &gt; 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_peanoexistence-1-4-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 11.6.11.d"><a aria-label="Copy heading and permalink for Item 11.6.11.d" href="#exercise_peanoexistence-1-4-4" title="Copy heading and permalink for Item 11.6.11.d">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 11.6.11"><a aria-label="Copy heading and permalink for Exercise 11.6.11" href="#exercise_peanoexistence" title="Copy heading and permalink for Exercise 11.6.11">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 11.6.1"><a aria-label="Copy heading and permalink for Exercises 11.6.1" href="#sec_arzelaascoli-31" title="Copy heading and permalink for Exercises 11.6.1">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 11.6: Equicontinuity and the Arzelà–Ascoli theorem"><a aria-label="Copy heading and permalink for Section 11.6: Equicontinuity and the Arzelà–Ascoli theorem" href="#sec_arzelaascoli" title="Copy heading and permalink for Section 11.6: Equicontinuity and the Arzelà–Ascoli theorem">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_fundalgeb.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_stoneweier.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

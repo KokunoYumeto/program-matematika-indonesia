@@ -1,0 +1,475 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Limits at infinity · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_limitatinf">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.5</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Limits at infinity</span>
+</h2>
+<section class="introduction" id="sec_limitatinf-2">
+<div class="para" id="sec_limitatinf-2-1">
+<em class="emphasis">Note: less than 1 lecture (optional, can safely be omitted unless <a class="internal" href="sec_monotonefunc.html" title="Section 3.6: Monotone functions and continuity">Section 3.6</a> or <a class="internal" href="sec_impropriemann.html" title="Section 5.5: Improper integrals">Section 5.5</a> is also covered)</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section>
+<section class="subsection" id="sec_limitatinf-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.5.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Limits at infinity</span>
+</h3>
+<div class="para" id="sec_limitatinf-3-2">Just as with sequences, a continuous variable can also approach infinity.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-3-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_limitatinf-3-3"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.5.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_limitatinf-3-3-1-1">We say <span class="process-math">\(\infty\)</span> is a <em class="emphasis">cluster point</em> of <span class="process-math">\(S \subset \R\)</span> if for every <span class="process-math">\(M \in \R\text{,}\)</span> there exists an <span class="process-math">\(x \in S\)</span> such that <span class="process-math">\(x \geq M\text{.}\)</span>  Similarly, <span class="process-math">\(- \infty\)</span> is a <em class="emphasis">cluster point</em> of <span class="process-math">\(S \subset \R\)</span> if for every <span class="process-math">\(M \in \R\text{,}\)</span> there exists an <span class="process-math">\(x \in S\)</span> such that <span class="process-math">\(x \leq M\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-3-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_limitatinf-3-3-1-3">
+<div class="para">Let <span class="process-math">\(f \colon S \to \R\)</span> be a function, where <span class="process-math">\(\infty\)</span> is a cluster point of <span class="process-math">\(S\text{.}\)</span> If there exists an <span class="process-math">\(L \in \R\)</span> with the property that for every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there is an <span class="process-math">\(M \in \R\)</span> such that</div>
+<div class="displaymath process-math" id="sec_limitatinf-3-3-1-3-7">
+\begin{equation}
+\babs{f(x) - L} &lt; \epsilon 
+\end{equation}
+</div>
+<div class="para">whenever <span class="process-math">\(x \in S\)</span> and <span class="process-math">\(x \geq M\text{,}\)</span> then we say <span class="process-math">\(f(x)\)</span> <em class="emphasis">converges</em> to <span class="process-math">\(L\)</span> as <span class="process-math">\(x\)</span> goes to <span class="process-math">\(\infty\text{.}\)</span>  We call <span class="process-math">\(L\)</span> a <em class="emphasis">limit</em> and, if unique, write</div>
+<div class="displaymath process-math" id="sec_limitatinf-3-3-1-3-18">
+\begin{equation}
+\lim_{x \to \infty} f(x) \coloneqq L .
+\end{equation}
+</div>
+<div class="para">Alternatively, we write <span class="process-math">\(f(x) \to L\)</span> as <span class="process-math">\(x \to \infty\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-3-3-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_limitatinf-3-3-1-4">
+<div class="para">Similarly, if <span class="process-math">\(-\infty\)</span> is a cluster point of <span class="process-math">\(S\)</span> and there exists an <span class="process-math">\(L \in \R\)</span> such that for every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there is an <span class="process-math">\(M \in \R\)</span> such that</div>
+<div class="displaymath process-math" id="sec_limitatinf-3-3-1-4-6">
+\begin{equation}
+\babs{f(x) - L} &lt; \epsilon 
+\end{equation}
+</div>
+<div class="para">whenever <span class="process-math">\(x \in S\)</span> and <span class="process-math">\(x \leq M\text{,}\)</span> then we say <span class="process-math">\(f(x)\)</span> <em class="emphasis">converges</em> to <span class="process-math">\(L\)</span> as <span class="process-math">\(x\)</span> goes to <span class="process-math">\(-\infty\text{.}\)</span> Alternatively, we write <span class="process-math">\(f(x) \to L\)</span> as <span class="process-math">\(x \to -\infty\text{.}\)</span> We call <span class="process-math">\(L\)</span> a <em class="emphasis">limit</em> and, if unique, write</div>
+<div class="displaymath process-math" id="sec_limitatinf-3-3-1-4-18">
+\begin{equation}
+\lim_{x \to -\infty} f(x) \coloneqq L .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-3-3-1-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 3.5.1"><a aria-label="Copy heading and permalink for Definition 3.5.1" href="#sec_limitatinf-3-3" title="Copy heading and permalink for Definition 3.5.1">🔗</a></div>
+</article>
+<div class="para" id="sec_limitatinf-3-4">The first thing to do, as usual, is to prove that the limit, if it exists, is unique. We leave it as an exercise for the reader.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-3-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="liminfty_unique"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.5.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="liminfty_unique-1-1">The limit at <span class="process-math">\(\infty\)</span> or <span class="process-math">\(-\infty\)</span> as defined above is unique if it exists.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#liminfty_unique-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 3.5.2"><a aria-label="Copy heading and permalink for Proposition 3.5.2" href="#liminfty_unique" title="Copy heading and permalink for Proposition 3.5.2">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_limitatinf-3-6"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.5.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_limitatinf-3-6-1-1">
+<div class="para">Let <span class="process-math">\(f(x) \coloneqq \frac{1}{\sabs{x}+1}\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" id="sec_limitatinf-3-6-1-1-2">
+\begin{equation}
+\lim_{x\to \infty} f(x) = 0 \qquad \text{and} \qquad
+\lim_{x\to -\infty} f(x) = 0 .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-3-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_limitatinf-3-6-1-2">Proof: Let <span class="process-math">\(\epsilon &gt; 0\)</span> be given.  Find <span class="process-math">\(M &gt; 0\)</span> large enough so that <span class="process-math">\(\frac{1}{M+1} &lt; \epsilon\text{.}\)</span>  If <span class="process-math">\(x \geq M\text{,}\)</span> then <span class="process-math">\(0 &lt; \frac{1}{\sabs{x}+1} = \frac{1}{x+1} \leq \frac{1}{M+1} &lt; \epsilon\text{.}\)</span> The first limit follows. The proof for <span class="process-math">\(-\infty\)</span> is left to the reader.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-3-6-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 3.5.3"><a aria-label="Copy heading and permalink for Example 3.5.3" href="#sec_limitatinf-3-6" title="Copy heading and permalink for Example 3.5.3">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_limitatinf-3-7"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.5.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_limitatinf-3-7-1-1">Let <span class="process-math">\(f(x) \coloneqq \sin(\pi x)\text{.}\)</span>  Then <span class="process-math">\(\lim_{x\to\infty} f(x)\)</span> does not exist. To prove this fact, note that if <span class="process-math">\(x = 2n+\nicefrac{1}{2}\)</span> for some <span class="process-math">\(n \in
+\N\text{,}\)</span> then <span class="process-math">\(f(x)=1\text{,}\)</span> while if <span class="process-math">\(x = 2n+\nicefrac{3}{2}\text{,}\)</span> then <span class="process-math">\(f(x)=-1\text{.}\)</span> Both of these values, <span class="process-math">\(1\)</span> and <span class="process-math">\(-1\text{,}\)</span> cannot be within a small <span class="process-math">\(\epsilon\)</span> of a single real number.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-3-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_limitatinf-3-7-1-2">
+<div class="para">Be careful not to confuse continuous limits with limits of sequences. We could say</div>
+<div class="displaymath process-math" id="sec_limitatinf-3-7-1-2-1">
+\begin{equation}
+\lim_{n \to \infty} \sin(\pi n) = 0, \qquad \text{but} \qquad
+\lim_{x \to \infty} \sin(\pi x) \enspace \text{does not exist}.
+\end{equation}
+</div>
+<div class="para">Of course, the notation is ambiguous:  Are we thinking of the sequence <span class="process-math">\(\bigl\{ \sin (\pi n) \bigr\}_{n=1}^\infty\)</span> or the function <span class="process-math">\(\sin(\pi x)\)</span> of a real variable?  We are simply using the convention that <span class="process-math">\(n \in \N\text{,}\)</span> while <span class="process-math">\(x \in \R\text{.}\)</span>  When the notation is not clear, it is good to explicitly mention where the variable lives, or what kind of limit you are using.  If there is a possibility of confusion, one can write, for example,</div>
+<div class="displaymath process-math" id="sec_limitatinf-3-7-1-2-6">
+\begin{equation}
+\lim_{\substack{n \to \infty\\n \in \N}} \sin(\pi n) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-3-7-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 3.5.4"><a aria-label="Copy heading and permalink for Example 3.5.4" href="#sec_limitatinf-3-7" title="Copy heading and permalink for Example 3.5.4">🔗</a></div>
+</article>
+<div class="para" id="sec_limitatinf-3-8">There is a connection between continuous limits and limits of sequences, but we must take all sequences going to infinity, just as before in <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_limoffunc.html#seqflimit_lemma" title="Lemma 3.1.7">Lemma 3.1.7</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-3-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="lemma theorem-like" id="seqflimitinf_lemma"><h4 class="heading">
+<span class="type">Lemma</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.5.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="seqflimitinf_lemma-1-1">
+<div class="para">Suppose <span class="process-math">\(f \colon S \to \R\)</span> is a function, <span class="process-math">\(\infty\)</span> is a cluster point of <span class="process-math">\(S \subset \R\text{,}\)</span> and <span class="process-math">\(L \in \R\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" id="seqflimitinf_lemma-1-1-5">
+\begin{equation}
+\lim_{x\to\infty} f(x) = L
+\qquad \text{if and only if} \qquad
+\lim_{n\to\infty} f(x_n) = L
+\end{equation}
+</div>
+<div class="para">for all sequences <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> in <span class="process-math">\(S\)</span> such that <span class="process-math">\(\lim\limits_{n\to\infty} x_n = \infty\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#seqflimitinf_lemma-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Lemma 3.5.5"><a aria-label="Copy heading and permalink for Lemma 3.5.5" href="#seqflimitinf_lemma" title="Copy heading and permalink for Lemma 3.5.5">🔗</a></div>
+</article>
+<div class="para" id="sec_limitatinf-3-10">The lemma also holds for the limit as <span class="process-math">\(x \to -\infty\text{.}\)</span> Its proof is almost identical and is left as an exercise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-3-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_limitatinf-3-11"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_limitatinf-3-11-1">First suppose <span class="process-math">\(f(x) \to L\)</span> as <span class="process-math">\(x \to \infty\text{.}\)</span> Given an <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there exists an <span class="process-math">\(M\)</span> such that for all <span class="process-math">\(x \in S\)</span> where <span class="process-math">\(x \geq M\text{,}\)</span> we have <span class="process-math">\(\babs{f(x)-L} &lt; \epsilon\text{.}\)</span> Let <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> be a sequence in <span class="process-math">\(S\)</span> such that <span class="process-math">\(\lim_{n\to\infty} x_n = \infty\text{.}\)</span>  Then there exists an <span class="process-math">\(N\)</span> such that <span class="process-math">\(x_n \geq M\)</span> for all <span class="process-math">\(n \geq N\text{.}\)</span> Thus <span class="process-math">\(\babs{f(x_n)-L} &lt; \epsilon\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-3-11-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_limitatinf-3-11-2">We prove the converse by contrapositive.  Suppose <span class="process-math">\(f(x)\)</span> does not go to <span class="process-math">\(L\)</span> as <span class="process-math">\(x \to \infty\text{.}\)</span> This means that there exists an <span class="process-math">\(\epsilon &gt; 0\)</span> such that for every <span class="process-math">\(n \in \N\text{,}\)</span> there exists an <span class="process-math">\(x \in S\text{,}\)</span> <span class="process-math">\(x \geq n\text{,}\)</span> let us call it <span class="process-math">\(x_n\text{,}\)</span> such that <span class="process-math">\(\babs{f(x_n)-L} \geq \epsilon\text{.}\)</span> Consider the sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\text{.}\)</span>  Clearly <span class="process-math">\(\bigl\{ f(x_n) \bigr\}_{n=1}^\infty\)</span> does not converge to <span class="process-math">\(L\text{.}\)</span>  It remains to note that <span class="process-math">\(\lim_{n\to\infty} x_n = \infty\)</span> because <span class="process-math">\(x_n \geq n\)</span> for all <span class="process-math">\(n\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-3-11-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 3.5.1.1"><a aria-label="Copy heading and permalink for Proof 3.5.1.1" href="#sec_limitatinf-3-11" title="Copy heading and permalink for Proof 3.5.1.1">🔗</a></div>
+</article>
+<div class="para" id="sec_limitatinf-3-12">Using the lemma, we again translate results about sequential limits into results about continuous limits as <span class="process-math">\(x\)</span> goes to infinity.  That is, we have almost immediate analogues of the corollaries in <a class="internal" href="sec_limoffunc.html#subseq_sequentiallimits" title="Subsection 3.1.3: Sequential limits">Subsection 3.1.3</a>.  We simply allow the cluster point <span class="process-math">\(c\)</span> to be either <span class="process-math">\(\infty\)</span> or <span class="process-math">\(-\infty\text{,}\)</span> in addition to a real number.  We leave it to the student to verify these statements.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-3-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 3.5.1: Limits at infinity"><a aria-label="Copy heading and permalink for Subsection 3.5.1: Limits at infinity" href="#sec_limitatinf-3" title="Copy heading and permalink for Subsection 3.5.1: Limits at infinity">🔗</a></div>
+</section>
+<section class="subsection" id="sec_limitatinf-4">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.5.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Infinite limit</span>
+</h3>
+<div class="para" id="sec_limitatinf-4-2">Just as for sequences, it is often convenient to distinguish certain divergent sequences, and talk about limits being infinite almost as if the limits existed.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_limitatinf-4-3"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.5.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_limitatinf-4-3-3-1">
+<div class="para">Let <span class="process-math">\(f \colon S \to \R\)</span> be a function and suppose <span class="process-math">\(S\)</span> has <span class="process-math">\(\infty\)</span> as a cluster point. We say <span class="process-math">\(f(x)\)</span> <em class="emphasis">diverges to infinity</em> as <span class="process-math">\(x\)</span> goes to <span class="process-math">\(\infty\)</span> if for every <span class="process-math">\(N \in \R\)</span> there exists an <span class="process-math">\(M \in \R\)</span> such that</div>
+<div class="displaymath process-math" id="sec_limitatinf-4-3-3-1-10">
+\begin{equation}
+f(x) &gt; N
+\end{equation}
+</div>
+<div class="para">whenever <span class="process-math">\(x \in S\)</span> and <span class="process-math">\(x \geq M\text{.}\)</span> We write</div>
+<div class="displaymath process-math" id="sec_limitatinf-4-3-3-1-13">
+\begin{equation}
+\lim_{x \to \infty} f(x) \coloneqq \infty ,
+\end{equation}
+</div>
+<div class="para">or we say that <span class="process-math">\(f(x) \to \infty\)</span> as <span class="process-math">\(x \to \infty\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-4-3-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 3.5.6"><a aria-label="Copy heading and permalink for Definition 3.5.6" href="#sec_limitatinf-4-3" title="Copy heading and permalink for Definition 3.5.6">🔗</a></div>
+</article>
+<div class="para" id="sec_limitatinf-4-4">A similar definition can be made for limits as <span class="process-math">\(x \to -\infty\)</span> or as <span class="process-math">\(x \to c\)</span> for a finite <span class="process-math">\(c\text{.}\)</span>  Also, similar definitions can be made for limits being <span class="process-math">\(-\infty\text{.}\)</span>  Stating these definitions is left as an exercise. Note that sometimes the slightly incorrect (in this context) wording <em class="emphasis">converges to infinity</em> is used. We can again use sequential limits, and an analogue of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_limoffunc.html#seqflimit_lemma" title="Lemma 3.1.7">Lemma 3.1.7</a> is left as an exercise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-4-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_limitatinf-4-5"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.5.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_limitatinf-4-5-1-1">Let us show that <span class="process-math">\(\lim\limits_{x \to \infty} \frac{1+x^2}{1+x} = \infty\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-4-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_limitatinf-4-5-1-2">
+<div class="para">Proof: For <span class="process-math">\(x \geq 1\text{,}\)</span> we have</div>
+<div class="displaymath process-math" id="sec_limitatinf-4-5-1-2-2">
+\begin{equation}
+\frac{1+x^2}{1+x} \geq 
+\frac{x^2}{x+x}  = 
+\frac{x}{2} .
+\end{equation}
+</div>
+<div class="para">Given <span class="process-math">\(N \in \R\text{,}\)</span> take <span class="process-math">\(M = \max \{ 2N+1 , 1 \}\text{.}\)</span> If <span class="process-math">\(x \geq M\text{,}\)</span> then <span class="process-math">\(x \geq 1\)</span> and <span class="process-math">\(\nicefrac{x}{2} &gt; N\text{.}\)</span> So</div>
+<div class="displaymath process-math" id="sec_limitatinf-4-5-1-2-8">
+\begin{equation}
+\frac{1+x^2}{1+x} \geq 
+\frac{x}{2} &gt; N .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-4-5-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 3.5.7"><a aria-label="Copy heading and permalink for Example 3.5.7" href="#sec_limitatinf-4-5" title="Copy heading and permalink for Example 3.5.7">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 3.5.2: Infinite limit"><a aria-label="Copy heading and permalink for Subsection 3.5.2: Infinite limit" href="#sec_limitatinf-4" title="Copy heading and permalink for Subsection 3.5.2: Infinite limit">🔗</a></div>
+</section>
+<section class="subsection" id="sec_limitatinf-5">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.5.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Compositions</span>
+</h3>
+<div class="para" id="sec_limitatinf-5-2">Finally, just as for limits at finite numbers, limits play nice with compositions given a continuity assumption.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-5-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_inflimcompositions"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.5.8</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="prop_inflimcompositions-1-1">
+<div class="para">Suppose <span class="process-math">\(f \colon A \to B\text{,}\)</span> <span class="process-math">\(g \colon B \to \R\text{,}\)</span> <span class="process-math">\(A, B \subset \R\text{,}\)</span> <span class="process-math">\(a \in \R \cup \{ -\infty, \infty\}\)</span> is a cluster point of <span class="process-math">\(A\text{,}\)</span> and <span class="process-math">\(b \in \R \cup \{ -\infty, \infty\}\)</span> is a cluster point of <span class="process-math">\(B\text{.}\)</span> Suppose</div>
+<div class="displaymath process-math" id="prop_inflimcompositions-1-1-8">
+\begin{equation}
+\lim_{x \to a} f(x) = b\qquad \text{and} \qquad \lim_{y \to b} g(y) = c
+\end{equation}
+</div>
+<div class="para">for some <span class="process-math">\(c \in \R \cup \{ -\infty, \infty \}\text{.}\)</span> If <span class="process-math">\(b \in B\text{,}\)</span> then suppose <span class="process-math">\(g(b) = c\text{.}\)</span> Then</div>
+<div class="displaymath process-math" id="prop_inflimcompositions-1-1-12">
+\begin{equation}
+\lim_{x \to a} g\bigl(f(x)\bigr) = c .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_inflimcompositions-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 3.5.8"><a aria-label="Copy heading and permalink for Proposition 3.5.8" href="#prop_inflimcompositions" title="Copy heading and permalink for Proposition 3.5.8">🔗</a></div>
+</article>
+<div class="para" id="sec_limitatinf-5-4">The proof is straightforward, and left as an exercise.  We already know the proposition when <span class="process-math">\(a, b, c \in \R\)</span> (see Exercises <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_limoffunc.html#exercise_contlimitcomposition" title="Exercise 3.1.9">3.1.9</a> and <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_limoffunc.html#exercise_contlimitbadcomposition" title="Exercise 3.1.14">3.1.14</a>).  Again, the requirement that <span class="process-math">\(g\)</span> is continuous at <span class="process-math">\(b\text{,}\)</span> if <span class="process-math">\(b \in B\text{,}\)</span> is necessary.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-5-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_limitatinf-5-5"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.5.9</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_limitatinf-5-5-1-1">
+<div class="para">Let <span class="process-math">\(h(x) \coloneqq e^{-x^2+x}\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" id="sec_limitatinf-5-5-1-1-2">
+\begin{equation}
+\lim_{x\to \infty} h(x) = 0 .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-5-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_limitatinf-5-5-1-2">
+<div class="para">Proof: The claim follows once we know</div>
+<div class="displaymath process-math" id="sec_limitatinf-5-5-1-2-1">
+\begin{equation}
+\lim_{x\to \infty} (-x^2+x) = -\infty
+\end{equation}
+</div>
+<div class="para">and</div>
+<div class="displaymath process-math" id="sec_limitatinf-5-5-1-2-2">
+\begin{equation}
+\lim_{y\to -\infty} e^y = 0 ,
+\end{equation}
+</div>
+<div class="para">which is usually proved when the exponential function is defined.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-5-5-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 3.5.9"><a aria-label="Copy heading and permalink for Example 3.5.9" href="#sec_limitatinf-5-5" title="Copy heading and permalink for Example 3.5.9">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 3.5.3: Compositions"><a aria-label="Copy heading and permalink for Subsection 3.5.3: Compositions" href="#sec_limitatinf-5" title="Copy heading and permalink for Subsection 3.5.3: Compositions">🔗</a></div>
+</section>
+<section class="exercises" id="sec_limitatinf-6">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.5.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_limitatinf-6-1"><h4 class="heading"><span class="codenumber">3.5.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_limitatinf-6-1-1-1">Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_limitatinf.html#liminfty_unique" title="Proposition 3.5.2">Proposition 3.5.2</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-6-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.5.1"><a aria-label="Copy heading and permalink for Exercise 3.5.1" href="#sec_limitatinf-6-1" title="Copy heading and permalink for Exercise 3.5.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_limitatinf-6-2"><h4 class="heading"><span class="codenumber">3.5.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_limitatinf-6-2-1-1">Let <span class="process-math">\(f \colon [1,\infty) \to \R\)</span> be a function.  Define <span class="process-math">\(g \colon (0,1] \to \R\)</span> via <span class="process-math">\(g(x) \coloneqq f(\nicefrac{1}{x})\text{.}\)</span> Using the definitions of limits directly, show that <span class="process-math">\(\lim_{x\to 0^+} g(x)\)</span> exists if and only if <span class="process-math">\(\lim_{x\to \infty} f(x)\)</span> exists, in which case they are equal.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-6-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.5.2"><a aria-label="Copy heading and permalink for Exercise 3.5.2" href="#sec_limitatinf-6-2" title="Copy heading and permalink for Exercise 3.5.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_limitatinf-6-3"><h4 class="heading"><span class="codenumber">3.5.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_limitatinf-6-3-1-1">Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_limitatinf.html#prop_inflimcompositions" title="Proposition 3.5.8">Proposition 3.5.8</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-6-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.5.3"><a aria-label="Copy heading and permalink for Exercise 3.5.3" href="#sec_limitatinf-6-3" title="Copy heading and permalink for Exercise 3.5.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_limitatinf-6-4"><h4 class="heading"><span class="codenumber">3.5.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_limitatinf-6-4-1-1">Let us justify terminology. Let <span class="process-math">\(f \colon \R \to \R\)</span> be a function such that <span class="process-math">\(\lim_{x \to \infty} f(x) = \infty\)</span> (diverges to infinity). Show that <span class="process-math">\(f(x)\)</span> diverges (i.e. does not converge) as <span class="process-math">\(x \to \infty\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-6-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.5.4"><a aria-label="Copy heading and permalink for Exercise 3.5.4" href="#sec_limitatinf-6-4" title="Copy heading and permalink for Exercise 3.5.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_limitatinf-6-5"><h4 class="heading"><span class="codenumber">3.5.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_limitatinf-6-5-1-1">Come up with the definitions for limits of <span class="process-math">\(f(x)\)</span> going to <span class="process-math">\(-\infty\)</span> as <span class="process-math">\(x \to
+\infty\text{,}\)</span> <span class="process-math">\(x \to -\infty\text{,}\)</span> and as <span class="process-math">\(x \to c\)</span> for a finite <span class="process-math">\(c \in \R\text{.}\)</span> Then state the definitions for limits of <span class="process-math">\(f(x)\)</span> going to <span class="process-math">\(\infty\)</span> as <span class="process-math">\(x \to -\infty\text{,}\)</span> and as <span class="process-math">\(x \to c\)</span> for a finite <span class="process-math">\(c \in \R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-6-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.5.5"><a aria-label="Copy heading and permalink for Exercise 3.5.5" href="#sec_limitatinf-6-5" title="Copy heading and permalink for Exercise 3.5.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_limitatinf-6-6"><h4 class="heading"><span class="codenumber">3.5.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_limitatinf-6-6-1-1">Suppose <span class="process-math">\(P(x) \coloneqq x^n + a_{n-1} x^{n-1} + \cdots + a_1 x + a_0\)</span> is a <em class="emphasis">monic polynomial</em> of degree <span class="process-math">\(n \geq 1\)</span> (monic means that the coefficient of <span class="process-math">\(x^n\)</span> is 1).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-6-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_limitatinf-6-6-1-2">
+<li id="sec_limitatinf-6-6-1-2-1">
+<div class="para" id="sec_limitatinf-6-6-1-2-1-1">Show that if <span class="process-math">\(n\)</span> is even, then <span class="process-math">\(\lim\limits_{x\to\infty} P(x) = 
+\lim\limits_{x\to-\infty} P(x) = \infty\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-6-6-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 3.5.6.a"><a aria-label="Copy heading and permalink for Item 3.5.6.a" href="#sec_limitatinf-6-6-1-2-1" title="Copy heading and permalink for Item 3.5.6.a">🔗</a></div>
+</li>
+<li id="sec_limitatinf-6-6-1-2-2">
+<div class="para" id="sec_limitatinf-6-6-1-2-2-1">Show that if <span class="process-math">\(n\)</span> is odd, then <span class="process-math">\(\lim\limits_{x\to\infty} P(x) = \infty\)</span> and <span class="process-math">\(\lim\limits_{x\to-\infty} P(x) = -\infty\)</span> (see previous exercise).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-6-6-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 3.5.6.b"><a aria-label="Copy heading and permalink for Item 3.5.6.b" href="#sec_limitatinf-6-6-1-2-2" title="Copy heading and permalink for Item 3.5.6.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 3.5.6"><a aria-label="Copy heading and permalink for Exercise 3.5.6" href="#sec_limitatinf-6-6" title="Copy heading and permalink for Exercise 3.5.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_limitatinf-6-7"><h4 class="heading"><span class="codenumber">3.5.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_limitatinf-6-7-1-1">
+<div class="para">Let <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> be a sequence.  Consider <span class="process-math">\(S \coloneqq \N \subset \R\text{,}\)</span> and <span class="process-math">\(f \colon S \to \R\)</span> defined by <span class="process-math">\(f(n) \coloneqq x_n\text{.}\)</span>  Show that the two notions of limit,</div>
+<div class="displaymath process-math" id="sec_limitatinf-6-7-1-1-5">
+\begin{equation}
+\lim_{n\to\infty} x_n \qquad \text{and} \qquad
+\lim_{x\to\infty} f(x) 
+\end{equation}
+</div>
+<div class="para">are equivalent.  That is, show that if one exists so does the other one, and in this case they are equal.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-6-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.5.7"><a aria-label="Copy heading and permalink for Exercise 3.5.7" href="#sec_limitatinf-6-7" title="Copy heading and permalink for Exercise 3.5.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_limitatinf-6-8"><h4 class="heading"><span class="codenumber">3.5.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_limitatinf-6-8-1-1">
+<div class="para">Extend <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_limitatinf.html#seqflimitinf_lemma" title="Lemma 3.5.5">Lemma 3.5.5</a> as follows. Suppose <span class="process-math">\(S \subset \R\)</span> has a cluster point <span class="process-math">\(c \in \R\text{,}\)</span> <span class="process-math">\(c = \infty\text{,}\)</span> or <span class="process-math">\(c = -\infty\text{.}\)</span>  Let <span class="process-math">\(f \colon S \to \R\)</span> be a function and suppose <span class="process-math">\(L = \infty\)</span> or <span class="process-math">\(L = -\infty\text{.}\)</span>  Show that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/seqflimitinf_lemma.html" id="sec_limitatinf-6-8-1-1-9">
+\begin{equation}
+\begin{aligned}
+&amp;
+\lim_{x\to c} f(x) = L
+\\
+&amp;
+\qquad \text{if and only if}
+\\
+&amp;
+\lim_{n\to\infty} f(x_n) = L \enspace \text{for all sequences }
+\{ x_n \}_{n=1}^\infty \text{ such that } \lim_{n\to\infty} x_n = c
+\text{ and } x_n \in S \setminus \{c\}
+\text{ for all } n  .
+\end{aligned}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-6-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.5.8"><a aria-label="Copy heading and permalink for Exercise 3.5.8" href="#sec_limitatinf-6-8" title="Copy heading and permalink for Exercise 3.5.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_limitatinf-6-9"><h4 class="heading"><span class="codenumber">3.5.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_limitatinf-6-9-1-1">
+<div class="para">Suppose <span class="process-math">\(f \colon \R \to \R\)</span> is a 2-periodic function, that is <span class="process-math">\(f(x + 2) =
+f(x)\)</span> for all <span class="process-math">\(x\text{.}\)</span>  Define <span class="process-math">\(g \colon \R \to \R\)</span> by <span class="process-math">\(g(0) \coloneqq f(0)\)</span> and for <span class="process-math">\(x \neq 0\)</span> by</div>
+<div class="displaymath process-math" id="sec_limitatinf-6-9-1-1-7">
+\begin{equation}
+g(x) \coloneqq f\left(\frac{\sqrt{x^2+1}-1}{x}\right)
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-6-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_limitatinf-6-9-1-2">
+<li id="sec_limitatinf-6-9-1-2-1">
+<div class="para" id="sec_limitatinf-6-9-1-2-1-1">Find the function <span class="process-math">\(\varphi \colon (-1,1) \to \R\)</span> such that <span class="process-math">\(g\bigl(\varphi(t)\bigr) = f(t)\text{,}\)</span> that is, <span class="process-math">\(\varphi^{-1}(x) = 
+\frac{\sqrt{x^2+1}-1}{x}\)</span> for <span class="process-math">\(x \neq 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-6-9-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 3.5.9.a"><a aria-label="Copy heading and permalink for Item 3.5.9.a" href="#sec_limitatinf-6-9-1-2-1" title="Copy heading and permalink for Item 3.5.9.a">🔗</a></div>
+</li>
+<li id="sec_limitatinf-6-9-1-2-2">
+<div class="para logical" id="sec_limitatinf-6-9-1-2-2-1">
+<div class="para">Show that <span class="process-math">\(f\)</span> is continuous if and only if <span class="process-math">\(g\)</span> is continuous and</div>
+<div class="displaymath process-math" id="sec_limitatinf-6-9-1-2-2-1-3">
+\begin{equation}
+\lim_{x \to \infty} g(x) = 
+\lim_{x \to -\infty} g(x) = 
+f(1) = f(-1) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_limitatinf-6-9-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 3.5.9.b"><a aria-label="Copy heading and permalink for Item 3.5.9.b" href="#sec_limitatinf-6-9-1-2-2" title="Copy heading and permalink for Item 3.5.9.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 3.5.9"><a aria-label="Copy heading and permalink for Exercise 3.5.9" href="#sec_limitatinf-6-9" title="Copy heading and permalink for Exercise 3.5.9">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 3.5.4"><a aria-label="Copy heading and permalink for Exercises 3.5.4" href="#sec_limitatinf-6" title="Copy heading and permalink for Exercises 3.5.4">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 3.5: Limits at infinity"><a aria-label="Copy heading and permalink for Section 3.5: Limits at infinity" href="#sec_limitatinf" title="Copy heading and permalink for Section 3.5: Limits at infinity">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_unifcont.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_monotonefunc.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

@@ -1,0 +1,1795 @@
+% Jiří Lebl, Basic Analysis v6.3; ch-real-nums.tex, lines 684–776
+\subsection{Archimedean property}
+
+As we have seen, there are plenty of real numbers in any interval.  But
+there are also infinitely many rational numbers in any interval.  The
+following is one of the fundamental facts about the real numbers.
+The two parts of the next theorem are actually equivalent, even though it may
+not seem like that at first sight.
+
+
+\begin{thm} \label{thm:arch}
+%FIXMEevillayouthack
+\pagebreak[3]
+\leavevmode
+\begin{enumerate}[(i)]
+\item \label{thm:arch:i} \emph{(\myindex{Archimedean property})}%
+\footnote{Named after the Ancient Greek mathematician
+\href{https://en.wikipedia.org/wiki/Archimedes}{Archimedes of Syracuse}
+(c.\ 287 BC -- c.\ 212 BC)\@.
+This property is Axiom V from Archimedes' \myquote{On the Sphere and
+Cylinder} (225 BC)\@.}
+If $x, y \in \R$ and
+$x > 0$, then there exists an $n \in \N$ such that
+\begin{equation*}
+nx > y .
+\end{equation*}
+\item \label{thm:arch:ii} \emph{($\Q$ is dense in $\R$\index{density of
+rational numbers})} If $x, y \in \R$ and
+$x < y$, then there exists an $r \in \Q$ such that
+$x < r < y$.
+\end{enumerate}
+\end{thm}
+
+\begin{proof}
+Let us prove \ref{thm:arch:i}.  Divide through by $x$.
+Then \ref{thm:arch:i} says that for every real number $t\coloneqq \nicefrac{y}{x}$,
+we can find $n \in \N$ such that $n > t$.  In other words,
+\ref{thm:arch:i} says that $\N \subset \R$ is not bounded above.
+Suppose for contradiction that $\N$ is bounded above.  Let $b \coloneqq \sup \N$.
+The number $b-1$ cannot possibly be an upper bound for $\N$ as it is strictly
+less than $b$ (the least upper bound).  Thus there exists an $m \in \N$ such that $m > b-1$.
+Add one to obtain $m+1 > b$, contradicting $b$ being an
+upper bound.
+
+\begin{myfigureht}
+\myincludepdft{figdensofQ}{%
+A diagram of the horizontal real line with several tall vertical
+ticks marked that are equally spaced with the distance
+between them being 1 over n.  The second tick
+from the left is marked as m minus 1 all over n.
+After this tick there is the number x marked with a short tick.
+The next tall tick is marked with m over n.
+Then comes the number y and then a tall tick marked
+m plus 1 all over n.  Then two more tall ticks are shown.}
+\caption{Idea of the proof of the density of $\Q$: Find $n$ such that $y-x >
+\nicefrac{1}{n}$, then take the least $m$ such that $\nicefrac{m}{n} > x$.\label{figdensofQ}}
+\end{myfigureht}
+Let us tackle \ref{thm:arch:ii}.
+See \figureref{figdensofQ}
+for a picture of the idea behind the proof.
+First assume $x \geq 0$.
+Note that $y-x > 0$.
+By \ref{thm:arch:i}, there exists an $n \in \N$ such that
+\begin{equation*}
+n(y-x) > 1
+\qquad \text{or} \qquad
+y-x > \nicefrac{1}{n}.
+\end{equation*}
+Again by \ref{thm:arch:i}, the set
+$A \coloneqq \{ k \in \N : k > nx \}$ is nonempty.  By the
+\hyperlink{wop:link}{well ordering property}
+of $\N$, $A$ has a least element $m$.
+As $m \in A$, we have $m > nx$.
+Divide through by $n$ to get $x < \nicefrac{m}{n}$.
+As $m$ is the least
+element of $A$, $m-1 \notin A$.
+If $m > 1$, then $m-1 \in \N$, but $m-1 \notin A$ and so $m-1 \leq nx$.
+If $m=1$,
+then $m-1 = 0$, and $m-1 \leq nx$ still holds as $x \geq 0$.
+In other words,
+\begin{equation*}
+m-1 \leq nx \qquad \text{or} \qquad m \leq nx+1 .
+\end{equation*}
+On the other hand,
+from $n(y-x) > 1$ we obtain $ny > 1+nx$.
+Hence $ny > 1+nx \geq m$, and therefore $y > \nicefrac{m}{n}$.
+Putting everything together, we obtain $x < \nicefrac{m}{n} < y$.
+So take $r = \nicefrac{m}{n}$.
+
+Now assume $x < 0$.  If $y > 0$, then just take $r=0$.  If
+$y \leq 0$, then $0 \leq -y < -x$, and we
+find a rational $q$ such that $-y < q < -x$.  Then take $r = -q$.
+\end{proof}
+
+
+
+% Jiří Lebl, Basic Analysis v6.3; ch-seq-ser.tex, lines 2171–2259
+\subsection{Bolzano--Weierstrass theorem}
+
+While it is not true that every bounded sequence is convergent, the
+Bolzano--Weierstrass theorem tells us that we can at least find a convergent
+subsequence.
+The version of Bolzano--Weierstrass 
+we present in this section is the Bolzano--Weierstrass for
+sequences of real numbers.
+
+\begin{thm}[Bolzano--Weierstrass]\index{Bolzano--Weierstrass theorem}\label{thm:bwseq}
+Suppose a sequence $\{ x_n \}_{n=1}^\infty$ of real numbers is bounded.
+Then there exists a convergent subsequence $\{ x_{n_i} \}_{i=1}^\infty$.
+\end{thm}
+
+\begin{proof}
+\thmref{subseqlimsupinf:thm} says that there exists
+a subsequence whose limit is $\limsup_{n\to\infty} x_n$.
+\end{proof}
+
+The reader might complain right now that 
+\thmref{subseqlimsupinf:thm} is strictly stronger than the
+Bolzano--Weierstrass theorem as presented above.  That is true.
+However, 
+\thmref{subseqlimsupinf:thm} only applies to the real line, but
+Bolzano--Weierstrass applies in more general contexts (that is, in $\R^n$)
+with pretty much the exact same statement.
+
+As the theorem is so important to analysis, we present an explicit
+proof.
+The idea of the following proof also generalizes to different contexts.
+
+\begin{proof}[Alternate proof of Bolzano--Weierstrass]
+As the sequence is bounded, there exist two numbers $a_1 < b_1$
+such that $a_1 \leq x_n \leq b_1$ for all $n \in \N$.
+We will define a subsequence $\{ x_{n_i} \}_{i=1}^\infty$ and two
+sequences $\{ a_i \}_{i=1}^\infty$ and $\{ b_i \}_{i=1}^\infty$, such that
+$\{ a_i \}_{i=1}^\infty$ is monotone increasing, $\{ b_i \}_{i=1}^\infty$ is monotone decreasing,
+$a_i \leq x_{n_i} \leq b_i$ and such that $\lim_{i\to\infty} a_i =
+\lim_{i\to\infty} b_i$.   That
+$\{ x_{n_i} \}_{i=1}^\infty$ converges then follows by the \hyperref[squeeze:lemma]{squeeze lemma}.
+
+We define the sequences inductively.  We will define the sequences so that
+for all $i$, we have $a_i < b_i$,
+and that $x_n \in [a_i,b_i]$ for infinitely many $n \in \N$.
+We have already defined $a_1$ and $b_1$.  We take $n_1 \coloneqq 1$, that is
+$x_{n_1} = x_1$.
+Suppose that up to some $k \in \N$,
+we have defined the subsequence $x_{n_1}, x_{n_2}, \ldots,
+x_{n_k}$, and the sequences $a_1,a_2,\ldots,a_k$
+and $b_1,b_2,\ldots,b_k$.
+Let $y \coloneqq \frac{a_k+b_k}{2}$.
+Clearly
+$a_k < y < b_k$.  If there exist infinitely many $j \in \N$
+such that $x_j \in [a_k,y]$, then set $a_{k+1} \coloneqq a_k$, $b_{k+1}
+\coloneqq y$,
+and pick $n_{k+1} > n_{k}$
+such that $x_{n_{k+1}} \in [a_k,y]$.  If there are not infinitely many 
+$j$ such that 
+$x_j \in [a_k,y]$, then it must be true that there are infinitely many $j \in
+\N$ such that 
+$x_j \in [y,b_k]$.  In this case pick $a_{k+1} \coloneqq y$, $b_{k+1}
+\coloneqq b_k$,
+and pick $n_{k+1} > n_{k}$
+such that $x_{n_{k+1}} \in [y,b_k]$.
+
+We now have the sequences defined.  What is left to prove is that
+$\lim_{i\to\infty} a_i = \lim_{i\to\infty} b_i$.  The limits exist as the sequences
+are monotone.  In the construction,
+$b_i - a_i$ is cut in half in each step.  Therefore,
+$b_{i+1} - a_{i+1} = \frac{b_i-a_i}{2}$.  By
+\hyperref[induction:thm]{induction},
+\begin{equation*}
+b_i - a_i = \frac{b_1-a_1}{2^{i-1}} .
+\end{equation*}
+
+Let $x \coloneqq \lim_{i\to\infty} a_i$.  As $\{ a_i \}_{i=1}^\infty$ is monotone,
+\begin{equation*}
+x = \sup \{ a_i : i \in \N \} .
+\end{equation*}
+Let $y \coloneqq \lim_{i\to\infty} b_i = \inf \{ b_i : i \in \N \}$.  Since $a_i < b_i$ for
+all $i$, we have $x \leq y$.
+As the sequences are monotone, we have (why?) that for all $i$,
+\begin{equation*}
+y-x \leq b_i-a_i = \frac{b_1-a_1}{2^{i-1}} .
+\end{equation*}
+Because $\frac{b_1-a_1}{2^{i-1}}$ is arbitrarily small and $y-x \geq 0$,
+we have $y-x = 0$.  Finish by the \hyperref[squeeze:lemma]{squeeze lemma}.
+\end{proof}
+
+
+
+% Jiří Lebl, Basic Analysis v6.3; ch-seq-ser.tex, lines 2681–2879
+\section{Cauchy sequences}
+\label{sec:cauchy}
+
+\sectionnotes{less than a lecture}
+
+Often we wish to describe a certain number 
+by a sequence that converges to it.  In this case, it is impossible to use the
+number itself in the proof that the sequence converges.
+It would be nice if we could check for convergence without knowing
+the limit.
+
+\begin{defn}
+A sequence $\{ x_n \}_{n=1}^\infty$ is a \emph{\myindex{Cauchy sequence}}%
+\footnote{%
+Named after the French mathematician
+\href{https://en.wikipedia.org/wiki/Cauchy}{Augustin-Louis Cauchy} (1789--1857).} if
+for every $\epsilon > 0$ there exists an $M \in \N$ such that
+for all $n \geq M$ and all $k \geq M$, we have
+\begin{equation*}
+\sabs{x_n - x_k} < \epsilon .
+\end{equation*}
+\end{defn}
+
+Informally, being Cauchy means that the terms of the sequence are eventually
+all arbitrarily close to each other.  We might expect such a sequence to be
+convergent, and we would be correct due to $\R$ having the
+\hyperref[defn:lub]{least-upper-bound property}.  Before we prove this fact,
+we look at some examples.
+
+\begin{example}
+The sequence $\{ \nicefrac{1}{n} \}_{n=1}^\infty$ is a Cauchy sequence.
+
+Proof:  Given $\epsilon > 0$, find $M$ such that
+$M > \nicefrac{2}{\epsilon}$.  Then for $n,k \geq M$,
+we have $\nicefrac{1}{n} < \nicefrac{\epsilon}{2}$
+and
+$\nicefrac{1}{k} < \nicefrac{\epsilon}{2}$.  Therefore, for $n, k \geq M$,
+we have
+\begin{equation*}
+\abs{\frac{1}{n} - \frac{1}{k}}
+\leq
+\abs{\frac{1}{n}} + \abs{\frac{1}{k}}
+< \frac{\epsilon}{2} + \frac{\epsilon}{2} = \epsilon.
+\end{equation*}
+\end{example}
+
+\begin{example}
+The sequence $\bigl\{ {(-1)}^n \bigr\}_{n=1}^\infty$ is not a Cauchy sequence.
+
+Proof:
+Given any $M \in \N$, take $n \geq M$ to be any even number, and
+let $k \coloneqq n+1$.  Then
+\begin{equation*}
+\begin{split}
+\babs{{(-1)}^n - {(-1)}^k}
+& =
+\babs{{(-1)}^n - {(-1)}^{n+1}}
+\\
+& =
+\babs{1 - (-1)} = 2 .
+\end{split}
+\end{equation*}
+Therefore, for any $\epsilon \leq 2$ the definition cannot be satisfied, and
+the sequence is not Cauchy.
+\end{example}
+
+%\begin{example}
+%The sequence $\{ \frac{n+1}{n} \}_{n=1}^\infty$ is a Cauchy sequence.
+%
+%Proof:  Given $\epsilon > 0$, find $M$ such that
+%$M > \nicefrac{2}{\epsilon}$.  Then for $n,k \geq M$,
+%we have $\nicefrac{1}{n} < \nicefrac{\epsilon}{2}$
+%and
+%$\nicefrac{1}{k} < \nicefrac{\epsilon}{2}$.  Therefore, for $n, k \geq M$,
+%we have
+%\begin{equation*}
+%\begin{split}
+%\abs{\frac{n+1}{n} - \frac{k+1}{k}}
+%& =
+%\abs{\frac{k(n+1)-n(k+1)}{nk}}
+%\\
+%& =
+%\abs{\frac{kn+k-nk-n}{nk}}
+%\\
+%& =
+%\abs{\frac{k-n}{nk}}
+%\\
+%& \leq
+%\abs{\frac{k}{nk}}
+%+
+%\abs{\frac{-n}{nk}}
+%\\
+%& = \frac{1}{n} + \frac{1}{k}
+%< \frac{\epsilon}{2} + \frac{\epsilon}{2} = \epsilon .
+%\end{split}
+%\end{equation*}
+%\end{example}
+
+\begin{prop}
+If a sequence is Cauchy, then it is bounded.
+\end{prop}
+
+\begin{proof}
+Suppose $\{ x_n \}_{n=1}^\infty$ is Cauchy.  Pick an $M$ such that for all
+$n,k \geq M$, we have $\sabs{x_n-x_k} < 1$.  In particular, 
+for all $n \geq M$,
+\begin{equation*}
+\sabs{x_n - x_M} < 1 .
+\end{equation*}
+By the reverse triangle inequality,
+$\sabs{x_n} - \sabs{x_M} \leq \sabs{x_n - x_M} < 1$.  Hence, for $n \geq M$,
+\begin{equation*}
+\sabs{x_n} < 1 + \sabs{x_M}.
+\end{equation*}
+Let
+\begin{equation*}
+B \coloneqq \max \bigl\{ \sabs{x_1}, \sabs{x_2}, \ldots,
+\sabs{x_{M-1}}, 1+ \sabs{x_M} \bigr\} .
+\end{equation*}
+Then $\sabs{x_n} \leq B$ for all $n \in \N$.
+\end{proof}
+
+\begin{thm}
+A sequence of real numbers is Cauchy if and only if it converges.
+\end{thm}
+
+\begin{proof}
+Suppose $\{ x_n \}_{n=1}^\infty$ converges to $x$,
+and
+let $\epsilon > 0$ be given.
+Then there 
+exists an $M$ such that for $n \geq M$,
+\begin{equation*}
+\sabs{x_n - x} < \frac{\epsilon}{2} .
+\end{equation*}
+Hence, for $n \geq M$ and $k \geq M$,
+\begin{equation*}
+\sabs{x_n - x_k} = 
+\sabs{x_n - x + x - x_k}
+\leq \sabs{x_n-x} + \sabs{x-x_k} < \frac{\epsilon}{2} + \frac{\epsilon}{2} =
+\epsilon .
+\end{equation*}
+
+Alright, that direction was easy.  Now suppose $\{ x_n \}_{n=1}^\infty$ is Cauchy.
+We have shown that $\{ x_n \}_{n=1}^\infty$ is bounded.
+For a bounded sequence, liminf and limsup exist, and this is
+where we use the
+\hyperref[defn:lub]{least-upper-bound property}.
+If we show that
+\begin{equation*}
+\liminf_{n\to \infty} x_n = \limsup_{n\to\infty} x_n ,
+\end{equation*}
+then $\{ x_n \}_{n=1}^\infty$ must be convergent by \propref{liminfsupconv:prop}.
+
+
+Define $a \coloneqq \limsup_{n\to\infty} x_n$ and
+$b \coloneqq \liminf_{n\to\infty} x_n$.
+By \thmref{subseqlimsupinf:thm}, there exist subsequences
+$\{ x_{n_i} \}_{i=1}^\infty$ and
+$\{ x_{m_i} \}_{i=1}^\infty$ such that
+\begin{equation*}
+\lim_{i\to\infty} x_{n_i} = a
+\qquad \text{and} \qquad
+\lim_{i\to\infty} x_{m_i} = b.
+\end{equation*}
+Given an $\epsilon > 0$,
+there exists an $M_1$ such that
+$\sabs{x_{n_i} - a} < \nicefrac{\epsilon}{3}$ for all $i \geq M_1$
+and an $M_2$ such that
+$\sabs{x_{m_i} - b} < \nicefrac{\epsilon}{3}$ for all $i \geq M_2$.
+There also exists an $M_3$
+such that
+$\sabs{x_n-x_k} < \nicefrac{\epsilon}{3}$
+for all $n,k \geq M_3$.
+Let $M \coloneqq \max \{ M_1, M_2, M_3 \}$.
+If $i \geq M$, then $n_i \geq M$ and $m_i \geq M$.  Hence,
+\begin{equation*}
+\begin{split}
+\sabs{a-b} & =
+\sabs{a-x_{n_i}+x_{n_i}
+-x_{m_i}+x_{m_i}
+-b} \\
+& \leq
+\sabs{a-x_{n_i}}
++ \sabs{x_{n_i} -x_{m_i}}
++ \sabs{x_{m_i} -b} \\
+& <
+\frac{\epsilon}{3}
++
+\frac{\epsilon}{3}
++
+\frac{\epsilon}{3}
+= \epsilon .
+\end{split}
+\end{equation*}
+As $\sabs{a-b} < \epsilon$ for all $\epsilon > 0$, we have $a=b$ and 
+the sequence converges.
+\end{proof}
+
+
+
+% Jiří Lebl, Basic Analysis v6.3; ch-contfunc.tex, lines 1381–1689
+\section{Extreme and intermediate value theorems}
+\label{sec:minmaxint}
+
+%mbxINTROSUBSECTION
+
+\sectionnotes{1.5 lectures}
+
+Continuous functions on closed and bounded intervals
+are quite well behaved.
+
+\subsection{Min-max or extreme value theorem}
+
+Recall that $f \colon [a,b] \to \R$ is
+\emph{bounded}\index{bounded function}\index{function!bounded}
+if there exists a $B \in \R$ such that
+$\babs{f(x)} \leq B$ for all $x \in [a,b]$.
+For a continuous function on a closed and bounded interval, we have the following lemma.
+
+\begin{lemma}
+A continuous function $f \colon [a,b] \to \R$ is bounded.
+\end{lemma}
+
+\begin{proof}
+We prove the claim by contrapositive.  Suppose $f$ is not bounded.
+Then for each
+$n \in \N$, there is an $x_n \in [a,b]$ such that
+\begin{equation*}
+\babs{f(x_n)} \geq n .
+\end{equation*}
+The sequence $\{ x_n \}_{n=1}^\infty$ is bounded as $a \leq x_n \leq b$.
+By the \hyperref[thm:bwseq]{Bolzano--Weierstrass theorem},
+there is a convergent subsequence $\{ x_{n_i} \}_{i=1}^\infty$.
+Let $x \coloneqq \lim_{i\to\infty} x_{n_i}$.
+Since $a \leq x_{n_i} \leq b$ for all $i$, we have $a \leq x \leq b$.
+The sequence $\bigl\{ f(x_{n_i}) \bigr\}_{i=1}^\infty$ is not bounded 
+as 
+$\babs{f(x_{n_i})} \geq n_i \geq i$.
+Thus $f$ is not continuous at $x$ as
+\begin{equation*}
+f(x)
+=
+f\Bigl( \lim_{i\to\infty} x_{n_i} \Bigr) ,
+\qquad \text{but} \qquad
+\lim_{i\to\infty} f(x_{n_i}) \enspace \text{does not exist.} \qedhere
+\end{equation*}
+\end{proof}
+
+Notice a key point of the proof.
+Boundedness of $[a,b]$ allows us to use Bolzano--Weierstrass,
+while the fact that it is closed gives us that the limit is back in $[a,b]$.
+The technique is a common one: Find a sequence with a certain property,
+then use Bolzano--Weierstrass to make such a sequence that also converges.
+
+Recall from calculus that $f \colon S \to \R$ achieves an
+\emph{\myindex{absolute minimum}}\index{minimum!absolute}%
+\index{achieves absolute minimum}
+at $c \in S$ if
+\begin{equation*}
+f(x) \geq f(c) \qquad \text{for all } x \in S.
+\end{equation*}
+On the other hand, $f$ achieves an 
+\emph{\myindex{absolute maximum}}\index{maximum!absolute}%
+\index{achieves absolute maximum}
+at $c \in S$ if
+\begin{equation*}
+f(x) \leq f(c) \qquad \text{for all } x \in S.
+\end{equation*}
+If such a $c \in S$ exists, then we say
+$f$ \emph{achieves an absolute minimum (resp.\ absolute maximum) on
+$S$}, and we call
+$f(c)$ the \emph{absolute minimum (resp.\ absolute maximum)}.
+%See \figureref{fig:minmax}.
+\begin{myfigureht}
+\myincludegraphics{minmax}{%
+A graph  of a function on the interval from a to b.
+The graph is between two horizontal lines,
+one marked as the absolute maximum of f which equals
+f of c, and
+one marked as the absolute minimum of f which equals
+f of d.}
+\caption{$f \colon [a,b] \to \R$ achieves an absolute maximum $f(c)$ at
+$c$, and an absolute minimum $f(d)$ at $d$.\label{fig:minmax}}
+\end{myfigureht}
+
+If $S$ is a closed
+and bounded interval, then a continuous $f$
+is not just bounded, it must achieve an absolute minimum and an absolute
+maximum on $S$.
+
+\begin{thm}[Minimum-maximum theorem / Extreme value theorem]
+\index{minimum-maximum theorem}%
+\index{maximum-minimum theorem}%
+\index{extreme value theorem}%
+A continuous function $f \colon [a,b] \to \R$
+achieves both an absolute minimum and an absolute maximum on $[a,b]$.
+\end{thm}
+
+Again, we remark that it is important that the domain of $f$ is a closed and bounded interval $[a,b]$.
+
+\begin{proof}
+The lemma says that $f$ is bounded, so
+the set $f\bigl([a,b]\bigr) = \bigl\{ f(x) : x \in [a,b] \bigr\}$ has a supremum and an infimum.
+There exist sequences
+in the set $f\bigl([a,b]\bigr)$ that approach its supremum and its infimum.
+That is, there are sequences
+$\bigl\{ f(x_n) \bigr\}_{n=1}^\infty$ and $\bigl\{ f(y_n)
+\bigr\}_{n=1}^\infty$, where $x_n$ and $y_n$ are in $[a,b]$,
+such that
+\begin{equation*}
+\lim_{n\to\infty} f(x_n) = \inf f\bigl([a,b]\bigr) \qquad \text{and} \qquad
+\lim_{n\to\infty} f(y_n) = \sup f\bigl([a,b]\bigr).
+\end{equation*}
+We are not done yet; we need to find where the minima and the maxima are.
+The problem is that the sequences $\{ x_n \}_{n=1}^\infty$ and
+$\{ y_n \}_{n=1}^\infty$ need not converge.
+We know $\{ x_n \}_{n=1}^\infty$ and $\{ y_n \}_{n=1}^\infty$ are bounded
+(their elements belong to a bounded interval $[a,b]$).
+Apply the 
+\hyperref[thm:bwseq]{Bolzano--Weierstrass theorem}
+to find
+convergent subsequences
+$\{ x_{n_i} \}_{i=1}^\infty$ and 
+$\{ y_{m_i} \}_{i=1}^\infty$.  Let
+\begin{equation*}
+x \coloneqq \lim_{i\to\infty} x_{n_i}
+\qquad \text{and} \qquad
+y \coloneqq \lim_{i\to\infty} y_{m_i}.
+\end{equation*}
+As $a \leq x_{n_i} \leq b$ for all $i$, we have $a \leq x \leq b$.
+Similarly, $a \leq y \leq b$.  So $x$ and $y$ are in $[a,b]$.
+For convergence sequences,
+a limit of a subsequence is the same as the limit of the
+sequence.  Also, we can take a limit past the continuous function $f$.  So,
+\begin{equation*}
+\inf f\bigl([a,b]\bigr) = \lim_{n\to\infty} f(x_n)
+= \lim_{i\to\infty} f(x_{n_i}) = 
+f \Bigl( \lim_{i\to\infty} x_{n_i} \Bigr) = f(x) .
+\end{equation*}
+Similarly,
+\begin{equation*}
+\sup f\bigl([a,b]\bigr) = \lim_{n\to\infty} f(y_n)
+= \lim_{i\to\infty} f(y_{m_i}) = 
+f \Bigl( \lim_{i\to\infty} y_{m_i} \Bigr) = f(y) .
+\end{equation*}
+Hence, $f$ achieves an absolute minimum at $x$ and
+an absolute maximum at $y$.
+\end{proof}
+
+\begin{example}
+The function $f(x) \coloneqq x^2+1$ defined on the interval $[-1,2]$ achieves a minimum
+at $x=0$ when $f(0) = 1$.  It achieves a maximum at $x=2$ where $f(2) = 5$.
+Do note that the domain of definition matters.  If we instead took the domain
+to be $[-10,10]$, then $f$ would no longer have a maximum at $x=2$.
+Instead,
+the maximum would be achieved at $x=10$ and also at $x=-10$.
+\end{example}
+
+We show by examples that the different hypotheses of the theorem are
+truly needed.
+
+\begin{example}
+The function $f \colon \R \to \R$ defined by $f(x) \coloneqq x$
+achieves neither a minimum nor a maximum.  So it is important that
+we are looking at a bounded interval.
+\end{example}
+
+\begin{example}
+The function $f \colon (0,1) \to \R$ defined by $f(x) \coloneqq \nicefrac{1}{x}$
+achieves neither a minimum, nor a maximum.
+It is continuous, but $(0,1)$ is not closed.
+The values of the function are
+unbounded as we approach $0$.  Also as we approach $x=1$, the values of the
+function approach $1$, but $f(x) > 1$ for all $x \in (0,1)$.  There is
+no $x \in (0,1)$ such that $f(x) = 1$.  So it is important that
+we are looking at a closed interval.
+\end{example}
+
+\begin{example}
+Continuity is important.
+Define $f \colon [0,1] \to \R$ by 
+$f(x) \coloneqq \nicefrac{1}{x}$ for $x > 0$ and let $f(0) \coloneqq 0$.
+The function does not achieve a maximum.  The domain $[0,1]$ is closed and
+bounded, but the problem is that
+the function is not continuous at 0.
+\end{example}
+
+\subsection{Bolzano's intermediate value theorem}
+
+Bolzano's intermediate value theorem is one of the cornerstones of analysis.
+It is sometimes only called the intermediate value theorem or just
+Bolzano's theorem.  To prove Bolzano's theorem we prove the
+following simpler lemma.
+
+\begin{lemma} \label{IVT:lemma}
+Let $f \colon [a,b] \to \R$ be a continuous function.
+Suppose $f(a) < 0$ and $f(b) > 0$. 
+Then there exists a number $c \in (a,b)$
+such that $f(c) = 0$.
+\end{lemma}
+
+\begin{proof}
+We define two sequences $\{ a_n \}_{n=1}^\infty$
+and $\{ b_n \}_{n=1}^\infty$ inductively:
+\begin{enumerate}[(i)]
+\item Let $a_1 \coloneqq a$ and $b_1 \coloneqq b$.
+\item If $f\left(\frac{a_n+b_n}{2}\right) \geq 0$, let $a_{n+1} \coloneqq a_n$ and
+$b_{n+1} \coloneqq \frac{a_n+b_n}{2}$.
+\item If $f\left(\frac{a_n+b_n}{2}\right) < 0$, let $a_{n+1} \coloneqq \frac{a_n+b_n}{2}$ and
+$b_{n+1} \coloneqq b_n$.
+\end{enumerate}
+\begin{myfigureht}
+\myincludegraphics{bisect}{%
+Graph of a function that crosses the
+x-axis at c going upwards.  The interval
+a sub 1 to b sub 1 is marked and f is negative
+at a sub 1 and positive at b sub 1.
+Next interval is a sub 2 which is equal to a sub 1
+and b sub 2 is in the middle of the previous interval.
+Again the function is negative at a sub 2 and positive
+at b sub 2.  We continue with the intervals
+with f being negative on the left and positive
+on the right.
+The next interval is from a sub 3 which equals
+a sub 2 and b sub 3 which
+is in the middle of the previous interval.  
+For the next interval, a sub 4 is in the middle and
+b sub 4 is equal to b sub 3.
+The next a sub 5 is in the middle again and b sub 5 
+is equal to b sub 4.  The number c is
+inside all of these intervals.}
+\caption{Finding roots (bisection method).\label{bisectfig}}
+\end{myfigureht}
+See \figureref{bisectfig} for an example of the first five steps.
+If $a_n < b_n$, then $a_n < \frac{a_n+b_n}{2} < b_n$.  So
+$a_{n+1} < b_{n+1}$.
+As $a_1 = a < b = b_1$,
+\hyperref[induction:thm]{induction} gives that
+$a_n < b_n$ for all $n$.
+Furthermore, $a_n \leq a_{n+1}$ and 
+$b_n \geq b_{n+1}$ for all $n$, that is, the sequences are monotone.
+As $a_n < b_n \leq b_1 = b$ and 
+$b_n > a_n \geq a_1 = a$ for all $n$,
+the sequences are also bounded.  Therefore, the
+sequences converge.
+Let $c \coloneqq \lim_{n\to\infty} a_n$ and $d \coloneqq \lim_{n\to\infty} b_n$,
+where also $a \leq c \leq d \leq b$.  We need
+to show that $c=d$.
+Notice
+\begin{equation*}
+b_{n+1} - a_{n+1} = \frac{b_n-a_n}{2}.
+\end{equation*}
+By \hyperref[induction:thm]{induction},
+\begin{equation*}
+b_n - a_n = \frac{b_1-a_1}{2^{n-1}} = 2^{1-n} (b-a) .
+\end{equation*}
+As $2^{1-n}(b-a)$ converges to zero, we take the limit as $n$ goes to
+infinity to get
+\begin{equation*}
+d-c = \lim_{n\to\infty} (b_n - a_n) =
+\lim_{n\to\infty} 2^{1-n} (b-a) = 0.
+\avoidbreak
+\end{equation*}
+In other words, $c=d$.
+
+By construction, for all $n$,
+\begin{equation*}
+f(a_n) < 0
+\qquad \text{and} \qquad
+f(b_n) \geq 0 .
+\end{equation*}
+Since
+$\lim_{n\to\infty} a_n = \lim_{n\to\infty} b_n = c$
+and $f$ is continuous at $c$, we may take 
+limits in those inequalities:
+\begin{equation*}
+f(c) = \lim_{n\to\infty} f(a_n) \leq 0
+\qquad \text{and} \qquad
+f(c) = \lim_{n\to\infty} f(b_n) \geq 0 .
+\end{equation*}
+As $f(c) \geq 0$ and 
+$f(c) \leq 0$, we conclude $f(c) = 0$.
+Thus also $c \neq a$ and $c \neq b$, so
+$a < c < b$.
+\end{proof}
+
+\begin{thm}[Bolzano's intermediate value theorem] \label{IVT:thm}
+\index{Bolzano's theorem}
+\index{Bolzano's intermediate value theorem}
+\index{intermediate value theorem}
+Let $f \colon [a,b] \to \R$ be a continuous function.
+Suppose $y \in \R$ is such that $f(a) < y < f(b)$
+or $f(a) > y > f(b)$.  Then there exists a $c \in (a,b)$
+such that $f(c) = y$.
+\end{thm}
+
+The theorem says that a continuous function on a closed interval
+achieves all the values between the values at the endpoints.
+
+\begin{proof}
+If $f(a) < y < f(b)$, then define $g(x) \coloneqq f(x)-y$.  Then 
+$g(a) < 0$ and $g(b) > 0$, and we apply \lemmaref{IVT:lemma}
+to $g$ to find $c$.  If $g(c) = 0$, then $f(c) = y$.
+
+Similarly, if $f(a) > y > f(b)$, then define $g(x) \coloneqq y-f(x)$.
+Again, $g(a) < 0$ and $g(b) > 0$, and we apply \lemmaref{IVT:lemma} to
+find $c$.
+As before, if $g(c) = 0$, then $f(c) = y$.
+\end{proof}
+
+
+
+% Jiří Lebl, Basic Analysis v6.3; ch-contfunc.tex, lines 2004–2169
+\subsection{Uniform continuity}
+
+We made a fuss of saying that the $\delta$ in the definition of
+continuity depended on the point $c$.  There are situations when it is
+advantageous to be able to pick a $\delta$ independent of any point, and so we
+give a name to this concept.
+
+\begin{defn}
+Let $S \subset \R$, and let $f \colon S \to \R$ be a function.
+Suppose for every $\epsilon > 0$ there exists a $\delta > 0$
+such that whenever $x, c \in S$ and
+$\sabs{x-c} < \delta$, then $\babs{f(x)-f(c)} < \epsilon$.
+Then we say $f$ is \emph{\myindex{uniformly continuous}}.
+\end{defn}
+
+A uniformly continuous function must be continuous.
+The only difference in the definitions
+is that in uniform continuity,
+for a given $\epsilon > 0$ we pick a $\delta > 0$ that
+works for all $c \in S$.  That is, $\delta$ can no longer depend on $c$;
+it only depends on $\epsilon$.  The domain of definition
+of the function makes a difference now.  A function that is not uniformly
+continuous on a larger set may be uniformly continuous when restricted to a
+smaller set.
+Note that $x$ and $c$ are not treated any differently
+in this definition.
+
+\begin{example}
+$f \colon [0,1] \to \R$ defined by $f(x) \coloneqq x^2$ is uniformly continuous.
+
+Proof: Note that $0 \leq x,c \leq 1$.  Then
+\begin{equation*}
+\sabs{x^2-c^2} = \sabs{x+c}\sabs{x-c}
+\leq \bigl(\sabs{x}+\sabs{c}\bigr) \sabs{x-c}
+\leq (1+1)\sabs{x-c} .
+\end{equation*}
+Therefore, given $\epsilon > 0$, let $\delta \coloneqq \nicefrac{\epsilon}{2}$.
+If $\sabs{x-c} < \delta$, then $\sabs{x^2-c^2} \leq 2 \sabs{x-c} < \epsilon$.
+
+\medskip
+
+On the other hand, $g \colon \R \to \R$ defined by $g(x) \coloneqq x^2$ is not uniformly
+continuous.
+
+Proof: Suppose it is uniformly continuous.
+Then for every $\epsilon > 0$,
+there would exist a $\delta > 0$ such that
+if $\sabs{x-c} < \delta$, then $\sabs{x^2 -c^2} < \epsilon$.
+Take $x > 0$ and let
+$c \coloneqq x+\nicefrac{\delta}{2}$.  Write
+\begin{equation*}
+\epsilon >
+\sabs{x^2-c^2} = \sabs{x+c}\sabs{x-c}
+=
+(2x+\nicefrac{\delta}{2})\nicefrac{\delta}{2} 
+\geq 
+\delta x .
+\end{equation*}
+Therefore, $x < \nicefrac{\epsilon}{\delta}$ for all $x > 0$, which is a
+contradiction.
+\end{example}
+
+
+\begin{example}
+The function $f \colon (0,1) \to \R$ defined by $f(x) \coloneqq \nicefrac{1}{x}$ is not
+uniformly continuous.
+
+Proof: Given $\epsilon > 0$, the inequality $\epsilon >
+\abs{\nicefrac{1}{x}-\nicefrac{1}{y}}$ holds if and only if
+\begin{equation*}
+\epsilon >
+\abs{\nicefrac{1}{x}-\nicefrac{1}{y}}
+=
+\frac{\sabs{y-x}}{\sabs{xy}} 
+=
+\frac{\sabs{y-x}}{xy} ,
+\end{equation*}
+or
+\begin{equation*}
+\sabs{x-y} < xy \epsilon .
+\end{equation*}
+Suppose $\epsilon < 1$.
+We wish to see if a 
+small $\delta > 0$ would work.
+If $x \in (0,1)$ and 
+$y = x+\nicefrac{\delta}{2} \in (0,1)$,
+then $\sabs{x-y} = \nicefrac{\delta}{2} < \delta$.
+We plug $y$ into the inequality above to get $\nicefrac{\delta}{2} <
+x \bigl( x+\nicefrac{\delta}{2} \bigr) \epsilon < x$.
+If the definition of uniform continuity is satisfied, then
+the inequality $\nicefrac{\delta}{2} < x$ would hold for all small $x > 0$.
+But that implies $\delta \leq 0$.
+Therefore, no single $\delta > 0$ works for all points.
+\end{example}
+
+The examples show that if $f$ is defined on an interval that is either not closed
+or not bounded, then $f$ can be continuous, but not uniformly continuous.
+For a closed and bounded interval $[a,b]$, we can, however,
+make the following statement.
+
+\begin{thm} \label{unifcont:thm}
+Let $f \colon [a,b] \to \R$ be a continuous function.  Then $f$
+is uniformly continuous.
+\end{thm}
+
+\begin{proof}
+We prove the statement by contrapositive.
+Suppose $f$ is not uniformly continuous.  We will prove
+that there is some
+$c \in [a,b]$ where $f$ is not continuous.  Let us negate
+the definition of uniform continuouity:
+There exists an $\epsilon > 0$
+such that for every $\delta > 0$, there exist points $x, y$ in $[a,b]$ with
+$\sabs{x-y} < \delta$ and $\babs{f(x)-f(y)} \geq \epsilon$.
+
+So for the $\epsilon > 0$ above,
+we find sequences $\{ x_n \}_{n=1}^\infty$ and $\{ y_n \}_{n=1}^\infty$ such that
+$\sabs{x_n-y_n} < \nicefrac{1}{n}$ and such that $\babs{f(x_n)-f(y_n)} \geq
+\epsilon$.  By
+\hyperref[thm:bwseq]{Bolzano--Weierstrass},
+there exists a convergent subsequence
+$\{ x_{n_k} \}_{k=1}^\infty$.  Let $c \coloneqq \lim_{k\to\infty} x_{n_k}$.
+As $a \leq x_{n_k} \leq b$ for all $k$, we have $a \leq c \leq b$.  Estimate
+\begin{equation*}
+\sabs{y_{n_k} - c} =
+\sabs{y_{n_k} - x_{n_k} + x_{n_k} - c} \leq
+\sabs{y_{n_k} - x_{n_k}}
++
+\sabs{x_{n_k}-c}
+<
+\nicefrac{1}{n_k} 
++
+\sabs{x_{n_k}-c} .
+\end{equation*}
+As $\nicefrac{1}{n_k}$ and $\sabs{x_{n_k}-c}$ both go to zero when
+$k$ goes to infinity, $\{ y_{n_k} \}_{k=1}^\infty$ converges and the limit
+is $c$.  We now show that $f$ is not continuous at $c$.
+Estimate
+\begin{equation*}
+\begin{split}
+\babs{f(x_{n_k}) - f(c)} & =
+\babs{f(x_{n_k}) - f(y_{n_k}) + f(y_{n_k}) - f(c)} \\
+& \geq
+\babs{f(x_{n_k}) - f(y_{n_k})} - \babs{f(y_{n_k}) - f(c)} \\
+& \geq
+\epsilon - \babs{f(y_{n_k})-f(c)} .
+\end{split}
+\end{equation*}
+Or in other words,
+\begin{equation*}
+\babs{f(x_{n_k})-f(c)} 
++
+\babs{f(y_{n_k})-f(c)}  \geq
+\epsilon .
+\end{equation*}
+At least one of the sequences $\bigl\{ f(x_{n_k}) \bigr\}_{k=1}^\infty$  or
+$\bigl\{ f(y_{n_k}) \bigr\}_{k=1}^\infty$ cannot converge to $f(c)$.
+Otherwise the
+left-hand side of the inequality would go to zero while the right-hand side is positive.
+Thus $f$ cannot be continuous at $c$.
+\end{proof}
+
+As before, note what is key in the proof: We can apply Bolzano--Weierstrass
+because the interval $[a,b]$ is bounded, and the limit of the subsequence is
+back in $[a,b]$ because the interval is closed.
+
+
+
+% Jiří Lebl, Basic Analysis v6.3; ch-der.tex, lines 552–791
+\subsection{Relative minima and maxima}
+
+We previously talked about absolute maxima and minima.  These are the tallest peaks and
+the lowest valleys in the entire mountain range.  What
+about peaks of individual mountains and bottoms of individual valleys?
+The derivative, being a local concept, is like walking around in a fog; it
+cannot tell you if you are on the highest peak, but it can tell you whether you are
+at the top of some peak.
+
+\begin{defn}
+Let $S \subset \R$ be a set and
+let $f \colon S \to \R$ be a function.  The function $f$ is said to have
+a \emph{\myindex{relative maximum}}\index{maximum!relative}
+at $c \in S$ if there exists a $\delta>0$
+such that for all $x \in S$ where $\sabs{x-c} < \delta$,
+we have $f(x) \leq f(c)$.
+The definition of
+\emph{\myindex{relative minimum}}\index{minimum!relative}
+is analogous.
+\end{defn}
+
+\begin{lemma}\label{relminmax:lemma}
+Suppose $f \colon (a,b) \to \R$ is differentiable at $c \in (a,b)$,
+and $f$ has
+a relative minimum or a relative maximum at $c$.  Then
+$f'(c) = 0$.
+\end{lemma}
+
+\begin{proof}
+Suppose $c$ is a 
+relative maximum of $f$.  That is, there is a $\delta > 0$ such
+that for every $x \in (a,b)$ where
+$\sabs{x-c} < \delta$, we have $f(x)-f(c) \leq 0$.
+Consider the difference
+quotient.  If $c < x < c+\delta$, then
+\begin{equation*}
+\frac{f(x)-f(c)}{x-c} \leq 0 ,
+\end{equation*}
+and if $c-\delta < y < c$, then
+\begin{equation*}
+\frac{f(y)-f(c)}{y-c} \geq 0 .
+\end{equation*}
+See \figureref{fig:critpt} for an illustration.
+\begin{myfigureht}
+\myincludegraphics{critpt}{%
+A graph of a function f is shown.
+Three points are marked on the horizontal axis, from left
+to right, y, c, and x.  The function has a maximum
+at the point c.  The points corresponding to x, c, and y are
+marked on the graph.
+Through the points corresponding
+to y and c is a secant line that slopes upwards and is
+marked with slope equals f of y minus f of c the whole thing
+over quantity y-c is greater than or equal to 0.
+Through the points corresponding
+to c and x is a secant line that slopes downwards and is
+marked with slope equals f of x minus f of c the whole thing
+over quantity x-c is less than or equal to 0.}
+\caption{Slopes of secants at a relative maximum.\label{fig:critpt}}
+\end{myfigureht}
+
+As $a < c < b$, there exist
+sequences $\{ x_n \}_{n=1}^\infty$ and
+$\{ y_n \}_{n=1}^\infty$ in $(a,b)$
+such that $c < x_n < c+\delta$ and
+$c-\delta < y_n < c$ for all $n \in \N$, and such that
+$\lim_{n\to\infty} x_n = \lim_{n\to\infty} y_n = c$.
+Since $f$
+is differentiable at $c$,
+\begin{equation*}
+0 \geq \lim_{n\to\infty} \frac{f(x_n)-f(c)}{x_n-c} 
+=
+f'(c)
+=
+\lim_{n\to\infty} \frac{f(y_n)-f(c)}{y_n-c} \geq 0.
+\end{equation*}
+We are done with a maximum.
+For a minimum, consider
+the function $-f$.
+\end{proof}
+
+For a differentiable function, a point where 
+$f'(c) = 0$ is called a \emph{\myindex{critical point}}.  When $f$ is not
+differentiable at some points,
+it is common to also say that $c$ is a critical point
+if $f'(c)$ does not exist.
+The theorem says that a relative minimum or maximum at an interior point
+of an interval must be a critical point.
+As you remember from calculus, one finds minima and maxima of a function
+by finding all the critical points together with the endpoints of
+the interval and simply checking at which of these points
+the function is largest or smallest.
+
+\subsection{Rolle's theorem}
+
+Suppose a function has the same value at both endpoints of an interval.
+Intuitively, it ought to attain a minimum or a maximum in the interior of the
+interval.
+Then at such a minimum or a maximum, the derivative should be zero.
+See \figureref{rollefig} for the geometric idea.
+This is the content of Rolle's theorem%
+\footnote{Named after the French mathematician
+\href{https://en.wikipedia.org/wiki/Michel_Rolle}{Michel Rolle}
+(1652--1719).}.
+
+\begin{myfigureht}
+\myincludegraphics{rollefig}{%
+A graph of a function is drawn on the interval from a to b.
+The function is zero at both a and b.  The function goes up to
+a maximum,
+then down to a minimum, then back up.  The maximum of the function occurs
+at a point marked c.  A horizontal tangent line is drawn on the
+corresponding point on the graph.  Note that it is parallel with
+the horizontal axis.}
+\caption{Point where the tangent line is horizontal, that is $f'(c) =
+0$.\label{rollefig}}
+\end{myfigureht}
+
+\begin{thm}[Rolle] \label{thm:rolle}
+\index{Rolle's theorem}
+Let $f \colon [a,b] \to \R$ be a continuous function
+differentiable on $(a,b)$ such that $f(a) = f(b)$.
+Then there exists a $c \in (a,b)$ such that $f'(c) = 0$.
+\end{thm}
+
+\begin{proof}
+As $f$ is continuous on $[a,b]$, it attains an absolute minimum and an
+absolute 
+maximum in $[a,b]$.  We wish to apply \lemmaref{relminmax:lemma}, and
+so we need to find some $c \in (a,b)$ where $f$ attains a minimum or a
+maximum.
+Write $K \coloneqq f(a) = f(b)$.
+If there exists an $x$ such that $f(x) > K$, then the absolute
+maximum is larger than $K$ and hence occurs at some $c \in (a,b)$, and
+therefore $f'(c) = 0$.  On the other hand, if there exists an $x$
+such that $f(x) < K$, then the absolute minimum occurs at some
+$c \in (a,b)$, and so $f'(c) = 0$.  If there is no $x$ such that
+$f(x) > K$ or
+$f(x) < K$, then $f(x) = K$ for all $x$ and then
+$f'(x) = 0$ for all $x \in [a,b]$, so any $c \in (a,b)$ works.
+\end{proof}
+
+It is absolutely necessary that the derivative exists for all $x
+\in (a,b)$.  Consider the function $f(x) \coloneqq \sabs{x}$ on $[-1,1]$.
+Clearly $f(-1) = f(1)$, but there is no point $c$ where $f'(c) = 0$.
+
+\subsection{Mean value theorem}
+
+We extend \hyperref[thm:rolle]{Rolle's theorem}
+to functions that attain different
+values at the endpoints.
+
+\begin{thm}[Mean value theorem] \label{thm:mvt}
+\index{mean value theorem}
+Let $f \colon [a,b] \to \R$ be a continuous function
+differentiable on $(a,b)$.  Then there exists a point $c \in (a,b)$
+such that
+\begin{equation*}
+f(b)-f(a) = f'(c)(b-a) .
+\end{equation*}
+\end{thm}
+
+For a geometric interpretation of the mean value theorem, see
+\figureref{mvtfig}.  The idea is that the value $\frac{f(b)-f(a)}{b-a}$
+is the slope of the line between the points $\bigl(a,f(a)\bigr)$
+and $\bigl(b,f(b)\bigr)$.
+Then $c$ is the point such that $f'(c) = \frac{f(b)-f(a)}{b-a}$, that 
+is, the tangent line at the point $\bigl(c,f(c)\bigr)$ has the same slope as the
+line between $\bigl(a,f(a)\bigr)$ and $\bigl(b,f(b)\bigr)$.
+The name comes from the fact that the slope of the secant line
+is the mean value of the derivative, so the average derivative is achieved
+in the interior of the interval.
+
+The theorem follows from \hyperref[thm:rolle]{Rolle's theorem}
+by subtracting from $f$ the affine linear function
+with the same values at $a$ and $b$ as $f$.
+The graph of this affine linear function is the 
+secant line---the straight line through
+$\bigl(a,f(a)\bigr)$ and $\bigl(b,f(b)\bigr)$---and
+its derivative is
+$\frac{f(b)-f(a)}{b-a}$.
+Then we are looking for a point where this
+difference has zero derivative.
+
+\begin{myfigureht}
+\myincludegraphics{mvtfig}{%
+A graph of a function is drawn on the interval from a to b.
+The function looks similar as before but it is no longer
+zero at the endpoints, the left endpoint is negative
+and the right is positive.  A straight line through the endpoints
+of the curve is drawn, that is, it is a line through the point
+(a, f of a) and (b, f of b).  At the point corresponding to 
+c on the horizontal axis the tangent line to the function is
+parallel to the line through the endpoints.}
+\caption{Graphical interpretation of the mean value theorem.\label{mvtfig}}
+\end{myfigureht}
+
+
+\begin{proof}
+Define the
+function $g \colon [a,b] \to \R$ by
+\begin{equation*}
+g(x) \coloneqq
+f(x)-
+\left( f(b)+\frac{f(b)-f(a)}{b-a}(x-b) \right)
+=
+f(x)-
+f(b)-\frac{f(b)-f(a)}{b-a}(x-b) .
+\end{equation*}
+The function $g$ is differentiable on $(a,b)$,
+continuous on $[a,b]$, such that $g(a) = 0$ and $g(b) = 0$.  Thus there exists
+a
+$c \in (a,b)$ such that $g'(c) = 0$, that is,
+\begin{equation*}
+0 = g'(c) = f'(c)-\frac{f(b)-f(a)}{b-a} .
+\end{equation*}
+In other words,
+$f(b)-f(a) = f'(c)(b-a)$.
+\end{proof}
+
+The proof generalizes.  By considering
+$g(x) \coloneqq
+\bigl(f(x)-f(b)\bigr)
+\bigl(\varphi(b)-\varphi(a)\bigr)
+-
+\bigl(f(b)-f(a)\bigr)
+\bigl(\varphi(x)-\varphi(b)\bigr)$,
+one can prove the following version.  We leave the proof as an exercise.
+
+\begin{thm}[Cauchy's mean value theorem] \label{thm:cauchymvt}
+\index{Cauchy's mean value theorem}
+Let $f \colon [a,b] \to \R$ and $\varphi \colon [a,b] \to \R$ be continuous
+functions
+differentiable on $(a,b)$.  Then there exists a point $c \in (a,b)$
+such that
+\begin{equation*}
+\bigl(f(b)-f(a)\bigr)\varphi'(c) = f'(c)\bigl(\varphi(b)-\varphi(a)\bigr) .
+\end{equation*}
+\end{thm}
+
+
+
+% Jiří Lebl, Basic Analysis v6.3; ch-riemann.tex, lines 1–391
+\chapter{The Riemann Integral} \label{int:chapter}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{The Riemann integral}
+\label{sec:rint}
+
+%mbxINTROSUBSECTION
+
+\sectionnotes{1.5 lectures}
+
+An integral is a way to \myquote{sum} the values of a function.
+There is sometimes confusion among students of
+calculus between the \emph{integral} and the \emph{antiderivative}.
+The integral is (informally) the area under the curve, nothing else.
+That we can compute an antiderivative using the integral is a nontrivial
+result we must prove.  
+We will define the \emph{Riemann integral}%
+\footnote{Named after the German mathematician
+\href{https://en.wikipedia.org/wiki/Riemann}{Georg Friedrich Bernhard Riemann}
+(1826--1866).}
+using the Darboux integral%
+\footnote{Named after the French mathematician
+\href{https://en.wikipedia.org/wiki/Darboux}{Jean-Gaston Darboux} (1842--1917).},
+an equivalent but technically simpler definition.
+
+\subsection{Partitions and lower and upper integrals}
+
+We want to integrate a bounded function defined on an interval $[a,b]$.
+We first define two auxiliary integrals that are defined for all
+bounded functions.  Only then can we talk about the Riemann integral and
+the functions which it can integrate, the Riemann integrable functions.
+
+\begin{defn}
+A \emph{\myindex{partition}} $P$ of $[a,b]$ is
+a finite set of numbers $\{ x_0,x_1,x_2,\ldots,x_n \}$ such that
+\begin{equation*}
+a = x_0 < x_1 < x_2 < \cdots < x_{n-1} < x_n = b .
+\end{equation*}
+We write
+\begin{equation*}
+\Delta x_i \coloneqq x_i - x_{i-1} .
+\end{equation*}
+Suppose $f \colon [a,b] \to \R$ is bounded and $P$ is a partition of
+$[a,b]$.
+Define
+\begin{align*}
+& m_i \coloneqq \inf \, \bigl\{ f(x) : x_{i-1} \leq x \leq x_i \bigr\} , &
+& M_i \coloneqq \sup \, \bigl\{ f(x) : x_{i-1} \leq x \leq x_i \bigr\} , \\
+& L(P,f) \coloneqq
+\sum_{i=1}^n m_i \Delta x_i , &
+& U(P,f) \coloneqq
+\sum_{i=1}^n M_i \Delta x_i .
+\avoidbreak
+\end{align*}
+We call $L(P,f)$ the \emph{\myindex{lower Darboux sum}} and
+$U(P,f)$ the \emph{\myindex{upper Darboux sum}}\index{Darboux sum}.
+\glsadd{not:lowerdarbouxsum}
+\glsadd{not:upperdarbouxsum}
+\end{defn}
+
+The geometric idea of Darboux sums is indicated in
+\figureref{darbouxfig}.  The lower sum is the area of the shaded
+rectangles, and the upper sum is the area of the entire
+rectangles, shaded plus unshaded parts.  The width of the $i$th rectangle is $\Delta x_i$,
+the height of the shaded rectangle is $m_i$, and the height
+of the entire rectangle is $M_i$.
+
+\begin{myfigureht}
+\myincludegraphics{darbouxfig}{%
+A diagram of a graph of a function in a bold black line, all above the x
+axis.
+The domain is divided into 8 intervals and
+the endpoints are marked, from left to right, x sub 0 through x sub 8.
+The interval between x sub 4 and x sub 5 is marked as being of width
+Delta x sub 5.
+Above each interval are two rectangles.  For example,
+there is a shaded rectangle of width Delta x sub 5
+with the bottom side being exactly the interval from
+x sub 4 to x sub 5 and of height m sub 5, which is the minimum value of the
+function on the interval.  The rectangle is extended upwards unshaded until
+M sub 5 which is the maximum value of the function on the interval.}
+\caption{Sample Darboux sums.\label{darbouxfig}}
+\end{myfigureht}
+
+\begin{prop} \label{sumulbound:prop}
+Let $f \colon [a,b] \to \R$ be a bounded function.  Let $m, M \in \R$ be 
+such that for all $x \in [a,b]$, we have $m \leq f(x) \leq M$.  Then for every partition $P$
+of $[a,b]$,
+\begin{equation}
+\label{sumulbound:eq}
+m(b-a) \leq
+L(P,f) \leq U(P,f)
+\leq M(b-a) .
+\end{equation}
+\end{prop}
+
+\begin{proof}
+Let $P$ be a partition of $[a,b]$.  Note that for all $i$, we
+have $m \leq m_i \leq M_i \leq M$.  We also have
+$\sum_{i=1}^n \Delta x_i = (b-a)$.  Therefore,
+\begin{multline*}
+m(b-a) =
+m \left( \sum_{i=1}^n \Delta x_i \right)
+=
+\sum_{i=1}^n m \Delta x_i
+\leq
+\sum_{i=1}^n m_i \Delta x_i 
+\\
+\leq
+\sum_{i=1}^n M_i \Delta x_i
+\leq
+\sum_{i=1}^n M \Delta x_i 
+=
+M \left( \sum_{i=1}^n \Delta x_i \right)
+=
+M(b-a) .
+\end{multline*}
+Hence, we get \eqref{sumulbound:eq}.  In particular, the sets of lower and
+upper sums are bounded sets.
+\end{proof}
+
+\begin{defn}
+As the sets of lower and upper Darboux sums are bounded, we define
+\begin{align*}
+& \underline{\int_a^b} f(x)\,dx \coloneqq
+\sup \, \bigl\{ L(P,f) : P \text{ a partition of } [a,b] \bigr\} , \\
+& \overline{\int_a^b} f(x)\,dx \coloneqq
+\inf \, \bigl\{ U(P,f) : P \text{ a partition of } [a,b] \bigr\} .
+\end{align*}
+We call $\underline{\int}$\glsadd{not:lowerdarboux}
+the \emph{\myindex{lower Darboux integral}} and
+$\overline{\int}$\glsadd{not:upperdarboux} the
+\emph{\myindex{upper Darboux integral}}\index{Darboux integral}.
+To avoid worrying about the variable of integration, 
+we often simply write
+\begin{equation*}
+\underline{\int_a^b} f \coloneqq
+\underline{\int_a^b} f(x)\,dx 
+\qquad \text{and} \qquad
+\overline{\int_a^b} f \coloneqq
+\overline{\int_a^b} f(x)\,dx  .
+\end{equation*}
+\end{defn}
+
+If integration is to make sense, then the lower and upper Darboux
+integrals should be the same number, as we want a single number to call
+\emph{the integral}.  However, these two integrals may differ for
+some functions.
+
+\begin{example} \label{example:dirichletfunc}
+Take the \myindex{Dirichlet function}
+$f \colon [0,1] \to \R$, where $f(x) \coloneqq 1$ if
+$x \in \Q$ and $f(x) \coloneqq 0$ if $x \notin \Q$.  Then
+\begin{equation*}
+\underline{\int_0^1} f = 0 \qquad \text{and} \qquad
+\overline{\int_0^1} f = 1 .
+\end{equation*}
+The reason is that for any partition $P$ and every $i$, we have 
+$m_i = \inf \bigl\{ f(x) : x \in [x_{i-1},x_i] \bigr\} = 0$  and
+$M_i = \sup \bigl\{ f(x) : x \in [x_{i-1},x_i] \bigr\} = 1$.  Thus
+\begin{equation*}
+L(P,f) = \sum_{i=1}^n 0 \cdot \Delta x_i = 0 , \quad \text{and} \quad
+U(P,f) = \sum_{i=1}^n 1 \cdot \Delta x_i = \sum_{i=1}^n \Delta x_i = 1  .
+\end{equation*}
+\end{example}
+
+\begin{remark}
+The same definition of $\underline{\int_a^b} f$ and
+$\overline{\int_a^b} f$
+is used when $f$ is defined on a larger set $S$ such that
+$[a,b] \subset S$.  In that case, we use the restriction of $f$ to $[a,b]$
+and we must ensure that the restriction is bounded on $[a,b]$.
+\end{remark}
+
+To compute the integral, we often take a partition $P$ and make it finer.
+That is, we cut intervals in the partition into yet smaller pieces.
+
+\begin{defn}
+Let $P = \{ x_0, x_1, \ldots, x_n \}$ and
+$\widetilde{P} = \{ \widetilde{x}_0, \widetilde{x}_1, \ldots,
+\widetilde{x}_{\ell} \}$ be
+partitions of $[a,b]$.  We say $\widetilde{P}$ is a
+\emph{refinement}\index{refinement of a partition} of $P$
+if as sets $P \subset \widetilde{P}$.
+\end{defn}
+
+That is, $\widetilde{P}$ is a refinement of a partition if it contains all the
+numbers in $P$ and perhaps some other numbers in between.  For example,
+$\{ 0, 0.5, 1, 2 \}$ is a partition of $[0,2]$ and
+$\{ 0, 0.2, 0.5, 1, 1.5, 1.75, 2 \}$ is a refinement.
+The main reason for introducing refinements is the following proposition.
+
+\begin{prop} \label{prop:refinement}
+Let $f \colon [a,b] \to \R$ be a bounded function, and let $P$
+be a partition of $[a,b]$.  Let $\widetilde{P}$ be a refinement of $P$.
+Then
+\begin{equation*}
+L(P,f) \leq L(\widetilde{P},f) 
+\qquad \text{and} \qquad
+U(\widetilde{P},f) \leq U(P,f) .
+\end{equation*}
+\end{prop}
+
+\begin{proof}
+The tricky part of this proof is to get the notation correct.
+Let $\widetilde{P} = \{ \widetilde{x}_0, \widetilde{x}_1, \ldots,
+\widetilde{x}_{\ell} \}$ be
+a refinement of 
+$P = \{ x_0, x_1, \ldots, x_n \}$.  Then
+$x_0 = \widetilde{x}_0$ and 
+$x_n = \widetilde{x}_{\ell}$.  In fact, there are integers
+$k_0 < k_1 < \cdots < k_n$ such that $x_i = \widetilde{x}_{k_i}$ for
+$i=0,1,2,\ldots,n$.
+
+Let $\Delta \widetilde{x}_q \coloneqq \widetilde{x}_q - \widetilde{x}_{q-1}$ for
+$q=0,1,2,\ldots,\ell$.
+See \figureref{fig:refinement}.
+We get 
+\begin{equation*}
+\Delta x_i
+=
+x_i - x_{i-1} =
+\widetilde{x}_{k_i} - \widetilde{x}_{k_{i-1}} =
+\sum_{q=k_{i-1}+1}^{k_i} 
+\widetilde{x}_{q} - \widetilde{x}_{q-1}
+=
+\sum_{q=k_{i-1}+1}^{k_i} \Delta \widetilde{x}_q .
+\end{equation*}
+\begin{myfigureht}
+\myincludepdft{figrefinement}{%
+A diagram of an interval between x sub quantity i minus 1 and x sub i of
+width Delta x sub i.
+It is divided into three smaller intervals.
+The left hand endpoint x sub quantity i minus 1
+is also marked as tilde x sub quantity q minus 3
+and tilde x sub quantity k sub quantity i minus 1.
+Similarly the right hand endpoint x sub i
+is also marked as tilde x sub q and tilde x sub k sub i.
+The two inside points are marked as
+tilde x sub quantity q minus 2 and
+tilde x sub quantity q minus 1.
+The three intervals are of length
+Delta tilde x sub quantity q minus 2,
+Delta tilde x sub quantity q minus 1,
+and
+Delta tilde x sub q.}
+\caption{Refinement of a subinterval.  Notice $\Delta x_i =
+\Delta \widetilde{x}_{q-2} +
+\Delta \widetilde{x}_{q-1} +
+\Delta \widetilde{x}_{q}$,
+and also
+$k_{i-1}+1 = q-2$ and
+$k_{i} = q$.\label{fig:refinement}}
+\end{myfigureht}
+
+Let $m_i$ be as before and correspond to the partition $P$.
+Let $\widetilde{m}_q \coloneqq \inf \bigl\{ f(x) : \widetilde{x}_{q-1} \leq x \leq
+\widetilde{x}_q \bigr\}$.
+Now, $m_i \leq \widetilde{m}_q$ for $k_{i-1} < q \leq k_i$.  Therefore,
+\begin{equation*}
+m_i \Delta x_i
+=
+m_i \sum_{q=k_{i-1}+1}^{k_i} \Delta \widetilde{x}_q
+=
+\sum_{q=k_{i-1}+1}^{k_i} m_i \Delta \widetilde{x}_q
+\leq
+\sum_{q=k_{i-1}+1}^{k_i} \widetilde{m}_q \Delta \widetilde{x}_q .
+\end{equation*}
+So
+\begin{equation*}
+L(P,f) =
+\sum_{i=1}^n m_i \Delta x_i
+\leq
+\sum_{i=1}^n \,
+\sum_{q=k_{i-1}+1}^{k_i} \widetilde{m}_q \Delta \widetilde{x}_q
+=
+\sum_{q=1}^{\ell}
+\widetilde{m}_q \Delta \widetilde{x}_q = L(\widetilde{P},f).
+\end{equation*}
+
+The proof of $U(\widetilde{P},f) \leq U(P,f)$ is left as an exercise.
+\end{proof}
+
+Armed with refinements, we prove the following.
+The key point of this next proposition is that
+the lower Darboux integral is less than or equal to the upper Darboux
+integral.
+
+\begin{prop} \label{intulbound:prop}
+Let $f \colon [a,b] \to \R$ be a bounded function.  Let $m, M \in \R$ be 
+such that for all $x \in [a,b]$, we have $m \leq f(x) \leq M$.  Then
+\begin{equation}
+\label{intulbound:eq}
+m(b-a) \leq
+\underline{\int_a^b} f \leq \overline{\int_a^b} f
+\leq M(b-a) .
+\end{equation}
+\end{prop}
+
+\begin{proof}
+By \propref{sumulbound:prop}, for every partition $P$,
+\begin{equation*}
+m(b-a) \leq L(P,f) \leq U(P,f) \leq M(b-a).
+\end{equation*}
+The inequality
+$m(b-a) \leq L(P,f)$ implies $m(b-a) \leq \underline{\int_a^b} f$.
+The inequality
+$U(P,f) \leq M(b-a)$ implies $\overline{\int_a^b} f \leq M(b-a)$.
+
+The middle inequality in
+\eqref{intulbound:eq} is the main point of the proposition.
+Let $P_1, P_2$ be partitions of $[a,b]$.  Define 
+$\widetilde{P} \coloneqq P_1 \cup P_2$.
+The set $\widetilde{P}$ is a partition of $[a,b]$, which
+is a refinement of $P_1$ and a refinement of $P_2$.
+By \propref{prop:refinement},
+$L(P_1,f) \leq L(\widetilde{P},f)$ and
+$U(\widetilde{P},f) \leq U(P_2,f)$.  So
+\begin{equation*}
+L(P_1,f) \leq L(\widetilde{P},f) \leq U(\widetilde{P},f) \leq U(P_2,f) .
+\end{equation*}
+In other words, for two arbitrary partitions $P_1$ and $P_2$, we have
+$L(P_1,f) \leq U(P_2,f)$.  
+Recall \propref{infsupineq:prop}, and take the supremum and
+infimum over all partitions:
+\begin{multline*}
+\underline{\int_a^b} f = 
+\sup \, \bigl\{ L(P,f) : P \text{ a partition of } [a,b] \bigr\}
+\\
+\leq
+\inf \, \bigl\{ U(P,f) : P \text{ a partition of } [a,b] \bigr\}
+=
+\overline{\int_a^b} f . \qedhere
+\end{multline*}
+\end{proof}
+
+\subsection{Riemann integral}
+
+We can finally define the Riemann integral.  However, the Riemann
+integral is only defined on a certain class of functions, called the
+Riemann integrable functions.
+
+\begin{defn}
+Let $f \colon [a,b] \to \R$ be a bounded function such that
+\begin{equation*}
+\underline{\int_a^b} f(x)\,dx = \overline{\int_a^b} f(x)\,dx .
+\end{equation*}
+Then $f$ is said to be \emph{\myindex{Riemann integrable}}.
+The set of Riemann integrable functions on $[a,b]$ is denoted
+by $\sR\bigl([a,b]\bigr)$.\glsadd{not:integrablefunc}
+When $f \in \sR\bigl([a,b]\bigr)$, we define\glsadd{not:riemannint}
+\begin{equation*}
+\int_a^b f(x)\,dx \coloneqq 
+\underline{\int_a^b} f(x)\,dx = \overline{\int_a^b} f(x)\,dx .
+\end{equation*}
+As before, we often write
+\begin{equation*}
+\int_a^b f \coloneqq \int_a^b f(x)\,dx.
+\end{equation*}
+The number $\int_a^b f$ is called the \emph{\myindex{Riemann integral}}
+of $f$, or sometimes simply the \emph{integral} of $f$.
+\end{defn}
+
+By definition, a Riemann integrable function is bounded.
+Appealing to \propref{intulbound:prop}, we immediately obtain
+the following proposition.  See also \figureref{fig:integralminmax}.
+
+\begin{prop} \label{intbound:prop}
+Let $f \colon [a,b] \to \R$ be a Riemann integrable function.
+Let $m, M \in \R$ be 
+such that $m \leq f(x) \leq M$ for all $x \in [a,b]$.  Then
+\begin{equation*}
+m(b-a) \leq
+\int_a^b f
+\leq M(b-a) .
+\end{equation*}
+\end{prop}
+\begin{myfigureht}
+\myincludegraphics{integralminmax}{%
+A diagram of a rectangle in the plane
+that is horizontally between a and b, and vertically between the x axis
+and capital M.  The rectangle is divided into the upper part
+that is white and contains the graph of some function, and the lower
+part that is shaded.  The dividing horizontal line is labeled as
+lowercase m.}
+\caption{The area under the curve is bounded from above by
+the area of the entire rectangle, $M(b-a)$, and from below by
+the area of the shaded part, $m(b-a)$.\label{fig:integralminmax}}
+\end{myfigureht}
+
+
+
+% Jiří Lebl, Basic Analysis v6.3; ch-riemann.tex, lines 1118–1195
+\subsection{Continuous functions}
+
+Let us show that continuous functions are Riemann integrable.
+We can even allow some discontinuities.  We start with a
+function continuous on the whole closed interval $[a,b]$.
+
+\begin{lemma} \label{lemma:contint}
+If $f \colon [a,b] \to \R$ is a continuous function,
+then $f \in \sR\bigl([a,b]\bigr)$.
+\end{lemma}
+
+\begin{proof}
+As $f$ is continuous on a closed bounded interval, it is
+bounded and
+uniformly continuous.
+Given $\epsilon > 0$, find a $\delta > 0$ such that
+$\sabs{x-y} < \delta$ implies $\babs{f(x)-f(y)} < \frac{\epsilon}{b-a}$.
+
+Let $P = \{ x_0, x_1, \ldots, x_n \}$
+be a partition of $[a,b]$ such that $\Delta x_i < \delta$ for all $i = 1,2,
+\ldots, n$.  For example,
+take $n$ such that $\frac{b-a}{n} < \delta$, and
+let $x_i \coloneqq \frac{i}{n}(b-a) + a$.
+Then for all $x, y \in [x_{i-1},x_i]$, we have 
+$\sabs{x-y} \leq \Delta x_i < \delta$, and so
+\begin{equation*}
+f(x)-f(y) \leq \babs{f(x)-f(y)} < \frac{\epsilon}{b-a} .
+\end{equation*}
+As $f$ is continuous on $[x_{i-1},x_i]$, it attains a maximum and a minimum
+on this interval.
+Let $x$ be a point where $f$ attains the maximum and $y$ be a point
+where $f$ attains the minimum.  Then $f(x) = M_i$
+and $f(y) = m_i$ in the notation from the definition of the integral.
+Therefore,
+\begin{equation*}
+M_i-m_i = f(x)-f(y) < 
+\frac{\epsilon}{b-a} .
+\end{equation*}
+And so
+\begin{equation*}
+\begin{split}
+\overline{\int_a^b} f - 
+\underline{\int_a^b} f 
+& \leq
+U(P,f) - L(P,f)
+\\
+& =
+\left(
+\sum_{i=1}^n
+M_i \Delta x_i
+\right)
+-
+\left(
+\sum_{i=1}^n
+m_i \Delta x_i
+\right)
+\\
+& =
+\sum_{i=1}^n
+(M_i-m_i) \Delta x_i
+\\
+& <
+\frac{\epsilon}{b-a}
+\sum_{i=1}^n
+\Delta x_i
+\\
+& =
+\frac{\epsilon}{b-a} (b-a)
+= \epsilon .
+\end{split}
+\end{equation*}
+As $\epsilon > 0$ was arbitrary,
+\begin{equation*}
+\overline{\int_a^b} f = \underline{\int_a^b} f ,
+\end{equation*}
+and $f$ is Riemann integrable on $[a,b]$.
+\end{proof}
+
+
+
+% Jiří Lebl, Basic Analysis v6.3; ch-riemann.tex, lines 1576–1780
+\section{Fundamental theorem of calculus}
+\label{sec:ftc}
+
+%mbxINTROSUBSECTION
+
+\sectionnotes{1.5 lectures}
+
+In this section we discuss and prove the
+\emph{\myindex{fundamental theorem of calculus}}.
+The entirety of integral calculus is built upon this theorem,
+ergo the name.
+The theorem relates the seemingly unrelated concepts of integral and
+derivative.  It tells us how to compute the antiderivative of a function
+using the integral and vice versa.
+
+\subsection{First form of the theorem}
+
+\begin{thm} \label{thm:FTCv1}
+Let $F \colon [a,b] \to \R$ be a continuous function, differentiable
+on $(a,b)$.  Let $f \in \sR\bigl([a,b]\bigr)$ be such that $f(x) = F'(x)$ for $x \in
+(a,b)$.  Then
+\begin{equation*}
+\int_a^b f = F(b)-F(a) .
+\end{equation*}
+\end{thm}
+
+It is not hard to generalize the theorem to allow a finite number of points
+in $[a,b]$ where $F$ is not differentiable, as long as it is continuous.
+This generalization is left as an exercise.
+
+\begin{proof}
+Let $P = \{ x_0, x_1, \ldots, x_n \}$ be a partition of $[a,b]$.
+For each interval $[x_{i-1},x_i]$, use the
+\hyperref[thm:mvt]{mean value theorem} to find a
+$c_i \in (x_{i-1},x_i)$ such that
+\begin{equation*}
+f(c_i) \Delta x_i = F'(c_i) (x_i - x_{i-1}) = F(x_i) - F(x_{i-1}) .
+\end{equation*}
+See \figureref{fig:fundthmfig}, and
+note that the area of the
+$i$th rectangle is
+$F(x_{i})-F(x_{i-1})$,
+and the total area of all three rectangles pictured is
+$F(x_{i+1})-F(x_{i-2})$.
+The idea is that taking smaller and smaller subintervals,
+the total area of all these rectangles converges to the integral of $f$.
+\begin{myfigureht}
+\myincludegraphics{fundthmfig}{%
+A diagram of a graph of a function in dark bold
+marked as y equals f of x equals F prime of x
+and three subintervals of the x coordinates.
+The middle subinterval is labeled as going from
+x sub quantity i minus 1 to x sub i and is of length Delta x sub i.
+A point c sub i is marked inside this subinterval and a
+dashed line goes up vertically until f of c sub i where it hits
+the graph of f.  A shaded rectangle of this height and the subinterval
+as the base is drawn and labeled with 'area equals f of c sub i times Delta
+x sub i equals F of x sub i minus F of x sub quantity i minus 1'.
+The other two subintervals are similar except on the left
+we replace i with i minus 1 and on the right we replace i with
+i plus 1.}
+\caption{Mean value theorem on subintervals of a partition
+approximating the area under the curve.\label{fig:fundthmfig}}
+\end{myfigureht}
+
+Using the notation from the definition of the integral,
+$m_i \leq f(c_i) \leq M_i$, and multiplying by $\Delta x_i$ gets
+\begin{equation*}
+m_i \Delta x_i \leq F(x_i) - F(x_{i-1}) \leq M_i \Delta x_i .
+\end{equation*}
+We sum over $i = 1,2, \ldots, n$ to get
+\begin{equation*}
+\sum_{i=1}^n m_i \Delta x_i
+\leq \sum_{i=1}^n \bigl(F(x_i) - F(x_{i-1}) \bigr)
+\leq \sum_{i=1}^n M_i \Delta x_i .
+\end{equation*}
+In the middle sum, all the terms except the first and last cancel 
+and we end up with $F(x_n)-F(x_0) = F(b)-F(a)$.  The sums on the left
+and on the right are the lower and the upper sums, respectively.  So
+\begin{equation*}
+L(P,f) \leq F(b)-F(a) \leq U(P,f) .
+\end{equation*}
+We take the supremum of $L(P,f)$ over all partitions $P$ and the left inequality
+yields 
+\begin{equation*}
+\underline{\int_a^b} f \leq F(b)-F(a) .
+\end{equation*}
+Similarly, taking
+the infimum of $U(P,f)$ over all partitions $P$ yields
+\begin{equation*}
+F(b)-F(a) \leq \overline{\int_a^b} f .
+\end{equation*}
+As $f$ is Riemann integrable, we have
+\begin{equation*}
+\int_a^b f =
+\underline{\int_a^b} f \leq F(b)-F(a) \leq \overline{\int_a^b} f
+= \int_a^b f .
+\end{equation*}
+The inequalities must be equalities and we are done.
+\end{proof}
+
+The theorem is used to compute integrals.  Suppose we know that
+the function $f(x)$ is a derivative of some other function $F(x)$,
+then we can find an explicit expression for $\int_a^b f$. 
+
+\begin{example}
+To compute
+\begin{equation*}
+\int_0^1 x^2 \,dx ,
+\end{equation*}
+we notice $x^2$ is the derivative of $\frac{x^3}{3}$.
+The fundamental theorem says
+\begin{equation*}
+\int_0^1 x^2 \,dx =
+\frac{1^3}{3}
+-
+\frac{0^3}{3}
+= \frac{1}{3}.
+\end{equation*}
+\end{example}
+
+\subsection{Second form of the theorem}
+
+The second form of the fundamental theorem gives us a way to solve
+the differential equation $F'(x) = f(x)$, where $f$ is a known
+function and we are trying to find an $F$ that satisfies the equation.
+
+\begin{thm} \label{thm:FTCv2}
+Let $f \colon [a,b] \to \R$ be a Riemann integrable function.  Define
+\begin{equation*}
+F(x) \coloneqq \int_a^x f .
+\end{equation*}
+First, $F$ is continuous on $[a,b]$.  Second,
+if $f$ is continuous at $c \in [a,b]$, then $F$ is differentiable at $c$
+and $F'(c) = f(c)$.
+\end{thm}
+
+\begin{proof}
+As $f$ is bounded, there is an $M > 0$
+such that $\babs{f(x)} \leq M$ for all $x \in [a,b]$.  Suppose $x,y \in [a,b]$
+with $x > y$.  Then
+\begin{equation*}
+\babs{F(x)-F(y)} =
+\abs{\int_a^x f - \int_a^y f}
+=
+\abs{\int_y^x f}
+\leq
+M\sabs{x-y} .
+\end{equation*}
+By symmetry, the same also holds if $x < y$.
+So $F$ is Lipschitz continuous and hence continuous.
+
+Now suppose $f$ is continuous at $c$.
+Let $\epsilon > 0$ be given.  Let $\delta > 0$ be such that
+for $x \in [a,b]$,
+$\sabs{x-c} < \delta$ implies $\babs{f(x)-f(c)} < \epsilon$.
+In particular,
+for such $x$, we have
+\begin{equation*}
+f(c)-\epsilon < f(x) < f(c) + \epsilon.
+\end{equation*}
+Thus if $x > c$, then
+\begin{equation*}
+\bigl(f(c)-\epsilon\bigr) (x-c) \leq \int_c^x f \leq
+\bigl(f(c) + \epsilon\bigr)(x-c).
+\end{equation*}
+When $c > x$, then the inequalities are reversed.  Therefore,
+assuming $x \neq c$, we get
+\begin{equation*}
+f(c)-\epsilon
+\leq
+\frac{\int_c^{x} f}{x-c}
+\leq
+f(c)+\epsilon .
+\end{equation*}
+As 
+\begin{equation*}
+\frac{F(x)-F(c)}{x-c}
+=
+\frac{\int_a^{x} f - \int_a^{c} f}{x-c}
+=
+\frac{\int_c^{x} f}{x-c} ,
+\end{equation*}
+we have 
+\begin{equation*}
+\abs{\frac{F(x)-F(c)}{x-c} - f(c)} \leq \epsilon .
+\end{equation*}
+The result follows.  It is left to the reader to see why is it OK that we
+just have a non-strict inequality.
+\end{proof}
+
+Of course, if $f$ is continuous on $[a,b]$, then it is automatically Riemann
+integrable, $F$ is differentiable on all of $[a,b]$ and $F'(x) = f(x)$ for
+all $x \in [a,b]$.
+
+\begin{remark} \label{remark:fundthmbase}
+The second form of the fundamental theorem of calculus still holds if
+we let $d \in [a,b]$ and define
+\begin{equation*}
+F(x) \coloneqq \int_d^x f .
+\end{equation*}
+That is, we can use any point of $[a,b]$ as our base point.  The proof is
+left as an exercise.
+\end{remark}
+

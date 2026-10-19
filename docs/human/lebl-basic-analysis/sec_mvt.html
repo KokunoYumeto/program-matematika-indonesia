@@ -1,0 +1,657 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mean value theorem · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_mvt">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Mean value theorem</span>
+</h2>
+<section class="introduction" id="sec_mvt-2">
+<div class="para" id="sec_mvt-2-1">
+<em class="emphasis">Note: 2 lectures (some applications may be skipped)</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section>
+<section class="subsection" id="sec_mvt-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.2.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Relative minima and maxima</span>
+</h3>
+<div class="para" id="sec_mvt-3-2">We previously talked about absolute maxima and minima.  These are the tallest peaks and the lowest valleys in the entire mountain range.  What about peaks of individual mountains and bottoms of individual valleys? The derivative, being a local concept, is like walking around in a fog; it cannot tell you if you are on the highest peak, but it can tell you whether you are at the top of some peak.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-3-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_mvt-3-3"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.2.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_mvt-3-3-1-1">Let <span class="process-math">\(S \subset \R\)</span> be a set and let <span class="process-math">\(f \colon S \to \R\)</span> be a function.  The function <span class="process-math">\(f\)</span> is said to have a <em class="emphasis">relative maximum</em> at <span class="process-math">\(c \in S\)</span> if there exists a <span class="process-math">\(\delta&gt;0\)</span> such that for all <span class="process-math">\(x \in S\)</span> where <span class="process-math">\(\sabs{x-c} &lt; \delta\text{,}\)</span> we have <span class="process-math">\(f(x) \leq f(c)\text{.}\)</span> The definition of <em class="emphasis">relative minimum</em> is analogous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-3-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 4.2.1"><a aria-label="Copy heading and permalink for Definition 4.2.1" href="#sec_mvt-3-3" title="Copy heading and permalink for Definition 4.2.1">🔗</a></div>
+</article>
+<article class="lemma theorem-like" id="relminmax_lemma"><h4 class="heading">
+<span class="type">Lemma</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.2.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="relminmax_lemma-1-1">Suppose <span class="process-math">\(f \colon (a,b) \to \R\)</span> is differentiable at <span class="process-math">\(c \in (a,b)\text{,}\)</span> and <span class="process-math">\(f\)</span> has a relative minimum or a relative maximum at <span class="process-math">\(c\text{.}\)</span>  Then <span class="process-math">\(f'(c) = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#relminmax_lemma-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Lemma 4.2.2"><a aria-label="Copy heading and permalink for Lemma 4.2.2" href="#relminmax_lemma" title="Copy heading and permalink for Lemma 4.2.2">🔗</a></div>
+</article>
+<article class="proof" id="sec_mvt-3-5"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_mvt-3-5-1">
+<div class="para">Suppose <span class="process-math">\(c\)</span> is a relative maximum of <span class="process-math">\(f\text{.}\)</span>  That is, there is a <span class="process-math">\(\delta &gt; 0\)</span> such that for every <span class="process-math">\(x \in (a,b)\)</span> where <span class="process-math">\(\sabs{x-c} &lt; \delta\text{,}\)</span> we have <span class="process-math">\(f(x)-f(c) \leq 0\text{.}\)</span> Consider the difference quotient.  If <span class="process-math">\(c &lt; x &lt; c+\delta\text{,}\)</span> then</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_critpt.html" id="sec_mvt-3-5-1-8">
+\begin{equation}
+\frac{f(x)-f(c)}{x-c} \leq 0 ,
+\end{equation}
+</div>
+<div class="para">and if <span class="process-math">\(c-\delta &lt; y &lt; c\text{,}\)</span> then</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_critpt.html" id="sec_mvt-3-5-1-10">
+\begin{equation}
+\frac{f(y)-f(c)}{y-c} \geq 0 .
+\end{equation}
+</div>
+<div class="para">See <a class="internal" href="sec_mvt.html#fig_critpt" title="Figure 4.3">Figure 4.3</a> for an illustration.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-3-5-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="fig_critpt"><img alt="A graph of a function f is shown. Three points are marked on the horizontal axis, from left to right, y, c, and x. The function has a maximum at the point c. The points corresponding to x, c, and y are marked on the graph. Through the points corresponding to y and c is a secant line that slopes upwards and is marked with slope equals f of y minus f of c the whole thing over quantity y-c is greater than or equal to 0. Through the points corresponding to c and x is a secant line that slopes downwards and is marked with slope equals f of x minus f of c the whole thing over quantity x-c is less than or equal to 0." class="raimg" role="img" src="figures/critpt-mbx.svg" style="width:293pt; height:122pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Slopes of secants at a relative maximum.<div class="autopermalink" data-description="Figure 4.3"><a aria-label="Copy heading and permalink for Figure 4.3" href="#fig_critpt" title="Copy heading and permalink for Figure 4.3">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para logical" id="sec_mvt-3-5-5">
+<div class="para">As <span class="process-math">\(a &lt; c &lt; b\text{,}\)</span> there exist sequences <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> and <span class="process-math">\(\{ y_n \}_{n=1}^\infty\)</span> in <span class="process-math">\((a,b)\)</span> such that <span class="process-math">\(c &lt; x_n &lt; c+\delta\)</span> and <span class="process-math">\(c-\delta &lt; y_n &lt; c\)</span> for all <span class="process-math">\(n \in \N\text{,}\)</span> and such that <span class="process-math">\(\lim_{n\to\infty} x_n = \lim_{n\to\infty} y_n = c\text{.}\)</span> Since <span class="process-math">\(f\)</span> is differentiable at <span class="process-math">\(c\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_mvt-3-5-5-11">
+\begin{equation}
+0 \geq \lim_{n\to\infty} \frac{f(x_n)-f(c)}{x_n-c} 
+=
+f'(c)
+=
+\lim_{n\to\infty} \frac{f(y_n)-f(c)}{y_n-c} \geq 0.
+\end{equation}
+</div>
+<div class="para">We are done with a maximum. For a minimum, consider the function <span class="process-math">\(-f\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-3-5-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 4.2.1.1"><a aria-label="Copy heading and permalink for Proof 4.2.1.1" href="#sec_mvt-3-5" title="Copy heading and permalink for Proof 4.2.1.1">🔗</a></div>
+</article>
+<div class="para" id="sec_mvt-3-6">For a differentiable function, a point where <span class="process-math">\(f'(c) = 0\)</span> is called a <em class="emphasis">critical point</em>.  When <span class="process-math">\(f\)</span> is not differentiable at some points, it is common to also say that <span class="process-math">\(c\)</span> is a critical point if <span class="process-math">\(f'(c)\)</span> does not exist. The theorem says that a relative minimum or maximum at an interior point of an interval must be a critical point. As you remember from calculus, one finds minima and maxima of a function by finding all the critical points together with the endpoints of the interval and simply checking at which of these points the function is largest or smallest.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-3-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 4.2.1: Relative minima and maxima"><a aria-label="Copy heading and permalink for Subsection 4.2.1: Relative minima and maxima" href="#sec_mvt-3" title="Copy heading and permalink for Subsection 4.2.1: Relative minima and maxima">🔗</a></div>
+</section>
+<section class="subsection" id="sec_mvt-4">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.2.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Rolle’s theorem</span>
+</h3>
+<div class="para" id="sec_mvt-4-2">Suppose a function has the same value at both endpoints of an interval. Intuitively, it ought to attain a minimum or a maximum in the interior of the interval. Then at such a minimum or a maximum, the derivative should be zero. See <a class="internal" href="sec_mvt.html#rollefig" title="Figure 4.4">Figure 4.4</a> for the geometric idea. This is the content of Rolle’s theorem<details aria-live="polite" class="ptx-footnote" id="sec_mvt-4-2-2"><summary class="ptx-footnote__number" title="Footnote 4.2.1"><sup> 1 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_mvt-4-2-2">Named after the French mathematician <a class="external" href="https://en.wikipedia.org/wiki/Michel_Rolle" target="_blank">Michel Rolle</a> (1652–1719).
+</div></details>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="rollefig"><img alt="A graph of a function is drawn on the interval from a to b. The function is zero at both a and b. The function goes up to a maximum, then down to a minimum, then back up. The maximum of the function occurs at a point marked c. A horizontal tangent line is drawn on the corresponding point on the graph. Note that it is parallel with the horizontal axis." class="raimg" role="img" src="figures/rollefig-mbx.svg" style="width:222pt; height:146pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Point where the tangent line is horizontal, that is <span class="process-math">\(f'(c) =
+0\text{.}\)</span><div class="autopermalink" data-description="Figure 4.4"><a aria-label="Copy heading and permalink for Figure 4.4" href="#rollefig" title="Copy heading and permalink for Figure 4.4">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<article class="theorem theorem-like" id="thm_rolle"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.2.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Rolle.</span>
+</h4>
+<div class="para" id="thm_rolle-3-1">Let <span class="process-math">\(f \colon [a,b] \to \R\)</span> be a continuous function differentiable on <span class="process-math">\((a,b)\)</span> such that <span class="process-math">\(f(a) = f(b)\text{.}\)</span> Then there exists a <span class="process-math">\(c \in (a,b)\)</span> such that <span class="process-math">\(f'(c) = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#thm_rolle-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 4.2.3: Rolle"><a aria-label="Copy heading and permalink for Theorem 4.2.3: Rolle" href="#thm_rolle" title="Copy heading and permalink for Theorem 4.2.3: Rolle">🔗</a></div>
+</article>
+<article class="proof" id="sec_mvt-4-7"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_mvt-4-7-1">As <span class="process-math">\(f\)</span> is continuous on <span class="process-math">\([a,b]\text{,}\)</span> it attains an absolute minimum and an absolute maximum in <span class="process-math">\([a,b]\text{.}\)</span>  We wish to apply <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvt.html#relminmax_lemma" title="Lemma 4.2.2">Lemma 4.2.2</a>, and so we need to find some <span class="process-math">\(c \in (a,b)\)</span> where <span class="process-math">\(f\)</span> attains a minimum or a maximum. Write <span class="process-math">\(K \coloneqq f(a) = f(b)\text{.}\)</span> If there exists an <span class="process-math">\(x\)</span> such that <span class="process-math">\(f(x) &gt; K\text{,}\)</span> then the absolute maximum is larger than <span class="process-math">\(K\)</span> and hence occurs at some <span class="process-math">\(c \in (a,b)\text{,}\)</span> and therefore <span class="process-math">\(f'(c) = 0\text{.}\)</span>  On the other hand, if there exists an <span class="process-math">\(x\)</span> such that <span class="process-math">\(f(x) &lt; K\text{,}\)</span> then the absolute minimum occurs at some <span class="process-math">\(c \in (a,b)\text{,}\)</span> and so <span class="process-math">\(f'(c) = 0\text{.}\)</span>  If there is no <span class="process-math">\(x\)</span> such that <span class="process-math">\(f(x) &gt; K\)</span> or <span class="process-math">\(f(x) &lt; K\text{,}\)</span> then <span class="process-math">\(f(x) = K\)</span> for all <span class="process-math">\(x\)</span> and then <span class="process-math">\(f'(x) = 0\)</span> for all <span class="process-math">\(x \in [a,b]\text{,}\)</span> so any <span class="process-math">\(c \in (a,b)\)</span> works.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-4-7-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 4.2.2.1"><a aria-label="Copy heading and permalink for Proof 4.2.2.1" href="#sec_mvt-4-7" title="Copy heading and permalink for Proof 4.2.2.1">🔗</a></div>
+</article>
+<div class="para" id="sec_mvt-4-8">It is absolutely necessary that the derivative exists for all <span class="process-math">\(x
+\in (a,b)\text{.}\)</span>  Consider the function <span class="process-math">\(f(x) \coloneqq \sabs{x}\)</span> on <span class="process-math">\([-1,1]\text{.}\)</span> Clearly <span class="process-math">\(f(-1) = f(1)\text{,}\)</span> but there is no point <span class="process-math">\(c\)</span> where <span class="process-math">\(f'(c) = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-4-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 4.2.2: Rolle’s theorem"><a aria-label="Copy heading and permalink for Subsection 4.2.2: Rolle’s theorem" href="#sec_mvt-4" title="Copy heading and permalink for Subsection 4.2.2: Rolle’s theorem">🔗</a></div>
+</section>
+<section class="subsection" id="sec_mvt-5">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.2.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Mean value theorem</span>
+</h3>
+<div class="para" id="sec_mvt-5-2">We extend <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvt.html#thm_rolle" title="Theorem 4.2.3: Rolle">Rolle’s theorem</a> to functions that attain different values at the endpoints.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-5-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="thm_mvt"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.2.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Mean value theorem.</span>
+</h4>
+<div class="para logical" id="thm_mvt-3-1">
+<div class="para">Let <span class="process-math">\(f \colon [a,b] \to \R\)</span> be a continuous function differentiable on <span class="process-math">\((a,b)\text{.}\)</span>  Then there exists a point <span class="process-math">\(c \in (a,b)\)</span> such that</div>
+<div class="displaymath process-math" id="thm_mvt-3-1-4">
+\begin{equation}
+f(b)-f(a) = f'(c)(b-a) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#thm_mvt-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 4.2.4: Mean value theorem"><a aria-label="Copy heading and permalink for Theorem 4.2.4: Mean value theorem" href="#thm_mvt" title="Copy heading and permalink for Theorem 4.2.4: Mean value theorem">🔗</a></div>
+</article>
+<div class="para" id="sec_mvt-5-4">For a geometric interpretation of the mean value theorem, see <a class="internal" href="sec_mvt.html#mvtfig" title="Figure 4.5">Figure 4.5</a>.  The idea is that the value <span class="process-math">\(\frac{f(b)-f(a)}{b-a}\)</span> is the slope of the line between the points <span class="process-math">\(\bigl(a,f(a)\bigr)\)</span> and <span class="process-math">\(\bigl(b,f(b)\bigr)\text{.}\)</span> Then <span class="process-math">\(c\)</span> is the point such that <span class="process-math">\(f'(c) = \frac{f(b)-f(a)}{b-a}\text{,}\)</span> that is, the tangent line at the point <span class="process-math">\(\bigl(c,f(c)\bigr)\)</span> has the same slope as the line between <span class="process-math">\(\bigl(a,f(a)\bigr)\)</span> and <span class="process-math">\(\bigl(b,f(b)\bigr)\text{.}\)</span> The name comes from the fact that the slope of the secant line is the mean value of the derivative, so the average derivative is achieved in the interior of the interval.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-5-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_mvt-5-5">The theorem follows from <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvt.html#thm_rolle" title="Theorem 4.2.3: Rolle">Rolle’s theorem</a> by subtracting from <span class="process-math">\(f\)</span> the affine linear function with the same values at <span class="process-math">\(a\)</span> and <span class="process-math">\(b\)</span> as <span class="process-math">\(f\text{.}\)</span> The graph of this affine linear function is the secant line—the straight line through <span class="process-math">\(\bigl(a,f(a)\bigr)\)</span> and <span class="process-math">\(\bigl(b,f(b)\bigr)\)</span>—and its derivative is <span class="process-math">\(\frac{f(b)-f(a)}{b-a}\text{.}\)</span> Then we are looking for a point where this difference has zero derivative.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-5-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="mvtfig"><img alt="A graph of a function is drawn on the interval from a to b. The function looks similar as before but it is no longer zero at the endpoints, the left endpoint is negative and the right is positive. A straight line through the endpoints of the curve is drawn, that is, it is a line through the point (a, f of a) and (b, f of b). At the point corresponding to c on the horizontal axis the tangent line to the function is parallel to the line through the endpoints." class="raimg" role="img" src="figures/mvtfig-mbx.svg" style="width:230pt; height:150pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Graphical interpretation of the mean value theorem.<div class="autopermalink" data-description="Figure 4.5"><a aria-label="Copy heading and permalink for Figure 4.5" href="#mvtfig" title="Copy heading and permalink for Figure 4.5">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<article class="proof" id="sec_mvt-5-9"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_mvt-5-9-1">
+<div class="para">Define the function <span class="process-math">\(g \colon [a,b] \to \R\)</span> by</div>
+<div class="displaymath process-math" id="sec_mvt-5-9-1-2">
+\begin{equation}
+g(x) \coloneqq
+f(x)-
+\left( f(b)+\frac{f(b)-f(a)}{b-a}(x-b) \right)
+=
+f(x)-
+f(b)-\frac{f(b)-f(a)}{b-a}(x-b) .
+\end{equation}
+</div>
+<div class="para">The function <span class="process-math">\(g\)</span> is differentiable on <span class="process-math">\((a,b)\text{,}\)</span> continuous on <span class="process-math">\([a,b]\text{,}\)</span> such that <span class="process-math">\(g(a) = 0\)</span> and <span class="process-math">\(g(b) = 0\text{.}\)</span>  Thus there exists a <span class="process-math">\(c \in (a,b)\)</span> such that <span class="process-math">\(g'(c) = 0\text{,}\)</span> that is,</div>
+<div class="displaymath process-math" id="sec_mvt-5-9-1-10">
+\begin{equation}
+0 = g'(c) = f'(c)-\frac{f(b)-f(a)}{b-a} .
+\end{equation}
+</div>
+<div class="para">In other words, <span class="process-math">\(f(b)-f(a) = f'(c)(b-a)\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-5-9-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 4.2.3.1"><a aria-label="Copy heading and permalink for Proof 4.2.3.1" href="#sec_mvt-5-9" title="Copy heading and permalink for Proof 4.2.3.1">🔗</a></div>
+</article>
+<div class="para" id="sec_mvt-5-10">The proof generalizes.  By considering <span class="process-math">\(g(x) \coloneqq
+\bigl(f(x)-f(b)\bigr)
+\bigl(\varphi(b)-\varphi(a)\bigr)
+-
+\bigl(f(b)-f(a)\bigr)
+\bigl(\varphi(x)-\varphi(b)\bigr)\text{,}\)</span> one can prove the following version.  We leave the proof as an exercise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-5-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="thm_cauchymvt"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.2.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Cauchy’s mean value theorem.</span>
+</h4>
+<div class="para logical" id="thm_cauchymvt-3-1">
+<div class="para">Let <span class="process-math">\(f \colon [a,b] \to \R\)</span> and <span class="process-math">\(\varphi \colon [a,b] \to \R\)</span> be continuous functions differentiable on <span class="process-math">\((a,b)\text{.}\)</span>  Then there exists a point <span class="process-math">\(c \in (a,b)\)</span> such that</div>
+<div class="displaymath process-math" id="thm_cauchymvt-3-1-5">
+\begin{equation}
+\bigl(f(b)-f(a)\bigr)\varphi'(c) = f'(c)\bigl(\varphi(b)-\varphi(a)\bigr) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#thm_cauchymvt-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 4.2.5: Cauchy’s mean value theorem"><a aria-label="Copy heading and permalink for Theorem 4.2.5: Cauchy’s mean value theorem" href="#thm_cauchymvt" title="Copy heading and permalink for Theorem 4.2.5: Cauchy’s mean value theorem">🔗</a></div>
+</article>
+<div class="para" id="sec_mvt-5-12">The mean value theorem has the distinction of being one of the few theorems cited in court.  That is, when police measure the speed of cars by aircraft, or via cameras reading license plates, they measure the time the car takes to go between two points. The mean value theorem then says that the car must have somewhere attained the speed you get by dividing the difference in distance by the difference in time.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-5-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 4.2.3: Mean value theorem"><a aria-label="Copy heading and permalink for Subsection 4.2.3: Mean value theorem" href="#sec_mvt-5" title="Copy heading and permalink for Subsection 4.2.3: Mean value theorem">🔗</a></div>
+</section>
+<section class="subsection" id="sec_mvt-6">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.2.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Applications</span>
+</h3>
+<div class="para" id="sec_mvt-6-2">Let us look at a few applications of the mean value theorem. The applications show the typical use of the theorem, which is to get rid of a limit by finding the right sort of points where the derivative is not just close to some difference quotient, but actually equal to it. First, we solve our very first differential equation.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-6-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_derzeroconst"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.2.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="prop_derzeroconst-1-1">Let <span class="process-math">\(I\)</span> be an interval and let <span class="process-math">\(f \colon I \to \R\)</span> be a differentiable function such that <span class="process-math">\(f'(x) = 0\)</span> for all <span class="process-math">\(x \in I\text{.}\)</span> Then <span class="process-math">\(f\)</span> is constant.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_derzeroconst-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 4.2.6"><a aria-label="Copy heading and permalink for Proposition 4.2.6" href="#prop_derzeroconst" title="Copy heading and permalink for Proposition 4.2.6">🔗</a></div>
+</article>
+<article class="proof" id="sec_mvt-6-4"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_mvt-6-4-1">
+<div class="para">Take arbitrary <span class="process-math">\(x,y \in I\)</span> with <span class="process-math">\(x &lt; y\text{.}\)</span> As <span class="process-math">\(I\)</span> is an interval, <span class="process-math">\([x,y] \subset I\text{.}\)</span> Then <span class="process-math">\(f\)</span> restricted to <span class="process-math">\([x,y]\)</span> satisfies the hypotheses of the <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvt.html#thm_mvt" title="Theorem 4.2.4: Mean value theorem">mean value theorem</a>. Therefore, there is a <span class="process-math">\(c \in (x,y)\)</span> such that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_mvt.html" id="sec_mvt-6-4-1-9">
+\begin{equation}
+f(y)-f(x) = f'(c)(y-x).
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(f'(c) = 0\text{,}\)</span> we have <span class="process-math">\(f(y) = f(x)\text{.}\)</span>  Hence, the function is constant.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-6-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 4.2.4.1"><a aria-label="Copy heading and permalink for Proof 4.2.4.1" href="#sec_mvt-6-4" title="Copy heading and permalink for Proof 4.2.4.1">🔗</a></div>
+</article>
+<div class="para" id="sec_mvt-6-5">Now that we know what it means for the function to stay constant, we look at increasing and decreasing functions. We say <span class="process-math">\(f \colon I \to \R\)</span> is <em class="emphasis">increasing</em> (resp.  <em class="emphasis">strictly increasing</em>) if <span class="process-math">\(x &lt; y\)</span> implies <span class="process-math">\(f(x) \leq f(y)\)</span> (resp. <span class="process-math">\(f(x) &lt; f(y)\)</span>). We define <em class="emphasis">decreasing</em> and <em class="emphasis">strictly decreasing</em> in the same way by switching the inequalities for <span class="process-math">\(f\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-6-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="incdecdiffprop"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.2.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="incdecdiffprop-1-1">Let <span class="process-math">\(I\)</span> be an interval and let <span class="process-math">\(f \colon I \to \R\)</span> be a differentiable function.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#incdecdiffprop-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="incdecdiffprop-1-2">
+<li id="incdecdiffprop-1-2-1">
+<div class="para" id="incdecdiffprop-1-2-1-1">
+<span class="process-math">\(f\)</span> is increasing if and only if <span class="process-math">\(f'(x) \geq 0\)</span> for all <span class="process-math">\(x \in I\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#incdecdiffprop-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#incdecdiffprop-1-2-1" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="incdecdiffprop-1-2-2">
+<div class="para" id="incdecdiffprop-1-2-2-1">
+<span class="process-math">\(f\)</span> is decreasing if and only if <span class="process-math">\(f'(x) \leq 0\)</span> for all <span class="process-math">\(x \in I\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#incdecdiffprop-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#incdecdiffprop-1-2-2" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Proposition 4.2.7"><a aria-label="Copy heading and permalink for Proposition 4.2.7" href="#incdecdiffprop" title="Copy heading and permalink for Proposition 4.2.7">🔗</a></div>
+</article>
+<article class="proof" id="sec_mvt-6-7"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_mvt-6-7-1">
+<div class="para">Let us prove the first item.  Suppose <span class="process-math">\(f\)</span> is increasing. For all <span class="process-math">\(x,c \in I\)</span> with <span class="process-math">\(x \neq c\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_mvt-6-7-1-4">
+\begin{equation}
+\frac{f(x)-f(c)}{x-c} \geq 0 .
+\end{equation}
+</div>
+<div class="para">Taking a limit as <span class="process-math">\(x\)</span> goes to <span class="process-math">\(c\text{,}\)</span> we see that <span class="process-math">\(f'(c) \geq 0\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-6-7-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_mvt-6-7-2">
+<div class="para">For the other direction, suppose <span class="process-math">\(f'(x) \geq 0\)</span> for all <span class="process-math">\(x \in I\text{.}\)</span> Take any <span class="process-math">\(x, y \in I\)</span> where <span class="process-math">\(x &lt; y\text{,}\)</span> and note that <span class="process-math">\([x,y] \subset I\text{.}\)</span> By the <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvt.html#thm_mvt" title="Theorem 4.2.4: Mean value theorem">mean value theorem</a>, there is some <span class="process-math">\(c \in (x,y)\)</span> such that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_mvt.html" id="sec_mvt-6-7-2-8">
+\begin{equation}
+f(y)-f(x) = f'(c)(y-x) .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(f'(c) \geq 0\)</span> and <span class="process-math">\(y-x &gt; 0\text{,}\)</span> we have <span class="process-math">\(f(y) - f(x) \geq 0\)</span> or <span class="process-math">\(f(x) \leq
+f(y)\text{,}\)</span> and so <span class="process-math">\(f\)</span> is increasing.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-6-7-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_mvt-6-7-3">We leave the second item, decreasing <span class="process-math">\(f\text{,}\)</span> to the reader as an exercise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-6-7-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 4.2.4.2"><a aria-label="Copy heading and permalink for Proof 4.2.4.2" href="#sec_mvt-6-7" title="Copy heading and permalink for Proof 4.2.4.2">🔗</a></div>
+</article>
+<div class="para" id="sec_mvt-6-8">A similar but weaker statement is true for strictly increasing and decreasing functions.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-6-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="incdecdiffstrictprop"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.2.8</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="incdecdiffstrictprop-1-1">Let <span class="process-math">\(I\)</span> be an interval and let <span class="process-math">\(f \colon I \to \R\)</span> be a differentiable function.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#incdecdiffstrictprop-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="incdecdiffstrictprop-1-2">
+<li id="incdecdiffstrictprop_i">
+<div class="para" id="incdecdiffstrictprop_i-1">If <span class="process-math">\(f'(x) &gt; 0\)</span> for all <span class="process-math">\(x \in I\text{,}\)</span> then <span class="process-math">\(f\)</span> is strictly increasing.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#incdecdiffstrictprop_i-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#incdecdiffstrictprop_i" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="incdecdiffstrictprop_ii">
+<div class="para" id="incdecdiffstrictprop_ii-1">If <span class="process-math">\(f'(x) &lt; 0\)</span> for all <span class="process-math">\(x \in I\text{,}\)</span> then <span class="process-math">\(f\)</span> is strictly decreasing.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#incdecdiffstrictprop_ii-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#incdecdiffstrictprop_ii" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Proposition 4.2.8"><a aria-label="Copy heading and permalink for Proposition 4.2.8" href="#incdecdiffstrictprop" title="Copy heading and permalink for Proposition 4.2.8">🔗</a></div>
+</article>
+<div class="para" id="sec_mvt-6-10">The proof of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvt.html#incdecdiffstrictprop_i" title="Item i">i</a> is left as an exercise. Then <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvt.html#incdecdiffstrictprop_ii" title="Item ii">ii</a> follows from <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvt.html#incdecdiffstrictprop_i" title="Item i">i</a> by considering <span class="process-math">\(-f\)</span> instead. The converse of this proposition is not true.  The function <span class="process-math">\(f(x) \coloneqq x^3\)</span> is strictly increasing, but <span class="process-math">\(f'(0) = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-6-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_mvt-6-11">Another application of the <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvt.html#thm_mvt" title="Theorem 4.2.4: Mean value theorem">mean value theorem</a> is the following result about the location of extrema, sometimes called the <em class="emphasis">first derivative test</em>. The result is stated for an absolute minimum and maximum. To apply it to find relative minima and maxima, restrict <span class="process-math">\(f\)</span> to an interval <span class="process-math">\((c-\delta,c+\delta)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-6-11" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="firstderminmaxtest"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.2.9</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="firstderminmaxtest-1-1">Let <span class="process-math">\(f \colon (a,b) \to \R\)</span> be continuous.  Let <span class="process-math">\(c \in (a,b)\)</span> and suppose <span class="process-math">\(f\)</span> is differentiable on <span class="process-math">\((a,c)\)</span> and <span class="process-math">\((c,b)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#firstderminmaxtest-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="firstderminmaxtest-1-2">
+<li id="firstderminmaxtest-1-2-1">
+<div class="para" id="firstderminmaxtest-1-2-1-1">If <span class="process-math">\(f'(x) \leq 0\)</span> whenever <span class="process-math">\(x \in (a,c)\)</span> and <span class="process-math">\(f'(x) \geq 0\)</span> whenever <span class="process-math">\(x \in (c,b)\text{,}\)</span> then <span class="process-math">\(f\)</span> has an absolute minimum at <span class="process-math">\(c\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#firstderminmaxtest-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#firstderminmaxtest-1-2-1" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="firstderminmaxtest-1-2-2">
+<div class="para" id="firstderminmaxtest-1-2-2-1">If <span class="process-math">\(f'(x) \geq 0\)</span> whenever <span class="process-math">\(x \in (a,c)\)</span> and <span class="process-math">\(f'(x) \leq 0\)</span> whenever <span class="process-math">\(x \in (c,b)\text{,}\)</span> then <span class="process-math">\(f\)</span> has an absolute maximum at <span class="process-math">\(c\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#firstderminmaxtest-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#firstderminmaxtest-1-2-2" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Proposition 4.2.9"><a aria-label="Copy heading and permalink for Proposition 4.2.9" href="#firstderminmaxtest" title="Copy heading and permalink for Proposition 4.2.9">🔗</a></div>
+</article>
+<article class="proof" id="sec_mvt-6-13"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_mvt-6-13-1">We prove the first item and leave the second to the reader. Take <span class="process-math">\(x \in (a,c)\)</span> and a sequence <span class="process-math">\(\{ y_n\}_{n=1}^\infty\)</span> such that <span class="process-math">\(x &lt; y_n &lt; c\)</span> for all <span class="process-math">\(n\)</span> and <span class="process-math">\(\lim_{n\to\infty} y_n = c\text{.}\)</span> By the preceding proposition, <span class="process-math">\(f\)</span> is decreasing on <span class="process-math">\((a,c)\)</span> so <span class="process-math">\(f(x) \geq f(y_n)\)</span> for all <span class="process-math">\(n\text{.}\)</span> As <span class="process-math">\(f\)</span> is continuous at <span class="process-math">\(c\text{,}\)</span> we take the limit to get <span class="process-math">\(f(x) \geq f(c)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-6-13-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_mvt-6-13-2">Similarly, take <span class="process-math">\(x \in (c,b)\)</span> and <span class="process-math">\(\{ y_n\}_{n=1}^\infty\)</span> a sequence such that <span class="process-math">\(c &lt; y_n &lt; x\)</span> and <span class="process-math">\(\lim_{n\to\infty} y_n = c\text{.}\)</span> The function is increasing on <span class="process-math">\((c,b)\)</span> so <span class="process-math">\(f(x) \geq f(y_n)\)</span> for all <span class="process-math">\(n\text{.}\)</span> By continuity of <span class="process-math">\(f\text{,}\)</span> we get <span class="process-math">\(f(x) \geq f(c)\text{.}\)</span>  Thus <span class="process-math">\(f(x) \geq f(c)\)</span> for all <span class="process-math">\(x \in (a,b)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-6-13-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 4.2.4.3"><a aria-label="Copy heading and permalink for Proof 4.2.4.3" href="#sec_mvt-6-13" title="Copy heading and permalink for Proof 4.2.4.3">🔗</a></div>
+</article>
+<div class="para" id="sec_mvt-6-14">The converse of the proposition does not hold.  See <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvt.html#baddifffunc_example" title="Example 4.2.12">Example 4.2.12</a> below.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-6-14" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_mvt-6-15">Another often used application of the mean value theorem you have possibly seen in calculus is the following result on differentiability at the end points of an interval.  The proof is <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvt.html#exercise_endpointderivative" title="Exercise 4.2.13">Exercise 4.2.13</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-6-15" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_endpointderivative"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.2.10</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="prop_endpointderivative-1-1"><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_endpointderivative-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div></div>
+<ol class="lower-roman ol-marker-2" id="prop_endpointderivative-1-2">
+<li id="prop_endpointderivative-1-2-1">
+<div class="para" id="prop_endpointderivative-1-2-1-1">Suppose <span class="process-math">\(f \colon [a,b) \to \R\)</span> is continuous, differentiable in <span class="process-math">\((a,b)\text{,}\)</span> and <span class="process-math">\(\lim_{x \to a} f'(x) = L\text{.}\)</span>  Then <span class="process-math">\(f\)</span> is differentiable at <span class="process-math">\(a\)</span> and <span class="process-math">\(f'(a) = L\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_endpointderivative-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#prop_endpointderivative-1-2-1" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="prop_endpointderivative-1-2-2">
+<div class="para" id="prop_endpointderivative-1-2-2-1">Suppose <span class="process-math">\(f \colon (a,b] \to \R\)</span> is continuous, differentiable in <span class="process-math">\((a,b)\text{,}\)</span> and <span class="process-math">\(\lim_{x \to b} f'(x) = L\text{.}\)</span>  Then <span class="process-math">\(f\)</span> is differentiable at <span class="process-math">\(b\)</span> and <span class="process-math">\(f'(b) = L\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_endpointderivative-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#prop_endpointderivative-1-2-2" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Proposition 4.2.10"><a aria-label="Copy heading and permalink for Proposition 4.2.10" href="#prop_endpointderivative" title="Copy heading and permalink for Proposition 4.2.10">🔗</a></div>
+</article>
+<div class="para" id="sec_mvt-6-17">In fact, using the extension result <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_unifcont.html#context_prop" title="Proposition 3.4.6">Proposition 3.4.6</a>, you do not need to assume that <span class="process-math">\(f\)</span> is defined at the end point.  See <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvt.html#exercise_extendboundedder" title="Exercise 4.2.14">Exercise 4.2.14</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-6-17" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 4.2.4: Applications"><a aria-label="Copy heading and permalink for Subsection 4.2.4: Applications" href="#sec_mvt-6" title="Copy heading and permalink for Subsection 4.2.4: Applications">🔗</a></div>
+</section>
+<section class="subsection" id="sec_mvt-7">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.2.5</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Continuity of derivatives and the intermediate value theorem</span>
+</h3>
+<div class="para" id="sec_mvt-7-2">Derivatives of functions satisfy an intermediate value property.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-7-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="thm_darboux"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.2.11</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Darboux.</span>
+</h4>
+<div class="para" id="thm_darboux-3-1">Let <span class="process-math">\(f \colon [a,b] \to \R\)</span> be differentiable.  Suppose <span class="process-math">\(y \in \R\)</span> is such that <span class="process-math">\(f'(a) &lt; y &lt; f'(b)\)</span> or <span class="process-math">\(f'(a) &gt; y &gt; f'(b)\text{.}\)</span>  Then there exists a <span class="process-math">\(c \in (a,b)\)</span> such that <span class="process-math">\(f'(c) =
+y\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#thm_darboux-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 4.2.11: Darboux"><a aria-label="Copy heading and permalink for Theorem 4.2.11: Darboux" href="#thm_darboux" title="Copy heading and permalink for Theorem 4.2.11: Darboux">🔗</a></div>
+</article>
+<div class="para" id="sec_mvt-7-4">The proof follows by letting <span class="process-math">\(g\)</span> be the difference of <span class="process-math">\(f\)</span> and a linear function with derivative <span class="process-math">\(y\text{.}\)</span> The new function <span class="process-math">\(g\)</span> reduces the problem to the case <span class="process-math">\(y=0\text{,}\)</span> where <span class="process-math">\(g'(a) &gt; 0 &gt; g'(b)\text{.}\)</span>  That is, <span class="process-math">\(g\)</span> is increasing at <span class="process-math">\(a\)</span> and decreasing at <span class="process-math">\(b\text{,}\)</span> so it must attain a maximum inside <span class="process-math">\((a,b)\text{,}\)</span> where the derivative is zero.  See <a class="internal" href="sec_mvt.html#darbouxthmfig" title="Figure 4.6">Figure 4.6</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-7-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="darbouxthmfig"><img alt="A graph of a function with three points, a, c, b, in this order, marked on the horizontal axis. Tangent lines are drawn at the corresponding points on the graph. From left to right, the first line slopes up and is labeled g prime of a is greater than 0. The second line is horizontal and is labeled g prime of c equals 0. The third line slopes down and is labeled g prime of b is less than 0." class="raimg" role="img" src="figures/darbouxthmfig-mbx.svg" style="width:247pt; height:109pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Idea of the proof of Darboux theorem.<div class="autopermalink" data-description="Figure 4.6"><a aria-label="Copy heading and permalink for Figure 4.6" href="#darbouxthmfig" title="Copy heading and permalink for Figure 4.6">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<article class="proof" id="sec_mvt-7-8"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_mvt-7-8-1">
+<div class="para">Suppose <span class="process-math">\(f'(a) &lt; y &lt; f'(b)\text{.}\)</span> Define</div>
+<div class="displaymath process-math" id="sec_mvt-7-8-1-2">
+\begin{equation}
+g(x) \coloneqq yx - f(x) .
+\end{equation}
+</div>
+<div class="para">The function <span class="process-math">\(g\)</span> is continuous on <span class="process-math">\([a,b]\text{,}\)</span> and so <span class="process-math">\(g\)</span> attains a maximum at some <span class="process-math">\(c \in
+[a,b]\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-7-8-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_mvt-7-8-2">
+<div class="para">The function <span class="process-math">\(g\)</span> is also differentiable on <span class="process-math">\([a,b]\text{.}\)</span> Compute <span class="process-math">\(g'(x) = y-f'(x)\text{.}\)</span>  Thus <span class="process-math">\(g'(a) &gt; 0\text{.}\)</span>  As the derivative is the limit of difference quotients and is positive, there must be some difference quotient that is positive.  That is, there must exist an <span class="process-math">\(x &gt; a\)</span> such that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/relminmax_lemma.html" id="sec_mvt-7-8-2-6">
+\begin{equation}
+\frac{g(x)-g(a)}{x-a} &gt; 0 ,
+\end{equation}
+</div>
+<div class="para">or <span class="process-math">\(g(x) &gt; g(a)\text{.}\)</span>  Thus <span class="process-math">\(g\)</span> cannot possibly have a maximum at <span class="process-math">\(a\text{.}\)</span>  Similarly, as <span class="process-math">\(g'(b) &lt; 0\text{,}\)</span> we find an <span class="process-math">\(x &lt; b\)</span> (a different <span class="process-math">\(x\)</span>) such that <span class="process-math">\(\frac{g(x)-g(b)}{x-b} &lt; 0\)</span> or that <span class="process-math">\(g(x) &gt; g(b)\text{,}\)</span> thus <span class="process-math">\(g\)</span> cannot possibly have a maximum at <span class="process-math">\(b\text{.}\)</span> Therefore, <span class="process-math">\(c \in (a,b)\text{,}\)</span> and <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvt.html#relminmax_lemma" title="Lemma 4.2.2">Lemma 4.2.2</a> applies: As <span class="process-math">\(g\)</span> attains a maximum at <span class="process-math">\(c\text{,}\)</span> we find <span class="process-math">\(g'(c) = 0\)</span> and so <span class="process-math">\(f'(c) = y\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-7-8-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_mvt-7-8-3">Similarly, if <span class="process-math">\(f'(a) &gt; y &gt; f'(b)\text{,}\)</span> consider <span class="process-math">\(g(x) \coloneqq f(x)- yx\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-7-8-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 4.2.5.1"><a aria-label="Copy heading and permalink for Proof 4.2.5.1" href="#sec_mvt-7-8" title="Copy heading and permalink for Proof 4.2.5.1">🔗</a></div>
+</article>
+<div class="para" id="sec_mvt-7-9">We have seen already that there exist discontinuous functions that have the intermediate value property.  While it is hard to imagine at first, there also exist functions that are differentiable everywhere and the derivative is not continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-7-9" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="baddifffunc_example"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.2.12</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="baddifffunc_example-1-1">
+<div class="para">Let <span class="process-math">\(f \colon \R \to \R\)</span> be the function defined by</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_nonc1diff.html" id="baddifffunc_example-1-1-2">
+\begin{equation}
+f(x) \coloneqq
+\begin{cases}
+{\bigl( x \sin(\nicefrac{1}{x}) \bigr)}^2 &amp; \text{if } x \neq 0, \\
+0 &amp; \text{if } x = 0.
+\end{cases}
+\end{equation}
+</div>
+<div class="para">We claim that <span class="process-math">\(f\)</span> is differentiable everywhere, but <span class="process-math">\(f' \colon \R \to \R\)</span> is not continuous at the origin.  Furthermore, <span class="process-math">\(f\)</span> has a minimum at <span class="process-math">\(0\text{,}\)</span> but the derivative changes sign infinitely often near the origin. See <a class="internal" href="sec_mvt.html#fig_nonc1diff" title="Figure 4.7">Figure 4.7</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#baddifffunc_example-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <hr class="rahr"/>
+<figure class="figure figure-like" id="fig_nonc1diff"><img alt="On the left is a graph of a function that oscillates between the x-axis and the function x squared, whose graph is given as a dashed line. On the right is a function that oscillates faster and faster as it gets close to the origin, looking somewhat like the graph of sine of 1 over x, however the entire graph appears sheared a bit so that it goes upwards as well." class="raimg" role="img" src="figures/nonc1diff_full-mbxpdft.svg" style="width:463pt; height:148pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>A function with a discontinuous derivative. The function <span class="process-math">\(f\)</span> is on the left and <span class="process-math">\(f'\)</span> is on the right.  Notice that <span class="process-math">\(f(x) \leq x^2\)</span> on the left graph.<div class="autopermalink" data-description="Figure 4.7"><a aria-label="Copy heading and permalink for Figure 4.7" href="#fig_nonc1diff" title="Copy heading and permalink for Figure 4.7">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para" id="baddifffunc_example-1-5">Proof: It is immediate from the definition that <span class="process-math">\(f\)</span> has an absolute minimum at <span class="process-math">\(0\text{;}\)</span> we know <span class="process-math">\(f(x) \geq 0\)</span> for all <span class="process-math">\(x\)</span> and <span class="process-math">\(f(0) = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#baddifffunc_example-1-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="baddifffunc_example-1-6">For <span class="process-math">\(x \neq 0\text{,}\)</span> <span class="process-math">\(f\)</span> is differentiable and the derivative is <span class="process-math">\(2 \sin (\nicefrac{1}{x}) \bigl( x \sin (\nicefrac{1}{x}) -
+\cos(\nicefrac{1}{x}) \bigr)\text{.}\)</span> As an exercise, show that for <span class="process-math">\(x_n = \frac{4}{(8n+1)\pi}\text{,}\)</span> we have <span class="process-math">\(\lim_{n\to\infty} f'(x_n) = -1\text{,}\)</span> and for <span class="process-math">\(y_n = \frac{4}{(8n+3)\pi}\text{,}\)</span> we have <span class="process-math">\(\lim_{n\to\infty} f'(y_n) = 1\text{.}\)</span>  So <span class="process-math">\(f'\)</span> cannot be continuous at <span class="process-math">\(0\)</span> no matter what <span class="process-math">\(f'(0)\)</span> is.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#baddifffunc_example-1-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="baddifffunc_example-1-7">
+<div class="para">Let us show that <span class="process-math">\(f\)</span> is differentiable at <span class="process-math">\(0\)</span> and <span class="process-math">\(f'(0)=0\text{.}\)</span> For <span class="process-math">\(x \neq 0\text{,}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_bndmuldiff.html ./knowl/xref/exercise_diffsqueeze.html" id="baddifffunc_example-1-7-5">
+\begin{equation}
+\abs{\frac{f(x)-f(0)}{x-0} - 0}
+=
+\abs{\frac{x^2 \sin^2(\nicefrac{1}{x})}{x}}
+=
+\babs{x \sin^2(\nicefrac{1}{x})}
+\leq
+\sabs{x} .
+\end{equation}
+</div>
+<div class="para">And, of course, as <span class="process-math">\(x\)</span> tends to zero, <span class="process-math">\(\sabs{x}\)</span> tends to zero, and hence <span class="process-math">\(\abs{\frac{f(x)-f(0)}{x-0} - 0}\)</span> goes to zero.  Therefore, <span class="process-math">\(f\)</span> is differentiable at 0 and the derivative at 0 is 0. A key point in the calculation above is that <span class="process-math">\(\babs{f(x)} \leq x^2\text{,}\)</span> see also Exercises <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_der.html#exercise_bndmuldiff" title="Exercise 4.1.11">4.1.11</a> and <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_der.html#exercise_diffsqueeze" title="Exercise 4.1.12">4.1.12</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#baddifffunc_example-1-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 4.2.12"><a aria-label="Copy heading and permalink for Example 4.2.12" href="#baddifffunc_example" title="Copy heading and permalink for Example 4.2.12">🔗</a></div>
+</article>
+<div class="para" id="sec_mvt-7-11">It is sometimes useful to assume the derivative of a differentiable function is continuous.  If <span class="process-math">\(f \colon I \to \R\)</span> is differentiable and the derivative <span class="process-math">\(f'\)</span> is continuous on <span class="process-math">\(I\text{,}\)</span> then we say <span class="process-math">\(f\)</span> is <em class="emphasis">continuously differentiable</em>.  It is common to write <span class="process-math">\(C^1(I)\)</span> for the set of continuously differentiable functions defined on <span class="process-math">\(I\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-7-11" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 4.2.5: Continuity of derivatives and the intermediate value theorem"><a aria-label="Copy heading and permalink for Subsection 4.2.5: Continuity of derivatives and the intermediate value theorem" href="#sec_mvt-7" title="Copy heading and permalink for Subsection 4.2.5: Continuity of derivatives and the intermediate value theorem">🔗</a></div>
+</section>
+<section class="exercises" id="sec_mvt-8">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.2.6</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_mvt-8-1"><h4 class="heading"><span class="codenumber">4.2.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_mvt-8-1-1-1">Finish the proof of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvt.html#incdecdiffprop" title="Proposition 4.2.7">Proposition 4.2.7</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-8-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.2.1"><a aria-label="Copy heading and permalink for Exercise 4.2.1" href="#sec_mvt-8-1" title="Copy heading and permalink for Exercise 4.2.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_mvt-8-2"><h4 class="heading"><span class="codenumber">4.2.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_mvt-8-2-1-1">Finish the proof of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvt.html#firstderminmaxtest" title="Proposition 4.2.9">Proposition 4.2.9</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-8-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.2.2"><a aria-label="Copy heading and permalink for Exercise 4.2.2" href="#sec_mvt-8-2" title="Copy heading and permalink for Exercise 4.2.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_boundeddermeanslip"><h4 class="heading"><span class="codenumber">4.2.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_boundeddermeanslip-1-1">Suppose <span class="process-math">\(f \colon \R \to \R\)</span> is a differentiable function such that <span class="process-math">\(f'\)</span> is a bounded function.  Prove that <span class="process-math">\(f\)</span> is a Lipschitz continuous function.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_boundeddermeanslip-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.2.3"><a aria-label="Copy heading and permalink for Exercise 4.2.3" href="#exercise_boundeddermeanslip" title="Copy heading and permalink for Exercise 4.2.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_mvt-8-4"><h4 class="heading"><span class="codenumber">4.2.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_mvt-8-4-1-1">
+<div class="para">Suppose <span class="process-math">\(f \colon [a,b] \to \R\)</span> is differentiable and <span class="process-math">\(c \in [a,b]\text{.}\)</span> Show there exists a sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> converging to <span class="process-math">\(c\text{,}\)</span> <span class="process-math">\(x_n
+\neq c\)</span> for all <span class="process-math">\(n\text{,}\)</span> such that</div>
+<div class="displaymath process-math" id="sec_mvt-8-4-1-1-7">
+\begin{equation}
+f'(c) = \lim_{n\to \infty} f'(x_n).
+\end{equation}
+</div>
+<div class="para">Do note this does <em class="emphasis">not</em> imply that <span class="process-math">\(f'\)</span> is continuous (why?).</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-8-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.2.4"><a aria-label="Copy heading and permalink for Exercise 4.2.4" href="#sec_mvt-8-4" title="Copy heading and permalink for Exercise 4.2.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_mvt-8-5"><h4 class="heading"><span class="codenumber">4.2.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_mvt-8-5-1-1">Suppose <span class="process-math">\(f \colon \R \to \R\)</span> is a function such that <span class="process-math">\(\babs{f(x)-f(y)} \leq \sabs{x-y}^2\)</span> for all <span class="process-math">\(x\)</span> and <span class="process-math">\(y\text{.}\)</span>  Show that <span class="process-math">\(f(x) = C\)</span> for some constant <span class="process-math">\(C\text{.}\)</span>  Hint: Show that <span class="process-math">\(f\)</span> is differentiable at all points and compute the derivative.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-8-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.2.5"><a aria-label="Copy heading and permalink for Exercise 4.2.5" href="#sec_mvt-8-5" title="Copy heading and permalink for Exercise 4.2.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_posderincr"><h4 class="heading"><span class="codenumber">4.2.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_posderincr-1-1">Finish the proof of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvt.html#incdecdiffstrictprop" title="Proposition 4.2.8">Proposition 4.2.8</a>.  That is, suppose <span class="process-math">\(I\)</span> is an interval and <span class="process-math">\(f \colon I \to \R\)</span> is a differentiable function such that <span class="process-math">\(f'(x) &gt; 0\)</span> for all <span class="process-math">\(x \in I\text{.}\)</span> Show that <span class="process-math">\(f\)</span> is strictly increasing.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_posderincr-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.2.6"><a aria-label="Copy heading and permalink for Exercise 4.2.6" href="#exercise_posderincr" title="Copy heading and permalink for Exercise 4.2.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_mvt-8-7"><h4 class="heading"><span class="codenumber">4.2.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_mvt-8-7-1-1">Suppose <span class="process-math">\(f \colon (a,b) \to \R\)</span> is a differentiable function such that <span class="process-math">\(f'(x) \neq 0\)</span> for all <span class="process-math">\(x \in (a,b)\text{.}\)</span>  Suppose there exists a point <span class="process-math">\(c \in (a,b)\)</span> such that <span class="process-math">\(f'(c) &gt; 0\text{.}\)</span> Prove <span class="process-math">\(f'(x) &gt; 0\)</span> for all <span class="process-math">\(x \in (a,b)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-8-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.2.7"><a aria-label="Copy heading and permalink for Exercise 4.2.7" href="#sec_mvt-8-7" title="Copy heading and permalink for Exercise 4.2.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_samediffconst"><h4 class="heading"><span class="codenumber">4.2.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_samediffconst-1-1">Suppose <span class="process-math">\(f \colon (a,b) \to \R\)</span> and <span class="process-math">\(g \colon (a,b) \to \R\)</span> are differentiable functions such that <span class="process-math">\(f'(x) = g'(x)\)</span> for all <span class="process-math">\(x \in (a,b)\text{,}\)</span> then show that there exists a constant <span class="process-math">\(C\)</span> such that <span class="process-math">\(f(x) = g(x) + C\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_samediffconst-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.2.8"><a aria-label="Copy heading and permalink for Exercise 4.2.8" href="#exercise_samediffconst" title="Copy heading and permalink for Exercise 4.2.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_mvt-8-9"><h4 class="heading"><span class="codenumber">4.2.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_mvt-8-9-1-1">
+<div class="para">Prove the following version of L’Hôpital’s rule. Suppose <span class="process-math">\(f \colon (a,b) \to \R\)</span> and <span class="process-math">\(g \colon (a,b) \to \R\)</span> are differentiable functions and <span class="process-math">\(c \in (a,b)\text{.}\)</span>  Suppose that <span class="process-math">\(f(c) = 0\text{,}\)</span> <span class="process-math">\(g(c)=0\text{,}\)</span> <span class="process-math">\(g'(x) \neq 0\)</span> when <span class="process-math">\(x \neq c\text{,}\)</span> and that the limit of <span class="process-math">\(\nicefrac{f'(x)}{g'(x)}\)</span> as <span class="process-math">\(x\)</span> goes to <span class="process-math">\(c\)</span> exists.  Show that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_simpleLHopital.html" id="sec_mvt-8-9-1-1-13">
+\begin{equation}
+\lim_{x \to c} \frac{f(x)}{g(x)} = 
+\lim_{x \to c} \frac{f'(x)}{g'(x)} .
+\end{equation}
+</div>
+<div class="para">Compare to <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_der.html#exercise_simpleLHopital" title="Exercise 4.1.15">Exercise 4.1.15</a>. Note: Before you do anything else, prove that <span class="process-math">\(g(x) \neq 0\)</span> when <span class="process-math">\(x \neq c\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-8-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.2.9"><a aria-label="Copy heading and permalink for Exercise 4.2.9" href="#sec_mvt-8-9" title="Copy heading and permalink for Exercise 4.2.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_mvt-8-10"><h4 class="heading"><span class="codenumber">4.2.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_mvt-8-10-1-1">Let <span class="process-math">\(f \colon (a,b) \to \R\)</span> be an unbounded differentiable function.  Show <span class="process-math">\(f' \colon (a,b) \to \R\)</span> is unbounded. Remark: It is important that <span class="process-math">\((a,b)\)</span> is a bounded interval.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-8-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.2.10"><a aria-label="Copy heading and permalink for Exercise 4.2.10" href="#sec_mvt-8-10" title="Copy heading and permalink for Exercise 4.2.10">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_mvt-8-11"><h4 class="heading"><span class="codenumber">4.2.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_mvt-8-11-1-1">Prove the theorem Rolle actually proved in 1691: <em class="emphasis">If <span class="process-math">\(f\)</span> is a polynomial, <span class="process-math">\(f'(a) = f'(b) = 0\)</span> for some <span class="process-math">\(a &lt; b\text{,}\)</span> and there is no <span class="process-math">\(c \in (a,b)\)</span> such that <span class="process-math">\(f'(c) = 0\text{,}\)</span> then there is at most one root of <span class="process-math">\(f\)</span> in <span class="process-math">\((a,b)\text{,}\)</span> that is at most one <span class="process-math">\(x \in (a,b)\)</span> such that <span class="process-math">\(f(x) = 0\text{.}\)</span></em> In other words, between any two consecutive roots of <span class="process-math">\(f'\)</span> is at most one root of <span class="process-math">\(f\text{.}\)</span> Hint: Suppose there are two roots and see what happens.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-8-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.2.11"><a aria-label="Copy heading and permalink for Exercise 4.2.11" href="#sec_mvt-8-11" title="Copy heading and permalink for Exercise 4.2.11">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_mvt-8-12"><h4 class="heading"><span class="codenumber">4.2.12<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_mvt-8-12-1-1">Suppose <span class="process-math">\(a,b \in \R\)</span> and <span class="process-math">\(f \colon \R \to \R\)</span> is differentiable, <span class="process-math">\(f'(x) = a\)</span> for all <span class="process-math">\(x\text{,}\)</span> and <span class="process-math">\(f(0) = b\text{.}\)</span>  Find <span class="process-math">\(f\)</span> and prove that it is the unique differentiable function with this property.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-8-12-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.2.12"><a aria-label="Copy heading and permalink for Exercise 4.2.12" href="#sec_mvt-8-12" title="Copy heading and permalink for Exercise 4.2.12">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_endpointderivative"><h4 class="heading"><span class="codenumber">4.2.13<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_endpointderivative-1-1"><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_endpointderivative-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div></div>
+<ol class="lower-alpha ol-marker-3" id="exercise_endpointderivative-1-2">
+<li id="exercise_endpointderivative-1-2-1">
+<div class="para" id="exercise_endpointderivative-1-2-1-1">Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvt.html#prop_endpointderivative" title="Proposition 4.2.10">Proposition 4.2.10</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_endpointderivative-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 4.2.13.a"><a aria-label="Copy heading and permalink for Item 4.2.13.a" href="#exercise_endpointderivative-1-2-1" title="Copy heading and permalink for Item 4.2.13.a">🔗</a></div>
+</li>
+<li id="exercise_endpointderivative-1-2-2">
+<div class="para" id="exercise_endpointderivative-1-2-2-1">Suppose <span class="process-math">\(f \colon (a,b) \to \R\)</span> is continuous, and suppose <span class="process-math">\(f\)</span> is differentiable everywhere except at <span class="process-math">\(c \in
+(a,b)\)</span> and <span class="process-math">\(\lim_{x \to c} f'(x) = L\text{.}\)</span> Prove that <span class="process-math">\(f\)</span> is differentiable at <span class="process-math">\(c\)</span> and <span class="process-math">\(f'(c) = L\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_endpointderivative-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 4.2.13.b"><a aria-label="Copy heading and permalink for Item 4.2.13.b" href="#exercise_endpointderivative-1-2-2" title="Copy heading and permalink for Item 4.2.13.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 4.2.13"><a aria-label="Copy heading and permalink for Exercise 4.2.13" href="#exercise_endpointderivative" title="Copy heading and permalink for Exercise 4.2.13">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_extendboundedder"><h4 class="heading"><span class="codenumber">4.2.14<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_extendboundedder-1-1">Suppose <span class="process-math">\(f \colon (0,1) \to \R\)</span> is differentiable and <span class="process-math">\(f'\)</span> is bounded.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_extendboundedder-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="exercise_extendboundedder-1-2">
+<li id="exercise_extendboundedder-1-2-1">
+<div class="para" id="exercise_extendboundedder-1-2-1-1">Show that there exists a continuous function <span class="process-math">\(g \colon [0,1) \to \R\)</span> such that <span class="process-math">\(f(x) = g(x)\)</span> for all <span class="process-math">\(x \neq 0\text{.}\)</span><br/> Hint: <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_unifcont.html#context_prop" title="Proposition 3.4.6">Proposition 3.4.6</a> and <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvt.html#exercise_boundeddermeanslip" title="Exercise 4.2.3">Exercise 4.2.3</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_extendboundedder-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 4.2.14.a"><a aria-label="Copy heading and permalink for Item 4.2.14.a" href="#exercise_extendboundedder-1-2-1" title="Copy heading and permalink for Item 4.2.14.a">🔗</a></div>
+</li>
+<li id="exercise_extendboundedder-1-2-2">
+<div class="para" id="exercise_extendboundedder-1-2-2-1">Find an example where the <span class="process-math">\(g\)</span> is not differentiable at <span class="process-math">\(x=0\text{.}\)</span> <br/> Hint: Consider something based on <span class="process-math">\(\sin(\ln x)\text{,}\)</span> and assume you know basic properties of <span class="process-math">\(\sin\)</span> and <span class="process-math">\(\ln\)</span> from calculus.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_extendboundedder-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 4.2.14.b"><a aria-label="Copy heading and permalink for Item 4.2.14.b" href="#exercise_extendboundedder-1-2-2" title="Copy heading and permalink for Item 4.2.14.b">🔗</a></div>
+</li>
+<li id="exercise_extendboundedder-1-2-3">
+<div class="para" id="exercise_extendboundedder-1-2-3-1">Instead of assuming that <span class="process-math">\(f'\)</span> is bounded, assume that <span class="process-math">\(\lim_{x \to 0} f'(x)
+= L\text{.}\)</span>  Prove that not only does <span class="process-math">\(g\)</span> exist but it is differentiable at <span class="process-math">\(0\)</span> and <span class="process-math">\(g'(0) = L\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_extendboundedder-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 4.2.14.c"><a aria-label="Copy heading and permalink for Item 4.2.14.c" href="#exercise_extendboundedder-1-2-3" title="Copy heading and permalink for Item 4.2.14.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 4.2.14"><a aria-label="Copy heading and permalink for Exercise 4.2.14" href="#exercise_extendboundedder" title="Copy heading and permalink for Exercise 4.2.14">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_mvt-8-15"><h4 class="heading"><span class="codenumber">4.2.15<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_mvt-8-15-1-1">Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvt.html#thm_cauchymvt" title="Theorem 4.2.5: Cauchy’s mean value theorem">Theorem 4.2.5</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_mvt-8-15-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.2.15"><a aria-label="Copy heading and permalink for Exercise 4.2.15" href="#sec_mvt-8-15" title="Copy heading and permalink for Exercise 4.2.15">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 4.2.6"><a aria-label="Copy heading and permalink for Exercises 4.2.6" href="#sec_mvt-8" title="Copy heading and permalink for Exercises 4.2.6">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 4.2: Mean value theorem"><a aria-label="Copy heading and permalink for Section 4.2: Mean value theorem" href="#sec_mvt" title="Copy heading and permalink for Section 4.2: Mean value theorem">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_der.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_taylor.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

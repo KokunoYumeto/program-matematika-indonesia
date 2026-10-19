@@ -1,0 +1,364 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Taylor’s theorem · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_taylor">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Taylor’s theorem</span>
+</h2>
+<section class="introduction" id="sec_taylor-2">
+<div class="para" id="sec_taylor-2-1">
+<em class="emphasis">Note: less than a lecture (optional section)</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_taylor-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section>
+<section class="subsection" id="sec_taylor-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.3.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Derivatives of higher orders</span>
+</h3>
+<div class="para" id="sec_taylor-3-2">When <span class="process-math">\(f \colon I \to \R\)</span> is differentiable, we obtain a function <span class="process-math">\(f' \colon I \to \R\text{.}\)</span>  The function <span class="process-math">\(f'\)</span> is called the <em class="emphasis">first derivative</em> of <span class="process-math">\(f\text{.}\)</span> If <span class="process-math">\(f'\)</span> is differentiable, we denote by <span class="process-math">\(f'' \colon I \to \R\)</span> the derivative of <span class="process-math">\(f'\text{.}\)</span>  The function <span class="process-math">\(f''\)</span> is called the <em class="emphasis">second derivative</em> of <span class="process-math">\(f\text{.}\)</span> We similarly obtain <span class="process-math">\(f'''\text{,}\)</span> <span class="process-math">\(f''''\text{,}\)</span> and so on. With a larger number of derivatives the notation would get out of hand; we denote by <span class="process-math">\(f^{(n)}\)</span> the <em class="emphasis"><span class="process-math">\(n\)</span>th derivative</em> of <span class="process-math">\(f\text{.}\)</span> When <span class="process-math">\(f\)</span> possesses <span class="process-math">\(n\)</span> derivatives, we say <span class="process-math">\(f\)</span> is <em class="emphasis"><span class="process-math">\(n\)</span> times differentiable</em>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_taylor-3-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 4.3.1: Derivatives of higher orders"><a aria-label="Copy heading and permalink for Subsection 4.3.1: Derivatives of higher orders" href="#sec_taylor-3" title="Copy heading and permalink for Subsection 4.3.1: Derivatives of higher orders">🔗</a></div>
+</section>
+<section class="subsection" id="sec_taylor-4">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.3.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Taylor’s theorem</span>
+</h3>
+<div class="para logical" id="sec_taylor-4-2">
+<div class="para">Taylor’s theorem<details aria-live="polite" class="ptx-footnote" id="sec_taylor-4-2-1"><summary class="ptx-footnote__number" title="Footnote 4.3.1"><sup> 1 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_taylor-4-2-1">Named for the English mathematician <a class="external" href="https://en.wikipedia.org/wiki/Brook_Taylor" target="_blank">Brook Taylor</a> (1685–1731). It was found by the Scottish mathematician <a class="external" href="https://en.wikipedia.org/wiki/James_Gregory_(mathematician)" target="_blank">James Gregory</a> (1638–1675).  The statement we give is due to <a class="external" href="https://en.wikipedia.org/wiki/Lagrange" target="_blank">Joseph-Louis Lagrange</a> (1736–1813).
+</div></details> (at least the version we give here) is a generalization of the <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvt.html#thm_mvt" title="Theorem 4.2.4: Mean value theorem">mean value theorem</a>. Mean value theorem says that up to a small error <span class="process-math">\(f(x)\)</span> for <span class="process-math">\(x\)</span> near <span class="process-math">\(x_0\)</span> can be approximated by <span class="process-math">\(f(x_0)\text{:}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_mvt.html" id="sec_taylor-4-2-7">
+\begin{equation}
+f(x) = f(x_0) + f'(c)(x-x_0),
+\end{equation}
+</div>
+<div class="para">where the “error” <span class="process-math">\(f'(c)(x-x_0)\)</span> is measured in terms of the first derivative at some point <span class="process-math">\(c\)</span> between <span class="process-math">\(x\)</span> and <span class="process-math">\(x_0\text{.}\)</span> Taylor’s theorem generalizes this result to higher derivatives. It tells us that up to a small error, any <span class="process-math">\(n\)</span> times differentiable function can be approximated at a point <span class="process-math">\(x_0\)</span> by a polynomial of degree <span class="process-math">\(n\text{.}\)</span>  The error of this approximation goes to zero faster than <span class="process-math">\({(x-x_0)}^{n}\)</span> as <span class="process-math">\(x\)</span> goes to <span class="process-math">\(x_0\text{.}\)</span> To see why this is a good approximation, notice that for a big <span class="process-math">\(n\text{,}\)</span> <span class="process-math">\({(x-x_0)}^n\)</span> is very small in a small interval around <span class="process-math">\(x_0\text{.}\)</span> We will require one more (so <span class="process-math">\(n+1\)</span>) derivative to write the error as we do in the mean value theorem.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_taylor-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_taylor-4-3"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.3.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_taylor-4-3-1-1">
+<div class="para">For an <span class="process-math">\(n\)</span> times differentiable function <span class="process-math">\(f\)</span> defined near a point <span class="process-math">\(x_0 \in \R\text{,}\)</span> define the <span class="process-math">\(n\)</span>th order <em class="emphasis">Taylor polynomial</em> for <span class="process-math">\(f\)</span> at <span class="process-math">\(x_0\)</span> as</div>
+<div class="displaymath process-math" id="sec_taylor-4-3-1-1-9">
+\begin{equation}
+\begin{split}
+P_n^{x_0}(x)
+&amp; \coloneqq
+\sum_{k=0}^n
+\frac{f^{(k)}(x_0)}{k!}{(x-x_0)}^k
+\\
+&amp; =
+f(x_0)
++ f'(x_0)(x-x_0)
++ \frac{f''(x_0)}{2}{(x-x_0)}^2
++ \frac{f^{(3)}(x_0)}{6}{(x-x_0)}^3
+\\
+&amp; \qquad
++ \cdots
++ \frac{f^{(n)}(x_0)}{n!}{(x-x_0)}^n .
+\end{split}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_taylor-4-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 4.3.1"><a aria-label="Copy heading and permalink for Definition 4.3.1" href="#sec_taylor-4-3" title="Copy heading and permalink for Definition 4.3.1">🔗</a></div>
+</article>
+<div class="para" id="sec_taylor-4-4">See <a class="internal" href="sec_taylor.html#fig_taylorsin" title="Figure 4.8">Figure 4.8</a> for the odd-degree Taylor polynomials for the sine function at <span class="process-math">\(x_0=0\text{.}\)</span> The even-degree terms are all zero, as even derivatives of sine are again sines, which are zero at the origin.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_taylor-4-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="fig_taylorsin"><img alt="The graph of the sine function is given. Also several approximations are given. First a straight line that is tangent at the origin is labeled as y equals P sub 1 super 0 of x. Second a graph of a cubic that is tangent to the graph of sine at the origin and somewhat approximates it nearby is labeled as y equals P sub 3 super 0 of x. Similarly with degree 5 and degree 7 approximations. The higher the degree the further away from the origin is the graph reasonably close to the sine function, for example the degree 7 approximation seems relatively close between two points where the sine is zero around the origin, that is, plus and minus pi." class="raimg" role="img" src="figures/taylorsin-mbx.svg" style="width:290pt; height:159pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>The odd degree Taylor polynomials for the sine function.<div class="autopermalink" data-description="Figure 4.8"><a aria-label="Copy heading and permalink for Figure 4.8" href="#fig_taylorsin" title="Copy heading and permalink for Figure 4.8">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para" id="sec_taylor-4-8">The statement of Taylor’s theorem that we give includes the <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvt.html#thm_mvt" title="Theorem 4.2.4: Mean value theorem">mean value theorem</a>, which can be thought of as Taylor’s theorem for <span class="process-math">\(n=0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_taylor-4-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="thm_taylor"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.3.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Taylor.</span>
+</h4>
+<div class="para logical" id="thm_taylor-3-1">
+<div class="para">Suppose <span class="process-math">\(f \colon [a,b] \to \R\)</span> is a function with <span class="process-math">\(n\)</span> continuous derivatives on <span class="process-math">\([a,b]\)</span> and such that <span class="process-math">\(f^{(n+1)}\)</span> exists on <span class="process-math">\((a,b)\text{.}\)</span> Given distinct points <span class="process-math">\(x_0\)</span> and <span class="process-math">\(x\)</span> in <span class="process-math">\([a,b]\text{,}\)</span> there is a point <span class="process-math">\(c\)</span> between <span class="process-math">\(x_0\)</span> and <span class="process-math">\(x\)</span> such that</div>
+<div class="displaymath process-math" id="thm_taylor-3-1-12">
+\begin{equation}
+f(x)=P_{n}^{x_0}(x)+\frac{f^{(n+1)}(c)}{(n+1)!}{(x-x_0)}^{n+1} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#thm_taylor-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 4.3.2: Taylor"><a aria-label="Copy heading and permalink for Theorem 4.3.2: Taylor" href="#thm_taylor" title="Copy heading and permalink for Theorem 4.3.2: Taylor">🔗</a></div>
+</article>
+<div class="para" id="sec_taylor-4-10">The term <span class="process-math">\(R_n^{x_0}(x)\coloneqq
+f(x)-P_n^{x_0}(x) =
+\frac{f^{(n+1)}(c)}{(n+1)!}{(x-x_0)}^{n+1}\)</span> is called the <em class="emphasis">remainder term</em>.  This form is called the <em class="emphasis">Lagrange form</em> of the remainder.  There are other ways to write the remainder term, but we skip those.  Note that <span class="process-math">\(c\)</span> depends on both <span class="process-math">\(x\)</span> and <span class="process-math">\(x_0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_taylor-4-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_taylor-4-11"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_taylor-4-11-1">
+<div class="para">Let <span class="process-math">\(M_{x,x_0}\)</span> be the number (depending on <span class="process-math">\(x\)</span> and <span class="process-math">\(x_0\)</span>) solving the equation</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_mvt.html ./knowl/xref/thm_mvt.html" id="sec_taylor-4-11-1-4">
+\begin{equation}
+f(x)=P_{n}^{x_0}(x)+M_{x,x_0}{(x-x_0)}^{n+1} .
+\end{equation}
+</div>
+<div class="para">Define a function <span class="process-math">\(g(s)\)</span> by</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_mvt.html ./knowl/xref/thm_mvt.html" id="sec_taylor-4-11-1-6">
+\begin{equation}
+g(s) \coloneqq f(s)-P_n^{x_0}(s)-M_{x,x_0}{(s-x_0)}^{n+1} .
+\end{equation}
+</div>
+<div class="para">We compute the <span class="process-math">\(k\)</span>th derivative at <span class="process-math">\(x_0\)</span> of the Taylor polynomial <span class="process-math">\({(P_n^{x_0})}^{(k)}(x_0) = f^{(k)}(x_0)\)</span> for <span class="process-math">\(k=0,1,2,\ldots,n\)</span> (the zeroth derivative of a function is the function itself).  Therefore,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_mvt.html ./knowl/xref/thm_mvt.html" id="sec_taylor-4-11-1-11">
+\begin{equation}
+g(x_0) = g'(x_0) = g''(x_0) = \cdots = g^{(n)}(x_0) = 0 .
+\end{equation}
+</div>
+<div class="para">In particular, <span class="process-math">\(g(x_0) = 0\text{.}\)</span> We also have <span class="process-math">\(g(x) = 0\text{.}\)</span> By the <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvt.html#thm_mvt" title="Theorem 4.2.4: Mean value theorem">mean value theorem</a>, there exists an <span class="process-math">\(x_1\)</span> between <span class="process-math">\(x_0\)</span> and <span class="process-math">\(x\)</span> such that <span class="process-math">\(g'(x_1) = 0\text{.}\)</span> Applying the <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvt.html#thm_mvt" title="Theorem 4.2.4: Mean value theorem">mean value theorem</a> to <span class="process-math">\(g'\text{,}\)</span> we obtain that there exists <span class="process-math">\(x_2\)</span> between <span class="process-math">\(x_0\)</span> and <span class="process-math">\(x_1\)</span> (and therefore between <span class="process-math">\(x_0\)</span> and <span class="process-math">\(x\)</span>) such that <span class="process-math">\(g''(x_2) = 0\text{.}\)</span>  We repeat the argument <span class="process-math">\(n+1\)</span> times to obtain a number <span class="process-math">\(x_{n+1}\)</span> between <span class="process-math">\(x_0\)</span> and <span class="process-math">\(x_n\)</span> (and therefore between <span class="process-math">\(x_0\)</span> and <span class="process-math">\(x\)</span>) such that <span class="process-math">\(g^{(n+1)}(x_{n+1}) = 0\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_taylor-4-11-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_taylor-4-11-2">
+<div class="para">Let <span class="process-math">\(c \coloneqq x_{n+1}\text{.}\)</span> We compute the <span class="process-math">\((n+1)\)</span>th derivative of <span class="process-math">\(g\)</span> to find</div>
+<div class="displaymath process-math" id="sec_taylor-4-11-2-4">
+\begin{equation}
+g^{(n+1)}(s) = f^{(n+1)}(s)-(n+1)!\,M_{x,x_0} .
+\end{equation}
+</div>
+<div class="para">Plugging in <span class="process-math">\(c\)</span> for <span class="process-math">\(s\text{,}\)</span> we obtain <span class="process-math">\(M_{x,x_0} = \frac{f^{(n+1)}(c)}{(n+1)!}\text{,}\)</span> and we are done.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_taylor-4-11-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 4.3.2.1"><a aria-label="Copy heading and permalink for Proof 4.3.2.1" href="#sec_taylor-4-11" title="Copy heading and permalink for Proof 4.3.2.1">🔗</a></div>
+</article>
+<div class="para" id="sec_taylor-4-12">In the proof, we found <span class="process-math">\({(P_n^{x_0})}^{(k)}(x_0) = f^{(k)}(x_0)\)</span> for <span class="process-math">\(k=0,1,2,\ldots,n\text{.}\)</span> Therefore, the Taylor polynomial has the same derivatives as <span class="process-math">\(f\)</span> at <span class="process-math">\(x_0\)</span> up to the <span class="process-math">\(n\)</span>th derivative.  That is why the Taylor polynomial is a good approximation to <span class="process-math">\(f\text{.}\)</span> Notice how in <a class="internal" href="sec_taylor.html#fig_taylorsin" title="Figure 4.8">Figure 4.8</a> the Taylor polynomials are reasonably good approximations to the sine near <span class="process-math">\(x=0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_taylor-4-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_taylor-4-13">We do not necessarily get good approximations by the Taylor polynomial everywhere. Consider expanding the function <span class="process-math">\(f(x) \coloneqq \frac{x}{1-x}\)</span> around 0, for <span class="process-math">\(x &lt; 1\text{,}\)</span> we get the graphs in <a class="internal" href="sec_taylor.html#fig_taylorgeom" title="Figure 4.9">Figure 4.9</a>.  The dotted lines are the first, second, and third degree approximations. The dashed line is the 20th degree polynomial. The approximation does seem to get better as the degree rises for <span class="process-math">\(x &gt; -1\text{.}\)</span> For <span class="process-math">\(x &lt; -1\text{,}\)</span> it in fact gets visibly worse. The polynomials are the partial sums of the geometric series <span class="process-math">\(\sum_{n=1}^\infty x^n\text{,}\)</span> and the series only converges on <span class="process-math">\((-1,1)\text{.}\)</span> See the discussion of power series in <a class="internal" href="sec_moreonseries.html" title="Section 2.6: More on series">Section 2.6</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_taylor-4-13" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="fig_taylorgeom"><img alt="In bold line is a graph of a function on the interval from minus 2 to 1, that comes in flat from the right from below the x-axis, crosses the x-axis at the origin, and then turns sharply upward leaving the picture before we get to 1. The graphs of the first three Taylor polynomials are shown in dotted line. That is, a straight line, a quadratic, and a cubic. They all seem to be somewhat reasonable approximation very near the origin but get worse as we get further. A dashed line signifying the degree 20 approximation is drawn and from some point slightly more than minus 1 until where the bold line leaves the picture on the right, we cannot tell the difference between it and the bold line. However, right around minus 1 if we move from right to left, it shoots upwards leaving the picture, so for x less than minus 1 the approximation would be ludicrously worse than the small degree approximations (which are not good already)." class="raimg" role="img" src="figures/taylorgeom-mbx.svg" style="width:290pt; height:146pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>The function <span class="process-math">\(\frac{x}{1-x}\text{,}\)</span> and the Taylor polynomials <span class="process-math">\(P_1^0\text{,}\)</span> <span class="process-math">\(P_2^0\text{,}\)</span> <span class="process-math">\(P_3^0\)</span> (all dotted), and the polynomial <span class="process-math">\(P_{20}^0\)</span> (dashed).<div class="autopermalink" data-description="Figure 4.9"><a aria-label="Copy heading and permalink for Figure 4.9" href="#fig_taylorgeom" title="Copy heading and permalink for Figure 4.9">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para logical" id="sec_taylor-4-17">
+<div class="para">If <span class="process-math">\(f\)</span> is <em class="emphasis">infinitely differentiable</em>, that is, if <span class="process-math">\(f\)</span> can be differentiated any number of times, then we define the <em class="emphasis">Taylor series</em>:</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_nonanalytic.html" id="sec_taylor-4-17-6">
+\begin{equation}
+\sum_{k=0}^\infty
+\frac{f^{(k)}(x_0)}{k!}{(x-x_0)}^k .
+\end{equation}
+</div>
+<div class="para">There is no guarantee that this series converges for any <span class="process-math">\(x \neq x_0\text{.}\)</span>  Even where it does converge, there is no guarantee that it converges to the function <span class="process-math">\(f\text{.}\)</span>  Functions <span class="process-math">\(f\)</span> whose Taylor series at every point <span class="process-math">\(x_0\)</span> converges to <span class="process-math">\(f\)</span> in some open interval containing <span class="process-math">\(x_0\)</span> are called <em class="emphasis">analytic functions</em>. Many functions one tends to see in practice are analytic. See <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_logandexp.html#exercise_nonanalytic" title="Exercise 5.4.11">Exercise 5.4.11</a>, for an example of a non-analytic function.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_taylor-4-17" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_taylor-4-18">The definition of derivative says that a function is differentiable if it is locally approximated by a line. We mention in passing that there exists a converse to Taylor’s theorem, which we will neither state nor prove, saying that if a function is locally approximated in a certain way by a polynomial of degree <span class="process-math">\(d\text{,}\)</span> then it has <span class="process-math">\(d\)</span> derivatives.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_taylor-4-18" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_taylor-4-19">Taylor’s theorem gives a quick proof of a version of the second derivative test. By a <em class="emphasis">strict relative minimum</em> of <span class="process-math">\(f\)</span> at <span class="process-math">\(c\text{,}\)</span> we mean that there exists a <span class="process-math">\(\delta &gt; 0\)</span> such that <span class="process-math">\(f(x) &gt; f(c)\)</span> for all <span class="process-math">\(x \in (c-\delta,c+\delta)\)</span> where <span class="process-math">\(x\neq c\text{.}\)</span> A <em class="emphasis">strict relative maximum</em> is defined similarly. Continuity of the second derivative is not needed, but the proof is more difficult and is left as an exercise.  The proof also generalizes into the <span class="process-math">\(n\)</span>th derivative test, which is also left as an exercise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_taylor-4-19" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_taylor-4-20"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.3.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Second derivative test.</span>
+</h4>
+<div class="para" id="sec_taylor-4-20-3-1">Suppose <span class="process-math">\(f \colon (a,b) \to \R\)</span> is twice continuously differentiable, <span class="process-math">\(x_0 \in (a,b)\text{,}\)</span> <span class="process-math">\(f'(x_0) = 0\)</span> and <span class="process-math">\(f''(x_0) &gt; 0\text{.}\)</span>  Then <span class="process-math">\(f\)</span> has a strict relative minimum at <span class="process-math">\(x_0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_taylor-4-20-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 4.3.3: Second derivative test"><a aria-label="Copy heading and permalink for Proposition 4.3.3: Second derivative test" href="#sec_taylor-4-20" title="Copy heading and permalink for Proposition 4.3.3: Second derivative test">🔗</a></div>
+</article>
+<article class="proof" id="sec_taylor-4-21"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_taylor-4-21-1">
+<div class="para">As <span class="process-math">\(f''\)</span> is continuous, there exists a <span class="process-math">\(\delta &gt; 0\)</span> such that <span class="process-math">\(f''(c) &gt; 0\)</span> for all <span class="process-math">\(c \in (x_0-\delta,x_0+\delta)\text{,}\)</span> see <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_cont.html#exercise_positivecontneigh" title="Exercise 3.2.11">Exercise 3.2.11</a>. Take <span class="process-math">\(x \in (x_0-\delta,x_0+\delta)\text{,}\)</span> <span class="process-math">\(x \neq x_0\text{.}\)</span> Taylor’s theorem says that for some <span class="process-math">\(c\)</span> between <span class="process-math">\(x_0\)</span> and <span class="process-math">\(x\text{,}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_positivecontneigh.html" id="sec_taylor-4-21-1-11">
+\begin{equation}
+f(x) 
+=
+f(x_0) + f'(x_0) (x-x_0) +
+\frac{f''(c)}{2}{(x-x_0)}^{2} 
+=
+f(x_0) + \frac{f''(c)}{2}{(x-x_0)}^{2}  .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(f''(c) &gt; 0\)</span> and <span class="process-math">\({(x-x_0)}^2 &gt; 0\text{,}\)</span> we have <span class="process-math">\(f(x) &gt; f(x_0)\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_taylor-4-21-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 4.3.2.2"><a aria-label="Copy heading and permalink for Proof 4.3.2.2" href="#sec_taylor-4-21" title="Copy heading and permalink for Proof 4.3.2.2">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 4.3.2: Taylor’s theorem"><a aria-label="Copy heading and permalink for Subsection 4.3.2: Taylor’s theorem" href="#sec_taylor-4" title="Copy heading and permalink for Subsection 4.3.2: Taylor’s theorem">🔗</a></div>
+</section>
+<section class="exercises" id="sec_taylor-5">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.3.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_taylor-5-1"><h4 class="heading"><span class="codenumber">4.3.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_taylor-5-1-1-1">Compute the <span class="process-math">\(n\)</span>th Taylor polynomial at <span class="process-math">\(0\)</span> for the exponential function.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_taylor-5-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.3.1"><a aria-label="Copy heading and permalink for Exercise 4.3.1" href="#sec_taylor-5-1" title="Copy heading and permalink for Exercise 4.3.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_taylor-5-2"><h4 class="heading"><span class="codenumber">4.3.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_taylor-5-2-1-1">Suppose <span class="process-math">\(p\)</span> is a polynomial of degree <span class="process-math">\(d\text{.}\)</span>  Given <span class="process-math">\(x_0 \in \R\text{,}\)</span> show that the <span class="process-math">\(d\)</span>th Taylor polynomial for <span class="process-math">\(p\)</span> at <span class="process-math">\(x_0\)</span> is equal to <span class="process-math">\(p\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_taylor-5-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.3.2"><a aria-label="Copy heading and permalink for Exercise 4.3.2" href="#sec_taylor-5-2" title="Copy heading and permalink for Exercise 4.3.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_taylor-5-3"><h4 class="heading"><span class="codenumber">4.3.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_taylor-5-3-1-1">Let <span class="process-math">\(f(x) \coloneqq \sabs{x}^3\text{.}\)</span>  Compute <span class="process-math">\(f'(x)\)</span> and <span class="process-math">\(f''(x)\)</span> for all <span class="process-math">\(x\text{,}\)</span> but show that <span class="process-math">\(f^{(3)}(0)\)</span> does not exist.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_taylor-5-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.3.3"><a aria-label="Copy heading and permalink for Exercise 4.3.3" href="#sec_taylor-5-3" title="Copy heading and permalink for Exercise 4.3.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_taylor-5-4"><h4 class="heading"><span class="codenumber">4.3.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_taylor-5-4-1-1">Suppose <span class="process-math">\(f \colon \R \to \R\)</span> has <span class="process-math">\(n\)</span> continuous derivatives.  Show that for every <span class="process-math">\(x_0 \in \R\text{,}\)</span> there exist polynomials <span class="process-math">\(P\)</span> and <span class="process-math">\(Q\)</span> of degree <span class="process-math">\(n\)</span> and an <span class="process-math">\(\epsilon &gt; 0\)</span> such that <span class="process-math">\(P(x) \leq f(x) \leq Q(x)\)</span> for all <span class="process-math">\(x \in
+[x_0,x_0+\epsilon]\)</span>  and <span class="process-math">\(Q(x)-P(x) = \lambda {(x-x_0)}^n\)</span> for some <span class="process-math">\(\lambda \geq 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_taylor-5-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.3.4"><a aria-label="Copy heading and permalink for Exercise 4.3.4" href="#sec_taylor-5-4" title="Copy heading and permalink for Exercise 4.3.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_taylor-5-5"><h4 class="heading"><span class="codenumber">4.3.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_taylor-5-5-1-1">If <span class="process-math">\(f \colon [a,b] \to \R\)</span> has <span class="process-math">\(n+1\)</span> continuous derivatives<details aria-live="polite" class="ptx-footnote" id="sec_taylor-5-5-1-1-3"><summary class="ptx-footnote__number" title="Footnote 4.3.2"><sup> 2 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_taylor-5-5-1-1-3">The same statement holds if we only require <span class="process-math">\(n\)</span> derivatives, but it is quite a bit harder to prove.
+</div></details> and <span class="process-math">\(x_0 \in [a,b]\text{,}\)</span> prove <span class="process-math">\(\lim\limits_{x\to x_0} \frac{R_n^{x_0}(x)}{{(x-x_0)}^n} = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_taylor-5-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.3.5"><a aria-label="Copy heading and permalink for Exercise 4.3.5" href="#sec_taylor-5-5" title="Copy heading and permalink for Exercise 4.3.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_taylor-5-6"><h4 class="heading"><span class="codenumber">4.3.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_taylor-5-6-1-1">Suppose <span class="process-math">\(f \colon [a,b] \to \R\)</span> has <span class="process-math">\(n+1\)</span> continuous derivatives and <span class="process-math">\(x_0 \in (a,b)\text{.}\)</span> Prove: <span class="process-math">\(f^{(k)}(x_0) = 0\)</span> for all <span class="process-math">\(k = 0, 1, 2, \ldots, n\)</span> if and only if <span class="process-math">\(\lim\limits_{x\to x_0} \frac{f(x)}{{(x-x_0)}^{n+1}}\)</span> exists.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_taylor-5-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.3.6"><a aria-label="Copy heading and permalink for Exercise 4.3.6" href="#sec_taylor-5-6" title="Copy heading and permalink for Exercise 4.3.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_taylor-5-7"><h4 class="heading"><span class="codenumber">4.3.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_taylor-5-7-1-1">Suppose <span class="process-math">\(a,b,c \in \R\)</span> and <span class="process-math">\(f \colon \R \to \R\)</span> is twice differentiable, <span class="process-math">\(f''(x) = a\)</span> for all <span class="process-math">\(x\text{,}\)</span> <span class="process-math">\(f'(0) = b\text{,}\)</span> and <span class="process-math">\(f(0) = c\text{.}\)</span>  Find <span class="process-math">\(f\)</span> and prove that it is the unique differentiable function with this property.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_taylor-5-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.3.7"><a aria-label="Copy heading and permalink for Exercise 4.3.7" href="#sec_taylor-5-7" title="Copy heading and permalink for Exercise 4.3.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_taylor-5-8"><h4 class="heading"><span class="codenumber">4.3.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_taylor-5-8-1-1">
+<em class="emphasis">(Challenging)</em>   Show that a simple converse to Taylor’s theorem does not hold. Find a function <span class="process-math">\(f \colon \R \to \R\)</span> with no second derivative at <span class="process-math">\(x=0\)</span> such that <span class="process-math">\(\babs{f(x)} \leq \babs{x^3}\text{,}\)</span> that is, <span class="process-math">\(f\)</span> goes to zero at 0 faster than <span class="process-math">\(x^2\text{,}\)</span> and while <span class="process-math">\(f'(0)\)</span> exists, <span class="process-math">\(f''(0)\)</span> does not.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_taylor-5-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.3.8"><a aria-label="Copy heading and permalink for Exercise 4.3.8" href="#sec_taylor-5-8" title="Copy heading and permalink for Exercise 4.3.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_extendboundedder2"><h4 class="heading"><span class="codenumber">4.3.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_extendboundedder2-1-1">Suppose <span class="process-math">\(f \colon (0,1) \to \R\)</span> is differentiable and <span class="process-math">\(f''\)</span> is bounded.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_extendboundedder2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="exercise_extendboundedder2-1-2">
+<li id="exercise_extendboundedder2-1-2-1">
+<div class="para" id="exercise_extendboundedder2-1-2-1-1">Show that there exists a once differentiable function <span class="process-math">\(g \colon [0,1) \to \R\)</span> such that <span class="process-math">\(f(x) = g(x)\)</span> for all <span class="process-math">\(x \neq 0\text{.}\)</span>  Hint: See <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvt.html#exercise_extendboundedder" title="Exercise 4.2.14">Exercise 4.2.14</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_extendboundedder2-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 4.3.9.a"><a aria-label="Copy heading and permalink for Item 4.3.9.a" href="#exercise_extendboundedder2-1-2-1" title="Copy heading and permalink for Item 4.3.9.a">🔗</a></div>
+</li>
+<li id="exercise_extendboundedder2-1-2-2">
+<div class="para" id="exercise_extendboundedder2-1-2-2-1">Find an example where the <span class="process-math">\(g\)</span> is not twice differentiable at <span class="process-math">\(x=0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_extendboundedder2-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 4.3.9.b"><a aria-label="Copy heading and permalink for Item 4.3.9.b" href="#exercise_extendboundedder2-1-2-2" title="Copy heading and permalink for Item 4.3.9.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 4.3.9"><a aria-label="Copy heading and permalink for Exercise 4.3.9" href="#exercise_extendboundedder2" title="Copy heading and permalink for Exercise 4.3.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_taylor-5-10"><h4 class="heading"><span class="codenumber">4.3.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_taylor-5-10-1-1">Prove the <em class="emphasis"><span class="process-math">\(n\)</span>th derivative test</em>. Suppose <span class="process-math">\(n \in \N\text{,}\)</span> <span class="process-math">\(x_0 \in (a,b)\text{,}\)</span> and <span class="process-math">\(f \colon (a,b) \to \R\)</span> is <span class="process-math">\(n\)</span> times continuously differentiable, with <span class="process-math">\(f^{(k)}(x_0) = 0\)</span> for <span class="process-math">\(k=1,2,\ldots,n-1\text{,}\)</span> and <span class="process-math">\(f^{(n)}(x_0)
+\neq 0\text{.}\)</span> Prove:<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_taylor-5-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_taylor-5-10-1-2">
+<li id="sec_taylor-5-10-1-2-1">
+<div class="para" id="sec_taylor-5-10-1-2-1-1">If <span class="process-math">\(n\)</span> is odd, then <span class="process-math">\(f\)</span> has neither a relative minimum, nor a maximum at <span class="process-math">\(x_0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_taylor-5-10-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 4.3.10.a"><a aria-label="Copy heading and permalink for Item 4.3.10.a" href="#sec_taylor-5-10-1-2-1" title="Copy heading and permalink for Item 4.3.10.a">🔗</a></div>
+</li>
+<li id="sec_taylor-5-10-1-2-2">
+<div class="para" id="sec_taylor-5-10-1-2-2-1">If <span class="process-math">\(n\)</span> is even, then <span class="process-math">\(f\)</span> has a strict relative minimum at <span class="process-math">\(x_0\)</span> if <span class="process-math">\(f^{(n)}(x_0) &gt; 0\)</span> and a strict relative maximum at <span class="process-math">\(x_0\)</span> if <span class="process-math">\(f^{(n)}(x_0) &lt; 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_taylor-5-10-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 4.3.10.b"><a aria-label="Copy heading and permalink for Item 4.3.10.b" href="#sec_taylor-5-10-1-2-2" title="Copy heading and permalink for Item 4.3.10.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 4.3.10"><a aria-label="Copy heading and permalink for Exercise 4.3.10" href="#sec_taylor-5-10" title="Copy heading and permalink for Exercise 4.3.10">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_taylor-5-11"><h4 class="heading"><span class="codenumber">4.3.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_taylor-5-11-1-1">Prove the more general version of the second derivative test. Suppose <span class="process-math">\(f \colon (a,b) \to \R\)</span> is differentiable and <span class="process-math">\(x_0 \in (a,b)\)</span> is such that, <span class="process-math">\(f'(x_0) = 0\text{,}\)</span> <span class="process-math">\(f''(x_0)\)</span> exists, and <span class="process-math">\(f''(x_0) &gt; 0\text{.}\)</span> Prove that <span class="process-math">\(f\)</span> has a strict relative minimum at <span class="process-math">\(x_0\text{.}\)</span>  Hint: Consider the limit definition of <span class="process-math">\(f''(x_0)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_taylor-5-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.3.11"><a aria-label="Copy heading and permalink for Exercise 4.3.11" href="#sec_taylor-5-11" title="Copy heading and permalink for Exercise 4.3.11">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 4.3.3"><a aria-label="Copy heading and permalink for Exercises 4.3.3" href="#sec_taylor-5" title="Copy heading and permalink for Exercises 4.3.3">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 4.3: Taylor’s theorem"><a aria-label="Copy heading and permalink for Section 4.3: Taylor’s theorem" href="#sec_taylor" title="Copy heading and permalink for Section 4.3: Taylor’s theorem">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_mvt.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_ift.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

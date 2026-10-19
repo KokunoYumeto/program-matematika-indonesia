@@ -1,0 +1,370 @@
+\section{Complex exponential and trigonometric functions}
+\label{sec:complexexp}
+
+%mbxINTROSUBSECTION
+
+\sectionnotes{1 lecture}
+
+\subsection{The complex exponential}
+
+Let
+\begin{equation*}
+E(z) \coloneqq \sum_{k=0}^\infty \frac{1}{k!} z^k .
+\end{equation*}
+This series converges for all $z \in \C$.
+So by
+\corref{cor:powerseranalytic}, $E$ is analytic on $\C$.   We notice that $E(0) = 1$,
+and that for $z=x \in \R$, $E(x) \in \R$.  Keeping $x$ real, direct
+computation shows
+\begin{equation*}
+\frac{d}{dx} \bigl( E(x) \bigr) = E(x) .
+\end{equation*}
+In \volIref{\sectionref*{vI-sec:logandexp} of volume I}{\sectionref{sec:logandexp}} (or by Picard's theorem), we proved that
+the unique function on the real line satisfying $E' = E$ and
+$E(0) = 1$ is the exponential.  In other words, for $x \in \R$, $e^x = E(x)$.
+
+For complex numbers $z$, we define\glsadd{not:complexexp}
+\begin{equation*}
+e^z \coloneqq E(z) = 
+\sum_{k=0}^\infty \frac{1}{k!} z^k .
+\end{equation*}
+On the real line, this new definition agrees with our previous one.
+See \figureref{fig:complexexpgraphs}.  Notice that in the $x$ direction
+(the real direction)
+the graph behaves like the real exponential, and in the $y$ direction
+(the imaginary direction) the graph oscillates.
+
+\begin{myfigureht}
+\myincludepdft{real_imag_exp}{%
+The surface graphs. 
+For a fixed x both graphs are sinusoidal in the y direction
+with the amplitude of the oscillations being larger for larger x.
+In fact for negative x the graph is so small at this scale that it is
+impossible to note the oscillations there.
+In the right graph the sinusoidal wave is shifted so that
+on the left the graph goes up exponentially above the x-axis
+while on the right the graph above the x-axis is simply zero,
+that is the x-axis is contained in the graph.  The graph above
+x-axis is marked with a bold line on the graph.}
+\caption{Graphs of the real part (left) and imaginary part (right)
+of the complex exponential $e^z = e^{x+iy}$.  The $x$-axis goes from $-4$ to
+$4$, the $y$-axis goes from $-6$ to $6$, and the vertical axis goes from
+$-e^{4} \approx -54.6$
+to
+$e^{4} \approx 54.6$.  The plot of the real exponential ($y=0$)
+is marked in a bold line.\label{fig:complexexpgraphs}}
+\end{myfigureht}
+
+\begin{prop}[Law of exponents\index{law of exponents}]
+Let $z,w \in \C$ be complex numbers.  Then
+\begin{equation*}
+e^{z+w} = e^z e^w.
+\end{equation*}
+\end{prop}
+
+\begin{proof}
+We already know that
+the equality
+$e^{x+y} = e^x e^y$ holds for all
+real numbers $x$ and $y$.
+For every fixed $y \in \R$, consider the expressions as
+functions of $x$ and apply the identity theorem
+(\thmref{thm:identityanalytic}) to get that
+$e^{z+y} = e^ze^y$ for all $z \in \C$.  Fixing an arbitrary $z \in \C$,
+we get
+$e^{z+y} = e^ze^y$ for all $y \in \R$.  Again by the identity theorem 
+$e^{z+w} = e^z e^w$
+for all $w \in \C$.
+\end{proof}
+
+A simple consequence of the proposition is that $e^z \neq 0$ for all $z \in \C$,
+as $e^z e^{-z} = e^{z-z} = 1$.
+This computation means that ${(e^z)}^{-1} = e^{-z}$.
+Combining that fact with the law of exponents gives
+\begin{equation*}
+{(e^z)}^{n} = e^{nz} \qquad \text{for all } n \in \Z.
+\end{equation*}
+A yet more complicated consequence is that we
+can compute the power series for the exponential at any point $a \in
+\C$:
+\begin{equation*}
+e^z = e^a e^{z-a} = \sum_{k=0}^\infty \frac{e^a}{k!} {(z-a)}^k .
+\end{equation*}
+
+\subsection{Trigonometric functions and $\pi$}
+
+We can now finally define \emph{\myindex{sine}} and \emph{\myindex{cosine}}
+by the equation
+\begin{equation*}
+e^{x+iy} = e^x \bigl( \cos(y) + i \sin(y) \bigr) .
+\end{equation*}
+In fact, we define sine and cosine for all complex $z$:
+\glsadd{not:sin}\glsadd{not:cos}
+\begin{equation*}
+\cos(z) \coloneqq \frac{e^{iz} + e^{-iz}}{2}
+\qquad\text{and}\qquad
+\sin(z) \coloneqq \frac{e^{iz} - e^{-iz}}{2i} .
+\end{equation*}
+
+Let us use our definition to prove common properties of
+sine and cosine.  In the process, we also define the
+number $\pi$.
+
+\begin{prop}
+The sine and cosine functions have the following properties:
+\begin{enumerate}[(i)]
+\item For all $z \in \C$,\index{Euler's formula}
+\begin{equation*}
+e^{iz} = \cos(z) + i\sin(z) \qquad
+\text{(Euler's formula)}.
+\end{equation*}
+\item $\cos(0) = 1$, $\sin(0) = 0$.
+\item For all $z \in \C$,
+\begin{equation*}
+\cos(-z) = \cos(z), \qquad
+\sin(-z) = -\sin(z).
+\end{equation*}
+\item For all $z \in \C$,
+\begin{equation*}
+\cos(z) = \sum_{k=0}^\infty \frac{{(-1)}^k}{(2k)!} z^{2k} ,
+\qquad
+\sin(z) = \sum_{k=0}^\infty \frac{{(-1)}^k}{(2k+1)!} z^{2k+1} .
+\end{equation*}
+\item For all $x \in \R$
+\begin{equation*}
+\cos(x) = \Re (e^{ix})
+\qquad\text{and}\qquad
+\sin(x) = \Im (e^{ix}) .
+\end{equation*}
+\item For all $z \in \C$,
+\begin{equation*}
+{\bigl( \cos(z) \bigr)}^2 + {\bigl( \sin(z) \bigr)}^2 = 1 .
+\end{equation*}
+\item For all $x \in \R$,
+\begin{equation*}
+\babs{\sin(x)} \leq 1, \qquad \babs{\cos(x)} \leq 1 .
+\end{equation*}
+\item For all $x \in \R$,
+\begin{equation*}
+\frac{d}{dx} \bigl[ \cos(x) \bigr] = -\sin(x)
+\qquad \text{and} \qquad
+\frac{d}{dx} \bigl[ \sin(x) \bigr] = \cos(x) .
+\end{equation*}
+\item For all $x \geq 0$,
+\begin{equation*}
+\sin(x) \leq x .
+\end{equation*}
+\item
+There exists an $x > 0$ such that $\cos(x) = 0$.  We define
+\glsadd{not:pi}
+\begin{equation*}
+\pi \coloneqq 2 \, \inf \{ x > 0 : \cos(x) = 0 \} .
+\end{equation*}
+\item
+For all $z \in \C$, 
+\begin{equation*}
+e^{2\pi i} = 1 \qquad \text{and} \qquad e^{z + i 2\pi} = e^z.
+\end{equation*}
+\item
+Sine and cosine are $2\pi$-periodic and not periodic with any smaller
+period.  That is, $2\pi$ is the smallest number such that for all $z \in \C$,
+\begin{equation*}
+\sin(z+2\pi) = \sin(z)
+\qquad \text{and} \qquad
+\cos(z+2\pi) = \cos(z) .
+\end{equation*}
+\item
+The function $x \mapsto e^{ix}$ is a bijective map from $[0,2\pi)$
+onto the set of $z \in \C$ such that $\sabs{z} = 1$.
+\end{enumerate}
+\end{prop}
+
+The proposition immediately implies that $\sin(x)$ and $\cos(x)$ are 
+real whenever $x$ is real.
+
+\begin{proof}
+The first three items follow directly from the definition.
+The computation of the power series for both is left as an exercise.
+As the complex conjugate is a continuous function, the definition
+of $e^z$ implies
+$\overline{e^z} = e^{\bar{z}}$.  If
+$x$ is real,
+\begin{equation*}
+\overline{e^{ix}} = e^{-ix} .
+\end{equation*}
+Thus for real $x$,
+$\cos(x) =
+\frac{e^{ix}+e^{-ix}}{2} =
+\frac{e^{ix}+\overline{e^{ix}}}{2} =
+\Re (e^{ix})$
+and similarly $\sin(x) = \Im (e^{ix})$.
+
+For real $x$, we compute
+\begin{equation*}
+1 =  e^{ix} e^{-ix}
+= e^{ix} \, \overline{e^{ix}}
+= \sabs{e^{ix}}^2
+= \babs{\cos(x) + i \sin(x)}^2
+= {\bigl( \cos(x) \bigr)}^2 + {\bigl( \sin(x) \bigr)}^2 .
+\end{equation*}
+A slightly more complicated computation shows this fact for
+complex numbers, see \exerciseref{exercise:cossinidentity}.
+In particular, $e^{ix}$ is \emph{\myindex{unimodular}} for real $x$;
+the values lie on the unit circle.
+A square of a real number is always nonnegative:
+\begin{equation*}
+{\bigl(\sin(x)\bigr)}^2 = 1-{\bigl(\cos(x)\bigr)}^2 \leq 1 .
+\end{equation*}
+So $\babs{\sin(x)} \leq 1$ and similarly 
+$\babs{\cos(x)} \leq 1$.
+
+We leave the computation of the derivatives to the reader as exercises.
+Let us prove that $\sin(x) \leq x$ for $x \geq 0$.
+Consider
+$f(x) \coloneqq x-\sin(x)$ and differentiate:
+\begin{equation*}
+f'(x) = \frac{d}{dx} \bigl[ x - \sin(x) \bigr]
+=
+1 -\cos(x) \geq 0 ,
+\end{equation*}
+for all $x \in \R$ as $\babs{\cos(x)} \leq 1$.
+In other words, $f$ is increasing and $f(0) = 0$.
+So $f$ must be nonnegative when $x \geq 0$ and hence, $\sin(x) \leq x$.
+
+Next, we claim there exists a positive $x$ such that $\cos(x) = 0$.
+As $\cos(0) = 1 > 0$, $\cos(x) > 0$
+for $x$ near $0$.  Namely,
+there is some
+$y > 0$ such that $\cos(x) > 0$ on $[0,y)$.
+Then $\sin(x)$ is strictly
+increasing on $[0,y)$.  As $\sin(0) = 0$, we have
+$\sin(x) > 0$ for $x \in (0,y)$.  Take $a \in (0,y)$.  By
+the mean value theorem, there is a $c \in (a,y)$ such that
+\begin{equation*}
+2 \geq \cos(a)-\cos(y) = \sin(c)(y-a) \geq \sin(a)(y-a) .
+\end{equation*}
+As $a \in (0,y)$, we have $\sin(a) > 0$ and so
+\begin{equation*}
+y \leq \frac{2}{\sin(a)} + a .
+\end{equation*}
+Hence there is some largest $y$ such that $\cos(x) > 0$ in $[0,y)$,
+and let $y$ be the largest such number.
+By continuity, $\cos(y) = 0$.
+In fact, $y$ is the
+smallest positive $y$ such that $\cos(y) = 0$.  As mentioned,
+$\pi$ is defined to be $2y$.
+
+As $\cos(\nicefrac{\pi}{2}) = 0$, we find
+${\bigl(\sin(\nicefrac{\pi}{2})\bigr)}^2 = 1$.
+As $\sin$ is positive on $(0,\nicefrac{\pi}{2})$, we have
+$\sin(\nicefrac{\pi}{2}) = 1$.
+Hence,
+\begin{equation*}
+e^{i \pi /2} = i ,
+\end{equation*}
+and by the law of exponents,
+\begin{equation*}
+e^{i \pi} = -1 ,
+\qquad 
+e^{i 2\pi} = 1 .
+\end{equation*}
+So $e^{i2\pi} = 1 = e^0$.  The law of exponents also says
+\begin{equation*}
+e^{z+i2\pi} = e^z e^{i2\pi} = e^z
+\end{equation*}
+for all $z \in \C$.  Immediately, we also obtain
+$\cos(z+2\pi) = \cos(z)$ and $\sin(z+2\pi) = \sin(z)$.
+So $\sin$ and $\cos$ are $2\pi$-periodic.
+
+We claim that $\sin$ and $\cos$ are not periodic with a smaller period.  It
+suffices to show that if $e^{ix} = 1$ for the
+smallest positive $x$, then
+$x = 2\pi$.  Let $x$ be the smallest positive $x$ such that
+$e^{ix} = 1$.
+Of course, $x \leq 2\pi$.
+By the law of exponents,
+\begin{equation*}
+{\bigl(e^{ix/4}\bigr)}^4 = 1 .
+\end{equation*}
+If $e^{ix/4} = a+ib$, then
+\begin{equation*}
+{(a+ib)}^4
+=a^4-6a^2b^2+b^4 + i\bigl(4ab(a^2-b^2)\bigr)
+=1 .
+\end{equation*}
+Then either $a = 0$ or $a^2 = b^2$.
+As $\nicefrac{x}{4} \leq \nicefrac{\pi}{2}$, we have $a = \cos(\nicefrac{x}{4}) \geq 0$ and
+$b = \sin(\nicefrac{x}{4}) > 0$.
+If $a^2=b^2$, then
+$a^4-6a^2b^2+b^4 = -4a^4 < 0$ and in particular not equal to 1.
+Therefore $a=0$, in which case $\nicefrac{x}{4} = \nicefrac{\pi}{2}$.
+Hence $2\pi$ is the smallest period we could choose for $e^{ix}$
+and so also for $\cos$ and $\sin$.
+
+Finally, we wish to show that $e^{ix}$ is one-to-one and onto
+from the set $[0,2\pi)$ to the set of $z \in \C$ such that
+$\sabs{z} = 1$.  Suppose $e^{ix} = e^{iy}$ and 
+$x > y$.  Then
+$e^{i(x-y)} = 1$, meaning $x-y$ is a multiple of $2\pi$ and hence
+only one of them can live in $[0,2\pi)$.
+To show $e^{ix}$ is onto, pick $(a,b) \in \R^2$ such that $a^2+b^2 = 1$.
+Suppose first that $a,b \geq 0$.  By the intermediate value theorem,
+there must exist an $x \in [0,\nicefrac{\pi}{2}]$ such that
+$\cos(x) = a$, and hence $b^2 = \bigl(\sin(x)\bigr)^2$.  As
+$b$ and $\sin(x)$ are nonnegative, $b = \sin(x)$.
+Since $-\sin(x)$ is the derivative of $\cos(x)$
+and $\cos(-x) = \cos(x)$,
+we have that $\sin(x) < 0$ for $x \in [\nicefrac{-\pi}{2},0)$.
+Using the same reasoning, we obtain that
+if $a > 0$ and $b \leq 0$, we can find an $x$ in $[\nicefrac{-\pi}{2},0)$,
+and by periodicity,
+$x \in [\nicefrac{3\pi}{2},2\pi)$ such that $\cos(x) = a$ and $\sin(x)=b$.
+Multiplying by $-1$ is the same as multiplying by $e^{i\pi}$ or
+$e^{-i\pi}$.  So we can always assume that $a \geq 0$ (details are left
+as an exercise).
+\end{proof}
+
+\subsection{The unit circle and polar coordinates}
+
+The arclength of a curve parametrized by $\gamma \colon [a,b] \to \C$ is given
+by
+\begin{equation*}
+\int_a^b \babs{\gamma'(t)} \, dt .
+\end{equation*}
+We have that $e^{it}$ parametrizes the circle for $t$ in $[0,2\pi)$.
+As $\frac{d}{dt} \bigl( e^{it} \bigr) = ie^{it}$, the circumference of the
+circle (the arclength) is
+\begin{equation*}
+\int_0^{2\pi} \sabs{i e^{it}}  \,  dt
+=
+\int_0^{2\pi} 1  \,  dt  = 2\pi .
+\end{equation*}
+
+More generally, $e^{it}$ parametrizes the circle by arclength.
+That is, $t$ measures the arclength on a circle of radius 1 by
+the angle in radians.  So the definitions of $\sin$ and $\cos$ given
+above agree with the standard geometric definitions.
+
+All the points on the unit circle can be achieved by
+$e^{it}$ for some $t$.
+Therefore,
+we can write
+a complex number $z \in \C$
+(in what we call \emph{\myindex{polar coordinates}}) as
+\begin{equation*}
+z = r e^{i\theta}
+\end{equation*}
+for some $r \geq 0$ and $\theta \in \R$.  The $\theta$ is, of course,
+not unique as $\theta$ or $\theta+2\pi$ gives the same number.
+The law of exponents $e^{a+b} = e^a e^b$ leads to a useful formula for powers
+and products of complex numbers in polar coordinates:
+\begin{equation*}
+{(r e^{i\theta})}^n
+= r^n e^{i n \theta} ,
+\qquad
+(r e^{i\theta})
+(s e^{i\gamma})
+=
+rs e^{i(\theta+\gamma)} .
+\end{equation*}
+

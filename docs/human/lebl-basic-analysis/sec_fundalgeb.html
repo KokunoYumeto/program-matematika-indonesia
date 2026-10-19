@@ -1,0 +1,320 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Maximum principle and the fundamental theorem of algebra · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_fundalgeb">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.5</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Maximum principle and the fundamental theorem of algebra</span>
+</h2>
+<div class="para" id="sec_fundalgeb-2">
+<em class="emphasis">Note: half a lecture, optional</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fundalgeb-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_fundalgeb-3">In this section we study the local behavior of polynomials, and analytic functions in general, and the growth of polynomials as <span class="process-math">\(z\)</span> goes to infinity. As an application, we prove the fundamental theorem of algebra: Any nonconstant polynomial has a complex root. We consider polynomials in a complex variable <span class="process-math">\(z\)</span> and so we may emphasize their domain by calling them complex polynomials.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fundalgeb-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="lemma theorem-like" id="lemma_polyalwaysgetssmaller"><h3 class="heading">
+<span class="type">Lemma</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.5.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="lemma_polyalwaysgetssmaller-1-1">Let <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> let <span class="process-math">\(p(z)\)</span> be a nonconstant complex polynomial, or more generally a nonconstant power series converging in <span class="process-math">\(B(z_0,\epsilon)\text{,}\)</span> and suppose <span class="process-math">\(p(z_0) \neq 0\text{.}\)</span> Then there exists a <span class="process-math">\(w \in B(z_0,\epsilon)\)</span> such that <span class="process-math">\(\babs{p(w)} &lt; \babs{p(z_0)}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#lemma_polyalwaysgetssmaller-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Lemma 11.5.1"><a aria-label="Copy heading and permalink for Lemma 11.5.1" href="#lemma_polyalwaysgetssmaller" title="Copy heading and permalink for Lemma 11.5.1">🔗</a></div>
+</article>
+<article class="proof" id="sec_fundalgeb-5"><h3 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h3>
+<div class="para logical" id="sec_fundalgeb-5-1">
+<div class="para">We prove this lemma for a polynomial and leave the general case as <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_fundalgeb.html#exercise_minprinciple" title="Exercise 11.5.1">Exercise 11.5.1</a>. Without loss of generality assume that <span class="process-math">\(z_0 = 0\)</span> and <span class="process-math">\(p(0) = 1\text{.}\)</span>  Write</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_minprinciple.html" id="sec_fundalgeb-5-1-4">
+\begin{equation}
+p(z) = 1+a_kz^k + a_{k+1}z^{k+1} + \cdots + a_d z^d ,
+\end{equation}
+</div>
+<div class="para">where <span class="process-math">\(a_k \neq 0\text{.}\)</span>  Pick <span class="process-math">\(t\)</span> such that <span class="process-math">\(a_k e^{ikt} = -\sabs{a_k}\text{,}\)</span> which we can do by the discussion on trigonometric functions.  Suppose <span class="process-math">\(r &gt; 0\)</span> is small enough such that <span class="process-math">\(1-r^k \sabs{a_k} &gt; 0\text{.}\)</span>  We have</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_minprinciple.html" id="sec_fundalgeb-5-1-10">
+\begin{equation}
+p(r e^{it}) =
+1-r^k \sabs{a_k} + r^{k+1}a_{k+1}e^{i(k+1)t} + \cdots + r^{d}a_{d}e^{idt} .
+\end{equation}
+</div>
+<div class="para">So</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_minprinciple.html" id="sec_fundalgeb-5-1-11">
+\begin{equation}
+\begin{split}
+&amp;
+\babs{
+p(r e^{it}) } - \abs{
+r^{k+1}a_{k+1}e^{i(k+1)t} + \cdots + r^{d}a_{d}e^{idt}
+}
+\\
+&amp;
+\qquad \qquad \qquad \qquad
+\leq
+\babs{
+p(r e^{it}) 
+- r^{k+1}a_{k+1}e^{i(k+1)t} - \cdots - r^{d}a_{d}e^{idt}
+}
+\\
+&amp;
+\qquad \qquad \qquad \qquad
+=
+\babs{
+1-r^k \sabs{a_k}
+}
+=
+1-r^k \sabs{a_k} .
+\end{split}
+\end{equation}
+</div>
+<div class="para">In other words,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_minprinciple.html" id="sec_fundalgeb-5-1-12">
+\begin{equation}
+\babs{
+p(r e^{it}) }
+\leq
+1-r^k \left( \sabs{a_k}
+-
+r
+\abs{
+a_{k+1}e^{i(k+1)t} + \cdots + r^{d-k-1}a_{d}e^{idt}
+}
+\right) .
+\end{equation}
+</div>
+<div class="para">For small enough <span class="process-math">\(r\text{,}\)</span> the expression in the parentheses is positive as <span class="process-math">\(\sabs{a_k} &gt; 0\text{.}\)</span>  Hence, <span class="process-math">\(\babs{p(re^{it})} &lt; 1 = p(0)\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fundalgeb-5-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 11.5.1"><a aria-label="Copy heading and permalink for Proof 11.5.1" href="#sec_fundalgeb-5" title="Copy heading and permalink for Proof 11.5.1">🔗</a></div>
+</article>
+<div class="para" id="sec_fundalgeb-6">What the lemma says is that the only minima the modulus of analytic functions has are precisely at the zeros. It is sometimes called the <em class="emphasis">minimum modulus principle</em>. If <span class="process-math">\(f\)</span> is analytic and nonzero at a point, then <span class="process-math">\(\nicefrac{1}{f}\)</span> is analytic near that point.  Applying the lemma and the identity theorem, one obtains the <em class="emphasis">maximum modulus principle</em>, or sometimes just the <em class="emphasis">maximum principle</em>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fundalgeb-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="thm_maxprinciple"><h3 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.5.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Maximum modulus principle.</span>
+</h3>
+<div class="para" id="thm_maxprinciple-4-1">If <span class="process-math">\(U \subset \C\)</span> is open and connected, <span class="process-math">\(f \colon U \to \C\)</span> is analytic, and <span class="process-math">\(\babs{f(z)}\)</span> attains a relative maximum at <span class="process-math">\(z_0 \in U\text{,}\)</span> then <span class="process-math">\(f\)</span> is constant.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#thm_maxprinciple-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 11.5.2: Maximum modulus principle"><a aria-label="Copy heading and permalink for Theorem 11.5.2: Maximum modulus principle" href="#thm_maxprinciple" title="Copy heading and permalink for Theorem 11.5.2: Maximum modulus principle">🔗</a></div>
+</article>
+<div class="para" id="sec_fundalgeb-8">The details of the proof are left as <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_fundalgeb.html#exercise_maxprinciple" title="Exercise 11.5.2">Exercise 11.5.2</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fundalgeb-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="remark remark-like" id="sec_fundalgeb-9"><h3 class="heading">
+<span class="type">Remark</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.5.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="sec_fundalgeb-9-1-1">The lemma (and the maximum principle) does not hold if we restrict to the real numbers.  For example, <span class="process-math">\(x^2+1\)</span> has a minimum at <span class="process-math">\(x=0\text{,}\)</span> but no zero there. There is a <span class="process-math">\(w\)</span> arbitrarily close to <span class="process-math">\(0\)</span> such that <span class="process-math">\(\sabs{w^2+1} &lt; 1\text{,}\)</span> but this <span class="process-math">\(w\)</span> is necessarily not real.  Letting <span class="process-math">\(w = i\epsilon\)</span> for small <span class="process-math">\(\epsilon &gt; 0\)</span> works.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fundalgeb-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Remark 11.5.3"><a aria-label="Copy heading and permalink for Remark 11.5.3" href="#sec_fundalgeb-9" title="Copy heading and permalink for Remark 11.5.3">🔗</a></div>
+</article>
+<div class="para" id="sec_fundalgeb-10">The moral of the story is that if <span class="process-math">\(p(0) = 1\text{,}\)</span> then very close to 0, the series (or polynomial) looks like <span class="process-math">\(1+az^k\text{,}\)</span> and <span class="process-math">\(1+az^k\)</span> has no minimum at the origin.  All the higher powers of <span class="process-math">\(z\)</span> are too small to make a difference.  For polynomials, we find similar behavior at infinity.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fundalgeb-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="lemma theorem-like" id="sec_fundalgeb-11"><h3 class="heading">
+<span class="type">Lemma</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.5.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="sec_fundalgeb-11-1-1">Let <span class="process-math">\(p(z)\)</span> be a nonconstant complex polynomial.  Then for any <span class="process-math">\(M &gt; 0\text{,}\)</span> there exists an <span class="process-math">\(R &gt; 0\)</span> such that <span class="process-math">\(\babs{p(z)} \geq M\)</span> whenever <span class="process-math">\(\sabs{z} \geq R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fundalgeb-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Lemma 11.5.4"><a aria-label="Copy heading and permalink for Lemma 11.5.4" href="#sec_fundalgeb-11" title="Copy heading and permalink for Lemma 11.5.4">🔗</a></div>
+</article>
+<article class="proof" id="sec_fundalgeb-12"><h3 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h3>
+<div class="para logical" id="sec_fundalgeb-12-1">
+<div class="para">Write <span class="process-math">\(p(z) = a_0 + a_1 z + \cdots + a_d z^d\)</span> and suppose that <span class="process-math">\(d \geq 1\)</span> and <span class="process-math">\(a_d \neq 0\text{.}\)</span> Suppose <span class="process-math">\(\sabs{z} \geq R\)</span> (so also <span class="process-math">\(\sabs{z}^{-1} \leq R^{-1}\)</span>). We estimate:</div>
+<div class="displaymath process-math" id="sec_fundalgeb-12-1-6">
+\begin{equation}
+\begin{split}
+\babs{p(z)}
+&amp; \geq
+\sabs{a_d z^d} -
+\sabs{a_0} - \sabs{a_1 z} - \cdots - \sabs{a_{d-1} z^{d-1} }
+\\
+&amp; =
+\sabs{z}^d \bigl(
+\sabs{a_d} -
+\sabs{a_0} \, \sabs{z}^{-d} -
+\sabs{a_1} \, \sabs{z}^{-d+1} - \cdots - \sabs{a_{d-1}} \, \sabs{z}^{-1}
+\bigr)
+\\
+&amp; \geq
+R^d \bigl(\sabs{a_d} -
+\sabs{a_0}R^{-d} - \sabs{a_1}R^{1-d} - \cdots - \sabs{a_{d-1}}R^{-1} \bigr)
+.
+\end{split}
+\end{equation}
+</div>
+<div class="para">Then the expression in parentheses is eventually positive for large enough <span class="process-math">\(R\text{.}\)</span>  In particular, for large enough <span class="process-math">\(R\text{,}\)</span> this expression is greater than <span class="process-math">\(\frac{\sabs{a_d}}{2}\text{,}\)</span> and so</div>
+<div class="displaymath process-math" id="sec_fundalgeb-12-1-10">
+\begin{equation}
+\babs{p(z)}
+\geq
+R^d \frac{\sabs{a_d}}{2} .
+\end{equation}
+</div>
+<div class="para">Therefore, we can pick <span class="process-math">\(R\)</span> large enough to be bigger than a given <span class="process-math">\(M\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fundalgeb-12-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 11.5.2"><a aria-label="Copy heading and permalink for Proof 11.5.2" href="#sec_fundalgeb-12" title="Copy heading and permalink for Proof 11.5.2">🔗</a></div>
+</article>
+<div class="para" id="sec_fundalgeb-13">This second lemma does <em class="emphasis">not</em> generalize to analytic functions, even those defined on the entire plane <span class="process-math">\(\C\text{.}\)</span>  The function <span class="process-math">\(\cos(z)\)</span> is a counterexample. We had to look at the term with the largest degree, and we only have such a term for a polynomial.  In fact, something that we will not prove is that an analytic function defined on all of <span class="process-math">\(\C\)</span> satisfying the conclusion of the lemma must be a polynomial.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fundalgeb-13" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_fundalgeb-14">The moral of the story here is that for very large <span class="process-math">\(\sabs{z}\)</span> (far away from the origin) a polynomial of degree <span class="process-math">\(d\)</span> really looks like a constant multiple of <span class="process-math">\(z^d\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fundalgeb-14" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="sec_fundalgeb-15"><h3 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.5.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Fundamental theorem of algebra.</span>
+</h3>
+<div class="para" id="sec_fundalgeb-15-3-1">Let <span class="process-math">\(p(z)\)</span> be a nonconstant complex polynomial, then there exists a <span class="process-math">\(z_0 \in \C\)</span> such that <span class="process-math">\(p(z_0) = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fundalgeb-15-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 11.5.5: Fundamental theorem of algebra"><a aria-label="Copy heading and permalink for Theorem 11.5.5: Fundamental theorem of algebra" href="#sec_fundalgeb-15" title="Copy heading and permalink for Theorem 11.5.5: Fundamental theorem of algebra">🔗</a></div>
+</article>
+<article class="proof" id="sec_fundalgeb-16"><h3 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h3>
+<div class="para" id="sec_fundalgeb-16-1">Let <span class="process-math">\(\mu \coloneqq \inf \bigl\{ \babs{p(z)} : z \in \C \bigr\}\text{.}\)</span>  Find an <span class="process-math">\(R\)</span> such that for all <span class="process-math">\(z\)</span> with <span class="process-math">\(\sabs{z} \geq R\text{,}\)</span> we have <span class="process-math">\(\babs{p(z)} \geq \mu+1\text{.}\)</span> Therefore, every <span class="process-math">\(z\)</span> with <span class="process-math">\(\babs{p(z)}\)</span> close to <span class="process-math">\(\mu\)</span> must be in the closed ball <span class="process-math">\(C(0,R) = \bigl\{ z \in \C : \sabs{z} \leq R \bigr\}\text{.}\)</span>  As <span class="process-math">\(\babs{p(z)}\)</span> is a continuous real-valued function, it achieves its minimum on the compact set <span class="process-math">\(C(0,R)\)</span> (closed and bounded) and this minimum must be <span class="process-math">\(\mu\text{.}\)</span>  So there is a <span class="process-math">\(z_0 \in C(0,R)\)</span> such that <span class="process-math">\(\babs{p(z_0)} = \mu\text{.}\)</span> As that is a minimum of <span class="process-math">\(\babs{p(z)}\)</span> on <span class="process-math">\(\C\text{,}\)</span> by the first lemma above, we have <span class="process-math">\(\babs{p(z_0)} = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fundalgeb-16-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 11.5.3"><a aria-label="Copy heading and permalink for Proof 11.5.3" href="#sec_fundalgeb-16" title="Copy heading and permalink for Proof 11.5.3">🔗</a></div>
+</article>
+<div class="para" id="sec_fundalgeb-17">The fundamental theorem also does not generalize to analytic functions.  The exponential <span class="process-math">\(e^{z}\)</span> is an analytic function on <span class="process-math">\(\C\)</span> with no zeros.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fundalgeb-17" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<section class="exercises" id="sec_fundalgeb-18">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber"></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="exercise_minprinciple"><h4 class="heading"><span class="codenumber">11.5.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_minprinciple-1-1">Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_fundalgeb.html#lemma_polyalwaysgetssmaller" title="Lemma 11.5.1">Lemma 11.5.1</a> for an analytic function.  That is, suppose that <span class="process-math">\(p(z)\)</span> is a nonconstant power series converging in <span class="process-math">\(B(z_0,\epsilon)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_minprinciple-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.5.1"><a aria-label="Copy heading and permalink for Exercise 11.5.1" href="#exercise_minprinciple" title="Copy heading and permalink for Exercise 11.5.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_maxprinciple"><h4 class="heading"><span class="codenumber">11.5.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_maxprinciple-1-1">Use <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_fundalgeb.html#lemma_polyalwaysgetssmaller" title="Lemma 11.5.1">Lemma 11.5.1</a> for analytic functions to prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_fundalgeb.html#thm_maxprinciple" title="Theorem 11.5.2: Maximum modulus principle">Theorem 11.5.2</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_maxprinciple-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.5.2"><a aria-label="Copy heading and permalink for Exercise 11.5.2" href="#exercise_maxprinciple" title="Copy heading and permalink for Exercise 11.5.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_fundalgeb-18-3"><h4 class="heading"><span class="codenumber">11.5.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_fundalgeb-18-3-1-1">Let <span class="process-math">\(U \subset \C\)</span> be open and <span class="process-math">\(z_0 \in U\text{.}\)</span> Suppose <span class="process-math">\(f \colon U \to \C\)</span> is analytic and <span class="process-math">\(f(z_0) = 0\text{.}\)</span>  Show that there exists an <span class="process-math">\(\epsilon &gt; 0\)</span> such that either <span class="process-math">\(f(z) \neq 0\)</span> for all <span class="process-math">\(z\)</span> with <span class="process-math">\(0 &lt; \sabs{z} &lt; \epsilon\)</span> or <span class="process-math">\(f(z) = 0\)</span> for all <span class="process-math">\(z \in B(z_0,\epsilon)\text{.}\)</span> In other words, zeros of analytic functions are isolated. Of course, same holds for polynomials.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fundalgeb-18-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.5.3"><a aria-label="Copy heading and permalink for Exercise 11.5.3" href="#sec_fundalgeb-18-3" title="Copy heading and permalink for Exercise 11.5.3">🔗</a></div>
+</article>
+<div class="para logical" id="sec_fundalgeb-18-4">
+<div class="para">A <em class="emphasis">rational function</em> is a function <span class="process-math">\(f(z) \coloneqq \frac{p(z)}{q(z)}\)</span> where <span class="process-math">\(p\)</span> and <span class="process-math">\(q\)</span> are polynomials and <span class="process-math">\(q\)</span> is not identically zero. A point <span class="process-math">\(z_0 \in \C\)</span> where <span class="process-math">\(f(z_0) = 0\)</span> (and therefore <span class="process-math">\(p(z_0) = 0\)</span>) is called a <em class="emphasis">zero</em>. A point <span class="process-math">\(z_0 \in \C\)</span> is called a <em class="emphasis">singularity</em> of <span class="process-math">\(f\)</span> if <span class="process-math">\(q(z_0) = 0\text{.}\)</span>  As zeros of polynomials are isolated, singularities of rational functions are isolated and so are called <em class="emphasis">isolated singularities</em>. An isolated singularity is called <em class="emphasis">removable</em> if <span class="process-math">\(\lim_{z \to z_0} f(z)\)</span> exists. An isolated singularity is called a <em class="emphasis">pole</em> if <span class="process-math">\(\lim_{z \to z_0} \babs{f(z)} = \infty\text{.}\)</span> We say <span class="process-math">\(f\)</span> has a pole at <span class="process-math">\(\infty\)</span> if</div>
+<div class="displaymath process-math" id="sec_fundalgeb-18-4-24">
+\begin{equation}
+\lim_{z \to \infty} \babs{f(z)} = \infty ,
+\end{equation}
+</div>
+<div class="para">that is, if for every <span class="process-math">\(M &gt; 0\)</span> there exists an <span class="process-math">\(R &gt; 0\)</span> such that <span class="process-math">\(\babs{f(z)} &gt; M\)</span> for all <span class="process-math">\(z\)</span> with <span class="process-math">\(\sabs{z} &gt; R\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fundalgeb-18-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="exercise exercise-like" id="sec_fundalgeb-18-5"><h4 class="heading"><span class="codenumber">11.5.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_fundalgeb-18-5-1-1">Show that a rational function that is not identically zero has at most finitely many zeros and singularities.  In fact, show that if <span class="process-math">\(p\)</span> is a polynomial of degree <span class="process-math">\(n &gt; 0\)</span> it has at most <span class="process-math">\(n\)</span> zeros. <br/> Hint: If <span class="process-math">\(z_0\)</span> is a zero of <span class="process-math">\(p\text{,}\)</span> then without loss of generality assume <span class="process-math">\(z_0 =
+0\text{.}\)</span>  Then use induction.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fundalgeb-18-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.5.4"><a aria-label="Copy heading and permalink for Exercise 11.5.4" href="#sec_fundalgeb-18-5" title="Copy heading and permalink for Exercise 11.5.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_fundalgeb-18-6"><h4 class="heading"><span class="codenumber">11.5.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_fundalgeb-18-6-1-1">Prove that if <span class="process-math">\(z_0\)</span> is a removable singularity of a rational function <span class="process-math">\(f(z) \coloneqq \frac{p(z)}{q(z)}\text{,}\)</span> then there exist polynomials <span class="process-math">\(\widetilde{p}\)</span> and <span class="process-math">\(\widetilde{q}\)</span> such that <span class="process-math">\(\widetilde{q}(z_0) \neq 0\)</span> and <span class="process-math">\(f(z) =
+\frac{\widetilde{p}(z)}{\widetilde{q}(z)}\text{.}\)</span> <br/> Hint: Without loss of generality assume <span class="process-math">\(z_0 = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fundalgeb-18-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.5.5"><a aria-label="Copy heading and permalink for Exercise 11.5.5" href="#sec_fundalgeb-18-6" title="Copy heading and permalink for Exercise 11.5.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_fundalgeb-18-7"><h4 class="heading"><span class="codenumber">11.5.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_fundalgeb-18-7-1-1">Given a rational function <span class="process-math">\(f\)</span> with an isolated singularity at <span class="process-math">\(z_0\text{,}\)</span> show that <span class="process-math">\(z_0\)</span> is either removable or a pole. <br/> Hint: See the previous exercise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fundalgeb-18-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.5.6"><a aria-label="Copy heading and permalink for Exercise 11.5.6" href="#sec_fundalgeb-18-7" title="Copy heading and permalink for Exercise 11.5.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_fundalgeb-18-8"><h4 class="heading"><span class="codenumber">11.5.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_fundalgeb-18-8-1-1">Let <span class="process-math">\(f\)</span> be a rational function and <span class="process-math">\(S \subset \C\)</span> be the set of the singularities of <span class="process-math">\(f\text{.}\)</span> Prove that <span class="process-math">\(f\)</span> is equal to a nonconstant polynomial on <span class="process-math">\(\C \setminus S\)</span> if and only if <span class="process-math">\(f\)</span> has a pole at infinity and all the singularities are removable. <br/> Hint: See exercises above.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fundalgeb-18-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.5.7"><a aria-label="Copy heading and permalink for Exercise 11.5.7" href="#sec_fundalgeb-18-8" title="Copy heading and permalink for Exercise 11.5.7">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 11.5.1"><a aria-label="Copy heading and permalink for Exercises 11.5.1" href="#sec_fundalgeb-18" title="Copy heading and permalink for Exercises 11.5.1">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 11.5: Maximum principle and the fundamental theorem of algebra"><a aria-label="Copy heading and permalink for Section 11.5: Maximum principle and the fundamental theorem of algebra" href="#sec_fundalgeb" title="Copy heading and permalink for Section 11.5: Maximum principle and the fundamental theorem of algebra">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_complexexp.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_arzelaascoli.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

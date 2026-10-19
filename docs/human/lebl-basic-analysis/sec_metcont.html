@@ -1,0 +1,769 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Continuous functions · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_metcont">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.5</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Continuous functions</span>
+</h2>
+<section class="introduction" id="sec_metcont-2">
+<div class="para" id="sec_metcont-2-1">
+<em class="emphasis">Note: 1.5–2 lectures</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section>
+<section class="subsection" id="sec_metcont-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.5.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Continuity</span>
+</h3>
+<article class="definition definition-like" id="sec_metcont-3-2"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.5.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_metcont-3-2-1-1">Let <span class="process-math">\((X,d_X)\)</span> and <span class="process-math">\((Y,d_Y)\)</span> be metric spaces and <span class="process-math">\(c \in X\text{.}\)</span> Then <span class="process-math">\(f \colon X \to Y\)</span> is <em class="emphasis">continuous at <span class="process-math">\(c\)</span></em> if for every <span class="process-math">\(\epsilon &gt; 0\)</span> there is a <span class="process-math">\(\delta &gt; 0\)</span> such that whenever <span class="process-math">\(x \in X\)</span> and <span class="process-math">\(d_X(x,c) &lt;
+\delta\text{,}\)</span> then <span class="process-math">\(d_Y\bigl(f(x),f(c)\bigr) &lt; \epsilon\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-3-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_metcont-3-2-1-2">When <span class="process-math">\(f \colon X \to Y\)</span> is continuous at all <span class="process-math">\(c \in X\text{,}\)</span> we simply say that <span class="process-math">\(f\)</span> is a <em class="emphasis">continuous function</em>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-3-2-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 7.5.1"><a aria-label="Copy heading and permalink for Definition 7.5.1" href="#sec_metcont-3-2" title="Copy heading and permalink for Definition 7.5.1">🔗</a></div>
+</article>
+<div class="para" id="sec_metcont-3-3">The definition agrees with the definition from <a class="internal" href="lim_chapter.html" title="Chapter 3: Continuous Functions">Chapter 3</a> when <span class="process-math">\(f\)</span> is a real-valued function on the real line—as long as we take the standard metric on <span class="process-math">\(\R\text{,}\)</span> of course.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-3-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_contiscont"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.5.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="prop_contiscont-1-1">Let <span class="process-math">\((X,d_X)\)</span> and <span class="process-math">\((Y,d_Y)\)</span> be metric spaces. Then <span class="process-math">\(f \colon X \to Y\)</span> is continuous at <span class="process-math">\(c \in X\)</span> if and only if for every sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> in <span class="process-math">\(X\)</span> converging to <span class="process-math">\(c\text{,}\)</span> the sequence <span class="process-math">\(\bigl\{ f(x_n) \bigr\}_{n=1}^\infty\)</span> converges to <span class="process-math">\(f(c)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_contiscont-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 7.5.2"><a aria-label="Copy heading and permalink for Proposition 7.5.2" href="#prop_contiscont" title="Copy heading and permalink for Proposition 7.5.2">🔗</a></div>
+</article>
+<article class="proof" id="sec_metcont-3-5"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metcont-3-5-1">Suppose <span class="process-math">\(f\)</span> is continuous at <span class="process-math">\(c\text{.}\)</span>  Let <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> be a sequence in <span class="process-math">\(X\)</span> converging to <span class="process-math">\(c\text{.}\)</span>  Given <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there is a <span class="process-math">\(\delta &gt; 0\)</span> such that <span class="process-math">\(d_X(x,c) &lt; \delta\)</span> implies <span class="process-math">\(d_Y\bigl(f(x),f(c)\bigr) &lt; \epsilon\text{.}\)</span>  So take <span class="process-math">\(M\)</span> such that for all <span class="process-math">\(n \geq M\text{,}\)</span> we have <span class="process-math">\(d_X(x_n,c) &lt; \delta\text{,}\)</span> and then <span class="process-math">\(d_Y\bigl(f(x_n),f(c)\bigr) &lt; \epsilon\text{.}\)</span>  Hence, <span class="process-math">\(\bigl\{ f(x_n) \bigr\}_{n=1}^\infty\)</span> converges to <span class="process-math">\(f(c)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-3-5-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_metcont-3-5-2">On the other hand, suppose <span class="process-math">\(f\)</span> is not continuous at <span class="process-math">\(c\text{.}\)</span> Then there exists an <span class="process-math">\(\epsilon &gt; 0\)</span> such that for every <span class="process-math">\(n \in \N\)</span> there exists an <span class="process-math">\(x_n \in X\text{,}\)</span> with <span class="process-math">\(d_X(x_n,c) &lt; \nicefrac{1}{n}\)</span> such that <span class="process-math">\(d_Y\bigl(f(x_n),f(c)\bigr) \geq
+\epsilon\text{.}\)</span>  Then <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> converges to <span class="process-math">\(c\text{,}\)</span> but <span class="process-math">\(\bigl\{ f(x_n) \bigr\}_{n=1}^\infty\)</span> does not converge to <span class="process-math">\(f(c)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-3-5-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 7.5.1.1"><a aria-label="Copy heading and permalink for Proof 7.5.1.1" href="#sec_metcont-3-5" title="Copy heading and permalink for Proof 7.5.1.1">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_metcont-3-6"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.5.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_metcont-3-6-1-1">
+<div class="para">Suppose <span class="process-math">\(f \colon \R^2 \to \R\)</span> is a polynomial.  That is,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_contalg.html" id="sec_metcont-3-6-1-1-2">
+\begin{equation}
+f(x,y) =
+\sum_{j=0}^d
+\sum_{k=0}^{d-j}
+a_{jk}\,x^jy^k =
+a_{0\,0} + a_{1\,0} \, x +
+a_{0\,1} \, y+  
+a_{2\,0} \, x^2+  
+a_{1\,1} \, xy+  
+a_{0\,2} \, y^2+ \cdots +
+a_{0\,d} \, y^d ,
+\end{equation}
+</div>
+<div class="para">for some <span class="process-math">\(d \in \N\)</span> (the degree) and <span class="process-math">\(a_{jk} \in \R\text{.}\)</span>  We claim <span class="process-math">\(f\)</span> is continuous.  Let <span class="process-math">\(\bigl\{ (x_n,y_n) \bigr\}_{n=1}^\infty\)</span> be a sequence in <span class="process-math">\(\R^2\)</span> that converges to <span class="process-math">\((x,y) \in \R^2\text{.}\)</span>  We proved that this means <span class="process-math">\(\lim_{n\to\infty} x_n = x\)</span> and <span class="process-math">\(\lim_{n\to\infty} y_n = y\text{.}\)</span> By <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_factslimsseqs.html#prop_contalg" title="Proposition 2.2.5">Proposition 2.2.5</a>,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_contalg.html" id="sec_metcont-3-6-1-1-12">
+\begin{equation}
+\lim_{n\to\infty}
+f(x_n,y_n) =
+\lim_{n\to\infty}
+\sum_{j=0}^d
+\sum_{k=0}^{d-j}
+a_{jk} \, x_n^jy_n^k 
+=
+\sum_{j=0}^d
+\sum_{k=0}^{d-j}
+a_{jk} \, x^jy^k
+=
+f(x,y) .
+\end{equation}
+</div>
+<div class="para">So <span class="process-math">\(f\)</span> is continuous at <span class="process-math">\((x,y)\text{,}\)</span> and as <span class="process-math">\((x,y)\)</span> was arbitrary, <span class="process-math">\(f\)</span> is continuous everywhere.  Similarly, a polynomial in <span class="process-math">\(n\)</span> variables is continuous.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-3-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 7.5.3"><a aria-label="Copy heading and permalink for Example 7.5.3" href="#sec_metcont-3-6" title="Copy heading and permalink for Example 7.5.3">🔗</a></div>
+</article>
+<div class="para" id="sec_metcont-3-7">Be careful about taking limits separately. Consider <span class="process-math">\(f \colon \R^2 \to \R\)</span> defined by <span class="process-math">\(f(x,y) \coloneqq \frac{xy}{x^2+y^2}\)</span> outside the origin and <span class="process-math">\(f(0,0) \coloneqq 0\text{.}\)</span> See <a class="internal" href="sec_metcont.html#fig_xyxsqysq" title="Figure 7.14">Figure 7.14</a>. In <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metcont.html#exercise_dicontR2" title="Exercise 7.5.2">Exercise 7.5.2</a>, you are asked to prove that <span class="process-math">\(f\)</span> is not continuous at the origin. However, for every <span class="process-math">\(y\text{,}\)</span> the function <span class="process-math">\(g(x) \coloneqq f(x,y)\)</span> is continuous, and for every <span class="process-math">\(x\text{,}\)</span> the function <span class="process-math">\(h(y) \coloneqq f(x,y)\)</span> is continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-3-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="fig_xyxsqysq"><img alt="A surface graph of a function which appears pinched at the origin so that if we approach the origin in the xy-plane along different directions we may approach different values." class="raimg" role="img" src="figures/xyxsqysq-mbx.svg" style="width:197pt; height:148pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.14<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Graph of <span class="process-math">\(\frac{xy}{x^2+y^2}\text{.}\)</span><div class="autopermalink" data-description="Figure 7.14"><a aria-label="Copy heading and permalink for Figure 7.14" href="#fig_xyxsqysq" title="Copy heading and permalink for Figure 7.14">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<article class="example example-like" id="sec_metcont-3-11"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.5.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_metcont-3-11-1-1">Let <span class="process-math">\(X\)</span> be a metric space and <span class="process-math">\(f \colon X \to \C\)</span> a complex-valued function.  Write <span class="process-math">\(f(p) = g(p) + i \, h(p)\text{,}\)</span> where <span class="process-math">\(g \colon X \to \R\)</span> and <span class="process-math">\(h \colon X \to \R\)</span> are the real and imaginary parts of <span class="process-math">\(f\text{.}\)</span> Then <span class="process-math">\(f\)</span> is continuous at <span class="process-math">\(c \in X\)</span> if and only if its real and imaginary parts are continuous at <span class="process-math">\(c\text{.}\)</span> This fact follows because <span class="process-math">\(\bigl\{ f(p_n) = g(p_n) + i \, h(p_n) \bigr\}_{n=1}^\infty\)</span> converges to <span class="process-math">\(f(p) = g(p) + i \, h(p)\)</span> if and only if <span class="process-math">\(\bigl\{ g(p_n) \bigr\}_{n=1}^\infty\)</span> converges to <span class="process-math">\(g(p)\)</span> and <span class="process-math">\(\bigl\{ h(p_n) \bigr\}_{n=1}^\infty\)</span> converges to <span class="process-math">\(h(p)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-3-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 7.5.4"><a aria-label="Copy heading and permalink for Example 7.5.4" href="#sec_metcont-3-11" title="Copy heading and permalink for Example 7.5.4">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 7.5.1: Continuity"><a aria-label="Copy heading and permalink for Subsection 7.5.1: Continuity" href="#sec_metcont-3" title="Copy heading and permalink for Subsection 7.5.1: Continuity">🔗</a></div>
+</section>
+<section class="subsection" id="sec_metcont-4">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.5.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Compactness and continuity</span>
+</h3>
+<div class="para" id="sec_metcont-4-2">Continuous maps do not map closed sets to closed sets.  For example, <span class="process-math">\(f \colon (0,1) \to \R\)</span> defined by <span class="process-math">\(f(x) \coloneqq x\)</span> takes the set <span class="process-math">\((0,1)\text{,}\)</span> which is closed in <span class="process-math">\((0,1)\text{,}\)</span> to the set <span class="process-math">\((0,1)\text{,}\)</span> which is not closed in <span class="process-math">\(\R\text{.}\)</span> On the other hand, continuous maps do preserve compact sets.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="lemma theorem-like" id="lemma_continuouscompact"><h4 class="heading">
+<span class="type">Lemma</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.5.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="lemma_continuouscompact-1-1">Let <span class="process-math">\((X,d_X)\)</span> and <span class="process-math">\((Y,d_Y)\)</span> be metric spaces and <span class="process-math">\(f \colon X \to Y\)</span> a continuous function.  If <span class="process-math">\(K \subset X\)</span> is a compact set, then <span class="process-math">\(f(K)\)</span> is a compact set.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#lemma_continuouscompact-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Lemma 7.5.5"><a aria-label="Copy heading and permalink for Lemma 7.5.5" href="#lemma_continuouscompact" title="Copy heading and permalink for Lemma 7.5.5">🔗</a></div>
+</article>
+<article class="proof" id="sec_metcont-4-4"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_metcont-4-4-1">
+<div class="para">A sequence in <span class="process-math">\(f(K)\)</span> can be written as <span class="process-math">\(\bigl\{ f(x_n) \bigr\}_{n=1}^\infty\text{,}\)</span> where <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is a sequence in <span class="process-math">\(K\text{.}\)</span>  The set <span class="process-math">\(K\)</span> is compact and therefore there is a subsequence <span class="process-math">\(\{ x_{n_j} \}_{j=1}^\infty\)</span> that converges to some <span class="process-math">\(x \in K\text{.}\)</span> By continuity,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_mscompactisseqcpt.html" id="sec_metcont-4-4-1-8">
+\begin{equation}
+\lim_{j\to\infty} f(x_{n_j}) = f(x) \in f(K) .
+\end{equation}
+</div>
+<div class="para">So every sequence in <span class="process-math">\(f(K)\)</span> has a subsequence convergent to a point in <span class="process-math">\(f(K)\text{,}\)</span> and <span class="process-math">\(f(K)\)</span> is compact by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metcompact.html#thm_mscompactisseqcpt" title="Theorem 7.4.11">Theorem 7.4.11</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-4-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 7.5.2.1"><a aria-label="Copy heading and permalink for Proof 7.5.2.1" href="#sec_metcont-4-4" title="Copy heading and permalink for Proof 7.5.2.1">🔗</a></div>
+</article>
+<div class="para logical" id="sec_metcont-4-5">
+<div class="para">As before, <span class="process-math">\(f \colon X \to \R\)</span> achieves an <em class="emphasis">absolute minimum</em> at <span class="process-math">\(c \in X\)</span> if</div>
+<div class="displaymath process-math" id="sec_metcont-4-5-4">
+\begin{equation}
+f(x) \geq f(c) \qquad \text{for all } x \in X.
+\end{equation}
+</div>
+<div class="para">On the other hand, <span class="process-math">\(f\)</span> achieves an <em class="emphasis">absolute maximum</em> at <span class="process-math">\(c \in X\)</span> if</div>
+<div class="displaymath process-math" id="sec_metcont-4-5-8">
+\begin{equation}
+f(x) \leq f(c) \qquad \text{for all } x \in X.
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-4-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="sec_metcont-4-6"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.5.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_metcont-4-6-1-1">Let <span class="process-math">\((X,d)\)</span> be a nonempty compact metric space and let <span class="process-math">\(f \colon X \to \R\)</span> be continuous.  Then <span class="process-math">\(f\)</span> is bounded and in fact <span class="process-math">\(f\)</span> achieves an absolute minimum and an absolute maximum on <span class="process-math">\(X\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-4-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 7.5.6"><a aria-label="Copy heading and permalink for Theorem 7.5.6" href="#sec_metcont-4-6" title="Copy heading and permalink for Theorem 7.5.6">🔗</a></div>
+</article>
+<article class="proof" id="sec_metcont-4-7"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metcont-4-7-1">As <span class="process-math">\(X\)</span> is compact and <span class="process-math">\(f\)</span> is continuous, <span class="process-math">\(f(X) \subset \R\)</span> is compact.  Hence, <span class="process-math">\(f(X)\)</span> is closed and bounded.  In particular, <span class="process-math">\(\sup f(X) \in f(X)\)</span> and <span class="process-math">\(\inf f(X) \in f(X)\text{,}\)</span> because both the sup and the inf can be achieved by sequences in <span class="process-math">\(f(X)\)</span> and <span class="process-math">\(f(X)\)</span> is closed. Therefore, there is some <span class="process-math">\(x \in X\)</span> such that <span class="process-math">\(f(x) = \sup f(X)\)</span> and some <span class="process-math">\(y \in X\)</span> such that <span class="process-math">\(f(y) = \inf f(X)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-4-7-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 7.5.2.2"><a aria-label="Copy heading and permalink for Proof 7.5.2.2" href="#sec_metcont-4-7" title="Copy heading and permalink for Proof 7.5.2.2">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 7.5.2: Compactness and continuity"><a aria-label="Copy heading and permalink for Subsection 7.5.2: Compactness and continuity" href="#sec_metcont-4" title="Copy heading and permalink for Subsection 7.5.2: Compactness and continuity">🔗</a></div>
+</section>
+<section class="subsection" id="sec_metcont-5">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.5.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Continuity and topology</span>
+</h3>
+<div class="para" id="sec_metcont-5-2">Let us see how to define continuity in terms of the topology, that is, the open sets.  We have already seen that topology determines which sequences converge, and so it is no wonder that the topology also determines continuity of functions.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-5-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="lemma theorem-like" id="lemma_mstopocontloc"><h4 class="heading">
+<span class="type">Lemma</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.5.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="lemma_mstopocontloc-1-1">Let <span class="process-math">\((X,d_X)\)</span> and <span class="process-math">\((Y,d_Y)\)</span> be metric spaces. A function <span class="process-math">\(f \colon X \to Y\)</span> is continuous at <span class="process-math">\(c \in X\)</span> if and only if for every open neighborhood <span class="process-math">\(U\)</span> of <span class="process-math">\(f(c)\)</span> in <span class="process-math">\(Y\text{,}\)</span> the set <span class="process-math">\(f^{-1}(U)\)</span> contains an open neighborhood of <span class="process-math">\(c\)</span> in <span class="process-math">\(X\text{.}\)</span> See <a class="internal" href="sec_metcont.html#fig_mscontfuncpt" title="Figure 7.15">Figure 7.15</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#lemma_mstopocontloc-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Lemma 7.5.7"><a aria-label="Copy heading and permalink for Lemma 7.5.7" href="#lemma_mstopocontloc" title="Copy heading and permalink for Lemma 7.5.7">🔗</a></div>
+</article><hr class="rahr"/>
+<figure class="figure figure-like" id="fig_mscontfuncpt"><img alt="On the left side is a darkly shaded region marked W with dotted boundary, It is contained in a lightly shaded region marked f inverse of U with dash-dotted boundary. On the right is a lightly shaded blob marked U with dotted boundary. There is a point marked c in the region W has an arrow marked f connecting it to a point f of c in the region U." class="raimg" role="img" src="figures/mscontfuncpt-mbxpdft.svg" style="width:204pt; height:94pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.15<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>For every neighborhood <span class="process-math">\(U\)</span> of <span class="process-math">\(f(c)\text{,}\)</span> the set <span class="process-math">\(f^{-1}(U)\)</span> contains an open neighborhood <span class="process-math">\(W\)</span> of <span class="process-math">\(c\text{.}\)</span><div class="autopermalink" data-description="Figure 7.15"><a aria-label="Copy heading and permalink for Figure 7.15" href="#fig_mscontfuncpt" title="Copy heading and permalink for Figure 7.15">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<article class="proof" id="sec_metcont-5-7"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_metcont-5-7-1">
+<div class="para">First suppose that <span class="process-math">\(f\)</span> is continuous at <span class="process-math">\(c\text{.}\)</span> Let <span class="process-math">\(U\)</span> be an open neighborhood of <span class="process-math">\(f(c)\)</span> in <span class="process-math">\(Y\text{,}\)</span> then <span class="process-math">\(B_Y\bigl(f(c),\epsilon\bigr) \subset U\)</span> for some <span class="process-math">\(\epsilon &gt;
+0\text{.}\)</span>  By continuity of <span class="process-math">\(f\text{,}\)</span> there exists a <span class="process-math">\(\delta &gt; 0\)</span> such that whenever <span class="process-math">\(x\)</span> is such that <span class="process-math">\(d_X(x,c) &lt; \delta\text{,}\)</span> then <span class="process-math">\(d_Y\bigl(f(x),f(c)\bigr) &lt; \epsilon\text{.}\)</span>  In other words,</div>
+<div class="displaymath process-math" id="sec_metcont-5-7-1-13">
+\begin{equation}
+B_X(c,\delta) \subset f^{-1}\bigl(B_Y\bigl(f(c),\epsilon\bigr)\bigr) \subset
+f^{-1}(U) ,
+\end{equation}
+</div>
+<div class="para">and <span class="process-math">\(B_X(c,\delta)\)</span> is an open neighborhood of <span class="process-math">\(c\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-5-7-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_metcont-5-7-2">
+<div class="para">For the other direction, let <span class="process-math">\(\epsilon &gt; 0\)</span> be given.  If <span class="process-math">\(f^{-1}\bigl(B_Y\bigl(f(c),\epsilon\bigr)\bigr)\)</span> contains an open neighborhood <span class="process-math">\(W\)</span> of <span class="process-math">\(c\text{,}\)</span> it contains a ball.  That is, there is some <span class="process-math">\(\delta &gt; 0\)</span> such that</div>
+<div class="displaymath process-math" id="sec_metcont-5-7-2-6">
+\begin{equation}
+B_X(c,\delta) \subset W \subset f^{-1}\bigl(B_Y\bigl(f(c),\epsilon\bigr)\bigr) .
+\end{equation}
+</div>
+<div class="para">That means precisely that if <span class="process-math">\(d_X(x,c) &lt; \delta\text{,}\)</span> then <span class="process-math">\(d_Y\bigl(f(x),f(c)\bigr) &lt; \epsilon\text{.}\)</span> So <span class="process-math">\(f\)</span> is continuous at <span class="process-math">\(c\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-5-7-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 7.5.3.1"><a aria-label="Copy heading and permalink for Proof 7.5.3.1" href="#sec_metcont-5-7" title="Copy heading and permalink for Proof 7.5.3.1">🔗</a></div>
+</article>
+<article class="theorem theorem-like" id="thm_mstopocont"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.5.8</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="thm_mstopocont-1-1">Let <span class="process-math">\((X,d_X)\)</span> and <span class="process-math">\((Y,d_Y)\)</span> be metric spaces.  A function <span class="process-math">\(f \colon X \to Y\)</span> is continuous if and only if for every open <span class="process-math">\(U \subset Y\text{,}\)</span> <span class="process-math">\(f^{-1}(U)\)</span> is open in <span class="process-math">\(X\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#thm_mstopocont-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 7.5.8"><a aria-label="Copy heading and permalink for Theorem 7.5.8" href="#thm_mstopocont" title="Copy heading and permalink for Theorem 7.5.8">🔗</a></div>
+</article>
+<div class="para" id="sec_metcont-5-9">The proof follows from <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metcont.html#lemma_mstopocontloc" title="Lemma 7.5.7">Lemma 7.5.7</a> and is left as an exercise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-5-9" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_metcont-5-10"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.5.9</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_metcont-5-10-1-1">Let <span class="process-math">\(f \colon X \to Y\)</span> be a continuous function. <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metcont.html#thm_mstopocont" title="Theorem 7.5.8">Theorem 7.5.8</a> tells us that if <span class="process-math">\(E \subset Y\)</span> is closed, then <span class="process-math">\(f^{-1}(E) = X \setminus f^{-1}(E^c)\)</span> is also closed.  Therefore, if we have a continuous function <span class="process-math">\(f \colon X \to \R\text{,}\)</span> then the <em class="emphasis">zero set</em> of <span class="process-math">\(f\text{,}\)</span> that is, <span class="process-math">\(f^{-1}(0) = \bigl\{ x \in X : f(x) = 0 \bigr\}\text{,}\)</span> is closed. We have just proved the most basic result in <em class="emphasis">algebraic geometry</em>, the study of zero sets of polynomials:  The zero set of a polynomial is closed.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-5-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_metcont-5-10-1-2">Similarly, the set where <span class="process-math">\(f\)</span> is nonnegative, <span class="process-math">\(f^{-1}\bigl( [0,\infty) \bigr) = \bigl\{ x \in X : f(x) \geq 0 \bigr\}\text{,}\)</span> is closed.  On the other hand, the set where <span class="process-math">\(f\)</span> is positive, <span class="process-math">\(f^{-1}\bigl( (0,\infty) \bigr) = \bigl\{ x \in X : f(x) &gt; 0 \bigr\}\text{,}\)</span> is open.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-5-10-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 7.5.9"><a aria-label="Copy heading and permalink for Example 7.5.9" href="#sec_metcont-5-10" title="Copy heading and permalink for Example 7.5.9">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 7.5.3: Continuity and topology"><a aria-label="Copy heading and permalink for Subsection 7.5.3: Continuity and topology" href="#sec_metcont-5" title="Copy heading and permalink for Subsection 7.5.3: Continuity and topology">🔗</a></div>
+</section>
+<section class="subsection" id="sec_metcont-6">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.5.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Uniform continuity</span>
+</h3>
+<div class="para" id="sec_metcont-6-2">As for continuous functions on the real line, in the definition of continuity it is sometimes convenient to be able to pick one <span class="process-math">\(\delta\)</span> for all points.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-6-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_metcont-6-3"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.5.10</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_metcont-6-3-1-1">Let <span class="process-math">\((X,d_X)\)</span> and <span class="process-math">\((Y,d_Y)\)</span> be metric spaces. Then <span class="process-math">\(f \colon X \to Y\)</span> is <em class="emphasis">uniformly continuous</em> if for every <span class="process-math">\(\epsilon &gt; 0\)</span> there is a <span class="process-math">\(\delta &gt; 0\)</span> such that whenever <span class="process-math">\(p,q \in X\)</span> and <span class="process-math">\(d_X(p,q) &lt;
+\delta\text{,}\)</span> we have <span class="process-math">\(d_Y\bigl(f(p),f(q)\bigr) &lt; \epsilon\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-6-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 7.5.10"><a aria-label="Copy heading and permalink for Definition 7.5.10" href="#sec_metcont-6-3" title="Copy heading and permalink for Definition 7.5.10">🔗</a></div>
+</article>
+<div class="para" id="sec_metcont-6-4">A uniformly continuous function is continuous, but not necessarily vice versa as we have seen.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-6-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="thm_Xcompactfunifcont"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.5.11</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="thm_Xcompactfunifcont-1-1">Let <span class="process-math">\((X,d_X)\)</span> and <span class="process-math">\((Y,d_Y)\)</span> be metric spaces. Suppose <span class="process-math">\(f \colon X \to Y\)</span> is continuous and <span class="process-math">\(X\)</span> is compact.  Then <span class="process-math">\(f\)</span> is uniformly continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#thm_Xcompactfunifcont-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 7.5.11"><a aria-label="Copy heading and permalink for Theorem 7.5.11" href="#thm_Xcompactfunifcont" title="Copy heading and permalink for Theorem 7.5.11">🔗</a></div>
+</article>
+<article class="proof" id="sec_metcont-6-6"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metcont-6-6-1">Let <span class="process-math">\(\epsilon &gt; 0\)</span> be given.  For each <span class="process-math">\(c \in X\text{,}\)</span> pick <span class="process-math">\(\delta_c &gt; 0\)</span> such that <span class="process-math">\(d_Y\bigl(f(x),f(c)\bigr) &lt; \nicefrac{\epsilon}{2}\)</span> whenever <span class="process-math">\(x \in B(c,\delta_c)\text{.}\)</span> The balls <span class="process-math">\(B(c,\delta_c)\)</span> cover <span class="process-math">\(X\text{,}\)</span> and the space <span class="process-math">\(X\)</span> is compact. Apply the <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metcompact.html#ms_lebesgue" title="Lemma 7.4.10: Lebesgue covering lemma">Lebesgue covering lemma</a> to obtain a <span class="process-math">\(\delta &gt; 0\)</span> such that for every <span class="process-math">\(x \in X\text{,}\)</span> there is a <span class="process-math">\(c \in X\)</span> for which <span class="process-math">\(B(x,\delta) \subset B(c,\delta_c)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-6-6-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_metcont-6-6-2">
+<div class="para">Suppose <span class="process-math">\(p, q \in X\)</span> where <span class="process-math">\(d_X(p,q) &lt; \delta\text{.}\)</span> Find a <span class="process-math">\(c \in X\)</span> such that <span class="process-math">\(B(p,\delta) \subset B(c,\delta_c)\text{.}\)</span> Then <span class="process-math">\(q \in B(c,\delta_c)\text{.}\)</span>  By the triangle inequality and the definition of <span class="process-math">\(\delta_c\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_metcont-6-6-2-7">
+\begin{equation}
+d_Y\bigl(f(p),f(q)\bigr)
+\leq
+d_Y\bigl(f(p),f(c)\bigr)
++
+d_Y\bigl(f(c),f(q)\bigr)
+&lt;
+\nicefrac{\epsilon}{2}+
+\nicefrac{\epsilon}{2} = \epsilon .  \qedhere
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-6-6-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 7.5.4.1"><a aria-label="Copy heading and permalink for Proof 7.5.4.1" href="#sec_metcont-6-6" title="Copy heading and permalink for Proof 7.5.4.1">🔗</a></div>
+</article>
+<div class="para logical" id="sec_metcont-6-7">
+<div class="para">As an application of uniform continuity, we prove a useful criterion for continuity of functions defined by integrals. Let <span class="process-math">\(f(x,y)\)</span> be a function of two variables and define</div>
+<div class="displaymath process-math" id="sec_metcont-6-7-2">
+\begin{equation}
+g(y) \coloneqq \int_a^b f(x,y) \,dx .
+\end{equation}
+</div>
+<div class="para">Question is, is <span class="process-math">\(g\)</span> continuous? We are really asking when two limiting operations commute, which is not always possible, so some extra hypothesis is necessary.  A useful sufficient (but not necessary) condition is that <span class="process-math">\(f\)</span> is continuous on a closed rectangle.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-6-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_integralcontcont"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.5.12</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="prop_integralcontcont-1-1">
+<div class="para">If <span class="process-math">\(f \colon [a,b] \times [c,d] \to \R\)</span> is continuous, then <span class="process-math">\(g \colon [c,d] \to \R\)</span> defined by</div>
+<div class="displaymath process-math" id="prop_integralcontcont-1-1-3">
+\begin{equation}
+g(y) \coloneqq \int_a^b f(x,y) \,dx  \qquad \text{is continuous}.
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_integralcontcont-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 7.5.12"><a aria-label="Copy heading and permalink for Proposition 7.5.12" href="#prop_integralcontcont" title="Copy heading and permalink for Proposition 7.5.12">🔗</a></div>
+</article>
+<article class="proof" id="sec_metcont-6-9"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_metcont-6-9-1">
+<div class="para">Fix <span class="process-math">\(y \in [c,d]\)</span> and let <span class="process-math">\(\epsilon &gt; 0\)</span> be given. As <span class="process-math">\(f\)</span> is continuous on <span class="process-math">\([a,b] \times [c,d]\text{,}\)</span> which is compact, <span class="process-math">\(f\)</span> is uniformly continuous. In particular, there exists a <span class="process-math">\(\delta &gt; 0\)</span> such that whenever <span class="process-math">\(z \in [c,d]\)</span> and <span class="process-math">\(\sabs{z-y} &lt; \delta\text{,}\)</span> we have <span class="process-math">\(\babs{f(x,z)-f(x,y)} &lt; \frac{\epsilon}{b-a}\)</span> for all <span class="process-math">\(x \in [a,b]\text{.}\)</span> So suppose <span class="process-math">\(\sabs{z-y} &lt; \delta\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" id="sec_metcont-6-9-1-12">
+\begin{multline*}
+\babs{
+g(z)-
+g(y)
+}
+=
+\abs{
+\int_a^b 
+f(x,z) \,dx 
+-
+\int_a^b 
+f(x,y) \,dx 
+}
+\\
+=
+\abs{
+\int_a^b 
+\bigl(
+f(x,z) - f(x,y)
+\bigr)
+\,dx 
+}
+\leq
+(b-a)
+\frac{\epsilon}{b-a}
+= \epsilon . \qedhere
+\end{multline*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-6-9-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 7.5.4.2"><a aria-label="Copy heading and permalink for Proof 7.5.4.2" href="#sec_metcont-6-9" title="Copy heading and permalink for Proof 7.5.4.2">🔗</a></div>
+</article>
+<div class="para" id="sec_metcont-6-10">In applications, if we are interested in continuity at <span class="process-math">\(y_0\text{,}\)</span> we just need to apply the proposition in <span class="process-math">\([a,b] \times [y_0-\epsilon,y_0+\epsilon]\)</span> for some small <span class="process-math">\(\epsilon &gt; 0\text{.}\)</span>  For example, if <span class="process-math">\(f\)</span> is continuous in <span class="process-math">\([a,b] \times \R\text{,}\)</span> then <span class="process-math">\(g\)</span> is continuous on <span class="process-math">\(\R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-6-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_metcont-6-11"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.5.13</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_metcont-6-11-1-1">
+<div class="para">Useful examples of uniformly continuous functions are again the <em class="emphasis">Lipschitz continuous</em> functions.  That is, if <span class="process-math">\((X,d_X)\)</span> and <span class="process-math">\((Y,d_Y)\)</span> are metric spaces, then <span class="process-math">\(f \colon X \to Y\)</span> is called Lipschitz or <span class="process-math">\(K\)</span>-Lipschitz if there exists a <span class="process-math">\(K \in \R\)</span> such that</div>
+<div class="displaymath process-math" id="sec_metcont-6-11-1-1-9">
+\begin{equation}
+d_Y\bigl(f(p),f(q)\bigr) \leq K \, d_X(p,q)
+\qquad \text{for all } p,q \in X.
+\end{equation}
+</div>
+<div class="para">A Lipschitz function is uniformly continuous: Take <span class="process-math">\(\delta = \nicefrac{\epsilon}{K}\)</span> (assuming that <span class="process-math">\(K &gt; 0\)</span>). A function can be uniformly continuous but not Lipschitz, as we already saw: <span class="process-math">\(\sqrt{x}\)</span> on <span class="process-math">\([0,1]\)</span> is uniformly continuous but not Lipschitz.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-6-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_metcont-6-11-1-2">It is worth mentioning that, if a function is Lipschitz, it tends to be easiest to simply show it is Lipschitz even if we are only interested in knowing continuity.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-6-11-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 7.5.13"><a aria-label="Copy heading and permalink for Example 7.5.13" href="#sec_metcont-6-11" title="Copy heading and permalink for Example 7.5.13">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 7.5.4: Uniform continuity"><a aria-label="Copy heading and permalink for Subsection 7.5.4: Uniform continuity" href="#sec_metcont-6" title="Copy heading and permalink for Subsection 7.5.4: Uniform continuity">🔗</a></div>
+</section>
+<section class="subsection" id="sec_metcont-7">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.5.5</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Cluster points and limits of functions</span>
+</h3>
+<div class="para" id="sec_metcont-7-2">While we have not started the discussion of continuity with them and we will not need them until much later, let us also translate the idea of a limit of a function from the real line to metric spaces. Again we need to start with cluster points.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-7-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_metcont-7-3"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.5.14</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_metcont-7-3-1-1">Let <span class="process-math">\((X,d)\)</span> be a metric space and <span class="process-math">\(S \subset X\text{.}\)</span> A point <span class="process-math">\(p \in X\)</span> is called a <em class="emphasis">cluster point</em> of <span class="process-math">\(S\)</span> if for every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> the set <span class="process-math">\(B(p,\epsilon) \cap S
+\setminus \{ p \}\)</span> is not empty.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-7-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 7.5.14"><a aria-label="Copy heading and permalink for Definition 7.5.14" href="#sec_metcont-7-3" title="Copy heading and permalink for Definition 7.5.14">🔗</a></div>
+</article>
+<div class="para" id="sec_metcont-7-4">It is not enough that <span class="process-math">\(p\)</span> is in the closure of <span class="process-math">\(S\text{;}\)</span> it must be in the closure of <span class="process-math">\(S \setminus \{ p \}\)</span> (exercise). So, <span class="process-math">\(p\)</span> is a cluster point if and only if there exists a sequence in <span class="process-math">\(S \setminus
+\{ p \}\)</span> that converges to <span class="process-math">\(p\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-7-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_metcont-7-5"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.5.15</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_metcont-7-5-2-1">
+<div class="para">Let <span class="process-math">\((X,d_X)\text{,}\)</span> <span class="process-math">\((Y,d_Y)\)</span> be metric spaces, <span class="process-math">\(S \subset X\text{,}\)</span> <span class="process-math">\(p \in X\)</span> a cluster point of <span class="process-math">\(S\text{,}\)</span> and <span class="process-math">\(f \colon S \to Y\)</span> a function. Suppose there exists an <span class="process-math">\(L \in Y\)</span> and for every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there exists a <span class="process-math">\(\delta &gt; 0\)</span> such that whenever <span class="process-math">\(x \in S \setminus \{ p \}\)</span> and <span class="process-math">\(d_X(x,p) &lt; \delta\text{,}\)</span> then</div>
+<div class="displaymath process-math" id="sec_metcont-7-5-2-1-12">
+\begin{equation}
+d_Y\bigl(f(x),L\bigr) &lt; \epsilon .
+\end{equation}
+</div>
+<div class="para">Then we say <span class="process-math">\(f(x)\)</span> <em class="emphasis">converges</em> to <span class="process-math">\(L\)</span> as <span class="process-math">\(x\)</span> goes to <span class="process-math">\(p\text{,}\)</span> and <span class="process-math">\(L\)</span> is a <em class="emphasis">limit</em> of <span class="process-math">\(f(x)\)</span> as <span class="process-math">\(x\)</span> goes to <span class="process-math">\(p\text{.}\)</span>  If <span class="process-math">\(L\)</span> is unique, we write</div>
+<div class="displaymath process-math" id="sec_metcont-7-5-2-1-25">
+\begin{equation}
+\lim_{x \to p} f(x) \coloneqq L .
+\end{equation}
+</div>
+<div class="para">If <span class="process-math">\(f(x)\)</span> does not converge as <span class="process-math">\(x\)</span> goes to <span class="process-math">\(p\text{,}\)</span> we say <span class="process-math">\(f\)</span> <em class="emphasis">diverges</em> at <span class="process-math">\(p\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-7-5-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 7.5.15"><a aria-label="Copy heading and permalink for Definition 7.5.15" href="#sec_metcont-7-5" title="Copy heading and permalink for Definition 7.5.15">🔗</a></div>
+</article>
+<div class="para" id="sec_metcont-7-6">As usual, we prove that the limit, if it exists, is unique. The proof is a direct translation of the proof from <a class="internal" href="lim_chapter.html" title="Chapter 3: Continuous Functions">Chapter 3</a>, so we leave it as an exercise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-7-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_mslimitisunique"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.5.16</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="prop_mslimitisunique-1-1">Let <span class="process-math">\((X,d_X)\)</span> and <span class="process-math">\((Y,d_Y)\)</span> be metric spaces, <span class="process-math">\(S \subset X\text{,}\)</span> <span class="process-math">\(p \in X\)</span> a cluster point of <span class="process-math">\(S\text{,}\)</span> and let <span class="process-math">\(f \colon S \to Y\)</span> be a function such that <span class="process-math">\(f(x)\)</span> converges as <span class="process-math">\(x\)</span> goes to <span class="process-math">\(p\text{.}\)</span>  Then the limit of <span class="process-math">\(f(x)\)</span> as <span class="process-math">\(x\)</span> goes to <span class="process-math">\(p\)</span> is unique.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_mslimitisunique-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 7.5.16"><a aria-label="Copy heading and permalink for Proposition 7.5.16" href="#prop_mslimitisunique" title="Copy heading and permalink for Proposition 7.5.16">🔗</a></div>
+</article>
+<div class="para" id="sec_metcont-7-8">In any metric space, just like in <span class="process-math">\(\R\text{,}\)</span> continuous limits may be replaced by sequential limits.  The proof is again a direct translation of the proof from <a class="internal" href="lim_chapter.html" title="Chapter 3: Continuous Functions">Chapter 3</a>, and we leave it as an exercise.  The upshot is that we really only need to prove things for sequential limits.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-7-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="lemma theorem-like" id="ms_seqflimit_lemma"><h4 class="heading">
+<span class="type">Lemma</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.5.17</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="ms_seqflimit_lemma-1-1">Let <span class="process-math">\((X,d_X)\)</span> and <span class="process-math">\((Y,d_Y)\)</span> be metric spaces, <span class="process-math">\(S \subset X\text{,}\)</span> <span class="process-math">\(p \in X\)</span> a cluster point of <span class="process-math">\(S\text{,}\)</span> and let <span class="process-math">\(f \colon S \to Y\)</span> be a function.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#ms_seqflimit_lemma-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="ms_seqflimit_lemma-1-2">Then <span class="process-math">\(f(x)\)</span> converges to <span class="process-math">\(L \in Y\)</span> as <span class="process-math">\(x\)</span> goes to <span class="process-math">\(p\)</span> if and only if for every sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> in <span class="process-math">\(S \setminus \{p\}\)</span> such that <span class="process-math">\(\lim_{n\to\infty} x_n = p\text{,}\)</span> the sequence <span class="process-math">\(\bigl\{ f(x_n) \bigr\}_{n=1}^\infty\)</span> converges to <span class="process-math">\(L\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#ms_seqflimit_lemma-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Lemma 7.5.17"><a aria-label="Copy heading and permalink for Lemma 7.5.17" href="#ms_seqflimit_lemma" title="Copy heading and permalink for Lemma 7.5.17">🔗</a></div>
+</article>
+<div class="para logical" id="sec_metcont-7-10">
+<div class="para">By applying <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metcont.html#prop_contiscont" title="Proposition 7.5.2">Proposition 7.5.2</a> or the definition directly, we find (exercise), as in <a class="internal" href="lim_chapter.html" title="Chapter 3: Continuous Functions">Chapter 3</a>, that for cluster points <span class="process-math">\(p\)</span> of <span class="process-math">\(S
+\subset X\text{,}\)</span> the function <span class="process-math">\(f \colon S \to Y\)</span> is continuous at <span class="process-math">\(p\)</span> if and only if</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_contiscont.html ./knowl/xref/lim_chapter.html" id="sec_metcont-7-10-7">
+\begin{equation}
+\lim_{x \to p} f(x) = f(p) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-7-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 7.5.5: Cluster points and limits of functions"><a aria-label="Copy heading and permalink for Subsection 7.5.5: Cluster points and limits of functions" href="#sec_metcont-7" title="Copy heading and permalink for Subsection 7.5.5: Cluster points and limits of functions">🔗</a></div>
+</section>
+<section class="exercises" id="sec_metcont-8">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.5.6</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_metcont-8-1"><h4 class="heading"><span class="codenumber">7.5.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metcont-8-1-1-1">Consider <span class="process-math">\(\N \subset \R\)</span> with the standard metric.  Let <span class="process-math">\((X,d)\)</span> be a metric space and <span class="process-math">\(f \colon X \to \N\)</span> a continuous function.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_metcont-8-1-1-2">
+<li id="sec_metcont-8-1-1-2-1">
+<div class="para" id="sec_metcont-8-1-1-2-1-1">Prove that if <span class="process-math">\(X\)</span> is connected, then <span class="process-math">\(f\)</span> is constant (the range of <span class="process-math">\(f\)</span> is a single value).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-1-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.5.1.a"><a aria-label="Copy heading and permalink for Item 7.5.1.a" href="#sec_metcont-8-1-1-2-1" title="Copy heading and permalink for Item 7.5.1.a">🔗</a></div>
+</li>
+<li id="sec_metcont-8-1-1-2-2">
+<div class="para" id="sec_metcont-8-1-1-2-2-1">Find an example where <span class="process-math">\(X\)</span> is disconnected and <span class="process-math">\(f\)</span> is not constant.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-1-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.5.1.b"><a aria-label="Copy heading and permalink for Item 7.5.1.b" href="#sec_metcont-8-1-1-2-2" title="Copy heading and permalink for Item 7.5.1.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 7.5.1"><a aria-label="Copy heading and permalink for Exercise 7.5.1" href="#sec_metcont-8-1" title="Copy heading and permalink for Exercise 7.5.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_dicontR2"><h4 class="heading"><span class="codenumber">7.5.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_dicontR2-1-1">Define <span class="process-math">\(f \colon \R^2 \to \R\)</span> by <span class="process-math">\(f(0,0) \coloneqq 0\text{,}\)</span> and <span class="process-math">\(f(x,y) \coloneqq \frac{xy}{x^2+y^2}\)</span> if <span class="process-math">\((x,y) \neq (0,0)\text{.}\)</span> See <a class="internal" href="sec_metcont.html#fig_xyxsqysq" title="Figure 7.14">Figure 7.14</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_dicontR2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="exercise_dicontR2-1-2">
+<li id="exercise_dicontR2-1-2-1">
+<div class="para" id="exercise_dicontR2-1-2-1-1">Show that for every fixed <span class="process-math">\(x\text{,}\)</span> the function that takes <span class="process-math">\(y\)</span> to <span class="process-math">\(f(x,y)\)</span> is continuous.  Similarly, for every fixed <span class="process-math">\(y\text{,}\)</span> the function that takes <span class="process-math">\(x\)</span> to <span class="process-math">\(f(x,y)\)</span> is continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_dicontR2-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.5.2.a"><a aria-label="Copy heading and permalink for Item 7.5.2.a" href="#exercise_dicontR2-1-2-1" title="Copy heading and permalink for Item 7.5.2.a">🔗</a></div>
+</li>
+<li id="exercise_dicontR2-1-2-2">
+<div class="para" id="exercise_dicontR2-1-2-2-1">Show that <span class="process-math">\(f\)</span> is not continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_dicontR2-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.5.2.b"><a aria-label="Copy heading and permalink for Item 7.5.2.b" href="#exercise_dicontR2-1-2-2" title="Copy heading and permalink for Item 7.5.2.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 7.5.2"><a aria-label="Copy heading and permalink for Exercise 7.5.2" href="#exercise_dicontR2" title="Copy heading and permalink for Exercise 7.5.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metcont-8-3"><h4 class="heading"><span class="codenumber">7.5.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metcont-8-3-1-1">Suppose <span class="process-math">\((X,d_X)\text{,}\)</span> <span class="process-math">\((Y,d_Y)\)</span> are metric spaces and <span class="process-math">\(f \colon X \to Y\)</span> is continuous. Let <span class="process-math">\(A \subset X\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_metcont-8-3-1-2">
+<li id="sec_metcont-8-3-1-2-1">
+<div class="para" id="sec_metcont-8-3-1-2-1-1">Show that <span class="process-math">\(f(\widebar{A}) \subset \overline{f(A)}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-3-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.5.3.a"><a aria-label="Copy heading and permalink for Item 7.5.3.a" href="#sec_metcont-8-3-1-2-1" title="Copy heading and permalink for Item 7.5.3.a">🔗</a></div>
+</li>
+<li id="sec_metcont-8-3-1-2-2">
+<div class="para" id="sec_metcont-8-3-1-2-2-1">Show by example that <span class="process-math">\(f(\widebar{A})\)</span> can be a proper subset of <span class="process-math">\(\overline{f(A)}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-3-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.5.3.b"><a aria-label="Copy heading and permalink for Item 7.5.3.b" href="#sec_metcont-8-3-1-2-2" title="Copy heading and permalink for Item 7.5.3.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 7.5.3"><a aria-label="Copy heading and permalink for Exercise 7.5.3" href="#sec_metcont-8-3" title="Copy heading and permalink for Exercise 7.5.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metcont-8-4"><h4 class="heading"><span class="codenumber">7.5.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metcont-8-4-1-1">Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metcont.html#thm_mstopocont" title="Theorem 7.5.8">Theorem 7.5.8</a>.  Hint: Use <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metcont.html#lemma_mstopocontloc" title="Lemma 7.5.7">Lemma 7.5.7</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.5.4"><a aria-label="Copy heading and permalink for Exercise 7.5.4" href="#sec_metcont-8-4" title="Copy heading and permalink for Exercise 7.5.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_msconnconn"><h4 class="heading"><span class="codenumber">7.5.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_msconnconn-1-1">Suppose <span class="process-math">\(f \colon X \to Y\)</span> is continuous for metric spaces <span class="process-math">\((X,d_X)\)</span> and <span class="process-math">\((Y,d_Y)\text{.}\)</span>  Show that if <span class="process-math">\(X\)</span> is connected, then <span class="process-math">\(f(X)\)</span> is connected.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_msconnconn-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.5.5"><a aria-label="Copy heading and permalink for Exercise 7.5.5" href="#exercise_msconnconn" title="Copy heading and permalink for Exercise 7.5.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metcont-8-6"><h4 class="heading"><span class="codenumber">7.5.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metcont-8-6-1-1">Prove the following version of the <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_minmaxint.html#IVT_thm" title="Theorem 3.3.8: Bolzano’s intermediate value theorem">intermediate value theorem</a>.  Let <span class="process-math">\((X,d)\)</span> be a connected metric space and <span class="process-math">\(f \colon X \to \R\)</span> a continuous function.  Suppose <span class="process-math">\(x_0,x_1 \in X\)</span> and <span class="process-math">\(y \in \R\)</span> are such that <span class="process-math">\(f(x_0) &lt; y &lt; f(x_1)\text{.}\)</span> Then prove that there exists a <span class="process-math">\(z \in X\)</span> such that <span class="process-math">\(f(z) = y\text{.}\)</span> Hint: See <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metcont.html#exercise_msconnconn" title="Exercise 7.5.5">Exercise 7.5.5</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.5.6"><a aria-label="Copy heading and permalink for Exercise 7.5.6" href="#sec_metcont-8-6" title="Copy heading and permalink for Exercise 7.5.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metcont-8-7"><h4 class="heading"><span class="codenumber">7.5.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metcont-8-7-1-1">A continuous <span class="process-math">\(f \colon X \to Y\)</span> between metric spaces <span class="process-math">\((X,d_X)\)</span> and <span class="process-math">\((Y,d_Y)\)</span> is said to be <em class="emphasis">proper</em> if for every compact set <span class="process-math">\(K \subset Y\text{,}\)</span> the set <span class="process-math">\(f^{-1}(K)\)</span> is compact. Suppose a continuous <span class="process-math">\(f \colon (0,1) \to (0,1)\)</span> is proper and <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is a sequence in <span class="process-math">\((0,1)\)</span> converging to <span class="process-math">\(0\text{.}\)</span>  Show that <span class="process-math">\(\bigl\{ f(x_n) \bigr\}_{n=1}^\infty\)</span> has no subsequence that converges in <span class="process-math">\((0,1)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.5.7"><a aria-label="Copy heading and permalink for Exercise 7.5.7" href="#sec_metcont-8-7" title="Copy heading and permalink for Exercise 7.5.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metcont-8-8"><h4 class="heading"><span class="codenumber">7.5.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metcont-8-8-1-1">Let <span class="process-math">\((X,d_X)\)</span> and <span class="process-math">\((Y,d_Y)\)</span> be metric spaces and <span class="process-math">\(f \colon X \to Y\)</span> be a one-to-one and onto continuous function.  Suppose <span class="process-math">\(X\)</span> is compact.  Prove that the inverse <span class="process-math">\(f^{-1} \colon Y \to X\)</span> is continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.5.8"><a aria-label="Copy heading and permalink for Exercise 7.5.8" href="#sec_metcont-8-8" title="Copy heading and permalink for Exercise 7.5.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metcont-8-9"><h4 class="heading"><span class="codenumber">7.5.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_metcont-8-9-1-1">
+<div class="para">Take the metric space of continuous functions <span class="process-math">\(C\bigl([0,1],\R\bigr)\text{.}\)</span>  Let <span class="process-math">\(k \colon [0,1] \times [0,1] \to \R\)</span> be a continuous function. Given <span class="process-math">\(f \in C\bigl([0,1],\R\bigr)\)</span> define</div>
+<div class="displaymath process-math" id="sec_metcont-8-9-1-1-4">
+\begin{equation}
+\varphi_f(x) \coloneqq \int_0^1 k(x,y) f(y) \,dy .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_metcont-8-9-1-2">
+<li id="sec_metcont-8-9-1-2-1">
+<div class="para" id="sec_metcont-8-9-1-2-1-1">Show that <span class="process-math">\(T(f) \coloneqq \varphi_f\)</span> defines a function <span class="process-math">\(T \colon C\bigl([0,1],\R\bigr) \to C\bigl([0,1],\R\bigr)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-9-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.5.9.a"><a aria-label="Copy heading and permalink for Item 7.5.9.a" href="#sec_metcont-8-9-1-2-1" title="Copy heading and permalink for Item 7.5.9.a">🔗</a></div>
+</li>
+<li id="sec_metcont-8-9-1-2-2">
+<div class="para" id="sec_metcont-8-9-1-2-2-1">Show that <span class="process-math">\(T\)</span> is continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-9-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.5.9.b"><a aria-label="Copy heading and permalink for Item 7.5.9.b" href="#sec_metcont-8-9-1-2-2" title="Copy heading and permalink for Item 7.5.9.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 7.5.9"><a aria-label="Copy heading and permalink for Exercise 7.5.9" href="#sec_metcont-8-9" title="Copy heading and permalink for Exercise 7.5.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metcont-8-10"><h4 class="heading"><span class="codenumber">7.5.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metcont-8-10-1-1">Let <span class="process-math">\((X,d)\)</span> be a metric space.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_metcont-8-10-1-2">
+<li id="sec_metcont-8-10-1-2-1">
+<div class="para" id="sec_metcont-8-10-1-2-1-1">If <span class="process-math">\(p \in X\text{,}\)</span> show that <span class="process-math">\(f \colon X \to \R\)</span> defined by <span class="process-math">\(f(x) \coloneqq d(x,p)\)</span> is continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-10-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.5.10.a"><a aria-label="Copy heading and permalink for Item 7.5.10.a" href="#sec_metcont-8-10-1-2-1" title="Copy heading and permalink for Item 7.5.10.a">🔗</a></div>
+</li>
+<li id="sec_metcont-8-10-1-2-2">
+<div class="para" id="sec_metcont-8-10-1-2-2-1">Define a metric on <span class="process-math">\(X \times X\)</span> as in <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metric.html#exercise_mscross" title="Exercise 7.1.6">Exercise 7.1.6</a> part b, and show that <span class="process-math">\(g \colon X \times X \to \R\)</span> defined by <span class="process-math">\(g(x,y) \coloneqq d(x,y)\)</span> is continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-10-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.5.10.b"><a aria-label="Copy heading and permalink for Item 7.5.10.b" href="#sec_metcont-8-10-1-2-2" title="Copy heading and permalink for Item 7.5.10.b">🔗</a></div>
+</li>
+<li id="sec_metcont-8-10-1-2-3">
+<div class="para" id="sec_metcont-8-10-1-2-3-1">Show that if <span class="process-math">\(K_1\)</span> and <span class="process-math">\(K_2\)</span> are compact subsets of <span class="process-math">\(X\text{,}\)</span> then there exists a <span class="process-math">\(p \in K_1\)</span> and <span class="process-math">\(q \in K_2\)</span> such that <span class="process-math">\(d(p,q)\)</span> is minimal, that is, <span class="process-math">\(d(p,q) = \inf \{ d(x,y) \colon x \in K_1, y \in K_2 \}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-10-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.5.10.c"><a aria-label="Copy heading and permalink for Item 7.5.10.c" href="#sec_metcont-8-10-1-2-3" title="Copy heading and permalink for Item 7.5.10.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 7.5.10"><a aria-label="Copy heading and permalink for Exercise 7.5.10" href="#sec_metcont-8-10" title="Copy heading and permalink for Exercise 7.5.10">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metcont-8-11"><h4 class="heading"><span class="codenumber">7.5.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_metcont-8-11-1-1">
+<div class="para">Let <span class="process-math">\((X,d)\)</span> be a compact metric space, let <span class="process-math">\(C(X,\R)\)</span> be the set of real-valued continuous functions.  Define</div>
+<div class="displaymath process-math" id="sec_metcont-8-11-1-1-3">
+\begin{equation}
+d(f,g) \coloneqq \snorm{f-g}_X = \sup_{x \in X} \babs{f(x)-g(x)} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_metcont-8-11-1-2">
+<li id="sec_metcont-8-11-1-2-1">
+<div class="para" id="sec_metcont-8-11-1-2-1-1">Show that <span class="process-math">\(d\)</span> makes <span class="process-math">\(C(X,\R)\)</span> into a metric space.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-11-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.5.11.a"><a aria-label="Copy heading and permalink for Item 7.5.11.a" href="#sec_metcont-8-11-1-2-1" title="Copy heading and permalink for Item 7.5.11.a">🔗</a></div>
+</li>
+<li id="sec_metcont-8-11-1-2-2">
+<div class="para" id="sec_metcont-8-11-1-2-2-1">Show that for every <span class="process-math">\(x \in X\text{,}\)</span> the evaluation function <span class="process-math">\(E_x \colon C(X,\R) \to \R\)</span> defined by <span class="process-math">\(E_x(f) \coloneqq f(x)\)</span> is a continuous function.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-11-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.5.11.b"><a aria-label="Copy heading and permalink for Item 7.5.11.b" href="#sec_metcont-8-11-1-2-2" title="Copy heading and permalink for Item 7.5.11.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 7.5.11"><a aria-label="Copy heading and permalink for Exercise 7.5.11" href="#sec_metcont-8-11" title="Copy heading and permalink for Exercise 7.5.11">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metcont-8-12"><h4 class="heading"><span class="codenumber">7.5.12<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_metcont-8-12-1-1">
+<div class="para">Let <span class="process-math">\(C\bigl([a,b],\R\bigr)\)</span> be the set of continuous functions and <span class="process-math">\(C^1\bigl([a,b],\R\bigr)\)</span> the set of once continuously differentiable functions on <span class="process-math">\([a,b]\text{.}\)</span> Define</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/example_msC01.html ./knowl/xref/exercise_C1ab.html" id="sec_metcont-8-12-1-1-4">
+\begin{equation}
+d_{C}(f,g) \coloneqq \snorm{f-g}_{[a,b]}
+\qquad \text{and} \qquad
+d_{C^1}(f,g) \coloneqq \snorm{f-g}_{[a,b]} + \snorm{f'-g'}_{[a,b]},
+\end{equation}
+</div>
+<div class="para">where <span class="process-math">\(\snorm{\cdot}_{[a,b]}\)</span> is the uniform norm. By <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metric.html#example_msC01" title="Example 7.1.8">Example 7.1.8</a> and <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metric.html#exercise_C1ab" title="Exercise 7.1.12">Exercise 7.1.12</a>, we know that <span class="process-math">\(C\bigl([a,b],\R\bigr)\)</span> with <span class="process-math">\(d_C\)</span> is a metric space and so is <span class="process-math">\(C^1\bigl([a,b],\R\bigr)\)</span> with <span class="process-math">\(d_{C^1}\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-12-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_metcont-8-12-1-2">
+<li id="sec_metcont-8-12-1-2-1">
+<div class="para" id="sec_metcont-8-12-1-2-1-1">Prove that the derivative operator <span class="process-math">\(D \colon 
+C^1\bigl([a,b],\R\bigr) \to C\bigl([a,b],\R\bigr)\)</span> defined by <span class="process-math">\(D(f) \coloneqq f'\)</span> is continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-12-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.5.12.a"><a aria-label="Copy heading and permalink for Item 7.5.12.a" href="#sec_metcont-8-12-1-2-1" title="Copy heading and permalink for Item 7.5.12.a">🔗</a></div>
+</li>
+<li id="sec_metcont-8-12-1-2-2">
+<div class="para" id="sec_metcont-8-12-1-2-2-1">On the other hand if we consider the metric <span class="process-math">\(d_C\)</span> on <span class="process-math">\(C^1\bigl([a,b],\R\bigr)\text{,}\)</span> then prove the derivative operator is no longer continuous.  Hint: Consider <span class="process-math">\(\sin(n x)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-12-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.5.12.b"><a aria-label="Copy heading and permalink for Item 7.5.12.b" href="#sec_metcont-8-12-1-2-2" title="Copy heading and permalink for Item 7.5.12.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 7.5.12"><a aria-label="Copy heading and permalink for Exercise 7.5.12" href="#sec_metcont-8-12" title="Copy heading and permalink for Exercise 7.5.12">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metcont-8-13"><h4 class="heading"><span class="codenumber">7.5.13<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metcont-8-13-1-1">Let <span class="process-math">\((X,d)\)</span> be a metric space, <span class="process-math">\(S \subset X\text{,}\)</span> and <span class="process-math">\(p \in X\text{.}\)</span>  Prove that <span class="process-math">\(p\)</span> is a cluster point of <span class="process-math">\(S\)</span> if and only if <span class="process-math">\(p \in \overline{S \setminus \{
+p \}}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-13-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.5.13"><a aria-label="Copy heading and permalink for Exercise 7.5.13" href="#sec_metcont-8-13" title="Copy heading and permalink for Exercise 7.5.13">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metcont-8-14"><h4 class="heading"><span class="codenumber">7.5.14<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metcont-8-14-1-1">Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metcont.html#prop_mslimitisunique" title="Proposition 7.5.16">Proposition 7.5.16</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-14-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.5.14"><a aria-label="Copy heading and permalink for Exercise 7.5.14" href="#sec_metcont-8-14" title="Copy heading and permalink for Exercise 7.5.14">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metcont-8-15"><h4 class="heading"><span class="codenumber">7.5.15<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metcont-8-15-1-1">Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metcont.html#ms_seqflimit_lemma" title="Lemma 7.5.17">Lemma 7.5.17</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-15-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.5.15"><a aria-label="Copy heading and permalink for Exercise 7.5.15" href="#sec_metcont-8-15" title="Copy heading and permalink for Exercise 7.5.15">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metcont-8-16"><h4 class="heading"><span class="codenumber">7.5.16<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_metcont-8-16-1-1">
+<div class="para">Let <span class="process-math">\((X,d_X)\)</span> and <span class="process-math">\((Y,d_Y)\)</span> be metric spaces, <span class="process-math">\(S \subset X\text{,}\)</span> <span class="process-math">\(p \in X\)</span> a cluster point of <span class="process-math">\(S\text{,}\)</span> and let <span class="process-math">\(f \colon S \to Y\)</span> be a function. Prove that <span class="process-math">\(f \colon S \to Y\)</span> is continuous at <span class="process-math">\(p\)</span> if and only if</div>
+<div class="displaymath process-math" id="sec_metcont-8-16-1-1-9">
+\begin{equation}
+\lim_{x \to p} f(x) = f(p) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-16-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.5.16"><a aria-label="Copy heading and permalink for Exercise 7.5.16" href="#sec_metcont-8-16" title="Copy heading and permalink for Exercise 7.5.16">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metcont-8-17"><h4 class="heading"><span class="codenumber">7.5.17<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_metcont-8-17-1-1">
+<div class="para">Define</div>
+<div class="displaymath process-math" id="sec_metcont-8-17-1-1-1">
+\begin{equation}
+f(x,y) \coloneqq
+\begin{cases}
+\frac{2xy}{x^4+y^2} &amp; \text{if } (x,y) \neq (0,0), \\
+0 &amp; \text{if } (x,y) = (0,0) .
+\end{cases}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-17-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_metcont-8-17-1-2">
+<li id="sec_metcont-8-17-1-2-1">
+<div class="para" id="sec_metcont-8-17-1-2-1-1">Show that for every fixed <span class="process-math">\(y\)</span> the function that takes <span class="process-math">\(x\)</span> to <span class="process-math">\(f(x,y)\)</span> is continuous and hence Riemann integrable.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-17-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.5.17.a"><a aria-label="Copy heading and permalink for Item 7.5.17.a" href="#sec_metcont-8-17-1-2-1" title="Copy heading and permalink for Item 7.5.17.a">🔗</a></div>
+</li>
+<li id="sec_metcont-8-17-1-2-2">
+<div class="para" id="sec_metcont-8-17-1-2-2-1">For every fixed <span class="process-math">\(x\text{,}\)</span> the function that takes <span class="process-math">\(y\)</span> to <span class="process-math">\(f(x,y)\)</span> is continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-17-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.5.17.b"><a aria-label="Copy heading and permalink for Item 7.5.17.b" href="#sec_metcont-8-17-1-2-2" title="Copy heading and permalink for Item 7.5.17.b">🔗</a></div>
+</li>
+<li id="sec_metcont-8-17-1-2-3">
+<div class="para" id="sec_metcont-8-17-1-2-3-1">Show that <span class="process-math">\(f\)</span> is not continuous at <span class="process-math">\((0,0)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-17-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.5.17.c"><a aria-label="Copy heading and permalink for Item 7.5.17.c" href="#sec_metcont-8-17-1-2-3" title="Copy heading and permalink for Item 7.5.17.c">🔗</a></div>
+</li>
+<li id="sec_metcont-8-17-1-2-4">
+<div class="para" id="sec_metcont-8-17-1-2-4-1">Now show that <span class="process-math">\(g(y) \coloneqq \int_0^1 f(x,y)\,dx\)</span> is not continuous at <span class="process-math">\(y=0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-17-1-2-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.5.17.d"><a aria-label="Copy heading and permalink for Item 7.5.17.d" href="#sec_metcont-8-17-1-2-4" title="Copy heading and permalink for Item 7.5.17.d">🔗</a></div>
+</li>
+</ol>
+<div class="para" id="sec_metcont-8-17-1-3">Note: Feel free to use what you know about <span class="process-math">\(\arctan\)</span> from calculus, in particular that <span class="process-math">\(\frac{d}{ds} \bigl[ \arctan(s) \bigr] = \frac{1}{1+s^2}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcont-8-17-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.5.17"><a aria-label="Copy heading and permalink for Exercise 7.5.17" href="#sec_metcont-8-17" title="Copy heading and permalink for Exercise 7.5.17">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_integralcontcontextra"><h4 class="heading"><span class="codenumber">7.5.18<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="exercise_integralcontcontextra-1-1">
+<div class="para">Prove a stronger version of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metcont.html#prop_integralcontcont" title="Proposition 7.5.12">Proposition 7.5.12</a>: If <span class="process-math">\(f \colon (a,b) \times (c,d) \to \R\)</span> is a bounded continuous function, then <span class="process-math">\(g \colon (c,d) \to \R\)</span> defined by</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_integralcontcont.html" id="exercise_integralcontcontextra-1-1-4">
+\begin{equation}
+g(y) \coloneqq \int_a^b f(x,y) \,dx  \qquad \text{is continuous}.
+\end{equation}
+</div>
+<div class="para">Hint: First integrate over <span class="process-math">\([a+\nicefrac{1}{n},b-\nicefrac{1}{n}]\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_integralcontcontextra-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.5.18"><a aria-label="Copy heading and permalink for Exercise 7.5.18" href="#exercise_integralcontcontextra" title="Copy heading and permalink for Exercise 7.5.18">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 7.5.6"><a aria-label="Copy heading and permalink for Exercises 7.5.6" href="#sec_metcont-8" title="Copy heading and permalink for Exercises 7.5.6">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 7.5: Continuous functions"><a aria-label="Copy heading and permalink for Section 7.5: Continuous functions" href="#sec_metcont" title="Copy heading and permalink for Section 7.5: Continuous functions">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_metcompact.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_metpicard.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

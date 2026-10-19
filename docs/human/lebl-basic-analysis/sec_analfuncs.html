@@ -1,0 +1,821 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Power series and analytic functions · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_analfuncs">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Power series and analytic functions</span>
+</h2>
+<section class="introduction" id="sec_analfuncs-2">
+<div class="para" id="sec_analfuncs-2-1">
+<em class="emphasis">Note: 2–3 lectures</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section>
+<section class="subsection" id="sec_analfuncs-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.3.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Analytic functions</span>
+</h3>
+<div class="para logical" id="sec_analfuncs-3-2">
+<div class="para">A (complex) power series is a series of the form</div>
+<div class="displaymath process-math" id="sec_analfuncs-3-2-1">
+\begin{equation}
+\sum_{n=0}^\infty c_n {(z-a)}^n
+\end{equation}
+</div>
+<div class="para">for <span class="process-math">\(c_n, z, a \in \C\text{.}\)</span>  We say the series <em class="emphasis">converges</em> if the series converges for some <span class="process-math">\(z \neq a\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-3-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_analfuncs-3-3">
+<div class="para">Let <span class="process-math">\(U \subset \C\)</span> be an open set and <span class="process-math">\(f \colon U \to \C\)</span> a function. Suppose that for every <span class="process-math">\(a \in U\)</span> there exists a <span class="process-math">\(\rho &gt; 0\)</span> and a power series that converges to the function</div>
+<div class="displaymath process-math" id="sec_analfuncs-3-3-5">
+\begin{equation}
+f(z) = \sum_{n=0}^\infty c_n {(z-a)}^n
+\end{equation}
+</div>
+<div class="para">for all <span class="process-math">\(z \in B(a,\rho)\text{.}\)</span> Then we say <span class="process-math">\(f\)</span> is an <em class="emphasis">analytic</em> function. Similarly, given an interval <span class="process-math">\((a,b) \subset \R\text{,}\)</span> we say that <span class="process-math">\(f \colon (a,b) \to \C\)</span> is analytic or perhaps <em class="emphasis">real-analytic</em> if for each point <span class="process-math">\(c \in
+(a,b)\)</span> there is a power series around <span class="process-math">\(c\)</span> that converges in some <span class="process-math">\((c-\rho,c+\rho)\)</span> for some <span class="process-math">\(\rho &gt; 0\text{.}\)</span> As we will sometimes talk about real and sometimes about complex power series, we will use <span class="process-math">\(z\)</span> to denote a complex number and <span class="process-math">\(x\)</span> a real number. We will always mention which case we are working with.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-3-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_analfuncs-3-4">
+<div class="para">An analytic function has different expansions around different points. Moreover, convergence does not automatically happen on the entire domain of the function.  For example, if <span class="process-math">\(\sabs{z} &lt; 1\text{,}\)</span> then</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_1over1mz.html" id="sec_analfuncs-3-4-2">
+\begin{equation}
+\frac{1}{1-z} = \sum_{n=0}^\infty z^n .
+\end{equation}
+</div>
+<div class="para">While the left-hand side exists on all of <span class="process-math">\(z \neq 1\text{,}\)</span> the right-hand side happens to converge only if <span class="process-math">\(\sabs{z} &lt; 1\text{.}\)</span>  See a graph of a small piece of <span class="process-math">\(\frac{1}{1-z}\)</span> in <a class="internal" href="sec_analfuncs.html#fig_1over1mz" title="Figure 11.5">Figure 11.5</a>. We cannot graph the function itself; we can only graph its real or imaginary parts for lack of dimensions in our universe.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-3-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="fig_1over1mz"><img alt="Two surface graphs in 3D over the xy-plane. On both graphs a vertical line is marked above a point (1,0) on the xy-plane. The graphs are shown on a small patch around the origin and ending before getting to the (1,0) point. The left graph is flatter away from the vertical line and goes upwards steeply as we get closer to the vertical line. The right graph is similar, but goes upwards steeply as we get closer to the vertical line from the region where y is negative and goes steeply down as we approach the vertical line from the region where y is positive." class="raimg" role="img" src="figures/real_imag_1over1mz-mbxpdft.svg" style="width:363pt; height:198pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Graphs of the real and imaginary parts of <span class="process-math">\(z=x+iy \mapsto \frac{1}{1-z}\)</span> in the square <span class="process-math">\([-0.8,0.8]^2\text{.}\)</span>  The singularity at <span class="process-math">\(z=1\)</span> is marked with a vertical dashed line.<div class="autopermalink" data-description="Figure 11.5"><a aria-label="Copy heading and permalink for Figure 11.5" href="#fig_1over1mz" title="Copy heading and permalink for Figure 11.5">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="autopermalink" data-description="Subsection 11.3.1: Analytic functions"><a aria-label="Copy heading and permalink for Subsection 11.3.1: Analytic functions" href="#sec_analfuncs-3" title="Copy heading and permalink for Subsection 11.3.1: Analytic functions">🔗</a></div>
+</section>
+<section class="subsection" id="sec_analfuncs-4">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.3.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Convergence of power series</span>
+</h3>
+<div class="para" id="sec_analfuncs-4-2">We proved several results for power series of a real variable in <a class="internal" href="sec_moreonseries.html" title="Section 2.6: More on series">Section 2.6</a>.   For the most part the convergence properties of power series deal with the series <span class="process-math">\(\sum_{k=0}^\infty \sabs{c_k} \, \sabs{z-a}^k\)</span> and so we have already proved many results about complex power series.  In particular, we computed what is called the radius of convergence of a power series.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_analfuncs-4-3"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.3.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_analfuncs-4-3-1-1">Let <span class="process-math">\(\sum_{n=0}^\infty c_n {(z-a)}^n\)</span> be a power series. There exists a <span class="process-math">\(\rho \in [0,\infty]\)</span> such that<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-4-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="sec_analfuncs-4-3-1-2">
+<li id="sec_analfuncs-4-3-1-2-1">
+<div class="para" id="sec_analfuncs-4-3-1-2-1-1">If <span class="process-math">\(\rho = 0\text{,}\)</span> then the series diverges for every <span class="process-math">\(z \neq a\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-4-3-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#sec_analfuncs-4-3-1-2-1" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="sec_analfuncs-4-3-1-2-2">
+<div class="para" id="sec_analfuncs-4-3-1-2-2-1">If <span class="process-math">\(\rho = \infty\text{,}\)</span> then the series converges absolutely for all <span class="process-math">\(z \in \C\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-4-3-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#sec_analfuncs-4-3-1-2-2" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+<li id="sec_analfuncs-4-3-1-2-3">
+<div class="para" id="sec_analfuncs-4-3-1-2-3-1">If <span class="process-math">\(0 &lt; \rho &lt; \infty\text{,}\)</span> then the series converges absolutely on <span class="process-math">\(B(a,\rho)\text{,}\)</span> and diverges when <span class="process-math">\(\sabs{z-a} &gt; \rho\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-4-3-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iii"><a aria-label="Copy heading and permalink for Item iii" href="#sec_analfuncs-4-3-1-2-3" title="Copy heading and permalink for Item iii">🔗</a></div>
+</li>
+</ol>
+<div class="para" id="sec_analfuncs-4-3-1-3">Furthermore, if <span class="process-math">\(0 &lt; r &lt; \rho\text{,}\)</span> then the series converges uniformly on the closed ball <span class="process-math">\(C(a,r)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-4-3-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 11.3.1"><a aria-label="Copy heading and permalink for Proposition 11.3.1" href="#sec_analfuncs-4-3" title="Copy heading and permalink for Proposition 11.3.1">🔗</a></div>
+</article>
+<div class="para" id="sec_analfuncs-4-4">The number <span class="process-math">\(\rho\)</span> is the <em class="emphasis">radius of convergence</em>. See <a class="internal" href="sec_analfuncs.html#fig_radiusconvcomplex" title="Figure 11.6">Figure 11.6</a>. The radius of convergence gives a disc around <span class="process-math">\(a\)</span> where the series converges.  A power series is convergent if <span class="process-math">\(\rho &gt; 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-4-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="fig_radiusconvcomplex"><img alt='A dotted circle centered at a of radius rho. The inside of the circle is shaded and labeled with "series converges". The outside of the circle is labeled with "series does not converge".' class="raimg" role="img" src="figures/radiusconvcomplex-mbxpdft.svg" style="width:221pt; height:94pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Radius of convergence.<div class="autopermalink" data-description="Figure 11.6"><a aria-label="Copy heading and permalink for Figure 11.6" href="#fig_radiusconvcomplex" title="Copy heading and permalink for Figure 11.6">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<article class="proof" id="sec_analfuncs-4-8"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_analfuncs-4-8-1">
+<div class="para">We use the real version of this proposition, <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_moreonseries.html#prop_powerserrealradius" title="Proposition 2.6.10">Proposition 2.6.10</a>. Let</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_powerserrealradius.html" id="sec_analfuncs-4-8-1-2">
+\begin{equation}
+R \coloneqq \limsup_{n\to\infty} \sqrt[n]{\sabs{c_n}} .
+\end{equation}
+</div>
+<div class="para">If <span class="process-math">\(R = 0\text{,}\)</span> then <span class="process-math">\(\sum_{n=0}^\infty \sabs{c_n} \, \sabs{z-a}^n\)</span> converges for all <span class="process-math">\(z\text{.}\)</span> If <span class="process-math">\(R = \infty\text{,}\)</span> then <span class="process-math">\(\sum_{n=0}^\infty \sabs{c_n} \, \sabs{z-a}^n\)</span> converges only at <span class="process-math">\(z=a\text{.}\)</span> Otherwise, let <span class="process-math">\(\rho \coloneqq \nicefrac{1}{R}\text{.}\)</span> Then <span class="process-math">\(\sum_{n=0}^\infty \sabs{c_n} \, \sabs{z-a}^n\)</span> converges when <span class="process-math">\(\sabs{z-a} &lt; \rho\text{,}\)</span> and diverges (in fact the terms of the series do not go to zero) when <span class="process-math">\(\sabs{z-a} &gt; \rho\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-4-8-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_analfuncs-4-8-2">
+<div class="para">To prove the “Furthermore,” suppose <span class="process-math">\(0 &lt; r &lt; \rho\)</span> and <span class="process-math">\(z \in C(a,r)\text{.}\)</span>  Then consider the partial sums</div>
+<div class="displaymath process-math" id="sec_analfuncs-4-8-2-4">
+\begin{equation}
+\abs{\sum_{n=0}^k c_n {(z-a)}^n}
+\leq
+\sum_{n=0}^k \sabs{c_n} \sabs{z-a}^n
+\leq
+\sum_{n=0}^k \sabs{c_n} r^n . \qedhere
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-4-8-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 11.3.2.1"><a aria-label="Copy heading and permalink for Proof 11.3.2.1" href="#sec_analfuncs-4-8" title="Copy heading and permalink for Proof 11.3.2.1">🔗</a></div>
+</article>
+<div class="para logical" id="sec_analfuncs-4-9">
+<div class="para">If <span class="process-math">\(\sum_{n=0}^\infty c_n {(z-a)}^n\)</span> converges for some <span class="process-math">\(z\text{,}\)</span> then</div>
+<div class="displaymath process-math" id="sec_analfuncs-4-9-3">
+\begin{equation}
+\sum_{n=0}^\infty c_n {(w-a)}^n
+\end{equation}
+</div>
+<div class="para">converges absolutely whenever <span class="process-math">\(\sabs{w-a} &lt; \sabs{z-a}\text{.}\)</span> Conversely, if the series diverges at <span class="process-math">\(z\text{,}\)</span> then it must diverge at <span class="process-math">\(w\)</span> whenever <span class="process-math">\(\sabs{w-a} &gt; \sabs{z-a}\text{.}\)</span> Hence, to show that the radius of convergence is at least some number, we simply need to show convergence at some point by any method we know.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-4-9" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_analfuncs-4-10"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.3.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_analfuncs-4-10-1-1">
+<div class="para">We list some series we already know:</div>
+<div class="displaymath process-math" id="sec_analfuncs-4-10-1-1-1">
+\begin{equation}
+\begin{aligned}
+&amp; &amp;
+&amp; \sum_{n=0}^\infty z^n
+&amp; &amp; \text{has radius of convergence } 1.
+&amp; &amp;
+\\
+&amp; &amp;
+&amp; \sum_{n=0}^\infty \frac{1}{n!} z^n
+&amp; &amp; \text{has radius of convergence } \infty.
+&amp; &amp;
+\\
+&amp; &amp;
+&amp; \sum_{n=0}^\infty n^n z^n
+&amp; &amp; \text{has radius of convergence } 0.
+&amp; &amp;
+\end{aligned}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-4-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 11.3.2"><a aria-label="Copy heading and permalink for Example 11.3.2" href="#sec_analfuncs-4-10" title="Copy heading and permalink for Example 11.3.2">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_analfuncs-4-11"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.3.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_analfuncs-4-11-1-1">
+<div class="para">Note the difference between <span class="process-math">\(\frac{1}{1-z}\)</span> and its power series.  Let us expand <span class="process-math">\(\frac{1}{1-z}\)</span> as a power series around a point <span class="process-math">\(a \neq 1\text{.}\)</span> Let <span class="process-math">\(c \coloneqq \frac{1}{1-a}\text{,}\)</span> then</div>
+<div class="displaymath process-math" id="sec_analfuncs-4-11-1-1-5">
+\begin{equation}
+\frac{1}{1-z} = 
+\frac{c}{1-c(z-a)}
+=
+c
+\sum_{n=0}^\infty c^{n} {(z-a)}^n
+=
+\sum_{n=0}^\infty \left( \frac{1}{{(1-a)}^{n+1}} \right) {(z-a)}^n .
+\end{equation}
+</div>
+<div class="para">The series <span class="process-math">\(\sum_{n=0}^\infty c^n {(z-a)}^n\)</span> converges if and only if the series on the right-hand side converges.  Compute,</div>
+<div class="displaymath process-math" id="sec_analfuncs-4-11-1-1-7">
+\begin{equation}
+\limsup_{n\to\infty}
+\sqrt[n]{\sabs{c^n}} = \sabs{c}
+= \frac{1}{\sabs{1-a}} .
+\end{equation}
+</div>
+<div class="para">The radius of convergence of the power series is <span class="process-math">\(\sabs{1-a}\text{,}\)</span> that is, the distance from <span class="process-math">\(1\)</span> to <span class="process-math">\(a\text{.}\)</span>  The function <span class="process-math">\(\frac{1}{1-z}\)</span> has a power series representation around every <span class="process-math">\(a \neq 1\)</span> and so is analytic in <span class="process-math">\(\C \setminus
+\{ 1 \}\text{.}\)</span> The domain of the function is bigger than the region of convergence of the power series representing the function at any point.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-4-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 11.3.3"><a aria-label="Copy heading and permalink for Example 11.3.3" href="#sec_analfuncs-4-11" title="Copy heading and permalink for Example 11.3.3">🔗</a></div>
+</article>
+<div class="para" id="sec_analfuncs-4-12">It turns out that if a function has a power series representation converging to the function on some ball, then it has a power series representation at every point in the ball.  We will prove this result later.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-4-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 11.3.2: Convergence of power series"><a aria-label="Copy heading and permalink for Subsection 11.3.2: Convergence of power series" href="#sec_analfuncs-4" title="Copy heading and permalink for Subsection 11.3.2: Convergence of power series">🔗</a></div>
+</section>
+<section class="subsection" id="sec_analfuncs-5">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.3.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Properties of analytic functions</span>
+</h3>
+<article class="proposition theorem-like" id="sec_analfuncs-5-2"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.3.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_analfuncs-5-2-1-1">
+<div class="para">If</div>
+<div class="displaymath process-math" id="sec_analfuncs-5-2-1-1-1">
+\begin{equation}
+f(z) \coloneqq \sum_{n=0}^\infty c_n {(z-a)}^n
+\end{equation}
+</div>
+<div class="para">is convergent in <span class="process-math">\(B(a,\rho)\)</span> for some <span class="process-math">\(\rho &gt; 0\text{,}\)</span> then <span class="process-math">\(f \colon B(a,\rho) \to \C\)</span> is continuous. In particular, analytic functions are continuous.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-5-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 11.3.4"><a aria-label="Copy heading and permalink for Proposition 11.3.4" href="#sec_analfuncs-5-2" title="Copy heading and permalink for Proposition 11.3.4">🔗</a></div>
+</article>
+<article class="proof" id="sec_analfuncs-5-3"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_analfuncs-5-3-1">For <span class="process-math">\(z_0 \in B(a,\rho)\text{,}\)</span> pick <span class="process-math">\(r &lt; \rho\)</span> such that <span class="process-math">\(z_0 \in B(a,r)\text{.}\)</span> On <span class="process-math">\(B(a,r)\)</span> the partial sums (which are continuous) converge uniformly, and so the limit <span class="process-math">\(f|_{B(a,r)}\)</span> is continuous. Any sequence converging to <span class="process-math">\(z_0\)</span> has some tail that is completely in the open ball <span class="process-math">\(B(a,r)\text{.}\)</span> Hence, <span class="process-math">\(f\)</span> is continuous at <span class="process-math">\(z_0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-5-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 11.3.3.1"><a aria-label="Copy heading and permalink for Proof 11.3.3.1" href="#sec_analfuncs-5-3" title="Copy heading and permalink for Proof 11.3.3.1">🔗</a></div>
+</article>
+<div class="para logical" id="sec_analfuncs-5-4">
+<div class="para">In <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_liminter.html#cor_differentiatepowerser" title="Corollary 6.2.13">Corollary 6.2.13</a>, we proved that we can differentiate real power series term by term.  That is, we proved that if</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/cor_differentiatepowerser.html" id="sec_analfuncs-5-4-2">
+\begin{equation}
+f(x) \coloneqq \sum_{n=0}^\infty c_n {(x-a)}^n
+\end{equation}
+</div>
+<div class="para">converges for real <span class="process-math">\(x\)</span> in an interval around <span class="process-math">\(a \in \R\text{,}\)</span> then we can differentiate term by term and obtain a series</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/cor_differentiatepowerser.html" id="sec_analfuncs-5-4-5">
+\begin{equation}
+f'(x) =
+\sum_{n=1}^\infty n c_n {(x-a)}^{n-1}
+=
+\sum_{n=0}^\infty (n+1)c_{n+1} {(x-a)}^{n} 
+\end{equation}
+</div>
+<div class="para">with the same radius of convergence. We only proved this theorem when <span class="process-math">\(c_n\)</span> is real. However, for complex <span class="process-math">\(c_n\text{,}\)</span> we write <span class="process-math">\(c_n = s_n + i t_n\text{,}\)</span> and as <span class="process-math">\(x\)</span> and <span class="process-math">\(a\)</span> are real</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/cor_differentiatepowerser.html" id="sec_analfuncs-5-4-11">
+\begin{equation}
+\sum_{n=0}^\infty c_n {(x-a)}^n
+=
+\sum_{n=0}^\infty s_n {(x-a)}^n
++
+i
+\sum_{n=0}^\infty t_n {(x-a)}^n .
+\end{equation}
+</div>
+<div class="para">We apply the theorem to the real and imaginary parts.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-5-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_analfuncs-5-5">
+<div class="para">By iterating this theorem, we find that an analytic function is infinitely differentiable:</div>
+<div class="displaymath process-math" id="sec_analfuncs-5-5-1">
+\begin{equation}
+\begin{aligned}
+f^{(\ell)}(x)
+&amp;
+=
+\sum_{n=\ell}^\infty n(n-1)\cdots(n-\ell+1)c_n {(x-a)}^{n-\ell}
+\\
+&amp;
+=
+\sum_{n=0}^\infty (n+\ell)(n+\ell-1)\cdots (n+1) c_{n+\ell} {(x-a)}^{n} .
+\end{aligned}
+\end{equation}
+</div>
+<div class="para">In particular,</div>
+<div class="displaymath process-math" id="eq_formulaforpscoeffs">
+\begin{equation}
+f^{(\ell)}(a) = \ell! \, c_\ell .\tag{11.1}
+\end{equation}
+</div>
+<div class="para">The coefficients are uniquely determined by the derivatives of the function, and vice versa.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-5-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_analfuncs-5-6">
+<div class="para">On the other hand, just because we have an infinitely differentiable function doesn’t mean that the numbers <span class="process-math">\(c_n\)</span> obtained by <span class="process-math">\(c_n = \frac{f^{(n)}(0)}{n!}\)</span> give a convergent power series. There is a theorem, which we will not prove, that given an arbitrary sequence <span class="process-math">\(\{ c_n \}_{n=1}^\infty\text{,}\)</span> there exists an infinitely differentiable function <span class="process-math">\(f\)</span> such that <span class="process-math">\(c_n = \frac{f^{(n)}(0)}{n!}\text{.}\)</span>  Moreover, even if the obtained series converges, it may not converge to the function we started with. For an example, see <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_logandexp.html#exercise_nonanalytic" title="Exercise 5.4.11">Exercise 5.4.11</a>:  The function</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_nonanalytic.html" id="sec_analfuncs-5-6-7">
+\begin{equation}
+f(x) \coloneqq
+\begin{cases}
+e^{-1/x} &amp; \text{if } x &gt; 0,\\
+0        &amp; \text{if } x \leq 0,
+\end{cases}
+\end{equation}
+</div>
+<div class="para">is infinitely differentiable, and all derivatives at the origin are zero. So its series at the origin would be just the zero series, and while that series converges, it does not converge to <span class="process-math">\(f\)</span> for <span class="process-math">\(x &gt; 0\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-5-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_analfuncs-5-7">
+<div class="para">We can apply an affine transformation <span class="process-math">\(z \mapsto z+a\)</span> that converts a power series at <span class="process-math">\(a\)</span> to a series at the origin. That is, if</div>
+<div class="displaymath process-math" id="sec_analfuncs-5-7-3">
+\begin{equation}
+f(z) = \sum_{n=0}^\infty c_n {(z-a)}^n,
+\qquad \text{we consider} \qquad
+f(z+a) = \sum_{n=0}^\infty c_n {z}^n.
+\end{equation}
+</div>
+<div class="para">Therefore, it is usually sufficient to prove results about power series at the origin. From now on, we often assume <span class="process-math">\(a=0\)</span> for simplicity.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-5-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 11.3.3: Properties of analytic functions"><a aria-label="Copy heading and permalink for Subsection 11.3.3: Properties of analytic functions" href="#sec_analfuncs-5" title="Copy heading and permalink for Subsection 11.3.3: Properties of analytic functions">🔗</a></div>
+</section>
+<section class="subsection" id="sec_analfuncs-6">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.3.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Power series as analytic functions</span>
+</h3>
+<div class="para" id="sec_analfuncs-6-2">We need a theorem on swapping limits of series, that is, Fubini’s theorem for sums.  For real series this was <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_moreonseries.html#exercise_tonellifubiniforsums" title="Exercise 2.6.15">Exercise 2.6.15</a>, but we have a slicker argument now.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-6-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="thm_fubiniforsums"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.3.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Fubini for sums.</span>
+</h4>
+<div class="para logical" id="thm_fubiniforsums-2-1">
+<div class="para">Let <span class="process-math">\(\{ a_{k,m} \}_{k=1,m=1}^\infty\)</span> be a double sequence of complex numbers and suppose that for every <span class="process-math">\(k\)</span> the series</div>
+<div class="displaymath process-math" id="thm_fubiniforsums-2-1-3">
+\begin{equation}
+\sum_{m=1}^\infty \sabs{a_{k,m}} \qquad \text{converges}
+\end{equation}
+</div>
+<div class="para">and furthermore that</div>
+<div class="displaymath process-math" id="thm_fubiniforsums-2-1-4">
+\begin{equation}
+\sum_{k=1}^\infty \left( \sum_{m=1}^\infty \sabs{a_{k,m}} \right)
+\qquad \text{converges}.
+\end{equation}
+</div>
+<div class="para">Then</div>
+<div class="displaymath process-math" id="thm_fubiniforsums-2-1-5">
+\begin{equation}
+\sum_{k=1}^\infty \left( \sum_{m=1}^\infty a_{k,m} \right)
+=
+\sum_{m=1}^\infty \left( \sum_{k=1}^\infty a_{k,m} \right) ,
+\end{equation}
+</div>
+<div class="para">where all the series involved converge.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#thm_fubiniforsums-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 11.3.5: Fubini for sums"><a aria-label="Copy heading and permalink for Theorem 11.3.5: Fubini for sums" href="#thm_fubiniforsums" title="Copy heading and permalink for Theorem 11.3.5: Fubini for sums">🔗</a></div>
+</article>
+<article class="proof" id="sec_analfuncs-6-4"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_analfuncs-6-4-1">
+<div class="para">Let <span class="process-math">\(E\)</span> be the set <span class="process-math">\(\{ \nicefrac{1}{n} : n \in \N \} \cup \{ 0 \}\text{,}\)</span> and treat it as a metric space with the metric inherited from <span class="process-math">\(\R\text{.}\)</span> Define the sequence of functions <span class="process-math">\(f_k \colon E \to \C\)</span> by</div>
+<div class="displaymath process-math" id="sec_analfuncs-6-4-1-5">
+\begin{equation}
+f_k(\nicefrac{1}{n}) \coloneqq \sum_{m=1}^n a_{k,m}
+\qquad
+\text{and}
+\qquad
+f_k(0) \coloneqq \sum_{m=1}^\infty a_{k,m} .
+\end{equation}
+</div>
+<div class="para">As the series converges, each <span class="process-math">\(f_k\)</span> is continuous at <span class="process-math">\(0\)</span> (since 0 is the only cluster point, they are continuous at every point of <span class="process-math">\(E\text{,}\)</span> but we don’t need that). For all <span class="process-math">\(x \in E\text{,}\)</span> we have</div>
+<div class="displaymath process-math" id="sec_analfuncs-6-4-1-10">
+\begin{equation}
+\babs{f_k(x)} \leq \sum_{m=1}^\infty \sabs{a_{k,m}} .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(\sum_k \sum_m \sabs{a_{k,m}}\)</span> converges (and does not depend on <span class="process-math">\(x\)</span>), we know that</div>
+<div class="displaymath process-math" id="sec_analfuncs-6-4-1-13">
+\begin{equation}
+\sum_{k=1}^n f_k(x)
+\end{equation}
+</div>
+<div class="para">converges uniformly on <span class="process-math">\(E\text{.}\)</span>  Define</div>
+<div class="displaymath process-math" id="sec_analfuncs-6-4-1-15">
+\begin{equation}
+g(x) \coloneqq \sum_{k=1}^\infty f_k(x) ,
+\end{equation}
+</div>
+<div class="para">which is, therefore, a continuous function at <span class="process-math">\(0\text{.}\)</span> So</div>
+<div class="displaymath process-math" id="sec_analfuncs-6-4-1-17">
+\begin{equation}
+\begin{split}
+\sum_{k=1}^\infty \left( \sum_{m=1}^\infty a_{k,m} \right)
+&amp; =
+\sum_{k=1}^\infty f_k(0)
+= g(0)
+= \lim_{n\to\infty} g(\nicefrac{1}{n}) \\
+&amp;= 
+\lim_{n\to\infty}\sum_{k=1}^\infty f_k(\nicefrac{1}{n})
+= 
+\lim_{n\to\infty}\sum_{k=1}^\infty \sum_{m=1}^n a_{k,m} \\
+&amp;= 
+\lim_{n\to\infty}\sum_{m=1}^n \sum_{k=1}^\infty a_{k,m}
+= 
+\sum_{m=1}^\infty \left( \sum_{k=1}^\infty a_{k,m} \right) . \qedhere
+\end{split}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-6-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 11.3.4.1"><a aria-label="Copy heading and permalink for Proof 11.3.4.1" href="#sec_analfuncs-6-4" title="Copy heading and permalink for Proof 11.3.4.1">🔗</a></div>
+</article>
+<div class="para" id="sec_analfuncs-6-5">Now we prove that once we have a series converging to a function in some interval, we can expand the function around every point.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-6-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="thm_tayloranal"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.3.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Taylor’s theorem for real-analytic functions.</span>
+</h4>
+<div class="para logical" id="thm_tayloranal-3-1">
+<div class="para">Let</div>
+<div class="displaymath process-math" id="thm_tayloranal-3-1-1">
+\begin{equation}
+f(x) \coloneqq \sum_{k=0}^\infty a_k x^k
+\end{equation}
+</div>
+<div class="para">be a power series converging in <span class="process-math">\((-\rho,\rho)\)</span> for some <span class="process-math">\(\rho &gt; 0\text{.}\)</span>  Given any <span class="process-math">\(a \in
+(-\rho,\rho)\text{,}\)</span> and <span class="process-math">\(x\)</span> such that <span class="process-math">\(\sabs{x-a} &lt; \rho-\sabs{a}\text{,}\)</span> we have</div>
+<div class="displaymath process-math" id="thm_tayloranal-3-1-7">
+\begin{equation}
+f(x) =
+\sum_{k=0}^\infty \frac{f^{(k)}(a)}{k!} {(x-a)}^{k} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#thm_tayloranal-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 11.3.6: Taylor’s theorem for real-analytic functions"><a aria-label="Copy heading and permalink for Theorem 11.3.6: Taylor’s theorem for real-analytic functions" href="#thm_tayloranal" title="Copy heading and permalink for Theorem 11.3.6: Taylor’s theorem for real-analytic functions">🔗</a></div>
+</article>
+<div class="para" id="sec_analfuncs-6-7">The power series at <span class="process-math">\(a\)</span> could of course converge in a larger interval, but the one above is guaranteed.  It is the largest symmetric interval about <span class="process-math">\(a\)</span> that fits in <span class="process-math">\((-\rho,\rho)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-6-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_analfuncs-6-8"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_analfuncs-6-8-1">
+<div class="para">Given <span class="process-math">\(a\)</span> and <span class="process-math">\(x\)</span> as in the theorem, write</div>
+<div class="displaymath process-math" id="sec_analfuncs-6-8-1-3">
+\begin{equation}
+\begin{split}
+f(x) &amp;= \sum_{k=0}^\infty a_k {\bigl((x-a)+a\bigr)}^k \\
+&amp;= \sum_{k=0}^\infty a_k \sum_{m=0}^k \binom{k}{m} a^{k-m} {(x-a)}^m .
+\end{split}
+\end{equation}
+</div>
+<div class="para">Define <span class="process-math">\(c_{k,m} \coloneqq a_k \binom{k}{m} a^{k-m}\)</span> if <span class="process-math">\(m \leq k\)</span> and <span class="process-math">\(0\)</span> if <span class="process-math">\(m &gt;
+k\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" id="eq_tsproof">
+\begin{equation}
+f(x) = \sum_{k=0}^\infty \, \sum_{m=0}^\infty c_{k,m} {(x-a)}^m .\tag{11.2}
+\end{equation}
+</div>
+<div class="para">Let us show that the double sum converges absolutely.</div>
+<div class="displaymath process-math" id="sec_analfuncs-6-8-1-9">
+\begin{equation}
+\begin{split}
+\sum_{k=0}^\infty \, \sum_{m=0}^\infty \babs{ c_{k,m} {(x-a)}^m}
+&amp; = \sum_{k=0}^\infty \, \sum_{m=0}^k \abs{ a_k \binom{k}{m} a^{k-m} {(x-a)}^m }
+\\
+&amp; = \sum_{k=0}^\infty \sabs{a_k} \sum_{m=0}^k \binom{k}{m} \sabs{a}^{k-m}
+{\sabs{x-a}}^m  \\
+&amp; = \sum_{k=0}^\infty \sabs{a_k} {\bigl(\sabs{x-a}+\sabs{a}\bigr)}^k ,
+\end{split}
+\end{equation}
+</div>
+<div class="para">and this series converges as long as <span class="process-math">\((\sabs{x-a}+\sabs{a}) &lt; \rho\)</span> or in other words if <span class="process-math">\(\sabs{x-a} &lt; \rho-\sabs{a}\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-6-8-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_analfuncs-6-8-2">
+<div class="para">Using <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_analfuncs.html#thm_fubiniforsums" title="Theorem 11.3.5: Fubini for sums">Theorem 11.3.5</a>, swap the order of summation in <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_analfuncs.html#eq_tsproof" title="Equation 11.2">(11.2)</a>, and the following series converges when <span class="process-math">\(\sabs{x-a} &lt; \rho-\sabs{a}\text{:}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_fubiniforsums.html ./knowl/xref/eq_tsproof.html ./knowl/xref/eq_formulaforpscoeffs.html" id="sec_analfuncs-6-8-2-4">
+\begin{equation}
+f(x) =
+\sum_{k=0}^\infty \, \sum_{m=0}^\infty c_{k,m} {(x-a)}^m
+=
+\sum_{m=0}^\infty
+\left( \sum_{k=0}^\infty
+c_{k,m} \right) {(x-a)}^m .
+\end{equation}
+</div>
+<div class="para">The formula in terms of derivatives at <span class="process-math">\(a\)</span> follows by differentiating the series to obtain <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_analfuncs.html#eq_formulaforpscoeffs" title="Equation 11.1">(11.1)</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-6-8-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 11.3.4.2"><a aria-label="Copy heading and permalink for Proof 11.3.4.2" href="#sec_analfuncs-6-8" title="Copy heading and permalink for Proof 11.3.4.2">🔗</a></div>
+</article>
+<div class="para" id="sec_analfuncs-6-9">Note that if a series converges for real <span class="process-math">\(x \in (a-\rho,a+\rho)\)</span> it also converges for all complex numbers in <span class="process-math">\(B(a,\rho)\text{.}\)</span> We have the following corollary, which says that functions defined by power series are analytic.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-6-9" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="corollary theorem-like" id="cor_powerseranalytic"><h4 class="heading">
+<span class="type">Corollary</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.3.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="cor_powerseranalytic-1-1">For every <span class="process-math">\(a \in \C\text{,}\)</span> if <span class="process-math">\(\sum_{k=0}^\infty c_k {(z-a)}^k\)</span> converges to <span class="process-math">\(f(z)\)</span> in <span class="process-math">\(B(a,\rho)\)</span> and <span class="process-math">\(b \in
+B(a,\rho)\text{,}\)</span> then there exists a power series <span class="process-math">\(\sum_{k=0}^\infty d_k {(z-b)}^k\)</span> that converges to <span class="process-math">\(f(z)\)</span> in <span class="process-math">\(B(b,\rho-\sabs{b-a})\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#cor_powerseranalytic-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Corollary 11.3.7"><a aria-label="Copy heading and permalink for Corollary 11.3.7" href="#cor_powerseranalytic" title="Copy heading and permalink for Corollary 11.3.7">🔗</a></div>
+</article>
+<article class="proof" id="sec_analfuncs-6-11"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_analfuncs-6-11-1">
+<div class="para">Without loss of generality assume that <span class="process-math">\(a=0\)</span> and <span class="process-math">\(b \neq 0\text{.}\)</span>  We can rotate to assume that <span class="process-math">\(b\)</span> is real, but since that is harder to picture, let us do it explicitly. Let <span class="process-math">\(\alpha \coloneqq \frac{\bar{b}}{\sabs{b}}\text{.}\)</span> Notice that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_tayloranal.html" id="sec_analfuncs-6-11-1-5">
+\begin{equation}
+\abs{\nicefrac{1}{\alpha}} = \sabs{\alpha}
+= 1 .
+\end{equation}
+</div>
+<div class="para">Therefore the series <span class="process-math">\(\sum_{k=0}^\infty c_k {(\nicefrac{z}{\alpha})}^k = 
+\sum_{k=0}^\infty c_k \alpha^{-k} {z}^k\)</span> converges to <span class="process-math">\(f(\nicefrac{z}{\alpha})\)</span> in <span class="process-math">\(B(0,\rho)\text{.}\)</span> When <span class="process-math">\(z=x\)</span> is real we apply <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_analfuncs.html#thm_tayloranal" title="Theorem 11.3.6: Taylor’s theorem for real-analytic functions">Theorem 11.3.6</a> at <span class="process-math">\(\sabs{b}\)</span> and get a series that converges to <span class="process-math">\(f(\nicefrac{z}{\alpha})\)</span> on <span class="process-math">\(B(\sabs{b},\rho-\sabs{b})\text{.}\)</span> That is, there is a convergent series</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_tayloranal.html" id="sec_analfuncs-6-11-1-14">
+\begin{equation}
+f(\nicefrac{z}{\alpha}) =
+\sum_{k=0}^\infty a_k {\bigl(z - \sabs{b}\bigr)}^k .
+\end{equation}
+</div>
+<div class="para">Using <span class="process-math">\(\alpha b = \sabs{b}\text{,}\)</span> we find</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_tayloranal.html" id="sec_analfuncs-6-11-1-16">
+\begin{equation}
+f(z) = f(\nicefrac{\alpha z}{\alpha}) =
+\sum_{k=0}^\infty a_k {(\alpha z - \sabs{b})}^k 
+=
+\sum_{k=0}^\infty a_k\alpha^k {\bigl(z - \nicefrac{\sabs{b}}{\alpha}\bigr)}^k
+=
+\sum_{k=0}^\infty a_k\alpha^k {(z - b)}^k ,
+\end{equation}
+</div>
+<div class="para">and this series converges for all <span class="process-math">\(z\)</span> such that <span class="process-math">\(\bigl\lvert \alpha z-\sabs{b}\bigr\rvert &lt; \rho-\sabs{b}\)</span> or <span class="process-math">\(\sabs{z - b} &lt; \rho-\sabs{b}\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-6-11-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 11.3.4.3"><a aria-label="Copy heading and permalink for Proof 11.3.4.3" href="#sec_analfuncs-6-11" title="Copy heading and permalink for Proof 11.3.4.3">🔗</a></div>
+</article>
+<div class="para" id="sec_analfuncs-6-12">We proved above that a convergent power series is an analytic function where it converges.  We have also shown before that <span class="process-math">\(\frac{1}{1-z}\)</span> is analytic outside of <span class="process-math">\(z=1\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-6-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_analfuncs-6-13">
+<div class="para">Note that just because a real-analytic function is analytic on the entire real line, it does not necessarily mean that it has a power series representation that converges everywhere.  For example, the function</div>
+<div class="displaymath process-math" id="sec_analfuncs-6-13-1">
+\begin{equation}
+f(x) = \frac{1}{1+x^2}
+\end{equation}
+</div>
+<div class="para">happens to be a real-analytic function on <span class="process-math">\(\R\)</span> (exercise).  A power series around the origin converging to <span class="process-math">\(f\)</span> has a radius of convergence of exactly <span class="process-math">\(1\text{.}\)</span> Can you see why? (exercise)</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-6-13" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 11.3.4: Power series as analytic functions"><a aria-label="Copy heading and permalink for Subsection 11.3.4: Power series as analytic functions" href="#sec_analfuncs-6" title="Copy heading and permalink for Subsection 11.3.4: Power series as analytic functions">🔗</a></div>
+</section>
+<section class="subsection" id="sec_analfuncs-7">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.3.5</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Identity theorem for analytic functions</span>
+</h3>
+<article class="lemma theorem-like" id="sec_analfuncs-7-2"><h4 class="heading">
+<span class="type">Lemma</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.3.8</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_analfuncs-7-2-1-1">Suppose <span class="process-math">\(f(z) = \sum_{k=0}^\infty a_k z^k\)</span> is a convergent power series and <span class="process-math">\(\{ z_n \}_{n=1}^\infty\)</span> is a sequence of nonzero complex numbers converging to 0, such that <span class="process-math">\(f(z_n) = 0\)</span> for all <span class="process-math">\(n\text{.}\)</span>  Then <span class="process-math">\(a_k = 0\)</span> for every <span class="process-math">\(k\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-7-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Lemma 11.3.8"><a aria-label="Copy heading and permalink for Lemma 11.3.8" href="#sec_analfuncs-7-2" title="Copy heading and permalink for Lemma 11.3.8">🔗</a></div>
+</article>
+<article class="proof" id="sec_analfuncs-7-3"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_analfuncs-7-3-1">
+<div class="para">By continuity, we know <span class="process-math">\(f(0) = 0\text{,}\)</span> so <span class="process-math">\(a_0 = 0\text{.}\)</span> Suppose there exists some nonzero <span class="process-math">\(a_k\text{.}\)</span> Let <span class="process-math">\(m\)</span> be the smallest <span class="process-math">\(m\)</span> such that <span class="process-math">\(a_m \neq 0\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" id="sec_analfuncs-7-3-1-7">
+\begin{equation}
+f(z) = \sum_{k=m}^\infty a_k z^k = 
+z^m \sum_{k=m}^\infty a_k z^{k-m} =
+z^m \sum_{k=0}^\infty a_{k+m} z^{k} .
+\end{equation}
+</div>
+<div class="para">Write <span class="process-math">\(g(z) = \sum_{k=0}^\infty a_{k+m} z^{k}\)</span> (this series converges on the same set as <span class="process-math">\(f\)</span>).  <span class="process-math">\(g\)</span> is continuous and <span class="process-math">\(g(0) = a_m \neq 0\text{.}\)</span>  Thus there exists some <span class="process-math">\(\delta &gt; 0\)</span> such that <span class="process-math">\(g(z) \neq 0\)</span> for all <span class="process-math">\(z \in
+B(0,\delta)\text{.}\)</span>  As <span class="process-math">\(f(z) = z^m g(z)\text{,}\)</span> the only point in <span class="process-math">\(B(0,\delta)\)</span> where <span class="process-math">\(f(z) = 0\)</span> is when <span class="process-math">\(z=0\text{,}\)</span> but this contradicts the assumption that <span class="process-math">\(f(z_n) = 0\)</span> for all <span class="process-math">\(n\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-7-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 11.3.5.1"><a aria-label="Copy heading and permalink for Proof 11.3.5.1" href="#sec_analfuncs-7-3" title="Copy heading and permalink for Proof 11.3.5.1">🔗</a></div>
+</article>
+<div class="para" id="sec_analfuncs-7-4">Recall that in a metric space <span class="process-math">\(X\text{,}\)</span> a <em class="emphasis">cluster point</em> (or sometimes <em class="emphasis">limit point</em>) of a set <span class="process-math">\(E\)</span> is a point <span class="process-math">\(p \in X\)</span> such that <span class="process-math">\(B(p,\epsilon) \setminus \{ p \}\)</span> contains points of <span class="process-math">\(E\)</span> for all <span class="process-math">\(\epsilon &gt; 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-7-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="thm_identityanalytic"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.3.9</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Identity theorem.</span>
+</h4>
+<div class="para" id="thm_identityanalytic-3-1">Let <span class="process-math">\(U \subset \C\)</span> be open and connected.  If <span class="process-math">\(f \colon U \to \C\)</span> and <span class="process-math">\(g \colon U \to \C\)</span> are analytic functions that are equal on a set <span class="process-math">\(E \subset U\text{,}\)</span> and <span class="process-math">\(E\)</span> has a cluster point in <span class="process-math">\(U\text{,}\)</span> then <span class="process-math">\(f(z) = g(z)\)</span> for all <span class="process-math">\(z \in U\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#thm_identityanalytic-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 11.3.9: Identity theorem"><a aria-label="Copy heading and permalink for Theorem 11.3.9: Identity theorem" href="#thm_identityanalytic" title="Copy heading and permalink for Theorem 11.3.9: Identity theorem">🔗</a></div>
+</article>
+<div class="para" id="sec_analfuncs-7-6">In most common applications of this theorem <span class="process-math">\(E\)</span> is an open set or perhaps a curve.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-7-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_analfuncs-7-7"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_analfuncs-7-7-1">Without loss of generality suppose <span class="process-math">\(E\)</span> is the set of all points <span class="process-math">\(z \in U\)</span> such that <span class="process-math">\(g(z)=f(z)\text{.}\)</span>  Note that <span class="process-math">\(E\)</span> must be closed as <span class="process-math">\(f\)</span> and <span class="process-math">\(g\)</span> are continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-7-7-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_analfuncs-7-7-2">
+<div class="para">Suppose <span class="process-math">\(E\)</span> has a cluster point.  Without loss of generality assume that <span class="process-math">\(0\)</span> is this cluster point.  Near <span class="process-math">\(0\text{,}\)</span> we have the expansions</div>
+<div class="displaymath process-math" id="sec_analfuncs-7-7-2-4">
+\begin{equation}
+f(z) = \sum_{k=0}^\infty a_k {z}^k 
+\qquad
+\text{and}
+\qquad
+g(z) = \sum_{k=0}^\infty b_k {z}^k ,
+\end{equation}
+</div>
+<div class="para">which converge in some ball <span class="process-math">\(B(0,\rho)\text{.}\)</span>  Therefore the series</div>
+<div class="displaymath process-math" id="sec_analfuncs-7-7-2-6">
+\begin{equation}
+0 = f(z)-g(z) = 
+\sum_{k=0}^\infty (a_k-b_k) z^k
+\end{equation}
+</div>
+<div class="para">converges in <span class="process-math">\(B(0,\rho)\text{.}\)</span>  As <span class="process-math">\(0\)</span> is a cluster point of <span class="process-math">\(E\text{,}\)</span> there is a sequence of nonzero points <span class="process-math">\(\{ z_n \}_{n=1}^\infty\)</span> such that <span class="process-math">\(f(z_n) -g(z_n) = 0\text{.}\)</span>  Hence, by the lemma above <span class="process-math">\(a_k = b_k\)</span> for all <span class="process-math">\(k\text{.}\)</span>  Therefore, <span class="process-math">\(B(0,\rho) \subset E\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-7-7-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_analfuncs-7-7-3">Thus the set of cluster points of <span class="process-math">\(E\)</span> is open.  The set of cluster points of <span class="process-math">\(E\)</span> is also closed: A limit of cluster points of <span class="process-math">\(E\)</span> is in <span class="process-math">\(E\)</span> as it is closed, and it is clearly a cluster point of <span class="process-math">\(E\text{.}\)</span> As <span class="process-math">\(U\)</span> is connected, the set of cluster points of <span class="process-math">\(E\)</span> is equal to <span class="process-math">\(U\text{,}\)</span> or in other words <span class="process-math">\(E = U\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-7-7-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 11.3.5.2"><a aria-label="Copy heading and permalink for Proof 11.3.5.2" href="#sec_analfuncs-7-7" title="Copy heading and permalink for Proof 11.3.5.2">🔗</a></div>
+</article>
+<div class="para" id="sec_analfuncs-7-8">By restricting our attention to real <span class="process-math">\(x\text{,}\)</span> we obtain the same theorem for connected open subsets of <span class="process-math">\(\R\text{,}\)</span> which are just open intervals.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-7-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 11.3.5: Identity theorem for analytic functions"><a aria-label="Copy heading and permalink for Subsection 11.3.5: Identity theorem for analytic functions" href="#sec_analfuncs-7" title="Copy heading and permalink for Subsection 11.3.5: Identity theorem for analytic functions">🔗</a></div>
+</section>
+<section class="exercises" id="sec_analfuncs-8">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.3.6</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_analfuncs-8-1"><h4 class="heading"><span class="codenumber">11.3.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_analfuncs-8-1-1-1">
+<div class="para">Let</div>
+<div class="displaymath process-math" id="sec_analfuncs-8-1-1-1-1">
+\begin{equation}
+a_{k,m} \coloneqq
+\begin{cases}
+1        &amp; \text{if } k=m,\\
+-2^{k-m} &amp; \text{if } k&lt;m,\\
+0        &amp; \text{if } k&gt;m.
+\end{cases}
+\end{equation}
+</div>
+<div class="para">Compute (or show the limit doesn’t exist): <br/> a) <span class="process-math">\(\displaystyle \sum_{m=1}^\infty \sabs{a_{k,m}}~\)</span> for all <span class="process-math">\(k\text{,}\)</span>        b) <span class="process-math">\(\displaystyle \sum_{k=1}^\infty \sabs{a_{k,m}}~\)</span> for all <span class="process-math">\(m\text{,}\)</span>        c) <span class="process-math">\(\displaystyle \sum_{k=1}^\infty \sum_{m=1}^\infty \sabs{a_{k,m}}\text{,}\)</span> <br/> d) <span class="process-math">\(\displaystyle \sum_{k=1}^\infty \sum_{m=1}^\infty a_{k,m}\text{,}\)</span>        e) <span class="process-math">\(\displaystyle \sum_{m=1}^\infty \sum_{k=1}^\infty a_{k,m}\text{.}\)</span> <br/> Hint: Fubini for sums does not apply. In fact, answers to d) and e) are different.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-8-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.3.1"><a aria-label="Copy heading and permalink for Exercise 11.3.1" href="#sec_analfuncs-8-1" title="Copy heading and permalink for Exercise 11.3.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_analfuncs-8-2"><h4 class="heading"><span class="codenumber">11.3.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_analfuncs-8-2-1-1">Let <span class="process-math">\(f(x) \coloneqq \frac{1}{1+x^2}\text{.}\)</span>  Prove that<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-8-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_analfuncs-8-2-1-2">
+<li id="sec_analfuncs-8-2-1-2-1">
+<div class="para" id="sec_analfuncs-8-2-1-2-1-1">
+<span class="process-math">\(f\)</span> is an analytic function on all of <span class="process-math">\(\R\)</span> by finding a power series for <span class="process-math">\(f\)</span> at every <span class="process-math">\(a \in \R\text{,}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-8-2-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 11.3.2.a"><a aria-label="Copy heading and permalink for Item 11.3.2.a" href="#sec_analfuncs-8-2-1-2-1" title="Copy heading and permalink for Item 11.3.2.a">🔗</a></div>
+</li>
+<li id="sec_analfuncs-8-2-1-2-2">
+<div class="para" id="sec_analfuncs-8-2-1-2-2-1">the radius of convergence of the power series for <span class="process-math">\(f\)</span> at the origin is 1.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-8-2-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 11.3.2.b"><a aria-label="Copy heading and permalink for Item 11.3.2.b" href="#sec_analfuncs-8-2-1-2-2" title="Copy heading and permalink for Item 11.3.2.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 11.3.2"><a aria-label="Copy heading and permalink for Exercise 11.3.2" href="#sec_analfuncs-8-2" title="Copy heading and permalink for Exercise 11.3.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_analfuncs-8-3"><h4 class="heading"><span class="codenumber">11.3.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_analfuncs-8-3-1-1">Suppose <span class="process-math">\(f \colon \C \to \C\)</span> is analytic.  Show that for each <span class="process-math">\(n\text{,}\)</span> there are at most finitely many zeros of <span class="process-math">\(f\)</span> in <span class="process-math">\(B(0,n)\text{,}\)</span> that is, <span class="process-math">\(f^{-1}(0) \cap B(0,n)\)</span> is finite for each <span class="process-math">\(n\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-8-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.3.3"><a aria-label="Copy heading and permalink for Exercise 11.3.3" href="#sec_analfuncs-8-3" title="Copy heading and permalink for Exercise 11.3.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_analfuncs-8-4"><h4 class="heading"><span class="codenumber">11.3.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_analfuncs-8-4-1-1">Suppose <span class="process-math">\(U \subset \C\)</span> is open and connected, <span class="process-math">\(0 \in U\text{,}\)</span> and <span class="process-math">\(f \colon U
+\to \C\)</span> is analytic.  Treating <span class="process-math">\(f\)</span> as a function of a real <span class="process-math">\(x\)</span> at the origin, suppose <span class="process-math">\(f^{(n)}(0) = 0\)</span> for all <span class="process-math">\(n\text{.}\)</span>  Show that <span class="process-math">\(f(z) = 0\)</span> for all <span class="process-math">\(z \in U\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-8-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.3.4"><a aria-label="Copy heading and permalink for Exercise 11.3.4" href="#sec_analfuncs-8-4" title="Copy heading and permalink for Exercise 11.3.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_analfuncs-8-5"><h4 class="heading"><span class="codenumber">11.3.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_analfuncs-8-5-1-1">Suppose <span class="process-math">\(U \subset \C\)</span> is open and connected, <span class="process-math">\(0 \in U\text{,}\)</span> and <span class="process-math">\(f \colon U
+\to \C\)</span> is analytic.  For real <span class="process-math">\(x\)</span> and <span class="process-math">\(y\text{,}\)</span> let <span class="process-math">\(h(x) \coloneqq f(x)\)</span> and <span class="process-math">\(g(y) \coloneqq -i \, f(iy)\text{.}\)</span> Show that <span class="process-math">\(h\)</span> and <span class="process-math">\(g\)</span> are infinitely differentiable at the origin and <span class="process-math">\(h'(0) = g'(0)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-8-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.3.5"><a aria-label="Copy heading and permalink for Exercise 11.3.5" href="#sec_analfuncs-8-5" title="Copy heading and permalink for Exercise 11.3.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_analfuncs-8-6"><h4 class="heading"><span class="codenumber">11.3.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_analfuncs-8-6-1-1">Suppose a function <span class="process-math">\(f\)</span> is analytic in some neighborhood of the origin, and that there exists an <span class="process-math">\(M\)</span> such that <span class="process-math">\(\sabs{f^{(n)}(0)} \leq M\)</span> for all <span class="process-math">\(n\text{.}\)</span> Prove that the series of <span class="process-math">\(f\)</span> at the origin converges for all <span class="process-math">\(z \in \C\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-8-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.3.6"><a aria-label="Copy heading and permalink for Exercise 11.3.6" href="#sec_analfuncs-8-6" title="Copy heading and permalink for Exercise 11.3.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_analfuncs-8-7"><h4 class="heading"><span class="codenumber">11.3.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_analfuncs-8-7-1-1">Suppose <span class="process-math">\(f(z) \coloneqq \sum_{n=0}^\infty c_n z^n\)</span> with a radius of convergence 1.  Suppose <span class="process-math">\(f(0)
+= 0\text{,}\)</span> but <span class="process-math">\(f\)</span> is not the zero function. Show that there exists a <span class="process-math">\(k \in \N\)</span> and a convergent power series <span class="process-math">\(g(z) \coloneqq \sum_{n=0}^\infty d_n z^n\)</span> with radius of convergence 1 such that <span class="process-math">\(f(z) = z^k g(z)\)</span> for all <span class="process-math">\(z \in B(0,1)\text{,}\)</span> and <span class="process-math">\(g(0) \neq 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-8-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.3.7"><a aria-label="Copy heading and permalink for Exercise 11.3.7" href="#sec_analfuncs-8-7" title="Copy heading and permalink for Exercise 11.3.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_analfuncs-8-8"><h4 class="heading"><span class="codenumber">11.3.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_analfuncs-8-8-1-1">Suppose <span class="process-math">\(U \subset \C\)</span> is open and connected.  Suppose that <span class="process-math">\(f \colon U \to \C\)</span> is analytic, <span class="process-math">\(U \cap \R \neq \emptyset\)</span> and <span class="process-math">\(f(x) = 0\)</span> for all <span class="process-math">\(x \in U \cap \R\text{.}\)</span>  Show that <span class="process-math">\(f(z) = 0\)</span> for all <span class="process-math">\(z \in
+U\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-8-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.3.8"><a aria-label="Copy heading and permalink for Exercise 11.3.8" href="#sec_analfuncs-8-8" title="Copy heading and permalink for Exercise 11.3.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_analfuncs-8-9"><h4 class="heading"><span class="codenumber">11.3.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_analfuncs-8-9-1-1">
+<div class="para">For <span class="process-math">\(\alpha \in \C\)</span> and <span class="process-math">\(k=0,1,2,3\ldots\text{,}\)</span> define</div>
+<div class="displaymath process-math" id="sec_analfuncs-8-9-1-1-3">
+\begin{equation}
+\binom{\alpha}{k} \coloneqq \frac{\alpha(\alpha-1)\cdots(\alpha-k+1)}{k!} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-8-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_analfuncs-8-9-1-2">
+<li id="sec_analfuncs-8-9-1-2-1">
+<div class="para logical" id="sec_analfuncs-8-9-1-2-1-1">
+<div class="para">Show that the series</div>
+<div class="displaymath process-math" id="sec_analfuncs-8-9-1-2-1-1-1">
+\begin{equation}
+f(z) \coloneqq \sum_{k=0}^\infty \binom{\alpha}{k} z^k
+\end{equation}
+</div>
+<div class="para">converges whenever <span class="process-math">\(\sabs{z} &lt; 1\text{.}\)</span> In fact, prove that for <span class="process-math">\(\alpha = 0,1,2,3,\ldots\)</span> the radius of convergence is <span class="process-math">\(\infty\text{,}\)</span> and for all other <span class="process-math">\(\alpha\)</span> the radius of convergence is 1.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-8-9-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 11.3.9.a"><a aria-label="Copy heading and permalink for Item 11.3.9.a" href="#sec_analfuncs-8-9-1-2-1" title="Copy heading and permalink for Item 11.3.9.a">🔗</a></div>
+</li>
+<li id="sec_analfuncs-8-9-1-2-2">
+<div class="para logical" id="sec_analfuncs-8-9-1-2-2-1">
+<div class="para">Show that for <span class="process-math">\(x \in \R\text{,}\)</span> <span class="process-math">\(\sabs{x} &lt; 1\text{,}\)</span> we have</div>
+<div class="displaymath process-math" id="sec_analfuncs-8-9-1-2-2-1-3">
+\begin{equation}
+(1+x) f'(x) = \alpha f(x) ,
+\end{equation}
+</div>
+<div class="para">meaning that <span class="process-math">\(f(x) = (1+x)^\alpha\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-8-9-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 11.3.9.b"><a aria-label="Copy heading and permalink for Item 11.3.9.b" href="#sec_analfuncs-8-9-1-2-2" title="Copy heading and permalink for Item 11.3.9.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 11.3.9"><a aria-label="Copy heading and permalink for Exercise 11.3.9" href="#sec_analfuncs-8-9" title="Copy heading and permalink for Exercise 11.3.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_analfuncs-8-10"><h4 class="heading"><span class="codenumber">11.3.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_analfuncs-8-10-1-1">Suppose <span class="process-math">\(f \colon \C \to \C\)</span> is analytic and suppose that for some open interval <span class="process-math">\((a,b) \subset \R\text{,}\)</span> <span class="process-math">\(f\)</span> is real-valued on <span class="process-math">\((a,b)\text{.}\)</span>  Show that <span class="process-math">\(f\)</span> is real-valued on <span class="process-math">\(\R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-8-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.3.10"><a aria-label="Copy heading and permalink for Exercise 11.3.10" href="#sec_analfuncs-8-10" title="Copy heading and permalink for Exercise 11.3.10">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_analfuncs-8-11"><h4 class="heading"><span class="codenumber">11.3.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_analfuncs-8-11-1-1">Let <span class="process-math">\(\D \coloneqq B(0,1)\)</span> be the unit disc.  Suppose <span class="process-math">\(f \colon \D \to \C\)</span> is analytic with power series <span class="process-math">\(\sum_{n=0}^\infty c_n z^n\text{.}\)</span>  Suppose <span class="process-math">\(\sabs{c_n} \leq 1\)</span> for all <span class="process-math">\(n\text{.}\)</span>  Prove that for all <span class="process-math">\(z \in \D\text{,}\)</span> we have <span class="process-math">\(\babs{f(z)} \leq \frac{1}{1-\sabs{z}}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_analfuncs-8-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.3.11"><a aria-label="Copy heading and permalink for Exercise 11.3.11" href="#sec_analfuncs-8-11" title="Copy heading and permalink for Exercise 11.3.11">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 11.3.6"><a aria-label="Copy heading and permalink for Exercises 11.3.6" href="#sec_analfuncs-8" title="Copy heading and permalink for Exercises 11.3.6">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 11.3: Power series and analytic functions"><a aria-label="Copy heading and permalink for Section 11.3: Power series and analytic functions" href="#sec_analfuncs" title="Copy heading and permalink for Section 11.3: Power series and analytic functions">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_swaplim.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_complexexp.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

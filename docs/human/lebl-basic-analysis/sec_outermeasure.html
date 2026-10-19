@@ -1,0 +1,730 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Outer measure and null sets · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_outermeasure">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Outer measure and null sets</span>
+</h2>
+<section class="introduction" id="sec_outermeasure-2">
+<div class="para" id="sec_outermeasure-2-1">
+<em class="emphasis">Note: 2 lectures</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section>
+<section class="subsection" id="sec_outermeasure-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.3.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Outer measure and null sets</span>
+</h3>
+<div class="para" id="sec_outermeasure-3-2">Before we characterize all Riemann integrable functions, we need to make a slight detour.  We introduce a way of measuring the size of sets in <span class="process-math">\(\R^n\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-3-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_outermeasure-3-3"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.3.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_outermeasure-3-3-1-1">
+<div class="para">Define the <em class="emphasis">outer measure</em> of a set <span class="process-math">\(S \subset \R^n\)</span> as</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_outermeasure.html" id="sec_outermeasure-3-3-1-1-3">
+\begin{equation}
+m^*(S)
+\coloneqq
+\inf\,
+\sum_{j=1}^\infty V(R_j) ,
+\end{equation}
+</div>
+<div class="para">where the infimum is taken over all sequences <span class="process-math">\(\{ R_j \}_{j=1}^\infty\)</span> of open rectangles such that <span class="process-math">\(S \subset \bigcup_{j=1}^\infty R_j\text{,}\)</span> and we are allowing both the sum and the infimum to be <span class="process-math">\(\infty\text{.}\)</span> See <a class="internal" href="sec_outermeasure.html#fig_outermeasure" title="Figure 10.6">Figure 10.6</a>. In particular, <span class="process-math">\(S\)</span> is of <em class="emphasis">measure zero</em> or a <em class="emphasis">null set</em> if <span class="process-math">\(m^*(S) = 0\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-3-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 10.3.1"><a aria-label="Copy heading and permalink for Definition 10.3.1" href="#sec_outermeasure-3-3" title="Copy heading and permalink for Definition 10.3.1">🔗</a></div>
+</article><hr class="rahr"/>
+<figure class="figure figure-like" id="fig_outermeasure"><img alt="A set S is shaded in gray and is covered by many rectangles outlined in a light dotted line. Three of the rectangles are marked as R sub 1, R sub 2, R sub 3." class="raimg" role="img" src="figures/outermeasure-mbxpdft.svg" style="width:161pt; height:60pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Outer measure construction, in this case <span class="process-math">\(S \subset R_1 \cup R_2
+\cup R_3 \cup \cdots\text{,}\)</span> so <span class="process-math">\(m^*(S) \leq V(R_1) + V(R_2)+V(R_3) + \cdots\text{.}\)</span><div class="autopermalink" data-description="Figure 10.6"><a aria-label="Copy heading and permalink for Figure 10.6" href="#fig_outermeasure" title="Copy heading and permalink for Figure 10.6">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para" id="sec_outermeasure-3-7">An immediate consequence (<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_outermeasure.html#exercise_outermeasuremono" title="Exercise 10.3.2">Exercise 10.3.2</a>) of the definition is that if <span class="process-math">\(A \subset B\text{,}\)</span> then <span class="process-math">\(m^*(A) \leq m^*(B)\text{.}\)</span> It is also not difficult to show (<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_outermeasure.html#exercise_allowfiniteseqsinoutermeasure" title="Exercise 10.3.13">Exercise 10.3.13</a>) that we obtain the same number <span class="process-math">\(m^*(S)\)</span> if we also allow both finite and infinite sequences of rectangles in the definition.  It is not enough, however, to allow only finite sequences.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-3-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_outermeasure-3-8">
+<div class="para">The theory of measures on <span class="process-math">\(\R^n\)</span> is a very complicated subject. We will only require measure-zero sets and so we focus on these. A set <span class="process-math">\(S\)</span> is of measure zero if for every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there exists a sequence of open rectangles <span class="process-math">\(\{ R_j \}_{j=1}^\infty\)</span> such that</div>
+<div class="displaymath process-math" id="mv_eq_nullR">
+\begin{equation}
+S \subset \bigcup_{j=1}^\infty R_j \qquad \text{and} \qquad
+\sum_{j=1}^\infty V(R_j) &lt; \epsilon.\tag{10.2}
+\end{equation}
+</div>
+<div class="para">If <span class="process-math">\(S\)</span> is of measure zero and <span class="process-math">\(S' \subset S\text{,}\)</span> then <span class="process-math">\(S'\)</span> is of measure zero.  We can use the same exact rectangles.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-3-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_outermeasure-3-9">It is sometimes more convenient to use balls instead of rectangles. Furthermore, we can choose balls no bigger than a fixed radius.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-3-9" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="mv_prop_ballsnull"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.3.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="mv_prop_ballsnull-1-1">
+<div class="para">Let <span class="process-math">\(\delta &gt; 0\)</span> be given. A set <span class="process-math">\(S \subset \R^n\)</span> is of measure zero if and only if for every <span class="process-math">\(\epsilon &gt;
+0\text{,}\)</span> there exists a sequence of open balls <span class="process-math">\(\{ B_k \}_{k=1}^\infty\text{,}\)</span> where the radius of <span class="process-math">\(B_k\)</span> is <span class="process-math">\(r_k &lt; \delta\text{,}\)</span> and such that</div>
+<div class="displaymath process-math" id="mv_prop_ballsnull-1-1-7">
+\begin{equation}
+S \subset \bigcup_{k=1}^\infty B_k \qquad \text{and} \qquad
+\sum_{k=1}^\infty r_k^n &lt; \epsilon.
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_prop_ballsnull-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 10.3.2"><a aria-label="Copy heading and permalink for Proposition 10.3.2" href="#mv_prop_ballsnull" title="Copy heading and permalink for Proposition 10.3.2">🔗</a></div>
+</article>
+<div class="para" id="sec_outermeasure-3-11">Note that the “volume” of <span class="process-math">\(B_k\)</span> is proportional to <span class="process-math">\(r_k^n\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-3-11" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_outermeasure-3-12"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_outermeasure-3-12-1">If <span class="process-math">\(C\)</span> is a closed cube (rectangle with all sides equal) of side <span class="process-math">\(s\text{,}\)</span> then <span class="process-math">\(C\)</span> is contained in a closed ball of radius <span class="process-math">\(\sqrt{n}\, s\)</span> by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rirect.html#prop_diameterrectangle" title="Proposition 10.1.14">Proposition 10.1.14</a> and so in an open ball of radius <span class="process-math">\(2 \sqrt{n}\, s\text{.}\)</span><details aria-live="polite" class="ptx-footnote" id="sec_outermeasure-3-12-1-7"><summary class="ptx-footnote__number" title="Footnote 10.3.1"><sup> 1 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_outermeasure-3-12-1-7">A closed ball of radius <span class="process-math">\(\frac{\sqrt{n}\,s}{2}\)</span> could be used but that requires an argument and <span class="process-math">\(\sqrt{n}\, s\)</span> is good enough.
+</div></details><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-3-12-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_outermeasure-3-12-2">
+<div class="para">Suppose <span class="process-math">\(R\)</span> is a rectangle of positive volume. Let <span class="process-math">\(s &gt; 0\)</span> be a number less than the smallest side of <span class="process-math">\(R\)</span> and such that <span class="process-math">\(2\sqrt{n} \, s &lt; \delta\text{.}\)</span> If each side of <span class="process-math">\(R\)</span> is an integer multiple of <span class="process-math">\(s\text{,}\)</span> then <span class="process-math">\(R\)</span> is contained in a union of closed cubes <span class="process-math">\(C_1, C_2, \ldots, C_m\)</span> of side <span class="process-math">\(s\)</span> such that <span class="process-math">\(\sum_{k=1}^m V(C_k) = V(R)\text{.}\)</span>  So suppose the sides of <span class="process-math">\(R\)</span> are not integer multiples of <span class="process-math">\(s\text{.}\)</span> Consider a side of length <span class="process-math">\((\ell+\alpha) s\text{,}\)</span> for an integer <span class="process-math">\(\ell\)</span> and <span class="process-math">\(0 \leq \alpha &lt; 1\text{.}\)</span>  As <span class="process-math">\(s\)</span> is less than the smallest side, <span class="process-math">\(\ell \geq 1\text{,}\)</span> and so <span class="process-math">\((\ell+\alpha)s \leq 2\ell s\text{.}\)</span> Increasing this side to <span class="process-math">\(2\ell s\text{,}\)</span> and similarly increasing every side of <span class="process-math">\(R\text{,}\)</span> we obtain a new larger rectangle of volume at most <span class="process-math">\(2^n\)</span> times larger, whose sides are multiples of <span class="process-math">\(s\text{.}\)</span>  See <a class="internal" href="sec_outermeasure.html#fig_nullrectcube" title="Figure 10.7">Figure 10.7</a>. Thus <span class="process-math">\(R\)</span> is contained in a union of closed cubes <span class="process-math">\(C_1, C_2, \ldots, C_m\)</span> of side <span class="process-math">\(s\)</span> such that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_nullrectcube.html" id="sec_outermeasure-3-12-2-28">
+\begin{equation}
+\sum_{k=1}^m V(C_k) \leq 2^n V(R) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-3-12-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="fig_nullrectcube"><img alt="A rectangle marked in bold line. There is a grid of squares of side length s with 2 rows and 4 columns that is aligned on the top left corner with the dark rectangle. The dark rectangle goes a little further than 2 s across and a little further than s down. The first two lengths across are marked as ell s equals 2 s and the entire set of 4 lengths across is marked as 2 ell s equals 4 s." class="raimg" role="img" src="figures/nullrectcube-mbxpdft.svg" style="width:146pt; height:109pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Covering a rectangle by cubes of total size at most <span class="process-math">\(2^n V(R)\text{.}\)</span><div class="autopermalink" data-description="Figure 10.7"><a aria-label="Copy heading and permalink for Figure 10.7" href="#fig_nullrectcube" title="Copy heading and permalink for Figure 10.7">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para logical" id="sec_outermeasure-3-12-6">
+<div class="para">So suppose that <span class="process-math">\(S\)</span> is a null set and there exist open rectangles <span class="process-math">\(\{ R_j \}_{j=1}^\infty\)</span> whose union contains <span class="process-math">\(S\)</span> and such that <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_outermeasure.html#mv_eq_nullR" title="Equation 10.2">(10.2)</a> is true.  Choose closed cubes <span class="process-math">\(\{ C_k \}_{k=1}^\infty\)</span> with <span class="process-math">\(C_k\)</span> of side <span class="process-math">\(s_k\)</span> as above that cover all the rectangles <span class="process-math">\(\{ R_j \}_{j=1}^\infty\)</span> and so that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/mv_eq_nullR.html" id="sec_outermeasure-3-12-6-9">
+\begin{equation}
+\sum_{k=1}^\infty s_k^n =
+\sum_{k=1}^\infty V(C_k) \leq
+2^n \sum_{j=1}^\infty V(R_j)
+&lt; 2^n \epsilon.
+\end{equation}
+</div>
+<div class="para">Covering each <span class="process-math">\(C_k\)</span> with a ball <span class="process-math">\(B_k\)</span> of radius <span class="process-math">\(r_k = 2\sqrt{n} \, s_k &lt; \delta\text{,}\)</span> we obtain</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/mv_eq_nullR.html" id="sec_outermeasure-3-12-6-13">
+\begin{equation}
+\sum_{k=1}^\infty r_k^n
+=
+\sum_{k=1}^\infty {\bigl(2\sqrt{n}\bigr)}^n s_k^n
+&lt;
+{\bigl(4\sqrt{n}\bigr)}^n \epsilon .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(S \subset\bigcup_{j} R_j \subset \bigcup_{k} C_k \subset \bigcup_{k}
+B_k\)</span> and <span class="process-math">\({\bigl(4\sqrt{n}\bigr)}^n \epsilon\)</span> can be arbitrarily small, the forward direction follows.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-3-12-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_outermeasure-3-12-7">
+<div class="para">For the other direction, suppose <span class="process-math">\(S\)</span> is covered by balls <span class="process-math">\(B_j\)</span> of radii <span class="process-math">\(r_j\text{,}\)</span> such that <span class="process-math">\(\sum_{j=1}^\infty r_j^n &lt; \epsilon\text{,}\)</span> as in the statement of the proposition. Each <span class="process-math">\(B_j\)</span> is contained in an open cube <span class="process-math">\(R_j\)</span> of side <span class="process-math">\(2r_j\text{.}\)</span> So <span class="process-math">\(V(R_j) = {(2 r_j)}^n = 2^n r_j^n\text{.}\)</span>  Therefore,</div>
+<div class="displaymath process-math" id="sec_outermeasure-3-12-7-9">
+\begin{equation}
+S \subset \bigcup_{j=1}^\infty R_j \qquad \text{and} \qquad
+\sum_{j=1}^\infty V(R_j)
+\leq
+\sum_{j=1}^\infty 2^n r_j^n &lt; 2^n \epsilon. \qedhere
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-3-12-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 10.3.1.1"><a aria-label="Copy heading and permalink for Proof 10.3.1.1" href="#sec_outermeasure-3-12" title="Copy heading and permalink for Proof 10.3.1.1">🔗</a></div>
+</article>
+<div class="para" id="sec_outermeasure-3-13">The definition of outer measure (not just null sets) could have been done with open balls as well.  We leave this generalization to the reader.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-3-13" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 10.3.1: Outer measure and null sets"><a aria-label="Copy heading and permalink for Subsection 10.3.1: Outer measure and null sets" href="#sec_outermeasure-3" title="Copy heading and permalink for Subsection 10.3.1: Outer measure and null sets">🔗</a></div>
+</section>
+<section class="subsection" id="sec_outermeasure-4">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.3.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Examples and basic properties</span>
+</h3>
+<article class="example example-like" id="sec_outermeasure-4-2"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.3.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_outermeasure-4-2-1-1">The set <span class="process-math">\(\Q^n \subset \R^n\)</span> of points with rational coordinates is of measure zero.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-4-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_outermeasure-4-2-1-2">
+<div class="para">Proof: The set <span class="process-math">\(\Q^n\)</span> is countable, so write it as a sequence <span class="process-math">\(q_1,q_2,\ldots\text{.}\)</span>  For each <span class="process-math">\(q_j\text{,}\)</span> find an open rectangle <span class="process-math">\(R_j\)</span> with <span class="process-math">\(q_j \in R_j\)</span> and <span class="process-math">\(V(R_j) &lt; \epsilon 2^{-j}\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" id="sec_outermeasure-4-2-1-2-7">
+\begin{equation}
+\Q^n \subset \bigcup_{j=1}^\infty R_j \qquad \text{and} \qquad
+\sum_{j=1}^\infty V(R_j) &lt;
+\sum_{j=1}^\infty \epsilon 2^{-j} = \epsilon .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-4-2-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 10.3.3"><a aria-label="Copy heading and permalink for Example 10.3.3" href="#sec_outermeasure-4-2" title="Copy heading and permalink for Example 10.3.3">🔗</a></div>
+</article>
+<div class="para" id="sec_outermeasure-4-3">The example points to a more general result.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-4-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_outermeasure-4-4"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.3.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_outermeasure-4-4-1-1">A countable union of measure zero sets is of measure zero.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-4-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 10.3.4"><a aria-label="Copy heading and permalink for Proposition 10.3.4" href="#sec_outermeasure-4-4" title="Copy heading and permalink for Proposition 10.3.4">🔗</a></div>
+</article>
+<article class="proof" id="sec_outermeasure-4-5"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_outermeasure-4-5-1">
+<div class="para">Suppose</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_tonellifubiniforsums.html" id="sec_outermeasure-4-5-1-1">
+\begin{equation}
+S = \bigcup_{j=1}^\infty S_j ,
+\end{equation}
+</div>
+<div class="para">where <span class="process-math">\(S_j\)</span> are all measure zero sets.  Let <span class="process-math">\(\epsilon &gt; 0\)</span> be given. For each <span class="process-math">\(j\text{,}\)</span> there exists a sequence of open rectangles <span class="process-math">\(\{ R_{j,k} \}_{k=1}^\infty\)</span> such that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_tonellifubiniforsums.html" id="sec_outermeasure-4-5-1-6">
+\begin{equation}
+S_j \subset \bigcup_{k=1}^\infty R_{j,k}
+\qquad \text{and} \qquad
+\sum_{k=1}^\infty V(R_{j,k}) &lt; 2^{-j} \epsilon .
+\end{equation}
+</div>
+<div class="para">Then</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_tonellifubiniforsums.html" id="sec_outermeasure-4-5-1-7">
+\begin{equation}
+S \subset \bigcup_{j=1}^\infty \bigcup_{k=1}^\infty R_{j,k} .
+\end{equation}
+</div>
+<div class="para">All <span class="process-math">\(V(R_{j,k})\)</span> are nonnegative, so the sum over all <span class="process-math">\(j\)</span> and <span class="process-math">\(k\)</span> can be done by summing first over the <span class="process-math">\(k\)</span> and then over the <span class="process-math">\(j\text{,}\)</span> see <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_moreonseries.html#exercise_tonellifubiniforsums" title="Exercise 2.6.15">Exercise 2.6.15</a>. In particular,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_tonellifubiniforsums.html" id="sec_outermeasure-4-5-1-14">
+\begin{equation}
+\sum_{j=1}^\infty \sum_{k=1}^\infty V(R_{j,k}) &lt;
+\sum_{j=1}^\infty 2^{-j} \epsilon = \epsilon . \qedhere
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-4-5-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 10.3.2.1"><a aria-label="Copy heading and permalink for Proof 10.3.2.1" href="#sec_outermeasure-4-5" title="Copy heading and permalink for Proof 10.3.2.1">🔗</a></div>
+</article>
+<div class="para" id="sec_outermeasure-4-6">The next example is not just interesting, it will be useful later.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-4-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="mv_example_planenull"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.3.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="mv_example_planenull-1-1">Suppose <span class="process-math">\(n \in \N\text{,}\)</span> <span class="process-math">\(k=1,2,\ldots,n\text{,}\)</span> and <span class="process-math">\(c \in \R\text{.}\)</span> Then <span class="process-math">\(P \coloneqq \{ x \in \R^n : x_k = c \}\)</span> is of measure zero. Note that if <span class="process-math">\(n \geq 2\text{,}\)</span> then <span class="process-math">\(P\)</span> is uncountable.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_example_planenull-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="mv_example_planenull-1-2">
+<div class="para">Proof: First fix <span class="process-math">\(s \in \N\)</span> and consider</div>
+<div class="displaymath process-math" id="mv_example_planenull-1-2-2">
+\begin{equation}
+P_s \coloneqq \bigl\{ x \in \R^n : x_k = c \text{ and } \sabs{x_j} \leq s
+\text{ for all } j \neq k \bigr\} .
+\end{equation}
+</div>
+<div class="para">Given any <span class="process-math">\(\epsilon &gt; 0\)</span> define the open rectangle</div>
+<div class="displaymath process-math" id="mv_example_planenull-1-2-4">
+\begin{equation}
+R \coloneqq \bigl\{ x \in \R^n : c-\epsilon &lt; x_k &lt; c+\epsilon \text{ and } \sabs{x_j} &lt; s+1
+\text{ for all } j \neq k \bigr\} .
+\end{equation}
+</div>
+<div class="para">Clearly, <span class="process-math">\(P_s \subset R\text{.}\)</span>  Furthermore,</div>
+<div class="displaymath process-math" id="mv_example_planenull-1-2-6">
+\begin{equation}
+V(R) = 2\epsilon {\bigl(2(s+1)\bigr)}^{n-1} .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(s\)</span> is fixed, <span class="process-math">\(V(R)\)</span> can be arbitrarily small by picking <span class="process-math">\(\epsilon\)</span> small enough. So <span class="process-math">\(P_s\)</span> is of measure zero.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_example_planenull-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="mv_example_planenull-1-3">
+<div class="para">Next</div>
+<div class="displaymath process-math" id="mv_example_planenull-1-3-1">
+\begin{equation}
+P = \bigcup_{s=1}^\infty P_s
+\end{equation}
+</div>
+<div class="para">and a countable union of measure zero sets is of measure zero.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_example_planenull-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 10.3.5"><a aria-label="Copy heading and permalink for Example 10.3.5" href="#mv_example_planenull" title="Copy heading and permalink for Example 10.3.5">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_outermeasure-4-8"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.3.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_outermeasure-4-8-1-1">If <span class="process-math">\(a &lt; b\text{,}\)</span> then <span class="process-math">\(m^*\bigl([a,b]\bigr) = b-a\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-4-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_outermeasure-4-8-1-2">Proof: In <span class="process-math">\(\R\text{,}\)</span> open rectangles are open intervals. Since <span class="process-math">\([a,b] \subset (a-\epsilon,b+\epsilon)\)</span> for all <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> we have <span class="process-math">\(m^*\bigl([a,b]\bigr) \leq b-a\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-4-8-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_outermeasure-4-8-1-3">
+<div class="para">The other inequality is harder. Suppose <span class="process-math">\(\bigl\{ (a_j,b_j) \bigr\}_{j=1}^\infty\)</span> are open intervals such that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_measureinterval.html" id="sec_outermeasure-4-8-1-3-2">
+\begin{equation}
+[a,b] \subset \bigcup_{j=1}^\infty (a_j,b_j) .
+\end{equation}
+</div>
+<div class="para">We wish to bound <span class="process-math">\(\sum_{j=1}^\infty (b_j-a_j)\)</span> from below. Since <span class="process-math">\([a,b]\)</span> is compact, finitely many of the open intervals still cover <span class="process-math">\([a,b]\text{.}\)</span>  As throwing out some of the intervals only makes the sum smaller, we only need to consider the finite number of intervals covering <span class="process-math">\([a,b]\text{.}\)</span> If <span class="process-math">\((a_i,b_i) \subset (a_j,b_j)\text{,}\)</span> then we throw out <span class="process-math">\((a_i,b_i)\)</span> as well. The intervals that are left have distinct left endpoints, and whenever <span class="process-math">\(a_j &lt; a_i &lt; b_j\text{,}\)</span> then <span class="process-math">\(b_j &lt; b_i\text{.}\)</span> Therefore, <span class="process-math">\([a,b] \subset \bigcup_{j=1}^k (a_j,b_j)\)</span> for some <span class="process-math">\(k\text{,}\)</span> and we assume that the intervals are sorted such that <span class="process-math">\(a_1 &lt; a_2 &lt; \cdots &lt;
+a_k\text{.}\)</span>  As <span class="process-math">\((a_2,b_2)\)</span> is not contained in <span class="process-math">\((a_1,b_1)\text{,}\)</span> since <span class="process-math">\(a_j &gt; a_2\)</span> for all <span class="process-math">\(j &gt; 2\text{,}\)</span> and since the intervals must contain every point in <span class="process-math">\([a,b]\text{,}\)</span> we find that <span class="process-math">\(a_2 &lt; b_1\text{,}\)</span> or in other words <span class="process-math">\(a_1 &lt; a_2 &lt; b_1 &lt; b_2\text{.}\)</span>  Similarly <span class="process-math">\(a_j &lt; a_{j+1} &lt; b_j &lt; b_{j+1}\)</span> for all <span class="process-math">\(j\text{.}\)</span> Furthermore, <span class="process-math">\(a_1 &lt; a\)</span> and <span class="process-math">\(b_k &gt; b\text{.}\)</span> See <a class="internal" href="sec_outermeasure.html#fig_measureinterval" title="Figure 10.8">Figure 10.8</a> for a sample configuration. As <span class="process-math">\(b_j-a_j &gt; a_{j+1}-a_j\text{,}\)</span> we obtain</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_measureinterval.html" id="sec_outermeasure-4-8-1-3-27">
+\begin{equation}
+\sum_{j=1}^k (b_j-a_j)
+\geq
+\sum_{j=1}^{k-1} (a_{j+1}-a_j)
++
+(b_k-a_k)
+=
+b_k-a_1 &gt; b-a .
+\end{equation}
+</div>
+<div class="para">So <span class="process-math">\(m^*\bigl([a,b]\bigr) \geq b-a\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-4-8-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <hr class="rahr"/>
+<figure class="figure figure-like" id="fig_measureinterval"><img alt="A diagram of interval from a to b on the real line marked in dark bold line. Four other overlapping open intervals are marked covering the main interval with left-hand endpoints a sub 1 through a sub 4 and right-hand end points b sub 1 through b sub 4. The order of all the points from left to right is a sub 1, a, a sub 2, b sub 1, a sub 3, a sub 4, b sub 2, b sub 3, b, b sub 4." class="raimg" role="img" src="figures/measureinterval-mbxpdft.svg" style="width:315pt; height:52pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Open intervals covering <span class="process-math">\([a,b]\)</span> which satisfy <span class="process-math">\(a_j &lt; a_{j+1} &lt; b_j &lt; b_{j+1}\)</span> for all <span class="process-math">\(j\text{.}\)</span><div class="autopermalink" data-description="Figure 10.8"><a aria-label="Copy heading and permalink for Figure 10.8" href="#fig_measureinterval" title="Copy heading and permalink for Figure 10.8">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="autopermalink" data-description="Example 10.3.6"><a aria-label="Copy heading and permalink for Example 10.3.6" href="#sec_outermeasure-4-8" title="Copy heading and permalink for Example 10.3.6">🔗</a></div>
+</article>
+<article class="proposition theorem-like" id="mv_prop_compactnull"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.3.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="mv_prop_compactnull-1-1">
+<div class="para">Suppose <span class="process-math">\(E \subset \R^n\)</span> is a compact set of measure zero.  Then for every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there exist finitely many open rectangles <span class="process-math">\(R_1,R_2,\ldots,R_k\)</span> such that</div>
+<div class="displaymath process-math" id="mv_prop_compactnull-1-1-4">
+\begin{equation}
+E \subset R_1 \cup R_2 \cup \cdots \cup R_k
+\qquad \text{and} \qquad
+\sum_{j=1}^k V(R_j) &lt; \epsilon.
+\end{equation}
+</div>
+<div class="para">Moreover, for every <span class="process-math">\(\epsilon &gt; 0\)</span> and every <span class="process-math">\(\delta &gt; 0\text{,}\)</span> there exist finitely many open balls <span class="process-math">\(B_1,B_2,\ldots,B_{\ell}\)</span> of radii <span class="process-math">\(r_1,r_2,\ldots,r_{\ell} &lt; \delta\)</span> such that</div>
+<div class="displaymath process-math" id="mv_prop_compactnull-1-1-9">
+\begin{equation}
+E \subset B_1 \cup B_2 \cup \cdots \cup B_{\ell}
+\qquad \text{and} \qquad
+\sum_{j=1}^{\ell} r_j^n &lt; \epsilon.
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_prop_compactnull-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 10.3.7"><a aria-label="Copy heading and permalink for Proposition 10.3.7" href="#mv_prop_compactnull" title="Copy heading and permalink for Proposition 10.3.7">🔗</a></div>
+</article>
+<article class="proof" id="sec_outermeasure-4-10"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_outermeasure-4-10-1">
+<div class="para">As <span class="process-math">\(E\)</span> is of measure zero, there exists a sequence of open rectangles <span class="process-math">\(\{ R_j \}_{j=1}^\infty\)</span> such that</div>
+<div class="displaymath process-math" id="sec_outermeasure-4-10-1-3">
+\begin{equation}
+E \subset \bigcup_{j=1}^\infty R_j
+\qquad \text{and} \qquad
+\sum_{j=1}^\infty V(R_j) &lt; \epsilon.
+\end{equation}
+</div>
+<div class="para">By compactness, there are finitely many of these rectangles that still contain <span class="process-math">\(E\text{.}\)</span>  That is, there is some <span class="process-math">\(k\)</span> such that <span class="process-math">\(E \subset R_1 \cup R_2 \cup \cdots \cup R_k\text{.}\)</span>  Hence</div>
+<div class="displaymath process-math" id="sec_outermeasure-4-10-1-7">
+\begin{equation}
+\sum_{j=1}^k V(R_j) \leq
+\sum_{j=1}^\infty V(R_j) &lt; \epsilon.
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-4-10-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_outermeasure-4-10-2">The proof that we can choose balls instead of rectangles is left as an exercise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-4-10-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 10.3.2.2"><a aria-label="Copy heading and permalink for Proof 10.3.2.2" href="#sec_outermeasure-4-10" title="Copy heading and permalink for Proof 10.3.2.2">🔗</a></div>
+</article>
+<article class="example example-like" id="example_cantor"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.3.8</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="example_cantor-1-1">
+<div class="para">So that the reader is not under the impression that there are only few measure zero sets and that these sets are uncomplicated, here is an uncountable, compact, measure zero subset of <span class="process-math">\([0,1]\text{,}\)</span> which contains no intervals. Any <span class="process-math">\(x \in [0,1]\)</span> can be expanded in ternary:</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/sec_decimals.html ./knowl/xref/exercise_decimalpropbaseb.html ./knowl/xref/fig_cantor.html" id="example_cantor-1-1-3">
+\begin{equation}
+x = \sum_{n=1}^\infty d_n 3^{-n} ,
+\qquad \text{where } d_n=0, 1, \text{ or } 2.
+\end{equation}
+</div>
+<div class="para">See <a class="internal" href="sec_decimals.html" title="Section 1.5: Decimal representation of the reals">Section 1.5</a>, in particular <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_decimals.html#exercise_decimalpropbaseb" title="Exercise 1.5.4">Exercise 1.5.4</a>. Define the <em class="emphasis">Cantor set</em> <span class="process-math">\(C\)</span> as</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/sec_decimals.html ./knowl/xref/exercise_decimalpropbaseb.html ./knowl/xref/fig_cantor.html" id="example_cantor-1-1-8">
+\begin{equation}
+C \coloneqq \Bigl\{ x \in [0,1] : x = \sum_{n=1}^\infty d_n 3^{-n},
+\text{ where } d_n = 0 \text{ or } d_n = 2 \text{ for all } n \Bigr\} .
+\end{equation}
+</div>
+<div class="para">That is, <span class="process-math">\(x\)</span> is in <span class="process-math">\(C\)</span> if it has a ternary expansion in only <span class="process-math">\(0\)</span>s and <span class="process-math">\(2\)</span>s.  If <span class="process-math">\(x\)</span> has two expansions, as long as one of them does not have any <span class="process-math">\(1\)</span>s, then <span class="process-math">\(x\)</span> is in <span class="process-math">\(C\text{.}\)</span> Define <span class="process-math">\(C_0 \coloneqq [0,1]\)</span> and</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/sec_decimals.html ./knowl/xref/exercise_decimalpropbaseb.html ./knowl/xref/fig_cantor.html" id="example_cantor-1-1-18">
+\begin{equation}
+C_k \coloneqq \Bigl\{ x \in [0,1] : x = \sum_{n=1}^\infty d_n 3^{-n},
+\text{ where } d_n = 0 \text{ or } d_n = 2 \text{ for all } n=1,2,\ldots,k \Bigr\} .
+\end{equation}
+</div>
+<div class="para">Clearly,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/sec_decimals.html ./knowl/xref/exercise_decimalpropbaseb.html ./knowl/xref/fig_cantor.html" id="example_cantor-1-1-19">
+\begin{equation}
+C = \bigcap_{k=1}^\infty C_k .
+\end{equation}
+</div>
+<div class="para">See <a class="internal" href="sec_outermeasure.html#fig_cantor" title="Figure 10.9">Figure 10.9</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_cantor-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="example_cantor-1-2">We leave it as an exercise to prove:<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_cantor-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="example_cantor-1-3">
+<li id="example_cantor-1-3-1">
+<div class="para" id="example_cantor-1-3-1-1">Each <span class="process-math">\(C_k\)</span> is a finite union of closed intervals.  It is obtained by taking <span class="process-math">\(C_{k-1}\text{,}\)</span> and from each closed interval removing the “middle third.”<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_cantor-1-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#example_cantor-1-3-1" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="example_cantor-1-3-2">
+<div class="para" id="example_cantor-1-3-2-1">Each <span class="process-math">\(C_k\)</span> is closed, and so <span class="process-math">\(C\)</span> is closed.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_cantor-1-3-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#example_cantor-1-3-2" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+<li id="example_cantor-1-3-3">
+<div class="para" id="example_cantor-1-3-3-1">
+<span class="process-math">\(m^*(C_k) = {\left(\frac{2}{3}\right)}^k\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_cantor-1-3-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iii"><a aria-label="Copy heading and permalink for Item iii" href="#example_cantor-1-3-3" title="Copy heading and permalink for Item iii">🔗</a></div>
+</li>
+<li id="example_cantor-1-3-4">
+<div class="para" id="example_cantor-1-3-4-1">Hence, <span class="process-math">\(m^*(C) = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_cantor-1-3-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iv"><a aria-label="Copy heading and permalink for Item iv" href="#example_cantor-1-3-4" title="Copy heading and permalink for Item iv">🔗</a></div>
+</li>
+<li id="example_cantor-1-3-5">
+<div class="para" id="example_cantor-1-3-5-1">The set <span class="process-math">\(C\)</span> is in one-to-one correspondence with <span class="process-math">\([0,1]\text{,}\)</span> in other words, <span class="process-math">\(C\)</span> is uncountable.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_cantor-1-3-5-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item v"><a aria-label="Copy heading and permalink for Item v" href="#example_cantor-1-3-5" title="Copy heading and permalink for Item v">🔗</a></div>
+</li>
+</ol> <hr class="rahr"/>
+<figure class="figure figure-like" id="fig_cantor"><img alt="A diagram of several sets on the real line given in several rows above each other. First is C sub 0 which is a solid line across. The second row is C sub 1, which is the first line with the middle third of the line erased giving two solid lines. Next is C sub 2, which again erases the middle thirds of the two solid lines resulting in 4 lines. This pattern continues and is pictured until C sub 4 which has 16 solid lines." class="raimg" role="img" src="figures/cantorfig-mbxpdft.svg" style="width:396pt; height:83pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Cantor set construction.<div class="autopermalink" data-description="Figure 10.9"><a aria-label="Copy heading and permalink for Figure 10.9" href="#fig_cantor" title="Copy heading and permalink for Figure 10.9">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="autopermalink" data-description="Example 10.3.8"><a aria-label="Copy heading and permalink for Example 10.3.8" href="#example_cantor" title="Copy heading and permalink for Example 10.3.8">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 10.3.2: Examples and basic properties"><a aria-label="Copy heading and permalink for Subsection 10.3.2: Examples and basic properties" href="#sec_outermeasure-4" title="Copy heading and permalink for Subsection 10.3.2: Examples and basic properties">🔗</a></div>
+</section>
+<section class="subsection" id="sec_outermeasure-5">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.3.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Images of null sets under differentiable functions</span>
+</h3>
+<div class="para" id="sec_outermeasure-5-2">Before we look at images of measure zero sets, let us see what a continuously differentiable function does to a ball.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-5-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="lemma theorem-like" id="lemma_ballmapder"><h4 class="heading">
+<span class="type">Lemma</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.3.9</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="lemma_ballmapder-1-1">Suppose <span class="process-math">\(U \subset \R^n\)</span> is an open set, <span class="process-math">\(B \subset U\)</span> is an open (resp. closed) ball of radius at most <span class="process-math">\(r\text{,}\)</span> <span class="process-math">\(f \colon U \to \R^n\)</span> is continuously differentiable, and suppose <span class="process-math">\(\bnorm{f'(x)} \leq M\)</span> for all <span class="process-math">\(x \in B\text{.}\)</span> Then <span class="process-math">\(f(B) \subset B'\text{,}\)</span> where <span class="process-math">\(B'\)</span> is an open (resp. closed) ball of radius at most <span class="process-math">\(Mr\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#lemma_ballmapder-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Lemma 10.3.9"><a aria-label="Copy heading and permalink for Lemma 10.3.9" href="#lemma_ballmapder" title="Copy heading and permalink for Lemma 10.3.9">🔗</a></div>
+</article>
+<article class="proof" id="sec_outermeasure-5-4"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_outermeasure-5-4-1">Suppose <span class="process-math">\(B\)</span> is open. As the ball <span class="process-math">\(B\)</span> is convex, <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_svthedercont.html#mv_prop_convexlip" title="Proposition 8.4.2">Proposition 8.4.2</a> says that <span class="process-math">\(\bnorm{f(x)-f(y)} \leq M \snorm{x-y}\)</span> for all <span class="process-math">\(x,y \in B\text{.}\)</span> So if <span class="process-math">\(\snorm{x-y} &lt; r\text{,}\)</span> then <span class="process-math">\(\bnorm{f(x)-f(y)} &lt; Mr\text{.}\)</span> In other words, if <span class="process-math">\(B=B(y,r)\text{,}\)</span> then <span class="process-math">\(f(B) \subset B\bigl(f(y),M r \bigr)\text{.}\)</span> If <span class="process-math">\(B\)</span> is closed, then <span class="process-math">\(\overline{B(y,r)} = B\text{.}\)</span> As <span class="process-math">\(f\)</span> is continuous, <span class="process-math">\(f(B) = f\bigl(\overline{B(y,r)}\bigr) \subset
+\overline{f\bigl(B(y,r)\bigr)} \subset \overline{B\bigl(f(y),M r
+\bigr)}\text{,}\)</span> as <span class="process-math">\(f(\widebar{A}) \subset \overline{f(A)}\)</span> for any set <span class="process-math">\(A\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-5-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 10.3.3.1"><a aria-label="Copy heading and permalink for Proof 10.3.3.1" href="#sec_outermeasure-5-4" title="Copy heading and permalink for Proof 10.3.3.1">🔗</a></div>
+</article>
+<div class="para" id="sec_outermeasure-5-5">The image of a measure zero set using a continuous map is not necessarily a measure zero set, although this takes some work to show (see the exercises). However, if the mapping is continuously differentiable, then it cannot “stretch” the set that much.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-5-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_imagenull"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.3.10</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="prop_imagenull-1-1">Suppose <span class="process-math">\(U \subset \R^n\)</span> is open and <span class="process-math">\(f \colon U \to \R^n\)</span> is continuously differentiable.  If <span class="process-math">\(E \subset U\)</span> is a measure zero set, then <span class="process-math">\(f(E)\)</span> is measure zero.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_imagenull-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 10.3.10"><a aria-label="Copy heading and permalink for Proposition 10.3.10" href="#prop_imagenull" title="Copy heading and permalink for Proposition 10.3.10">🔗</a></div>
+</article>
+<article class="proof" id="sec_outermeasure-5-7"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_outermeasure-5-7-1">
+<div class="para">We prove the proposition for a compact <span class="process-math">\(E\)</span> and leave the general case as an exercise. Suppose <span class="process-math">\(E\)</span> is compact and of measure zero. First, we will replace <span class="process-math">\(U\)</span> by a smaller open set to make <span class="process-math">\(\bnorm{f'(x)}\)</span> bounded. At each point <span class="process-math">\(x \in
+E\)</span> pick an open ball <span class="process-math">\(B(x,r_x)\)</span> such that the closed ball <span class="process-math">\(C(x,r_x) \subset
+U\text{.}\)</span>  By compactness, we only need to take finitely many points <span class="process-math">\(x_1,x_2,\ldots,x_q\)</span> to cover <span class="process-math">\(E\)</span> with the balls <span class="process-math">\(B(x_j,r_{x_j})\text{.}\)</span>  Define</div>
+<div class="displaymath process-math" id="sec_outermeasure-5-7-1-11">
+\begin{equation}
+U' \coloneqq \bigcup_{j=1}^q B(x_j,r_{x_j}), \qquad
+K \coloneqq \bigcup_{j=1}^q C(x_j,r_{x_j}).
+\end{equation}
+</div>
+<div class="para">We have <span class="process-math">\(E \subset U' \subset K \subset U\text{.}\)</span>  The set <span class="process-math">\(K\text{,}\)</span> being a finite union of compact sets, is compact. The function that takes <span class="process-math">\(x\)</span> to <span class="process-math">\(\bnorm{f'(x)}\)</span> is continuous, and therefore there exists an <span class="process-math">\(M &gt; 0\)</span> such that <span class="process-math">\(\bnorm{f'(x)} \leq M\)</span> for all <span class="process-math">\(x \in K\text{.}\)</span> So without loss of generality, we may replace <span class="process-math">\(U\)</span> by <span class="process-math">\(U'\)</span> and from now on suppose that <span class="process-math">\(\bnorm{f'(x)} \leq M\)</span> for all <span class="process-math">\(x \in U\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-5-7-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_outermeasure-5-7-2">At each <span class="process-math">\(x \in E\text{,}\)</span> take the maximum radius <span class="process-math">\(\delta_x\)</span> such that <span class="process-math">\(B(x,\delta_x) \subset U\)</span> (we may assume <span class="process-math">\(U \neq \R^n\)</span>). Let <span class="process-math">\(\delta \coloneqq \inf_{x\in E} \delta_x\text{.}\)</span> We want to show that <span class="process-math">\(\delta &gt; 0\text{.}\)</span> Take a sequence <span class="process-math">\(\{ x_j \}_{j=1}^\infty\)</span> in <span class="process-math">\(E\)</span> so that <span class="process-math">\(\delta_{x_j} \to \delta\text{.}\)</span> As <span class="process-math">\(E\)</span> is compact, we can pick the sequence to be convergent to some <span class="process-math">\(y \in
+E\text{.}\)</span>  Once <span class="process-math">\(\snorm{x_j-y} &lt; \frac{\delta_y}{2}\text{,}\)</span> then <span class="process-math">\(\delta_{x_j} &gt; \frac{\delta_y}{2}\)</span> by the triangle inequality. Thus, <span class="process-math">\(\delta &gt; 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-5-7-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_outermeasure-5-7-3">
+<div class="para">Given <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there exist balls <span class="process-math">\(B_1,B_2,\ldots,B_k\)</span> of radii <span class="process-math">\(r_1,r_2,\ldots,r_k &lt; \nicefrac{\delta}{2}\)</span> such that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/lemma_ballmapder.html" id="sec_outermeasure-5-7-3-4">
+\begin{equation}
+E \subset B_1 \cup B_2 \cup \cdots \cup B_k
+\qquad \text{and} \qquad
+\sum_{j=1}^k r_j^n &lt; \epsilon.
+\end{equation}
+</div>
+<div class="para">We can assume that each ball contains a point of <span class="process-math">\(E\)</span> and so the balls are contained in <span class="process-math">\(U\text{.}\)</span> Suppose <span class="process-math">\(B_1', B_2', \ldots, B_k'\)</span> are the balls of radius <span class="process-math">\(Mr_1, Mr_2, \ldots, Mr_k\)</span> from <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_outermeasure.html#lemma_ballmapder" title="Lemma 10.3.9">Lemma 10.3.9</a>, such that <span class="process-math">\(f(B_j) \subset B_j'\)</span> for all <span class="process-math">\(j\text{.}\)</span> Then,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/lemma_ballmapder.html" id="sec_outermeasure-5-7-3-12">
+\begin{equation}
+\begin{aligned}
+f(E)
+&amp;
+\subset f(B_1) \cup f(B_2) \cup \cdots \cup f(B_k)
+\\
+&amp;
+\subset B_1' \cup B_2' \cup \cdots \cup B_k'
+\end{aligned}
+\qquad \text{and} \qquad
+\sum_{j=1}^k {(Mr_j)}^n
+&lt; M^n \epsilon. \qedhere
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-5-7-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 10.3.3.2"><a aria-label="Copy heading and permalink for Proof 10.3.3.2" href="#sec_outermeasure-5-7" title="Copy heading and permalink for Proof 10.3.3.2">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 10.3.3: Images of null sets under differentiable functions"><a aria-label="Copy heading and permalink for Subsection 10.3.3: Images of null sets under differentiable functions" href="#sec_outermeasure-5" title="Copy heading and permalink for Subsection 10.3.3: Images of null sets under differentiable functions">🔗</a></div>
+</section>
+<section class="exercises" id="sec_outermeasure-6">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.3.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_outermeasure-6-1"><h4 class="heading"><span class="codenumber">10.3.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_outermeasure-6-1-1-1">Finish the proof of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_outermeasure.html#mv_prop_compactnull" title="Proposition 10.3.7">Proposition 10.3.7</a>:  Show that you can use balls instead of rectangles.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-6-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.3.1"><a aria-label="Copy heading and permalink for Exercise 10.3.1" href="#sec_outermeasure-6-1" title="Copy heading and permalink for Exercise 10.3.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_outermeasuremono"><h4 class="heading"><span class="codenumber">10.3.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_outermeasuremono-1-1">If <span class="process-math">\(A \subset B\text{,}\)</span> then <span class="process-math">\(m^*(A) \leq m^*(B)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_outermeasuremono-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.3.2"><a aria-label="Copy heading and permalink for Exercise 10.3.2" href="#exercise_outermeasuremono" title="Copy heading and permalink for Exercise 10.3.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_outermeasure-6-3"><h4 class="heading"><span class="codenumber">10.3.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_outermeasure-6-3-1-1">Suppose <span class="process-math">\(X \subset \R^n\)</span> is a set such that for every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there exists a set <span class="process-math">\(Y\)</span> such that <span class="process-math">\(X \subset Y\)</span> and <span class="process-math">\(m^*(Y) \leq \epsilon\text{.}\)</span> Prove that <span class="process-math">\(X\)</span> is a measure zero set.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-6-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.3.3"><a aria-label="Copy heading and permalink for Exercise 10.3.3" href="#sec_outermeasure-6-3" title="Copy heading and permalink for Exercise 10.3.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_rectanglemeasure"><h4 class="heading"><span class="codenumber">10.3.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_rectanglemeasure-1-1">Show that if <span class="process-math">\(R \subset \R^n\)</span> is a closed rectangle, then <span class="process-math">\(m^*(R) = V(R)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_rectanglemeasure-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.3.4"><a aria-label="Copy heading and permalink for Exercise 10.3.4" href="#exercise_rectanglemeasure" title="Copy heading and permalink for Exercise 10.3.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_outermeasure-6-5"><h4 class="heading"><span class="codenumber">10.3.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_outermeasure-6-5-1-1">The closure of a measure zero set can be quite large.  Find an example set <span class="process-math">\(S \subset \R^n\)</span> that is of measure zero, but whose closure <span class="process-math">\(\widebar{S} = \R^n\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-6-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.3.5"><a aria-label="Copy heading and permalink for Exercise 10.3.5" href="#sec_outermeasure-6-5" title="Copy heading and permalink for Exercise 10.3.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_outermeasure-6-6"><h4 class="heading"><span class="codenumber">10.3.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_outermeasure-6-6-1-1">Prove the general case of  <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_outermeasure.html#prop_imagenull" title="Proposition 10.3.10">Proposition 10.3.10</a> without using compactness:<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-6-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_outermeasure-6-6-1-2">
+<li id="sec_outermeasure-6-6-1-2-1">
+<div class="para" id="sec_outermeasure-6-6-1-2-1-1">Mimic the proof to show that the proposition holds if <span class="process-math">\(E\)</span> is <em class="emphasis">relatively compact</em>; a set <span class="process-math">\(E \subset U\)</span> is relatively compact if the closure of <span class="process-math">\(E\)</span> in the subspace topology on <span class="process-math">\(U\)</span> is compact, or in other words if there exists a compact set <span class="process-math">\(K\)</span> with <span class="process-math">\(K \subset U\)</span> and <span class="process-math">\(E \subset K\text{.}\)</span><br/> Hint: The bound on the size of the derivative still holds, but you need to use countably many balls in the second part of the proof. Be careful as the closure of <span class="process-math">\(E\)</span> need no longer be measure zero.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-6-6-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.3.6.a"><a aria-label="Copy heading and permalink for Item 10.3.6.a" href="#sec_outermeasure-6-6-1-2-1" title="Copy heading and permalink for Item 10.3.6.a">🔗</a></div>
+</li>
+<li id="sec_outermeasure-6-6-1-2-2">
+<div class="para" id="sec_outermeasure-6-6-1-2-2-1">Now prove it for every null set <span class="process-math">\(E\text{.}\)</span><br/> Hint: First show that <span class="process-math">\(\{ x \in U : \snorm{x-y} \geq
+\nicefrac{1}{m} \text{ for all } y \notin U \text{ and } \snorm{x} \leq m \}\)</span> is compact for every <span class="process-math">\(m &gt; 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-6-6-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.3.6.b"><a aria-label="Copy heading and permalink for Item 10.3.6.b" href="#sec_outermeasure-6-6-1-2-2" title="Copy heading and permalink for Item 10.3.6.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 10.3.6"><a aria-label="Copy heading and permalink for Exercise 10.3.6" href="#sec_outermeasure-6-6" title="Copy heading and permalink for Exercise 10.3.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_outermeasure-6-7"><h4 class="heading"><span class="codenumber">10.3.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_outermeasure-6-7-1-1">Let <span class="process-math">\(U \subset \R^n\)</span> be an open set and let <span class="process-math">\(f \colon U \to \R\)</span> be a continuously differentiable function. Let <span class="process-math">\(G \coloneqq \bigl\{ (x,y) \in U \times \R : y = f(x) \bigr\}\)</span> be the graph of <span class="process-math">\(f\text{.}\)</span> Show that <span class="process-math">\(G\)</span> is of measure zero.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-6-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.3.7"><a aria-label="Copy heading and permalink for Exercise 10.3.7" href="#sec_outermeasure-6-7" title="Copy heading and permalink for Exercise 10.3.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_outermeasure-6-8"><h4 class="heading"><span class="codenumber">10.3.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_outermeasure-6-8-1-1">
+<div class="para">Given a closed rectangle <span class="process-math">\(R \subset \R^n\text{,}\)</span> show that for every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there exists a number <span class="process-math">\(s &gt; 0\)</span> and finitely many open cubes <span class="process-math">\(C_1,C_2,\ldots,C_k\)</span> of side <span class="process-math">\(s\)</span> such that <span class="process-math">\(R \subset C_1 \cup C_2 \cup \cdots \cup C_k\)</span> and</div>
+<div class="displaymath process-math" id="sec_outermeasure-6-8-1-1-7">
+\begin{equation}
+\sum_{j=1}^k V(C_j) \leq V(R) + \epsilon .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-6-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.3.8"><a aria-label="Copy heading and permalink for Exercise 10.3.8" href="#sec_outermeasure-6-8" title="Copy heading and permalink for Exercise 10.3.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_outermeasure-6-9"><h4 class="heading"><span class="codenumber">10.3.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_outermeasure-6-9-1-1">Show that there exists a number <span class="process-math">\(k = k(n,r,\delta)\)</span> depending only on <span class="process-math">\(n\text{,}\)</span> <span class="process-math">\(r\text{,}\)</span> and <span class="process-math">\(\delta\)</span> such that the following holds: Given <span class="process-math">\(B(x,r) \subset \R^n\)</span> and <span class="process-math">\(\delta &gt; 0\text{,}\)</span> there exist <span class="process-math">\(k\)</span> open balls <span class="process-math">\(B_1,B_2,\ldots,B_k\)</span> of radius at most <span class="process-math">\(\delta\)</span> such that <span class="process-math">\(B(x,r) \subset B_1 \cup B_2 \cup \cdots \cup B_k\text{.}\)</span> Note that you can find <span class="process-math">\(k\)</span> that only depends on <span class="process-math">\(n\)</span> and the ratio <span class="process-math">\(\nicefrac{\delta}{r}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-6-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.3.9"><a aria-label="Copy heading and permalink for Exercise 10.3.9" href="#sec_outermeasure-6-9" title="Copy heading and permalink for Exercise 10.3.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_outermeasure-6-10"><h4 class="heading"><span class="codenumber">10.3.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_outermeasure-6-10-1-1">
+<em class="emphasis">(Challenging)</em>   Prove the statements of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_outermeasure.html#example_cantor" title="Example 10.3.8">Example 10.3.8</a>.  That is, prove:<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-6-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_outermeasure-6-10-1-2">
+<li id="sec_outermeasure-6-10-1-2-1">
+<div class="para" id="sec_outermeasure-6-10-1-2-1-1">Each <span class="process-math">\(C_k\)</span> is a finite union of closed intervals, and so <span class="process-math">\(C\)</span> is closed.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-6-10-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.3.10.a"><a aria-label="Copy heading and permalink for Item 10.3.10.a" href="#sec_outermeasure-6-10-1-2-1" title="Copy heading and permalink for Item 10.3.10.a">🔗</a></div>
+</li>
+<li id="sec_outermeasure-6-10-1-2-2">
+<div class="para" id="sec_outermeasure-6-10-1-2-2-1">
+<span class="process-math">\(m^*(C_k) = {\left(\frac{2}{3}\right)}^k\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-6-10-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.3.10.b"><a aria-label="Copy heading and permalink for Item 10.3.10.b" href="#sec_outermeasure-6-10-1-2-2" title="Copy heading and permalink for Item 10.3.10.b">🔗</a></div>
+</li>
+<li id="sec_outermeasure-6-10-1-2-3">
+<div class="para" id="sec_outermeasure-6-10-1-2-3-1">
+<span class="process-math">\(m^*(C) = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-6-10-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.3.10.c"><a aria-label="Copy heading and permalink for Item 10.3.10.c" href="#sec_outermeasure-6-10-1-2-3" title="Copy heading and permalink for Item 10.3.10.c">🔗</a></div>
+</li>
+<li id="sec_outermeasure-6-10-1-2-4">
+<div class="para" id="sec_outermeasure-6-10-1-2-4-1">The set <span class="process-math">\(C\)</span> is in one-to-one correspondence with <span class="process-math">\([0,1]\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-6-10-1-2-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.3.10.d"><a aria-label="Copy heading and permalink for Item 10.3.10.d" href="#sec_outermeasure-6-10-1-2-4" title="Copy heading and permalink for Item 10.3.10.d">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 10.3.10"><a aria-label="Copy heading and permalink for Exercise 10.3.10" href="#sec_outermeasure-6-10" title="Copy heading and permalink for Exercise 10.3.10">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_outermeasure-6-11"><h4 class="heading"><span class="codenumber">10.3.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_outermeasure-6-11-1-1">Prove that the Cantor set of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_outermeasure.html#example_cantor" title="Example 10.3.8">Example 10.3.8</a> contains no interval.  That is, whenever <span class="process-math">\(a &lt; b\text{,}\)</span> there exists a point <span class="process-math">\(x \notin C\)</span> such that <span class="process-math">\(a &lt; x &lt; b\text{.}\)</span> <br/> Note a consequence of this statement.  While every open set in <span class="process-math">\(\R\)</span> is a countable disjoint union of intervals, a closed set (despite being the complement of an open set) need not be a countable union of intervals or points.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-6-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.3.11"><a aria-label="Copy heading and permalink for Exercise 10.3.11" href="#sec_outermeasure-6-11" title="Copy heading and permalink for Exercise 10.3.11">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_outermeasure-6-12"><h4 class="heading"><span class="codenumber">10.3.12<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_outermeasure-6-12-1-1">
+<div class="para">
+<em class="emphasis">(Challenging)</em>   Let us construct the <em class="emphasis">Cantor function</em>, called also the <em class="emphasis">Devil’s staircase</em>.  Let <span class="process-math">\(C\)</span> be the Cantor set and let <span class="process-math">\(C_k\)</span> be as in <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_outermeasure.html#example_cantor" title="Example 10.3.8">Example 10.3.8</a>. Write <span class="process-math">\(x \in [0,1]\)</span> in ternary representation <span class="process-math">\(x = \sum_{n=1} d_n 3^{-n}\text{.}\)</span> If <span class="process-math">\(d_n \neq 1\)</span> for all <span class="process-math">\(n\text{,}\)</span> then let <span class="process-math">\(c_n \coloneqq \frac{d_n}{2}\)</span> for all <span class="process-math">\(n\text{.}\)</span> Otherwise, let <span class="process-math">\(k\)</span> be the smallest integer such that <span class="process-math">\(d_k = 1\text{.}\)</span> Let <span class="process-math">\(c_n \coloneqq \frac{d_n}{2}\)</span> if <span class="process-math">\(n &lt; k\text{,}\)</span> <span class="process-math">\(c_k \coloneqq 1\text{,}\)</span> and <span class="process-math">\(c_n
+\coloneqq 0\)</span> if <span class="process-math">\(n &gt; k\text{.}\)</span> Define</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/example_cantor.html" id="sec_outermeasure-6-12-1-1-22">
+\begin{equation}
+\varphi(x) \coloneqq \sum_{n=1}^\infty c_n \, 2^{-n} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-6-12-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_outermeasure-6-12-1-2">
+<li id="sec_outermeasure-6-12-1-2-1">
+<div class="para" id="sec_outermeasure-6-12-1-2-1-1">Prove that <span class="process-math">\(\varphi\)</span> is continuous and increasing (see <a class="internal" href="sec_outermeasure.html#fig_cantor" title="Figure 10.9">Figure 10.9</a>).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-6-12-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.3.12.a"><a aria-label="Copy heading and permalink for Item 10.3.12.a" href="#sec_outermeasure-6-12-1-2-1" title="Copy heading and permalink for Item 10.3.12.a">🔗</a></div>
+</li>
+<li id="sec_outermeasure-6-12-1-2-2">
+<div class="para" id="sec_outermeasure-6-12-1-2-2-1">Prove that for <span class="process-math">\(x \notin C\text{,}\)</span> <span class="process-math">\(\varphi\)</span> is differentiable at <span class="process-math">\(x\)</span> and <span class="process-math">\(\varphi'(x) = 0\text{.}\)</span> (Notice that <span class="process-math">\(\varphi'\)</span> exists and is zero except on a set of measure zero, yet the function manages to climb from <span class="process-math">\(0\)</span> to <span class="process-math">\(1\text{.}\)</span>)<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-6-12-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.3.12.b"><a aria-label="Copy heading and permalink for Item 10.3.12.b" href="#sec_outermeasure-6-12-1-2-2" title="Copy heading and permalink for Item 10.3.12.b">🔗</a></div>
+</li>
+<li id="sec_outermeasure-6-12-1-2-3">
+<div class="para" id="sec_outermeasure-6-12-1-2-3-1">Define <span class="process-math">\(\psi \colon [0,1] \to [0,2]\)</span> by <span class="process-math">\(\psi(x) \coloneqq \varphi(x) + x\text{.}\)</span> Show that <span class="process-math">\(\psi\)</span> is continuous, strictly increasing, and bijective.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-6-12-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.3.12.c"><a aria-label="Copy heading and permalink for Item 10.3.12.c" href="#sec_outermeasure-6-12-1-2-3" title="Copy heading and permalink for Item 10.3.12.c">🔗</a></div>
+</li>
+<li id="sec_outermeasure-6-12-1-2-4">
+<div class="para" id="sec_outermeasure-6-12-1-2-4-1">Prove that while <span class="process-math">\(m^*(C) = 0\text{,}\)</span> <span class="process-math">\(m^*\bigl(\psi(C)\bigr) \neq 0\text{.}\)</span>  That is, continuous functions need not take measure zero sets to measure zero sets. Hint: <span class="process-math">\(m^*\bigl(\psi([0,1] \setminus C)\bigr) = 1\text{,}\)</span> but <span class="process-math">\(m^*\bigl([0,2]\bigr) = 2\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-6-12-1-2-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.3.12.d"><a aria-label="Copy heading and permalink for Item 10.3.12.d" href="#sec_outermeasure-6-12-1-2-4" title="Copy heading and permalink for Item 10.3.12.d">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 10.3.12"><a aria-label="Copy heading and permalink for Exercise 10.3.12" href="#sec_outermeasure-6-12" title="Copy heading and permalink for Exercise 10.3.12">🔗</a></div>
+</article><hr class="rahr"/>
+<figure class="figure figure-like" id="fig_cantorfunction"><img alt="A graph of a function on the interval from 0 to 1 on the horizontal axis. The function is monotone and starts at 0 on the left-hand side and ends at 1 at the right-hand side. It contains lots of straight (constant) pieces corresponding to the middle-thirds taken out of the Cantor set during construction. For example, the function equals one half from one third to two thirds. The function is one quarter from one ninth to two ninths and similarly three quarters from seven ninths to eight ninths. All the other middle-thirds are handled similarly." class="raimg" role="img" src="figures/cantorfunction-mbx.svg" style="width:196pt; height:134pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Cantor function or Devil’s staircase (the function <span class="process-math">\(\varphi\)</span> from the exercise).<div class="autopermalink" data-description="Figure 10.10"><a aria-label="Copy heading and permalink for Figure 10.10" href="#fig_cantorfunction" title="Copy heading and permalink for Figure 10.10">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<article class="exercise exercise-like" id="exercise_allowfiniteseqsinoutermeasure"><h4 class="heading"><span class="codenumber">10.3.13<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_allowfiniteseqsinoutermeasure-1-1">Prove that we obtain the same outer measure if we allow both finite and infinite sequences in the definition.  That is, define <span class="process-math">\(\mu^*(S) \coloneqq \inf\, \sum_{j \in I} V(R_j)\)</span> where the infimum is taken over all countable (finite or infinite) sets of open rectangles <span class="process-math">\(\{ R_j \}_{j\in I}\)</span> such that <span class="process-math">\(S \subset
+\bigcup_{j \in I} R_j\text{.}\)</span>  Prove that for every <span class="process-math">\(S \subset \R^n\text{,}\)</span> <span class="process-math">\(\mu^*(S) = m^*(S)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_allowfiniteseqsinoutermeasure-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.3.13"><a aria-label="Copy heading and permalink for Exercise 10.3.13" href="#exercise_allowfiniteseqsinoutermeasure" title="Copy heading and permalink for Exercise 10.3.13">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_outermeasure-6-17"><h4 class="heading"><span class="codenumber">10.3.14<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_outermeasure-6-17-1-1">Prove that for any two subsets <span class="process-math">\(A, B \subset \R^n\text{,}\)</span> we have <span class="process-math">\(m^*(A \cup B) \leq m^*(A)+m^*(B)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-6-17-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.3.14"><a aria-label="Copy heading and permalink for Exercise 10.3.14" href="#sec_outermeasure-6-17" title="Copy heading and permalink for Exercise 10.3.14">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_outermeasure-6-18"><h4 class="heading"><span class="codenumber">10.3.15<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_outermeasure-6-18-1-1">Suppose <span class="process-math">\(A, B \subset \R^n\)</span> are such that <span class="process-math">\(m^*(B)=0\text{.}\)</span>  Prove that <span class="process-math">\(m^*(A \cup B) = m^*(A)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_outermeasure-6-18-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.3.15"><a aria-label="Copy heading and permalink for Exercise 10.3.15" href="#sec_outermeasure-6-18" title="Copy heading and permalink for Exercise 10.3.15">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_outermeasureofsumofrectangles"><h4 class="heading"><span class="codenumber">10.3.16<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_outermeasureofsumofrectangles-1-1">
+<em class="emphasis">(Challenging)</em>   Suppose <span class="process-math">\(R_1,R_2,\ldots,R_n\)</span> are pairwise disjoint open rectangles. Prove that <span class="process-math">\(m^*(R_1 \cup R_2 \cup \cdots \cup R_n) = m^*(R_1)+m^*(R_2)+\cdots+m^*(R_n)\text{.}\)</span> Hint: Some of the exercises above may prove very useful.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_outermeasureofsumofrectangles-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.3.16"><a aria-label="Copy heading and permalink for Exercise 10.3.16" href="#exercise_outermeasureofsumofrectangles" title="Copy heading and permalink for Exercise 10.3.16">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 10.3.4"><a aria-label="Copy heading and permalink for Exercises 10.3.4" href="#sec_outermeasure-6" title="Copy heading and permalink for Exercises 10.3.4">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 10.3: Outer measure and null sets"><a aria-label="Copy heading and permalink for Section 10.3: Outer measure and null sets" href="#sec_outermeasure" title="Copy heading and permalink for Section 10.3: Outer measure and null sets">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_iteratedints.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_riemannlebesgue.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

@@ -1,0 +1,1086 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>The Stone–Weierstrass theorem · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_stoneweier">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.7</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">The Stone–Weierstrass theorem</span>
+</h2>
+<section class="introduction" id="sec_stoneweier-2">
+<div class="para" id="sec_stoneweier-2-1">
+<em class="emphasis">Note: 3 lectures</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section>
+<section class="subsection" id="sec_stoneweier-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.7.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Weierstrass approximation</span>
+</h3>
+<div class="para" id="sec_stoneweier-3-2">Perhaps surprisingly, even a very badly behaved continuous function is a uniform limit of polynomials. We cannot really get any “nicer” functions than polynomials. The idea of the proof is a very common approximation or “smoothing” idea (convolution with an approximate delta function) that has applications far beyond pure mathematics.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-3-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="sec_stoneweier-3-3"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.7.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Weierstrass approximation theorem.</span>
+</h4>
+<div class="para" id="sec_stoneweier-3-3-3-1">If <span class="process-math">\(f \colon [a,b] \to \C\)</span> is continuous, then there exists a sequence <span class="process-math">\(\{ p_n \}_{n=1}^\infty\)</span> of polynomials converging to <span class="process-math">\(f\)</span> uniformly on <span class="process-math">\([a,b]\text{.}\)</span> Furthermore, if <span class="process-math">\(f\)</span> is real-valued, we can find <span class="process-math">\(p_n\)</span> with real coefficients.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-3-3-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 11.7.1: Weierstrass approximation theorem"><a aria-label="Copy heading and permalink for Theorem 11.7.1: Weierstrass approximation theorem" href="#sec_stoneweier-3-3" title="Copy heading and permalink for Theorem 11.7.1: Weierstrass approximation theorem">🔗</a></div>
+</article>
+<article class="proof" id="sec_stoneweier-3-4"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_stoneweier-3-4-1">
+<div class="para">For <span class="process-math">\(x \in [0,1]\text{,}\)</span> define</div>
+<div class="displaymath process-math" id="sec_stoneweier-3-4-1-2">
+\begin{equation}
+g(x) \coloneqq f\bigl((b-a)x+a\bigr)-f(a) - x\bigl(f(b)-f(a)\bigr) .
+\end{equation}
+</div>
+<div class="para">If we prove the theorem for <span class="process-math">\(g\)</span> and find the sequence <span class="process-math">\(\{ p_n \}_{n=1}^\infty\)</span> for <span class="process-math">\(g\text{,}\)</span> it is proved for <span class="process-math">\(f\)</span> as we simply composed with an invertible affine function and added an affine function to <span class="process-math">\(f\text{.}\)</span>  We reverse the process and apply that to our <span class="process-math">\(p_n\text{,}\)</span> to obtain polynomials approximating <span class="process-math">\(f\text{.}\)</span> The function <span class="process-math">\(g\)</span> is defined on <span class="process-math">\([0,1]\)</span> and <span class="process-math">\(g(0)=g(1)=0\text{.}\)</span> For simplicity, assume that <span class="process-math">\(g\)</span> is defined on <span class="process-math">\(\R\)</span> by letting <span class="process-math">\(g(x) \coloneqq 0\)</span> if <span class="process-math">\(x &lt; 0\)</span> or <span class="process-math">\(x &gt; 1\text{.}\)</span>  This extended <span class="process-math">\(g\)</span> is continuous.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-3-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_stoneweier-3-4-2">
+<div class="para">Define</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_weierqn.html" id="sec_stoneweier-3-4-2-1">
+\begin{equation}
+c_n \coloneqq {\left( \int_{-1}^1 {(1-x^2)}^n\,dx \right)}^{-1} ,
+\qquad
+q_n(x) \coloneqq c_n (1-x^2)^n .
+\end{equation}
+</div>
+<div class="para">The choice of <span class="process-math">\(c_n\)</span> is so that <span class="process-math">\(\int_{-1}^1 q_n(x)\,dx = 1\text{.}\)</span> See <a class="internal" href="sec_stoneweier.html#fig_weierqn" title="Figure 11.8">Figure 11.8</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-3-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="fig_weierqn"><img alt='Graphs of many functions on the interval minus 1 to 1. They are all a symmetric "bump" above the x-axis. The lowest and widest bump is in dark color, and then taller and thinner peaks are in increasingly lighter shade of gray.' class="raimg" role="img" src="figures/weierqn-mbx.svg" style="width:282pt; height:141pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Plot of the approximate delta functions <span class="process-math">\(q_n\)</span> on <span class="process-math">\([-1,1]\)</span> for <span class="process-math">\(n=5,10,15,20,\ldots,100\)</span> with higher <span class="process-math">\(n\)</span> in fainter gray.<div class="autopermalink" data-description="Figure 11.8"><a aria-label="Copy heading and permalink for Figure 11.8" href="#fig_weierqn" title="Copy heading and permalink for Figure 11.8">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para logical" id="sec_stoneweier-3-4-6">
+<div class="para">The functions <span class="process-math">\(q_n\)</span> are peaks around 0 (ignoring what happens outside of <span class="process-math">\([-1,1]\)</span>) that get narrower and taller as <span class="process-math">\(n\)</span> increases, while the area underneath is always 1. A classic approximation idea is to do a <em class="emphasis">convolution</em> integral with peaks like this: For <span class="process-math">\(x \in [0,1]\text{,}\)</span> let</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_approxdeltaconv.html" id="sec_stoneweier-3-4-6-6">
+\begin{equation}
+p_n(x) \coloneqq \int_{0}^1 g(t)q_n(x-t) \,dt \quad \left( = \int_{-\infty}^\infty
+g(t)q_n(x-t) \,dt \right) .
+\end{equation}
+</div>
+<div class="para">The idea of this convolution is that we do a “weighted average” of the function <span class="process-math">\(g\)</span> around the point <span class="process-math">\(x\)</span> using <span class="process-math">\(q_n\)</span> as the weight. See <a class="internal" href="sec_stoneweier.html#fig_approxdeltaconv" title="Figure 11.9">Figure 11.9</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-3-4-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="fig_approxdeltaconv"><img alt="Graphs of three functions on the interval minus 1 to 1. There is a point on the x-axis marked simply x. Symmetric about the point x, there is a light gray positive function whose graph is a peak centered at x and decaying rapidly as we get further away from x. In gray, there is a graph of a function that is simply a jagged line. In black is the product of the two graphs which is mostly almost zero where the light gray line is zero, and near the peak the shape of the jagged gray line is magnified." class="raimg" role="img" src="figures/approxdeltaconv-mbx.svg" style="width:284pt; height:137pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>For <span class="process-math">\(x=0.3\text{,}\)</span> the plot of <span class="process-math">\(q_{100}(x-t)\)</span> (faint gray peak centered at <span class="process-math">\(x\)</span>), some continuous function <span class="process-math">\(g(t)\)</span> (the jagged line) and the product <span class="process-math">\(g(t)q_{100}(x-t)\)</span> (the bold line).<div class="autopermalink" data-description="Figure 11.9"><a aria-label="Copy heading and permalink for Figure 11.9" href="#fig_approxdeltaconv" title="Copy heading and permalink for Figure 11.9">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para" id="sec_stoneweier-3-4-10">As <span class="process-math">\(q_n\)</span> is a narrow peak, the integral mostly sees the values of <span class="process-math">\(g\)</span> that are close to <span class="process-math">\(x\)</span> and it does the weighted average of them. When the peak gets narrower, we compute this average closer to <span class="process-math">\(x\)</span> and we expect the result to get closer to the value of <span class="process-math">\(g(x)\text{.}\)</span>  Really, we are approximating what is called a delta function<details aria-live="polite" class="ptx-footnote" id="sec_stoneweier-3-4-10-6"><summary class="ptx-footnote__number" title="Footnote 11.7.1"><sup> 1 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_stoneweier-3-4-10-6">The delta function is not actually a function, it is a “thing” that should give “<span class="process-math">\(\int_{-\infty}^\infty g(t) \delta(x-t) \, dt = g(x)\text{.}\)</span>”
+</div></details> (don’t worry if you have not heard of this concept), and functions like <span class="process-math">\(q_n\)</span> are often called <em class="emphasis">approximate delta functions</em>. We could do this with any set of polynomials that look like narrower and narrower peaks near zero.  These just happen to be the simplest ones. We only need this behavior on <span class="process-math">\([-1,1]\)</span> as the convolution sees nothing further than this as <span class="process-math">\(g\)</span> is zero outside <span class="process-math">\([0,1]\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-3-4-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_stoneweier-3-4-11">
+<div class="para">Because <span class="process-math">\(q_n\)</span> is a polynomial, we write</div>
+<div class="displaymath process-math" id="sec_stoneweier-3-4-11-2">
+\begin{equation}
+q_n(x-t) = a_0(t) + a_1(t)\,x + \cdots + a_{2n}(t)\, x^{2n} ,
+\end{equation}
+</div>
+<div class="para">where <span class="process-math">\(a_k(t)\)</span> are polynomials in <span class="process-math">\(t\text{,}\)</span> and hence integrable functions. So</div>
+<div class="displaymath process-math" id="sec_stoneweier-3-4-11-5">
+\begin{equation}
+\begin{split}
+p_n(x) &amp; =
+\int_{0}^1 g(t)q_n(x-t) \,dt
+\\
+&amp;=
+\left(
+\int_0^1
+g(t)
+a_0(t)\,dt
+\right)
++
+\left(
+\int_0^1
+g(t)
+a_1(t)\,dt
+\right)
+\,
+x
++
+\cdots
++
+\left(
+\int_0^1
+g(t)
+a_{2n}(t)\,dt
+\right)
+\,
+x^{2n} .
+\end{split}
+\end{equation}
+</div>
+<div class="para">In other words, <span class="process-math">\(p_n\)</span> is a polynomial<details aria-live="polite" class="ptx-footnote" id="sec_stoneweier-3-4-11-7"><summary class="ptx-footnote__number" title="Footnote 11.7.2"><sup> 2 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_stoneweier-3-4-11-7">Do note that the functions <span class="process-math">\(a_j\)</span> depend on <span class="process-math">\(n\text{,}\)</span> so the coefficients of <span class="process-math">\(p_n\)</span> change as <span class="process-math">\(n\)</span> changes.
+</div></details> in <span class="process-math">\(x\text{.}\)</span> If <span class="process-math">\(g(t)\)</span> is real-valued, then the functions <span class="process-math">\(g(t)a_j(t)\)</span> are real-valued and <span class="process-math">\(p_n\)</span> has real coefficients, proving the “furthermore” part of the theorem.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-3-4-11" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_stoneweier-3-4-12">
+<div class="para">We still need to prove that <span class="process-math">\(\{ p_n \}_{n=1}^\infty\)</span> converges to <span class="process-math">\(g\text{.}\)</span> We start with estimating the size of <span class="process-math">\(c_n\text{.}\)</span> For <span class="process-math">\(x \in [0,1]\text{,}\)</span> we have that <span class="process-math">\(1-x \leq 1-x^2\text{.}\)</span>  We estimate</div>
+<div class="displaymath process-math" id="sec_stoneweier-3-4-12-7">
+\begin{equation}
+\begin{split}
+c_n^{-1}   = \int_{-1}^1 {(1-x^2)}^n \, dx
+&amp; = 2\int_0^1 {(1-x^2)}^n \, dx \\
+&amp; \geq 2\int_0^{1} {(1-x)}^n \, dx
+= \frac{2}{n+1} .
+\end{split}
+\end{equation}
+</div>
+<div class="para">So <span class="process-math">\(c_n \leq \frac{n+1}{2} \leq n\text{.}\)</span> Let us see how small <span class="process-math">\(q_n\)</span> is if we ignore some small interval around the origin, where the peak is. Given any <span class="process-math">\(\delta &gt; 0\text{,}\)</span> <span class="process-math">\(\delta &lt; 1\text{,}\)</span> we have that for all <span class="process-math">\(x\)</span> such that <span class="process-math">\(\delta \leq \sabs{x} \leq 1\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_stoneweier-3-4-12-14">
+\begin{equation}
+q_n(x) \leq c_n {(1-\delta^2)}^n \leq  n{(1-\delta^2)}^n ,
+\end{equation}
+</div>
+<div class="para">because <span class="process-math">\(q_n\)</span> is increasing on <span class="process-math">\([-1,0]\)</span> and decreasing on <span class="process-math">\([0,1]\text{.}\)</span> By the ratio test, <span class="process-math">\(n{(1-\delta^2)}^n\)</span> goes to 0 as <span class="process-math">\(n\)</span> goes to infinity.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-3-4-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_stoneweier-3-4-13">
+<div class="para">The function <span class="process-math">\(q_n\)</span> is even, <span class="process-math">\(q_n(t) = q_n(-t)\text{,}\)</span> and <span class="process-math">\(g\)</span> is zero outside of <span class="process-math">\([0,1]\text{.}\)</span> So for <span class="process-math">\(x \in [0,1]\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_stoneweier-3-4-13-6">
+\begin{equation}
+p_n(x) = 
+\int_{0}^1 g(t)q_n(x-t) \, dt
+=
+\int_{-x}^{1-x} g(x+t)q_n(-t) \, dt
+=
+\int_{-1}^{1} g(x+t)q_n(t) \, dt .
+\end{equation}
+</div>
+<div class="para">Let <span class="process-math">\(\epsilon &gt; 0\)</span> be given. As <span class="process-math">\([-1,2]\)</span> is compact and <span class="process-math">\(g\)</span> is continuous on <span class="process-math">\([-1,2]\text{,}\)</span> we have that <span class="process-math">\(g\)</span> is uniformly continuous. Pick <span class="process-math">\(0 &lt; \delta &lt; 1\)</span> such that if <span class="process-math">\(\sabs{x-y} &lt; \delta\)</span> (and <span class="process-math">\(x,y \in [-1,2]\)</span>), then</div>
+<div class="displaymath process-math" id="sec_stoneweier-3-4-13-15">
+\begin{equation}
+\babs{g(x)-g(y)} &lt; \frac{\epsilon}{2} .
+\end{equation}
+</div>
+<div class="para">Let <span class="process-math">\(M\)</span> be such that <span class="process-math">\(\babs{g(x)} \leq M\)</span> for all <span class="process-math">\(x\text{.}\)</span>  Let <span class="process-math">\(N\)</span> be such that for all <span class="process-math">\(n \geq N\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_stoneweier-3-4-13-21">
+\begin{equation}
+4M n{(1-\delta^2)}^n &lt; \frac{\epsilon}{2} .
+\end{equation}
+</div>
+<div class="para">Note that <span class="process-math">\(\int_{-1}^1 q_n(t) \, dt = 1\)</span> and <span class="process-math">\(q_n(t) \geq 0\)</span> on <span class="process-math">\([-1,1]\text{.}\)</span>  So for <span class="process-math">\(n
+\geq N\)</span> and every <span class="process-math">\(x \in [0,1]\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_stoneweier-3-4-13-27">
+\begin{equation}
+\begin{aligned}
+\babs{p_n(x)-g(x)} &amp; =
+\abs{\int_{-1}^1 g(x+t)q_n(t) \, dt
+-g(x)\int_{-1}^1 q_n(t) \, dt} \\
+&amp; =
+\abs{\int_{-1}^1 \bigl(g(x+t)-g(x)\bigr)q_n(t) \, dt}
+\\
+&amp; \leq
+\int_{-1}^1 \babs{g(x+t)-g(x)} q_n(t) \, dt
+\\
+&amp; =
+\int_{-1}^{-\delta} \babs{g(x+t)-g(x)} q_n(t) \, dt
+\quad +
+\int_{-\delta}^{\delta} \babs{g(x+t)-g(x)} q_n(t) \, dt
+\\
+&amp; \phantom{\leq} +
+\int_{\delta}^1 \babs{g(x+t)-g(x)} q_n(t) \, dt
+\\
+&amp; \leq
+2M
+\int_{-1}^{-\delta} q_n(t) \, dt
+\quad
++
+\quad
+\frac{\epsilon}{2}
+\int_{-\delta}^{\delta} q_n(t) \, dt
+\quad
++
+\quad
+2M
+\int_{\delta}^1 q_n(t) \, dt
+\\
+&amp; \leq
+2M n{(1-\delta^2)}^n(1-\delta)
+\quad
++
+\quad
+\frac{\epsilon}{2}
+\quad
++
+\quad
+2M n{(1-\delta^2)}^n(1-\delta) \\
+&amp; &lt;
+4M n{(1-\delta^2)}^n
++
+\frac{\epsilon}{2}
+&lt; \epsilon . \qedhere
+\end{aligned}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-3-4-13" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 11.7.1.1"><a aria-label="Copy heading and permalink for Proof 11.7.1.1" href="#sec_stoneweier-3-4" title="Copy heading and permalink for Proof 11.7.1.1">🔗</a></div>
+</article>
+<div class="para" id="sec_stoneweier-3-5">A convolution often inherits some property of the functions we are convolving. In our case the convolution <span class="process-math">\(p_n\)</span> inherited the property of being a polynomial from <span class="process-math">\(q_n\text{.}\)</span>  The same idea of the proof is often used to get other properties.  If <span class="process-math">\(q_n\)</span> or <span class="process-math">\(g\)</span> is infinitely differentiable, so is <span class="process-math">\(p_n\text{.}\)</span> If <span class="process-math">\(q_n\)</span> or <span class="process-math">\(g\)</span> is a solution to a linear differential equation, so is <span class="process-math">\(p_n\text{.}\)</span> Etc.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-3-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_stoneweier-3-6">Let us note an immediate application of the Weierstrass theorem.  We have already seen that countable dense subsets can be very useful.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-3-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="corollary theorem-like" id="sec_stoneweier-3-7"><h4 class="heading">
+<span class="type">Corollary</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.7.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_stoneweier-3-7-1-1">The metric spaces <span class="process-math">\(C\bigl([a,b],\R\bigr)\)</span> and <span class="process-math">\(C\bigl([a,b],\C\bigr)\)</span> each contain a countable dense subset.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-3-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Corollary 11.7.2"><a aria-label="Copy heading and permalink for Corollary 11.7.2" href="#sec_stoneweier-3-7" title="Copy heading and permalink for Corollary 11.7.2">🔗</a></div>
+</article>
+<article class="proof" id="sec_stoneweier-3-8"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_stoneweier-3-8-1">Without loss of generality, consider only <span class="process-math">\(C\bigl([a,b],\R\bigr)\)</span> (why?). Real polynomials are dense in <span class="process-math">\(C\bigl([a,b],\R\bigr)\)</span> by Weierstrass. If we show that every real polynomial can be approximated by polynomials with rational coefficients, we are done. Indeed, there are only countably many rational numbers and so there are only countably many polynomials with rational coefficients (a countable union of countable sets is countable).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-3-8-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_stoneweier-3-8-2">
+<div class="para">Further without loss of generality, suppose <span class="process-math">\([a,b]=[0,1]\text{.}\)</span>  Let</div>
+<div class="displaymath process-math" id="sec_stoneweier-3-8-2-2">
+\begin{equation}
+p(x) \coloneqq \sum_{k=0}^n a_k\,  x^k
+\end{equation}
+</div>
+<div class="para">be a polynomial of degree <span class="process-math">\(n\)</span> where <span class="process-math">\(a_k \in \R\text{.}\)</span>  Given <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> pick <span class="process-math">\(b_k \in \Q\)</span> such that <span class="process-math">\(\sabs{a_k-b_k} &lt; \frac{\epsilon}{n+1}\text{.}\)</span>  Then if we let</div>
+<div class="displaymath process-math" id="sec_stoneweier-3-8-2-8">
+\begin{equation}
+q(x) \coloneqq \sum_{k=0}^n b_k \, x^k ,
+\end{equation}
+</div>
+<div class="para">we have</div>
+<div class="displaymath process-math" id="sec_stoneweier-3-8-2-9">
+\begin{equation}
+\babs{p(x)-q(x)}
+=
+\abs{\sum_{k=0}^n (a_k-b_k) x^k}
+\leq
+\sum_{k=0}^n \sabs{a_k-b_k} x^k
+\leq
+\sum_{k=0}^n \sabs{a_k-b_k}
+&lt;
+\sum_{k=0}^n \frac{\epsilon}{n+1} = \epsilon . \qedhere
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-3-8-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 11.7.1.2"><a aria-label="Copy heading and permalink for Proof 11.7.1.2" href="#sec_stoneweier-3-8" title="Copy heading and permalink for Proof 11.7.1.2">🔗</a></div>
+</article>
+<article class="remark remark-like" id="sec_stoneweier-3-9"><h4 class="heading">
+<span class="type">Remark</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.7.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_stoneweier-3-9-1-1">While we will not prove so, the corollary above implies that <span class="process-math">\(C\bigl([a,b],\C\bigr)\)</span> has the same cardinality as <span class="process-math">\(\R\text{,}\)</span> which may be a bit surprising.  The set of all functions <span class="process-math">\([a,b] \to \C\)</span> has cardinality strictly greater than the cardinality of <span class="process-math">\(\R\text{,}\)</span> it has the cardinality of the power set of <span class="process-math">\(\R\text{.}\)</span>  So the set of continuous functions is a very tiny subset of the set of all functions.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-3-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Remark 11.7.3"><a aria-label="Copy heading and permalink for Remark 11.7.3" href="#sec_stoneweier-3-9" title="Copy heading and permalink for Remark 11.7.3">🔗</a></div>
+</article>
+<div class="para logical" id="sec_stoneweier-3-10">
+<div class="para">
+<em class="alert">Warning!</em> The fact that every continuous function <span class="process-math">\(f \colon [-1,1] \to \C\)</span> (or any interval <span class="process-math">\([a,b]\)</span>) can be uniformly approximated by polynomials</div>
+<div class="displaymath process-math" id="sec_stoneweier-3-10-4">
+\begin{equation}
+\sum_{k=0}^n a_k\,  x^k
+\end{equation}
+</div>
+<div class="para">does not mean that every continuous <span class="process-math">\(f\)</span> is analytic, that is, equal to a power series</div>
+<div class="displaymath process-math" id="sec_stoneweier-3-10-6">
+\begin{equation}
+\sum_{k=0}^\infty c_k\,  x^k .
+\end{equation}
+</div>
+<div class="para">An analytic function is infinitely differentiable, however, the function <span class="process-math">\(\sabs{x}\)</span> is continuous and near the origin approximable by polynomials, and so provides a counterexample.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-3-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_stoneweier-3-11">The key distinction is that the polynomials coming from the Weierstrass theorem are not the partial sums of a power series.  For each one, the coefficients <span class="process-math">\(a_k\)</span> above can be completely different—they do not need to come from a single sequence <span class="process-math">\(\{ c_k \}_{k=1}^\infty\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-3-11" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_stoneweier-3-12">Interestingly, to generalize Weierstrass, we will only need to use it to approximate the absolute value function by polynomials without a constant term.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-3-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="corollary theorem-like" id="sec_stoneweier-3-13"><h4 class="heading">
+<span class="type">Corollary</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.7.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_stoneweier-3-13-1-1">Let <span class="process-math">\([-a,a]\)</span> be an interval.  Then there is a sequence of real polynomials <span class="process-math">\(\{ p_n \}_{n=1}^\infty\)</span> that converges uniformly to <span class="process-math">\(\sabs{x}\)</span> on <span class="process-math">\([-a,a]\)</span> and such that <span class="process-math">\(p_n(0) = 0\)</span> for all <span class="process-math">\(n\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-3-13-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Corollary 11.7.4"><a aria-label="Copy heading and permalink for Corollary 11.7.4" href="#sec_stoneweier-3-13" title="Copy heading and permalink for Corollary 11.7.4">🔗</a></div>
+</article>
+<article class="proof" id="sec_stoneweier-3-14"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_stoneweier-3-14-1">
+<div class="para">As <span class="process-math">\(f(x) \coloneqq \sabs{x}\)</span> is continuous and real-valued on <span class="process-math">\([-a,a]\text{,}\)</span> the Weierstrass theorem gives a sequence of real polynomials <span class="process-math">\(\{ \widetilde{p}_n \}_{n=1}^\infty\)</span> that converges to <span class="process-math">\(f\)</span> uniformly on <span class="process-math">\([-a,a]\text{.}\)</span> Let</div>
+<div class="displaymath process-math" id="sec_stoneweier-3-14-1-6">
+\begin{equation}
+p_n(x) \coloneqq \widetilde{p}_n(x) - \widetilde{p}_n(0) .
+\end{equation}
+</div>
+<div class="para">Obviously <span class="process-math">\(p_n(0) = 0\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-3-14-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_stoneweier-3-14-2">
+<div class="para">Given <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> let <span class="process-math">\(N\)</span> be such that for <span class="process-math">\(n \geq N\text{,}\)</span> we have <span class="process-math">\(\bigl\lvert\widetilde{p}_n(x)-\sabs{x}\big\rvert &lt;
+\nicefrac{\epsilon}{2}\)</span> for all <span class="process-math">\(x \in [-a,a]\text{.}\)</span> In particular, <span class="process-math">\(\babs{\widetilde{p}_n(0)} &lt; \nicefrac{\epsilon}{2}\text{.}\)</span> Then for <span class="process-math">\(n \geq N\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_stoneweier-3-14-2-8">
+\begin{equation}
+\babs{ p_n(x)-\sabs{x} }
+=
+\babs{ \widetilde{p}_n(x) - \widetilde{p}_n(0) - \sabs{x} }
+\leq
+\babs{ \widetilde{p}_n(x) - \sabs{x} } + \babs{\widetilde{p}_n(0)} &lt; 
+\nicefrac{\epsilon}{2} + \nicefrac{\epsilon}{2} = \epsilon . \qedhere
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-3-14-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 11.7.1.3"><a aria-label="Copy heading and permalink for Proof 11.7.1.3" href="#sec_stoneweier-3-14" title="Copy heading and permalink for Proof 11.7.1.3">🔗</a></div>
+</article>
+<div class="para" id="sec_stoneweier-3-15">Generalizing the corollary, we can make the polynomials from the Weierstrass theorem be equal to our target function at one point, not just for <span class="process-math">\(\sabs{x}\text{,}\)</span> but that’s the one we will need.  It is also possible (see <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_stoneweier.html#exercise_finitelymanyweierequal" title="Exercise 11.7.14">Exercise 11.7.14</a>) to make the polynomials equal at finitely many points by subtracting not a constant but a properly crafted polynomial.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-3-15" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 11.7.1: Weierstrass approximation"><a aria-label="Copy heading and permalink for Subsection 11.7.1: Weierstrass approximation" href="#sec_stoneweier-3" title="Copy heading and permalink for Subsection 11.7.1: Weierstrass approximation">🔗</a></div>
+</section>
+<section class="subsection" id="sec_stoneweier-4">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.7.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Stone–Weierstrass approximation</span>
+</h3>
+<div class="para" id="sec_stoneweier-4-2">We want to abstract away what is not really necessary and prove a general version of the Weierstrass theorem, the Stone–Weierstrass theorem<details aria-live="polite" class="ptx-footnote" id="sec_stoneweier-4-2-1"><summary class="ptx-footnote__number" title="Footnote 11.7.3"><sup> 3 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_stoneweier-4-2-1">Named after the American mathematician <a class="external" href="https://en.wikipedia.org/wiki/Marshall_Harvey_Stone" target="_blank">Marshall Harvey Stone</a> (1903–1989), and the German mathematician <a class="external" href="https://en.wikipedia.org/wiki/Karl_Weierstrass" target="_blank">Karl Theodor Wilhelm Weierstrass</a> (1815–1897).
+</div></details>. Polynomials are dense in the space of continuous functions on a compact interval.  What other kinds of families of functions are also dense?  And if the domain is an arbitrary metric space, then we no longer have polynomials to begin with.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_stoneweier-4-3"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.7.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_stoneweier-4-3-1-1">A set <span class="process-math">\(\sA\)</span> of complex-valued functions <span class="process-math">\(f \colon X \to \C\)</span> is said to be an <em class="emphasis">algebra</em> (sometimes <em class="emphasis">complex algebra</em> or <em class="emphasis">algebra over <span class="process-math">\(\C\)</span></em>) if for all <span class="process-math">\(f,
+g \in \sA\)</span> and <span class="process-math">\(c \in \C\text{,}\)</span> we have<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="sec_stoneweier-4-3-1-2">
+<li id="sec_stoneweier-4-3-1-2-1">
+<div class="para" id="sec_stoneweier-4-3-1-2-1-1">
+<span class="process-math">\(f+g \in \sA\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-3-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#sec_stoneweier-4-3-1-2-1" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="sec_stoneweier-4-3-1-2-2">
+<div class="para" id="sec_stoneweier-4-3-1-2-2-1">
+<span class="process-math">\(fg \in \sA\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-3-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#sec_stoneweier-4-3-1-2-2" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+<li id="sec_stoneweier-4-3-1-2-3">
+<div class="para" id="sec_stoneweier-4-3-1-2-3-1">
+<span class="process-math">\(cg \in \sA\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-3-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iii"><a aria-label="Copy heading and permalink for Item iii" href="#sec_stoneweier-4-3-1-2-3" title="Copy heading and permalink for Item iii">🔗</a></div>
+</li>
+</ol>
+<div class="para" id="sec_stoneweier-4-3-1-3">A <em class="emphasis">real algebra</em> or an <em class="emphasis">algebra over <span class="process-math">\(\R\)</span></em> is a set of real-valued functions that satisfies the three properties above for <span class="process-math">\(c \in \R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-3-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 11.7.5"><a aria-label="Copy heading and permalink for Definition 11.7.5" href="#sec_stoneweier-4-3" title="Copy heading and permalink for Definition 11.7.5">🔗</a></div>
+</article>
+<div class="para" id="sec_stoneweier-4-4">We are interested in the case when <span class="process-math">\(X\)</span> is a compact metric space.  Then <span class="process-math">\(C(X,\C)\)</span> and <span class="process-math">\(C(X,\R)\)</span> are metric spaces. Given a set <span class="process-math">\(\sA \subset C(X,\C)\text{,}\)</span> the set of all uniform limits is the metric space closure <span class="process-math">\(\widebar{\sA}\text{.}\)</span> When we talk about closure of an algebra from now on we mean the closure in <span class="process-math">\(C(X,\C)\)</span> as a metric space.  Same for <span class="process-math">\(C(X,\R)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_stoneweier-4-5">The set <span class="process-math">\(\sP\)</span> of all polynomials is an algebra in <span class="process-math">\(C\bigl([a,b],\C\bigr)\text{,}\)</span> and we have shown that its closure <span class="process-math">\(\widebar{\sP} = C\bigl([a,b],\C\bigr)\text{.}\)</span> That is, it is dense.  That is the sort of result that we wish to prove.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_stoneweier-4-6">We leave the following proposition as an exercise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_closureofalgebra"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.7.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="prop_closureofalgebra-1-1">Suppose <span class="process-math">\(X\)</span> is a compact metric space. If <span class="process-math">\(\sA \subset C(X,\C)\)</span> is an algebra, then the closure <span class="process-math">\(\widebar{\sA}\)</span> is also an algebra. Similarly for a real algebra in <span class="process-math">\(C(X,\R)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_closureofalgebra-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 11.7.6"><a aria-label="Copy heading and permalink for Proposition 11.7.6" href="#prop_closureofalgebra" title="Copy heading and permalink for Proposition 11.7.6">🔗</a></div>
+</article>
+<div class="para" id="sec_stoneweier-4-8">We distill the properties of polynomials that are sufficient for an approximation theorem.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_stoneweier-4-9"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.7.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_stoneweier-4-9-1-1">Let <span class="process-math">\(\sA\)</span> be a set of complex-valued functions defined on a set <span class="process-math">\(X\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="sec_stoneweier-4-9-1-2">
+<li id="sec_stoneweier-4-9-1-2-1">
+<div class="para" id="sec_stoneweier-4-9-1-2-1-1">
+<span class="process-math">\(\sA\)</span> <em class="emphasis">separates points</em> if for every <span class="process-math">\(x,y \in X\)</span> with <span class="process-math">\(x \neq y\text{,}\)</span> there is an <span class="process-math">\(f \in \sA\)</span> such that <span class="process-math">\(f(x) \neq f(y)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-9-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#sec_stoneweier-4-9-1-2-1" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="sec_stoneweier-4-9-1-2-2">
+<div class="para" id="sec_stoneweier-4-9-1-2-2-1">
+<span class="process-math">\(\sA\)</span> <em class="emphasis">vanishes at no point</em> if for every <span class="process-math">\(x \in X\)</span> there is an <span class="process-math">\(f \in \sA\)</span> such that <span class="process-math">\(f(x) \neq 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-9-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#sec_stoneweier-4-9-1-2-2" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Definition 11.7.7"><a aria-label="Copy heading and permalink for Definition 11.7.7" href="#sec_stoneweier-4-9" title="Copy heading and permalink for Definition 11.7.7">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_stoneweier-4-10"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.7.8</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_stoneweier-4-10-1-1">Given any <span class="process-math">\(X \subset \R\)</span> (or <span class="process-math">\(X \subset \C\)</span>), the set <span class="process-math">\(\sP\)</span> of polynomials in one variable separates points and vanishes at no point on <span class="process-math">\(X\text{.}\)</span>  That is, <span class="process-math">\(1 \in \sP\text{,}\)</span> so it vanishes at no point. For <span class="process-math">\(x,y \in X\text{,}\)</span> <span class="process-math">\(x \neq y\text{,}\)</span> take <span class="process-math">\(f(t) \coloneqq t\text{,}\)</span> to get <span class="process-math">\(f(x) = x \neq y = f(y)\text{.}\)</span> So <span class="process-math">\(\sP\)</span> separates points.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 11.7.8"><a aria-label="Copy heading and permalink for Example 11.7.8" href="#sec_stoneweier-4-10" title="Copy heading and permalink for Example 11.7.8">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_stoneweier-4-11"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.7.9</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_stoneweier-4-11-1-1">
+<div class="para">The set of functions of the form</div>
+<div class="displaymath process-math" id="sec_stoneweier-4-11-1-1-1">
+\begin{equation}
+f(t) = a_0 + \sum_{n=1}^k a_n \cos(nt)
+\end{equation}
+</div>
+<div class="para">is an algebra, which follows by the identity <span class="process-math">\(\cos(mt)\cos(nt) = 
+\frac{\cos((n+m) t)}{2}+
+\frac{\cos((n-m) t)}{2}\text{.}\)</span> The algebra vanishes at no point as it contains a constant function. It does not separate points if the domain is an interval <span class="process-math">\([-a,a]\text{,}\)</span> as <span class="process-math">\(f(-t) = f(t)\)</span> for all <span class="process-math">\(t\text{.}\)</span> It does separate points if the domain is <span class="process-math">\([0,\pi]\text{;}\)</span> <span class="process-math">\(\cos(t)\)</span> is one-to-one on <span class="process-math">\([0,\pi]\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 11.7.9"><a aria-label="Copy heading and permalink for Example 11.7.9" href="#sec_stoneweier-4-11" title="Copy heading and permalink for Example 11.7.9">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_stoneweier-4-12"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.7.10</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_stoneweier-4-12-1-1">The set <span class="process-math">\(\sP\)</span> of real polynomials with no constant term is an algebra that vanishes at the origin. Clearly, any function in the closure of <span class="process-math">\(\sP\)</span> also vanishes at the origin, so the closure of <span class="process-math">\(\sP\)</span> cannot be <span class="process-math">\(C\bigl([0,1],\R\bigr)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-12-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_stoneweier-4-12-1-2">Similarly, the set of constant functions is an algebra that does not separate points.  Uniform limits of constants are constants, so we also do not obtain all continuous functions.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-12-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 11.7.10"><a aria-label="Copy heading and permalink for Example 11.7.10" href="#sec_stoneweier-4-12" title="Copy heading and permalink for Example 11.7.10">🔗</a></div>
+</article>
+<div class="para" id="sec_stoneweier-4-13">It is interesting that these two properties, “vanishes at no point” and “separates points,” are sufficient to obtain approximation of any real-valued continuous function. Before we prove this theorem, we note that such an algebra can interpolate a finite number of values exactly.  We will state this result only for two points as that is all that we will require.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-13" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_SWinterpolate"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.7.11</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="prop_SWinterpolate-1-1">
+<div class="para">Suppose <span class="process-math">\(\sA\)</span> is an algebra of complex-valued functions on a set <span class="process-math">\(X\)</span> that separates points and vanishes at no point.  Suppose <span class="process-math">\(x,y\)</span> are distinct points of <span class="process-math">\(X\text{,}\)</span> and <span class="process-math">\(c,d \in \C\text{.}\)</span>  Then there is an <span class="process-math">\(f \in \sA\)</span> such that</div>
+<div class="displaymath process-math" id="prop_SWinterpolate-1-1-7">
+\begin{equation}
+f(x) = c, \qquad f(y) = d .
+\end{equation}
+</div>
+<div class="para">If <span class="process-math">\(\sA\)</span> is a real algebra, the conclusion holds for <span class="process-math">\(c,d \in \R\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_SWinterpolate-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 11.7.11"><a aria-label="Copy heading and permalink for Proposition 11.7.11" href="#prop_SWinterpolate" title="Copy heading and permalink for Proposition 11.7.11">🔗</a></div>
+</article>
+<article class="proof" id="sec_stoneweier-4-15"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_stoneweier-4-15-1">
+<div class="para">There must exist an <span class="process-math">\(g,h,k \in \sA\)</span> such that <span class="process-math">\(g(x) \neq g(y)\text{,}\)</span> <span class="process-math">\(h(x) \neq 0\text{,}\)</span> <span class="process-math">\(k(y) \neq 0\text{.}\)</span> Let</div>
+<div class="displaymath process-math" id="sec_stoneweier-4-15-1-5">
+\begin{equation}
+\begin{split}
+f &amp; \coloneqq 
+c
+\frac{\bigl(g - g(y)\bigr)h}{\bigl(g(x)-g(y)\bigr)h(x) } + 
+d
+\frac{\bigl(g - g(x)\bigr)k}{\bigl(g(y)-g(x)\bigr)k(y)}
+\\
+&amp; =
+c
+\frac{gh - g(y)h}{g(x)h(x)-g(y)h(x) } + 
+d
+\frac{gk - g(x)k}{g(y)k(y)-g(x)k(y)} .
+\end{split}
+\end{equation}
+</div>
+<div class="para">We are not dividing by zero (clear from the first formula). Also by the first formula, <span class="process-math">\(f(x) = c\)</span> and <span class="process-math">\(f(y) = d\text{.}\)</span> By the second formula, <span class="process-math">\(f \in \sA\)</span> (as <span class="process-math">\(\sA\)</span> is an algebra).</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-15-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 11.7.2.1"><a aria-label="Copy heading and permalink for Proof 11.7.2.1" href="#sec_stoneweier-4-15" title="Copy heading and permalink for Proof 11.7.2.1">🔗</a></div>
+</article>
+<article class="theorem theorem-like" id="thm_SWreal"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.7.12</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Stone–Weierstrass, real version.</span>
+</h4>
+<div class="para" id="thm_SWreal-3-1">Let <span class="process-math">\(X\)</span> be a compact metric space and <span class="process-math">\(\sA\)</span> a real algebra of real-valued continuous functions on <span class="process-math">\(X\text{,}\)</span> such that <span class="process-math">\(\sA\)</span> separates points and vanishes at no point.  Then the closure <span class="process-math">\(\widebar{\sA} = C(X,\R)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#thm_SWreal-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 11.7.12: Stone–Weierstrass, real version"><a aria-label="Copy heading and permalink for Theorem 11.7.12: Stone–Weierstrass, real version" href="#thm_SWreal" title="Copy heading and permalink for Theorem 11.7.12: Stone–Weierstrass, real version">🔗</a></div>
+</article>
+<div class="para" id="sec_stoneweier-4-17">The proof is divided into several claims.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-17" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_stoneweier-4-18">
+<em class="alert">Claim 1:</em> <em class="emphasis">If <span class="process-math">\(f \in \widebar{\sA}\text{,}\)</span> then <span class="process-math">\(\sabs{f} \in
+\widebar{\sA}\text{.}\)</span></em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-18" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_stoneweier-4-19"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_stoneweier-4-19-1">
+<div class="para">The function <span class="process-math">\(f\)</span> is bounded (continuous on a compact set), so there is an <span class="process-math">\(M\)</span> such that <span class="process-math">\(\babs{f(x)} \leq M\)</span> for all <span class="process-math">\(x \in X\text{.}\)</span> Let <span class="process-math">\(\epsilon &gt; 0\)</span> be given.  By the corollary to the Weierstrass theorem, there exists a real polynomial <span class="process-math">\(c_1 y + c_2 y^2 + \cdots+ c_n y^n\)</span> (vanishing at <span class="process-math">\(y=0\)</span>) such that</div>
+<div class="displaymath process-math" id="sec_stoneweier-4-19-1-8">
+\begin{equation}
+\abs{\sabs{y} - \sum_{k=1}^n c_k y^k} &lt; \epsilon
+\end{equation}
+</div>
+<div class="para">for all <span class="process-math">\(y \in [-M,M]\text{.}\)</span> Because <span class="process-math">\(\widebar{\sA}\)</span> is an algebra and because there is no constant term in the polynomial,</div>
+<div class="displaymath process-math" id="sec_stoneweier-4-19-1-11">
+\begin{equation}
+\sum_{k=1}^n c_k f^k \in \widebar{\sA} .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(\babs{f(x)} \leq M\text{,}\)</span> we have that for all <span class="process-math">\(x \in X\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_stoneweier-4-19-1-14">
+\begin{equation}
+\abs{\babs{f(x)} - \sum_{k=1}^n c_k {\bigl(f(x)\bigr)}^k}
+&lt; \epsilon .
+\end{equation}
+</div>
+<div class="para">So <span class="process-math">\(\sabs{f}\)</span> is in the closure of <span class="process-math">\(\widebar{\sA}\text{,}\)</span> which is itself closed. In other words, <span class="process-math">\(\sabs{f} \in \widebar{\sA}\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-19-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 11.7.2.2"><a aria-label="Copy heading and permalink for Proof 11.7.2.2" href="#sec_stoneweier-4-19" title="Copy heading and permalink for Proof 11.7.2.2">🔗</a></div>
+</article>
+<div class="para logical" id="sec_stoneweier-4-20">
+<div class="para">
+<em class="alert">Claim 2:</em> <em class="emphasis">If <span class="process-math">\(f \in \widebar{\sA}\)</span> and <span class="process-math">\(g \in \widebar{\sA}\text{,}\)</span> then <span class="process-math">\(\max(f,g) \in \widebar{\sA}\)</span> and <span class="process-math">\(\min(f,g) \in \widebar{\sA}\text{,}\)</span> where</em>
+</div>
+<div class="displaymath process-math" id="sec_stoneweier-4-20-3">
+\begin{equation}
+\bigl(\max(f,g)\bigr) (x) \coloneqq \max \bigl\{ f(x), g(x) \bigr\} , \qquad
+\text{and} \qquad
+\bigl(\min(f,g)\bigr) (x) \coloneqq \min \bigl\{ f(x), g(x) \bigr\} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-20" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_stoneweier-4-21"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_stoneweier-4-21-1">
+<div class="para">Write:</div>
+<div class="displaymath process-math" id="sec_stoneweier-4-21-1-1">
+\begin{equation}
+\max(f,g) = \frac{f+g}{2} + \frac{\sabs{f-g}}{2} ,
+\qquad\text{and}\qquad
+\min(f,g) = \frac{f+g}{2} - \frac{\sabs{f-g}}{2} .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(\widebar{\sA}\)</span> is an algebra we are done.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-21-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 11.7.2.3"><a aria-label="Copy heading and permalink for Proof 11.7.2.3" href="#sec_stoneweier-4-21" title="Copy heading and permalink for Proof 11.7.2.3">🔗</a></div>
+</article>
+<div class="para" id="sec_stoneweier-4-22">By induction, the claim is also true for the minimum or maximum of a finite collection of functions.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-22" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_stoneweier-4-23">
+<div class="para">
+<em class="alert">Claim 3:</em> <em class="emphasis">Given <span class="process-math">\(f \in C(X,\R)\text{,}\)</span> <span class="process-math">\(x \in X\text{,}\)</span> and <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there exists a <span class="process-math">\(g_x \in \widebar{\sA}\)</span> with <span class="process-math">\(g_x(x) = f(x)\)</span> and</em>
+</div>
+<div class="displaymath process-math" id="sec_stoneweier-4-23-3">
+\begin{equation}
+g_x(t) &gt; f(t)-\epsilon \qquad \text{for all } t \in X.
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-23" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_stoneweier-4-24"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_stoneweier-4-24-1">
+<div class="para">Fix <span class="process-math">\(f\text{,}\)</span> <span class="process-math">\(x\text{,}\)</span> and <span class="process-math">\(\epsilon\text{.}\)</span> By <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_stoneweier.html#prop_SWinterpolate" title="Proposition 11.7.11">Proposition 11.7.11</a>, for every <span class="process-math">\(y \in X\text{,}\)</span> find an <span class="process-math">\(h_y \in
+\sA\)</span> such that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_SWinterpolate.html ./knowl/xref/fig_stonegx.html" id="sec_stoneweier-4-24-1-7">
+\begin{equation}
+h_y(x) = f(x), \qquad h_y(y)=f(y) .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(h_y\)</span> and <span class="process-math">\(f\)</span> are continuous, the function <span class="process-math">\(h_y-f\)</span> is continuous, and the set</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_SWinterpolate.html ./knowl/xref/fig_stonegx.html" id="sec_stoneweier-4-24-1-11">
+\begin{equation}
+U_y \coloneqq
+\bigl\{ t \in X : h_y(t) &gt; f(t) -\epsilon \bigr\}
+=
+{(h_y-f)}^{-1} \bigl( (-\epsilon,\infty) \bigr)
+\end{equation}
+</div>
+<div class="para">is open (it is the inverse image of an open set by a continuous function). Furthermore <span class="process-math">\(y \in U_y\text{.}\)</span>  So the sets <span class="process-math">\(U_y\)</span> cover <span class="process-math">\(X\text{.}\)</span> The space <span class="process-math">\(X\)</span> is compact, so there exist finitely many points <span class="process-math">\(y_1,y_2,\ldots,y_n\)</span> in <span class="process-math">\(X\)</span> such that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_SWinterpolate.html ./knowl/xref/fig_stonegx.html" id="sec_stoneweier-4-24-1-18">
+\begin{equation}
+X = \bigcup_{k=1}^n U_{y_k}  .
+\end{equation}
+</div>
+<div class="para">Let</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_SWinterpolate.html ./knowl/xref/fig_stonegx.html" id="sec_stoneweier-4-24-1-19">
+\begin{equation}
+g_x \coloneqq \max(h_{y_1},h_{y_2},\ldots,h_{y_n}) .
+\end{equation}
+</div>
+<div class="para">By Claim 2, <span class="process-math">\(g_x \in \widebar{\sA}\text{.}\)</span>  See <a class="internal" href="sec_stoneweier.html#fig_stonegx" title="Figure 11.10">Figure 11.10</a>. Moreover,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_SWinterpolate.html ./knowl/xref/fig_stonegx.html" id="sec_stoneweier-4-24-1-22">
+\begin{equation}
+g_x(t) &gt; f(t) -\epsilon
+\end{equation}
+</div>
+<div class="para">for all <span class="process-math">\(t \in X\text{,}\)</span> since for every <span class="process-math">\(t\text{,}\)</span> there is a <span class="process-math">\(y_k\)</span> such that <span class="process-math">\(t \in U_{y_k}\text{,}\)</span> and so <span class="process-math">\(h_{y_k}(t) &gt; f(t) -\epsilon\text{.}\)</span> Finally, <span class="process-math">\(h_y(x) = f(x)\)</span> for all <span class="process-math">\(y \in X\text{,}\)</span> so <span class="process-math">\(g_x(x) = f(x)\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-24-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 11.7.2.4"><a aria-label="Copy heading and permalink for Proof 11.7.2.4" href="#sec_stoneweier-4-24" title="Copy heading and permalink for Proof 11.7.2.4">🔗</a></div>
+</article><hr class="rahr"/>
+<figure class="figure figure-like" id="fig_stonegx"><img alt="A graph of several functions in two dimensions. On the horizontal axis three points from left to right are marked, y sub 1, y sub 2, and x. A graph of a function f is given in dark bold line. A graph of f minus epsilon is given underneath in a dotted line. A graph of h sub y sub 1 is given in long dashes and starts above f on the left, crosses the graph of f at y sub 1, then goes below even f minus epsilon for a while in particular around y sub 2, then goes up through the graph of f again at x. A graph of h sub y sub 2 starts below f minus epsilon, then goes up, crosses the graph of f at y sub 2, then crosses it back down at x. Notably at every point either the graph of h sub y sub 1 or h sub y sub 2 is above f minus epsilon, and the higher value of these two is highlighted in a thick gray line and marked g sub x, again in particular the graph of g sub x notably lies above f minus epsilon and agrees with f at x." class="raimg" role="img" src="figures/stonegx-mbxpdft.svg" style="width:211pt; height:103pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Construction of <span class="process-math">\(g_x\)</span> out of two <span class="process-math">\(h_{y_1}\)</span> (longer dashes) and <span class="process-math">\(h_{y_2}\)</span> (shorter dashes).<div class="autopermalink" data-description="Figure 11.10"><a aria-label="Copy heading and permalink for Figure 11.10" href="#fig_stonegx" title="Copy heading and permalink for Figure 11.10">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para" id="sec_stoneweier-4-28">What we have now is for each <span class="process-math">\(x\)</span> a function <span class="process-math">\(g_x \in \widebar{\sA}\)</span> that is within <span class="process-math">\(\epsilon\)</span> of <span class="process-math">\(f\)</span> near <span class="process-math">\(x\)</span> (being continuous), but also <span class="process-math">\(g_x\)</span> is within <span class="process-math">\(\epsilon\)</span> of <span class="process-math">\(f\)</span> from at least one side at all points. If we cover <span class="process-math">\(X\)</span> with neighborhoods where <span class="process-math">\(g_x\)</span> is a good approximation, we can repeat the idea of the argument with a minimum to get a function that is within <span class="process-math">\(\epsilon\)</span> from both sides.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-28" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_stoneweier-4-29">
+<div class="para">
+<em class="alert">Claim 4:</em> <em class="emphasis">If <span class="process-math">\(f \in C(X,\R)\)</span> and <span class="process-math">\(\epsilon &gt; 0\)</span> is given, then there exists an <span class="process-math">\(\varphi \in \widebar{\sA}\)</span> such that</em>
+</div>
+<div class="displaymath process-math" id="sec_stoneweier-4-29-3">
+\begin{equation}
+\babs{f(x) - \varphi(x)} &lt; \epsilon .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-29" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_stoneweier-4-30"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_stoneweier-4-30-1">
+<div class="para">For every <span class="process-math">\(x \in X\text{,}\)</span> find the function <span class="process-math">\(g_x\)</span> as in Claim 3. Let</div>
+<div class="displaymath process-math" id="sec_stoneweier-4-30-1-3">
+\begin{equation}
+V_x \coloneqq \bigl\{ t \in X : g_x(t) &lt; f(t) + \epsilon \bigr\}.
+\end{equation}
+</div>
+<div class="para">The sets <span class="process-math">\(V_x\)</span> are open as <span class="process-math">\(g_x\)</span> and <span class="process-math">\(f\)</span> are continuous. As <span class="process-math">\(g_x(x) = f(x)\text{,}\)</span> we have <span class="process-math">\(x \in V_x\text{.}\)</span>  So the sets <span class="process-math">\(V_x\)</span> cover <span class="process-math">\(X\text{.}\)</span> By compactness of <span class="process-math">\(X\text{,}\)</span> there are finitely many points <span class="process-math">\(x_1,x_2,\ldots,x_n\)</span> such that</div>
+<div class="displaymath process-math" id="sec_stoneweier-4-30-1-13">
+\begin{equation}
+X = \bigcup_{k=1}^n V_{x_k} .
+\end{equation}
+</div>
+<div class="para">Let</div>
+<div class="displaymath process-math" id="sec_stoneweier-4-30-1-14">
+\begin{equation}
+\varphi \coloneqq \min(g_{x_1},g_{x_2},\ldots,g_{x_n}) .
+\end{equation}
+</div>
+<div class="para">By Claim 2, <span class="process-math">\(\varphi \in \widebar{\sA}\text{.}\)</span>  Similarly as before (same argument as in Claim 3), for all <span class="process-math">\(t \in X\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_stoneweier-4-30-1-17">
+\begin{equation}
+\varphi(t) &lt; f(t) + \epsilon .
+\end{equation}
+</div>
+<div class="para">Since all the <span class="process-math">\(g_x\)</span> satisfy <span class="process-math">\(g_x(t) &gt; f(t) - \epsilon\)</span> for all <span class="process-math">\(t \in X\text{,}\)</span> <span class="process-math">\(\varphi(t) &gt; f(t) - \epsilon\)</span> as well. Hence, for all <span class="process-math">\(t\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_stoneweier-4-30-1-23">
+\begin{equation}
+-\epsilon &lt; \varphi(t) - f(t) &lt; \epsilon ,
+\end{equation}
+</div>
+<div class="para">which is the desired conclusion.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-30-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 11.7.2.5"><a aria-label="Copy heading and permalink for Proof 11.7.2.5" href="#sec_stoneweier-4-30" title="Copy heading and permalink for Proof 11.7.2.5">🔗</a></div>
+</article>
+<div class="para" id="sec_stoneweier-4-31">The proof of the theorem follows from Claim 4.  The claim states that an arbitrary continuous function is in the closure of <span class="process-math">\(\widebar{\sA}\text{,}\)</span> which is already closed.  The theorem is proved.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-31" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_stoneweier-4-32"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.7.13</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_stoneweier-4-32-1-1">
+<div class="para">The functions of the form</div>
+<div class="displaymath process-math" id="sec_stoneweier-4-32-1-1-1">
+\begin{equation}
+f(t) = \sum_{k=1}^n c_k \, e^{kt},
+\end{equation}
+</div>
+<div class="para">for <span class="process-math">\(c_k \in \R\text{,}\)</span> are dense in <span class="process-math">\(C\bigl([a,b],\R\bigr)\text{.}\)</span>  Such functions are a real algebra, which follows from <span class="process-math">\(e^{kt} e^{\ell t} = e^{(k+\ell)t}\text{.}\)</span>  They separate points as <span class="process-math">\(e^t\)</span> is one-to-one. As <span class="process-math">\(e^t &gt; 0\)</span> for all <span class="process-math">\(t\text{,}\)</span> the algebra does not vanish at any point.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-32-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 11.7.13"><a aria-label="Copy heading and permalink for Example 11.7.13" href="#sec_stoneweier-4-32" title="Copy heading and permalink for Example 11.7.13">🔗</a></div>
+</article>
+<div class="para" id="sec_stoneweier-4-33">In general, given a set of functions that separates points and does not vanish at any point, we let these functions <em class="emphasis">generate</em> an algebra by considering all the linear combinations of arbitrary multiples of such functions.  That is, we consider all real polynomials without constant term of such functions.  In the example above, the algebra is generated by <span class="process-math">\(e^t\text{.}\)</span>  We consider polynomials in <span class="process-math">\(e^t\)</span> without constant term.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-33" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_stoneweier-4-34"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.7.14</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_stoneweier-4-34-1-1">
+<div class="para">We mentioned that the set of all functions of the form</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_SWreal.html ./knowl/xref/sec_fourier.html" id="sec_stoneweier-4-34-1-1-1">
+\begin{equation}
+a_0 +
+\sum_{n=1}^N a_n \cos(nt)
+\end{equation}
+</div>
+<div class="para">is an algebra. When considered on <span class="process-math">\([0,\pi]\text{,}\)</span> it separates points and vanishes nowhere so <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_stoneweier.html#thm_SWreal" title="Theorem 11.7.12: Stone–Weierstrass, real version">Stone–Weierstrass</a> applies. As for polynomials, you <em class="emphasis">do not</em> want to conclude that every continuous function on <span class="process-math">\([0,\pi]\)</span> has a uniformly convergent Fourier cosine series, that is, that every continuous function can be written as</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_SWreal.html ./knowl/xref/sec_fourier.html" id="sec_stoneweier-4-34-1-1-6">
+\begin{equation}
+a_0 +
+\sum_{n=1}^\infty a_n \cos(nt) .
+\end{equation}
+</div>
+<div class="para">That is <em class="emphasis">not true</em>! There exist continuous functions whose Fourier series does not converge even pointwise let alone uniformly.  See <a class="internal" href="sec_fourier.html" title="Section 11.8: Fourier series">Section 11.8</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-34-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 11.7.14"><a aria-label="Copy heading and permalink for Example 11.7.14" href="#sec_stoneweier-4-34" title="Copy heading and permalink for Example 11.7.14">🔗</a></div>
+</article>
+<div class="para" id="sec_stoneweier-4-35">To obtain Stone–Weierstrass for complex algebras, we must make an extra assumption.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-35" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_stoneweier-4-36"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.7.15</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_stoneweier-4-36-1-1">An algebra <span class="process-math">\(\sA\)</span> is <em class="emphasis">self-adjoint</em> if for all <span class="process-math">\(f \in \sA\text{,}\)</span> the function <span class="process-math">\(\bar{f}\)</span> defined by <span class="process-math">\(\bar{f}(x) \coloneqq \overline{f(x)}\)</span> is in <span class="process-math">\(\sA\text{,}\)</span> where by the bar we mean the complex conjugate.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-36-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 11.7.15"><a aria-label="Copy heading and permalink for Definition 11.7.15" href="#sec_stoneweier-4-36" title="Copy heading and permalink for Definition 11.7.15">🔗</a></div>
+</article>
+<article class="theorem theorem-like" id="thm_SWcomplex"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.7.16</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Stone–Weierstrass, complex version.</span>
+</h4>
+<div class="para" id="thm_SWcomplex-3-1">Let <span class="process-math">\(X\)</span> be a compact metric space and <span class="process-math">\(\sA\)</span> an algebra of complex-valued continuous functions on <span class="process-math">\(X\text{,}\)</span> such that <span class="process-math">\(\sA\)</span> separates points, vanishes at no point, and is self-adjoint.  Then the closure <span class="process-math">\(\widebar{\sA} = C(X,\C)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#thm_SWcomplex-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 11.7.16: Stone–Weierstrass, complex version"><a aria-label="Copy heading and permalink for Theorem 11.7.16: Stone–Weierstrass, complex version" href="#thm_SWcomplex" title="Copy heading and permalink for Theorem 11.7.16: Stone–Weierstrass, complex version">🔗</a></div>
+</article>
+<article class="proof" id="sec_stoneweier-4-38"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_stoneweier-4-38-1">
+<div class="para">Suppose <span class="process-math">\(\sA_\R \subset \sA\)</span> is the set of the real-valued elements of <span class="process-math">\(\sA\text{.}\)</span> For <span class="process-math">\(f \in \sA\text{,}\)</span> write <span class="process-math">\(f = u+iv\)</span> where <span class="process-math">\(u\)</span> and <span class="process-math">\(v\)</span> are real-valued. Then</div>
+<div class="displaymath process-math" id="sec_stoneweier-4-38-1-7">
+\begin{equation}
+u = \frac{f+\bar{f}}{2}, \qquad
+v = \frac{f-\bar{f}}{2i} .
+\end{equation}
+</div>
+<div class="para">So <span class="process-math">\(u, v \in \sA\)</span> as <span class="process-math">\(\sA\)</span> is a self-adjoint algebra, and since they are real-valued <span class="process-math">\(u, v \in \sA_\R\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-38-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_stoneweier-4-38-2">
+<div class="para">If <span class="process-math">\(x \neq y\text{,}\)</span> then find an <span class="process-math">\(f \in \sA\)</span> such that <span class="process-math">\(f(x) \neq f(y)\text{.}\)</span>  If <span class="process-math">\(f
+= u+iv\text{,}\)</span> then it is obvious that either <span class="process-math">\(u(x) \neq u(y)\)</span> or <span class="process-math">\(v(x) \neq v(y)\text{.}\)</span>  So <span class="process-math">\(\sA_\R\)</span> separates points. Similarly, for every <span class="process-math">\(x\)</span> find <span class="process-math">\(f \in \sA\)</span> such that <span class="process-math">\(f(x) \neq 0\text{.}\)</span>  If <span class="process-math">\(f
+= u+iv\text{,}\)</span> then either <span class="process-math">\(u(x) \neq 0\)</span> or <span class="process-math">\(v(x) \neq 0\text{.}\)</span> So <span class="process-math">\(\sA_\R\)</span> vanishes at no point. The set <span class="process-math">\(\sA_\R\)</span> is a real algebra, and satisfies the hypotheses of the <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_stoneweier.html#thm_SWreal" title="Theorem 11.7.12: Stone–Weierstrass, real version">real Stone–Weierstrass theorem</a>. Given any <span class="process-math">\(f = u+iv \in C(X,\C)\text{,}\)</span> we find <span class="process-math">\(g,h \in \sA_\R\)</span> such that <span class="process-math">\(\babs{u(t)-g(t)} &lt; \nicefrac{\epsilon}{2}\)</span> and <span class="process-math">\(\babs{v(t)-h(t)} &lt; \nicefrac{\epsilon}{2}\)</span> for all <span class="process-math">\(t \in X\text{.}\)</span> Next, <span class="process-math">\(g+i h \in \sA\text{,}\)</span> and</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_SWreal.html" id="sec_stoneweier-4-38-2-23">
+\begin{multline*}
+\abs{f(t) - \bigl(g(t)+ih(t)\bigr)} = 
+\abs{u(t)+iv(t) - \bigl(g(t)+ih(t)\bigr)} \\
+\leq
+\babs{u(t)-g(t)}+\babs{v(t)-h(t)} &lt; \nicefrac{\epsilon}{2} +
+\nicefrac{\epsilon}{2} = \epsilon
+\end{multline*}
+</div>
+<div class="para">for all <span class="process-math">\(t \in X\text{.}\)</span> So <span class="process-math">\(\widebar{\sA} = C(X,\C)\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-38-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 11.7.2.6"><a aria-label="Copy heading and permalink for Proof 11.7.2.6" href="#sec_stoneweier-4-38" title="Copy heading and permalink for Proof 11.7.2.6">🔗</a></div>
+</article>
+<div class="para" id="sec_stoneweier-4-39">The self-adjoint requirement is necessary, although it is not so obvious to see it.  For an example, see <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_stoneweier.html#exercise_selfadjointSW" title="Exercise 11.7.9">Exercise 11.7.9</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-39" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_stoneweier-4-40">We give an interesting application. When working with functions of two variables, it may be useful to work with functions of the form <span class="process-math">\(f(x)g(y)\)</span> rather than <span class="process-math">\(F(x,y)\text{.}\)</span>  For example, they are easier to integrate.  We have the following.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-40" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_stoneweier-4-41"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.7.17</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_stoneweier-4-41-1-1">
+<div class="para">Any continuous <span class="process-math">\(F \colon [0,1] \times [0,1] \to \C\)</span> can be approximated uniformly by functions of the form</div>
+<div class="displaymath process-math" id="sec_stoneweier-4-41-1-1-2">
+\begin{equation}
+\sum_{j=1}^n f_j(x) g_j(y) ,
+\end{equation}
+</div>
+<div class="para">where <span class="process-math">\(f_j \colon [0,1] \to \C\)</span> and <span class="process-math">\(g_j \colon [0,1] \to \C\)</span> are continuous.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-41-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_stoneweier-4-41-1-2">Proof: It is not hard to see that the functions of the above form are a complex algebra.  It is equally easy to show that they vanish nowhere, separate points, and the algebra is self-adjoint.  As <span class="process-math">\([0,1] \times [0,1]\)</span> is compact, <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_stoneweier.html#thm_SWcomplex" title="Theorem 11.7.16: Stone–Weierstrass, complex version">Stone–Weierstrass</a> obtains the result.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-4-41-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 11.7.17"><a aria-label="Copy heading and permalink for Example 11.7.17" href="#sec_stoneweier-4-41" title="Copy heading and permalink for Example 11.7.17">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 11.7.2: Stone–Weierstrass approximation"><a aria-label="Copy heading and permalink for Subsection 11.7.2: Stone–Weierstrass approximation" href="#sec_stoneweier-4" title="Copy heading and permalink for Subsection 11.7.2: Stone–Weierstrass approximation">🔗</a></div>
+</section>
+<section class="exercises" id="sec_stoneweier-5">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.7.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_stoneweier-5-1"><h4 class="heading"><span class="codenumber">11.7.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_stoneweier-5-1-1-1">Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_stoneweier.html#prop_closureofalgebra" title="Proposition 11.7.6">Proposition 11.7.6</a>. Hint: If <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> is a sequence in <span class="process-math">\(C(X,\R)\)</span> converging to <span class="process-math">\(f\text{,}\)</span> then as <span class="process-math">\(f\)</span> is bounded, show that <span class="process-math">\(f_n\)</span> is uniformly bounded, that is, there exists a single bound for all <span class="process-math">\(f_n\)</span> (and <span class="process-math">\(f\)</span>).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-5-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.7.1"><a aria-label="Copy heading and permalink for Exercise 11.7.1" href="#sec_stoneweier-5-1" title="Copy heading and permalink for Exercise 11.7.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_stoneweier-5-2"><h4 class="heading"><span class="codenumber">11.7.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_stoneweier-5-2-1-1">Suppose <span class="process-math">\(X \coloneqq \R\)</span> (not compact in particular). Show that <span class="process-math">\(f(t) \coloneqq e^t\)</span> is not possible to uniformly approximate by polynomials on <span class="process-math">\(X\text{.}\)</span>  Hint: Consider <span class="process-math">\(\babs{\frac{e^t}{t^n}}\)</span> as <span class="process-math">\(t \to \infty\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-5-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.7.2"><a aria-label="Copy heading and permalink for Exercise 11.7.2" href="#sec_stoneweier-5-2" title="Copy heading and permalink for Exercise 11.7.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_stoneweier-5-3"><h4 class="heading"><span class="codenumber">11.7.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_stoneweier-5-3-1-1">Suppose <span class="process-math">\(f \colon [0,1] \to \C\)</span> is a uniform limit of a sequence of polynomials of degree at most <span class="process-math">\(d\text{.}\)</span>  Show that the limit is a polynomial of degree at most <span class="process-math">\(d\text{.}\)</span> Conclude that to approximate a function which is not a polynomial, we need the degree of the approximations to go to infinity.<br/> Hint: First prove that if a sequence of polynomials of degree <span class="process-math">\(d\)</span> converges uniformly to the zero function, then the coefficients converge to zero. One way to do this is linear algebra: Consider a polynomial <span class="process-math">\(p\)</span> evaluated at <span class="process-math">\(d+1\)</span> points to be a linear operator taking the coefficients of <span class="process-math">\(p\)</span> to the values of <span class="process-math">\(p\)</span> (an operator in <span class="process-math">\(L(\R^{d+1})\)</span>).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-5-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.7.3"><a aria-label="Copy heading and permalink for Exercise 11.7.3" href="#sec_stoneweier-5-3" title="Copy heading and permalink for Exercise 11.7.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_stoneweier-5-4"><h4 class="heading"><span class="codenumber">11.7.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_stoneweier-5-4-1-1">Suppose <span class="process-math">\(f \colon [0,1] \to \R\)</span> is continuous and <span class="process-math">\(\int_0^1 f(x) x^n \, dx = 0\)</span> for all <span class="process-math">\(n = 0,1,2,\ldots\text{.}\)</span> Show that <span class="process-math">\(f(x) = 0\)</span> for all <span class="process-math">\(x \in [0,1]\text{.}\)</span> Hint: Approximate by polynomials to show that <span class="process-math">\(\int_0^1 {\bigl( f(x)
+\bigr)}^2 \, dx = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-5-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.7.4"><a aria-label="Copy heading and permalink for Exercise 11.7.4" href="#sec_stoneweier-5-4" title="Copy heading and permalink for Exercise 11.7.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_stoneweier-5-5"><h4 class="heading"><span class="codenumber">11.7.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_stoneweier-5-5-1-1">Suppose <span class="process-math">\(I \colon C\bigl([0,1],\R\bigr) \to \R\)</span> is a linear continuous function such that <span class="process-math">\(I(x^n) = \frac{1}{n+1}\)</span> for all <span class="process-math">\(n=0,1,2,3,\ldots\text{.}\)</span> Prove that <span class="process-math">\(I(f) = \int_0^1 f\)</span> for all <span class="process-math">\(f \in C\bigl([0,1],\R\bigr)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-5-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.7.5"><a aria-label="Copy heading and permalink for Exercise 11.7.5" href="#sec_stoneweier-5-5" title="Copy heading and permalink for Exercise 11.7.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_stoneweier-5-6"><h4 class="heading"><span class="codenumber">11.7.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_stoneweier-5-6-1-1">Let <span class="process-math">\(\sA\)</span> be the collection of real polynomials in <span class="process-math">\(x^2\text{,}\)</span> that is, polynomials of the form <span class="process-math">\(c_0 + c_1 x^2 + c_2 x^4 + \cdots + c_d x^{2d}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-5-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_stoneweier-5-6-1-2">
+<li id="sec_stoneweier-5-6-1-2-1">
+<div class="para" id="sec_stoneweier-5-6-1-2-1-1">Show that every <span class="process-math">\(f \in C\bigl([0,1],\R\bigr)\)</span> is a uniform limit of polynomials from <span class="process-math">\(\sA\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-5-6-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 11.7.6.a"><a aria-label="Copy heading and permalink for Item 11.7.6.a" href="#sec_stoneweier-5-6-1-2-1" title="Copy heading and permalink for Item 11.7.6.a">🔗</a></div>
+</li>
+<li id="sec_stoneweier-5-6-1-2-2">
+<div class="para" id="sec_stoneweier-5-6-1-2-2-1">Find an <span class="process-math">\(f \in  C\bigl([-1,1],\R\bigr)\)</span> that is not a uniform limit of polynomials from <span class="process-math">\(\sA\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-5-6-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 11.7.6.b"><a aria-label="Copy heading and permalink for Item 11.7.6.b" href="#sec_stoneweier-5-6-1-2-2" title="Copy heading and permalink for Item 11.7.6.b">🔗</a></div>
+</li>
+<li id="sec_stoneweier-5-6-1-2-3">
+<div class="para" id="sec_stoneweier-5-6-1-2-3-1">Which hypothesis of the real Stone–Weierstrass is not satisfied for the domain <span class="process-math">\([-1,1]\text{?}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-5-6-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 11.7.6.c"><a aria-label="Copy heading and permalink for Item 11.7.6.c" href="#sec_stoneweier-5-6-1-2-3" title="Copy heading and permalink for Item 11.7.6.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 11.7.6"><a aria-label="Copy heading and permalink for Exercise 11.7.6" href="#sec_stoneweier-5-6" title="Copy heading and permalink for Exercise 11.7.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_stoneweier-5-7"><h4 class="heading"><span class="codenumber">11.7.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_stoneweier-5-7-1-1">Let <span class="process-math">\(\sabs{z}=1\)</span> define the unit circle <span class="process-math">\(S^1 \subset \C\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-5-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_stoneweier-5-7-1-2">
+<li id="sec_stoneweier-5-7-1-2-1">
+<div class="para logical" id="sec_stoneweier-5-7-1-2-1-1">
+<div class="para">Show that functions of the form</div>
+<div class="displaymath process-math" id="sec_stoneweier-5-7-1-2-1-1-1">
+\begin{equation}
+\sum_{k=-n}^n c_k\, z^k
+\end{equation}
+</div>
+<div class="para">are dense in <span class="process-math">\(C(S^1,\C)\text{.}\)</span>  Notice the negative powers.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-5-7-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 11.7.7.a"><a aria-label="Copy heading and permalink for Item 11.7.7.a" href="#sec_stoneweier-5-7-1-2-1" title="Copy heading and permalink for Item 11.7.7.a">🔗</a></div>
+</li>
+<li id="sec_stoneweier-5-7-1-2-2">
+<div class="para logical" id="sec_stoneweier-5-7-1-2-2-1">
+<div class="para">Show that functions of the form</div>
+<div class="displaymath process-math" id="sec_stoneweier-5-7-1-2-2-1-1">
+\begin{equation}
+c_0
++
+\sum_{k=1}^n c_k \, z^k
++
+\sum_{k=1}^n c_{-k}\, \bar{z}^k
+\end{equation}
+</div>
+<div class="para">are dense in <span class="process-math">\(C(S^1,\C)\text{.}\)</span> These functions are called <em class="emphasis">harmonic polynomials</em>, and this approximation leads to, for example, the solution of the steady state heat problem.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-5-7-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 11.7.7.b"><a aria-label="Copy heading and permalink for Item 11.7.7.b" href="#sec_stoneweier-5-7-1-2-2" title="Copy heading and permalink for Item 11.7.7.b">🔗</a></div>
+</li>
+</ol>
+<div class="para" id="sec_stoneweier-5-7-1-3">Hint: A good way to write the equation for <span class="process-math">\(S^1\)</span> is <span class="process-math">\(z \bar{z} = 1\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-5-7-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.7.7"><a aria-label="Copy heading and permalink for Exercise 11.7.7" href="#sec_stoneweier-5-7" title="Copy heading and permalink for Exercise 11.7.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_trigpolydense"><h4 class="heading"><span class="codenumber">11.7.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="exercise_trigpolydense-1-1">
+<div class="para">Show that any continuous function <span class="process-math">\(f \colon [-\pi,\pi] \to \C\)</span> with <span class="process-math">\(f(-\pi)=f(\pi)\)</span> can be approximated uniformly by functions of the form</div>
+<div class="displaymath process-math" id="exercise_trigpolydense-1-1-3">
+\begin{equation}
+\sum_{k=-n}^n c_k \, e^{ik x}
+\end{equation}
+</div>
+<div class="para">for complex numbers <span class="process-math">\(c_k\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_trigpolydense-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.7.8"><a aria-label="Copy heading and permalink for Exercise 11.7.8" href="#exercise_trigpolydense" title="Copy heading and permalink for Exercise 11.7.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_selfadjointSW"><h4 class="heading"><span class="codenumber">11.7.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="exercise_selfadjointSW-1-1">
+<div class="para">Let <span class="process-math">\(S^1 \subset \C\)</span> be the unit circle, that is, the set where <span class="process-math">\(\sabs{z} = 1\text{.}\)</span>  Orient this set counterclockwise. Let <span class="process-math">\(\gamma(t) \coloneqq e^{it}\text{.}\)</span> For the one-form <span class="process-math">\(f(z)\,dz\)</span> we write<details aria-live="polite" class="ptx-footnote" id="exercise_selfadjointSW-1-1-5"><summary class="ptx-footnote__number" title="Footnote 11.7.4"><sup> 4 </sup></summary>
+<div class="ptx-footnote__contents" id="exercise_selfadjointSW-1-1-5">Alternatively, one could define <span class="process-math">\(dz \coloneqq dx + i \, dy\)</span> and extend the path integral from <a class="internal" href="path_chapter.html" title="Chapter 9: One-dimensional Integrals in Several Variables">Chapter 9</a> to complex-valued one-forms.
+</div></details>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/path_chapter.html" id="exercise_selfadjointSW-1-1-6">
+\begin{equation}
+\int_{S^1} f(z) \,dz \coloneqq \int_0^{2\pi} f(e^{it}) \, i e^{it} \, dt . 
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_selfadjointSW-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="exercise_selfadjointSW-1-2">
+<li id="exercise_selfadjointSW-1-2-1">
+<div class="para" id="exercise_selfadjointSW-1-2-1-1">Prove that for all nonnegative integers <span class="process-math">\(k = 0,1,2,3,\ldots\text{,}\)</span> we have <span class="process-math">\(\int_{S^1} z^k \, dz = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_selfadjointSW-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 11.7.9.a"><a aria-label="Copy heading and permalink for Item 11.7.9.a" href="#exercise_selfadjointSW-1-2-1" title="Copy heading and permalink for Item 11.7.9.a">🔗</a></div>
+</li>
+<li id="exercise_selfadjointSW-1-2-2">
+<div class="para" id="exercise_selfadjointSW-1-2-2-1">Prove that if <span class="process-math">\(P(z) = \sum_{k=0}^n c_k z^k\)</span> is a polynomial in <span class="process-math">\(z\text{,}\)</span> then <span class="process-math">\(\int_{S^1} P(z) \, dz = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_selfadjointSW-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 11.7.9.b"><a aria-label="Copy heading and permalink for Item 11.7.9.b" href="#exercise_selfadjointSW-1-2-2" title="Copy heading and permalink for Item 11.7.9.b">🔗</a></div>
+</li>
+<li id="exercise_selfadjointSW-1-2-3">
+<div class="para" id="exercise_selfadjointSW-1-2-3-1">Prove <span class="process-math">\(\int_{S^1} \bar{z} \, dz \neq 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_selfadjointSW-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 11.7.9.c"><a aria-label="Copy heading and permalink for Item 11.7.9.c" href="#exercise_selfadjointSW-1-2-3" title="Copy heading and permalink for Item 11.7.9.c">🔗</a></div>
+</li>
+<li id="exercise_selfadjointSW-1-2-4">
+<div class="para" id="exercise_selfadjointSW-1-2-4-1">Conclude that polynomials in <span class="process-math">\(z\)</span> (this algebra of functions is not self-adjoint) are not dense in <span class="process-math">\(C(S^1,\C)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_selfadjointSW-1-2-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 11.7.9.d"><a aria-label="Copy heading and permalink for Item 11.7.9.d" href="#exercise_selfadjointSW-1-2-4" title="Copy heading and permalink for Item 11.7.9.d">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 11.7.9"><a aria-label="Copy heading and permalink for Exercise 11.7.9" href="#exercise_selfadjointSW" title="Copy heading and permalink for Exercise 11.7.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_stoneweier-5-10"><h4 class="heading"><span class="codenumber">11.7.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_stoneweier-5-10-1-1">Let <span class="process-math">\((X,d)\)</span> be a compact metric space and suppose <span class="process-math">\(\sA \subset C(X,\R)\)</span> is a real algebra that separates points, but vanishes at exactly one point <span class="process-math">\(x_0 \in X\text{.}\)</span> That is, <span class="process-math">\(f(x_0) = 0\)</span> for all <span class="process-math">\(f \in \sA\text{,}\)</span> but for every <span class="process-math">\(y \in X \setminus \{ x_0 \}\)</span> there is a <span class="process-math">\(\varphi \in \sA\)</span> such that <span class="process-math">\(\varphi(y) \neq 0\text{.}\)</span>  Prove that every function <span class="process-math">\(g \in C(X,\R)\)</span> such that <span class="process-math">\(g(x_0) = 0\)</span> is a uniform limit of functions from <span class="process-math">\(\sA\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-5-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.7.10"><a aria-label="Copy heading and permalink for Exercise 11.7.10" href="#sec_stoneweier-5-10" title="Copy heading and permalink for Exercise 11.7.10">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_stoneweier-5-11"><h4 class="heading"><span class="codenumber">11.7.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_stoneweier-5-11-1-1">Let <span class="process-math">\((X,d)\)</span> be a compact metric space with at least two points and suppose <span class="process-math">\(\sA \subset C(X,\R)\)</span> is a real algebra. Suppose that for each <span class="process-math">\(y \in X\)</span> the closure <span class="process-math">\(\widebar{\sA}\)</span> contains the function <span class="process-math">\(\varphi_y(x) \coloneqq d(y,x)\text{.}\)</span> Show that <span class="process-math">\(\widebar{\sA} = C(X,\R)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-5-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.7.11"><a aria-label="Copy heading and permalink for Exercise 11.7.11" href="#sec_stoneweier-5-11" title="Copy heading and permalink for Exercise 11.7.11">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_stoneweier-5-12"><h4 class="heading"><span class="codenumber">11.7.12<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_stoneweier-5-12-1-1"><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-5-12-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div></div>
+<ol class="lower-alpha ol-marker-3" id="sec_stoneweier-5-12-1-2">
+<li id="sec_stoneweier-5-12-1-2-1">
+<div class="para" id="sec_stoneweier-5-12-1-2-1-1">Suppose <span class="process-math">\(f \colon [a,b] \to \C\)</span> is continuously differentiable.  Show that there exists a sequence of polynomials <span class="process-math">\(\{ p_n \}_{n=1}^\infty\)</span> that converges in the <span class="process-math">\(C^1\)</span> norm to <span class="process-math">\(f\text{,}\)</span> that is, <span class="process-math">\(\snorm{f - p_n}_{[a,b]} + \snorm{f'-p_n'}_{[a,b]} \to 0\)</span> as <span class="process-math">\(n \to \infty\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-5-12-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 11.7.12.a"><a aria-label="Copy heading and permalink for Item 11.7.12.a" href="#sec_stoneweier-5-12-1-2-1" title="Copy heading and permalink for Item 11.7.12.a">🔗</a></div>
+</li>
+<li id="sec_stoneweier-5-12-1-2-2">
+<div class="para logical" id="sec_stoneweier-5-12-1-2-2-1">
+<div class="para">Suppose <span class="process-math">\(f \colon [a,b] \to \C\)</span> is <span class="process-math">\(k\)</span> times continuously differentiable.  Show that there exists a sequence of polynomials <span class="process-math">\(\{ p_n \}_{n=1}^\infty\)</span> that converges in the <span class="process-math">\(C^k\)</span> norm to <span class="process-math">\(f\text{,}\)</span> that is,</div>
+<div class="displaymath process-math" id="sec_stoneweier-5-12-1-2-2-1-6">
+\begin{equation}
+\sum_{j=0}^k \norm{f^{(j)} - p_n^{(j)}}_{[a,b]} \to 0 \qquad \text{as} \qquad
+n \to \infty.
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-5-12-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 11.7.12.b"><a aria-label="Copy heading and permalink for Item 11.7.12.b" href="#sec_stoneweier-5-12-1-2-2" title="Copy heading and permalink for Item 11.7.12.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 11.7.12"><a aria-label="Copy heading and permalink for Exercise 11.7.12" href="#sec_stoneweier-5-12" title="Copy heading and permalink for Exercise 11.7.12">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_stoneweier-5-13"><h4 class="heading"><span class="codenumber">11.7.13<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_stoneweier-5-13-1-1"><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-5-13-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div></div>
+<ol class="lower-alpha ol-marker-3" id="sec_stoneweier-5-13-1-2">
+<li id="sec_stoneweier-5-13-1-2-1">
+<div class="para" id="sec_stoneweier-5-13-1-2-1-1">Show that an even function <span class="process-math">\(f \colon [-1,1] \to \R\)</span> is a uniform limit of polynomials with even powers only, that is, polynomials of the form <span class="process-math">\(a_0 + a_1 x^2 + a_2 x^4 + \cdots + a_k x^{2k}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-5-13-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 11.7.13.a"><a aria-label="Copy heading and permalink for Item 11.7.13.a" href="#sec_stoneweier-5-13-1-2-1" title="Copy heading and permalink for Item 11.7.13.a">🔗</a></div>
+</li>
+<li id="sec_stoneweier-5-13-1-2-2">
+<div class="para" id="sec_stoneweier-5-13-1-2-2-1">Show that an odd function <span class="process-math">\(f \colon [-1,1] \to \R\)</span> is a uniform limit of polynomials with odd powers only, that is, polynomials of the form <span class="process-math">\(b_1 x + b_2 x^3 + b_3 x^5 + \cdots + b_k x^{2k-1}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_stoneweier-5-13-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 11.7.13.b"><a aria-label="Copy heading and permalink for Item 11.7.13.b" href="#sec_stoneweier-5-13-1-2-2" title="Copy heading and permalink for Item 11.7.13.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 11.7.13"><a aria-label="Copy heading and permalink for Exercise 11.7.13" href="#sec_stoneweier-5-13" title="Copy heading and permalink for Exercise 11.7.13">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_finitelymanyweierequal"><h4 class="heading"><span class="codenumber">11.7.14<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_finitelymanyweierequal-1-1">Let <span class="process-math">\(f \colon [a,b] \to \R\)</span> be continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_finitelymanyweierequal-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="exercise_finitelymanyweierequal-1-2">
+<li id="exercise_finitelymanyweierequal-1-2-1">
+<div class="para" id="exercise_finitelymanyweierequal-1-2-1-1">Given two points <span class="process-math">\(x_1,x_2 \in [a,b]\text{,}\)</span> show that there exists a sequence of real polynomials <span class="process-math">\(\{ p_n \}_{n=1}^\infty\)</span> such that <span class="process-math">\(p_n(x_1) = f(x_1)\)</span> and <span class="process-math">\(p_n(x_2) = f(x_2)\)</span> for all <span class="process-math">\(n\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_finitelymanyweierequal-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 11.7.14.a"><a aria-label="Copy heading and permalink for Item 11.7.14.a" href="#exercise_finitelymanyweierequal-1-2-1" title="Copy heading and permalink for Item 11.7.14.a">🔗</a></div>
+</li>
+<li id="exercise_finitelymanyweierequal-1-2-2">
+<div class="para" id="exercise_finitelymanyweierequal-1-2-2-1">Generalize the previous part to <span class="process-math">\(k\)</span> points: Given the points <span class="process-math">\(x_1,x_2,\ldots,x_k \in [a,b]\text{,}\)</span> show that there exists a sequence of real polynomials <span class="process-math">\(\{ p_n \}_{n=1}^\infty\)</span> so that for all <span class="process-math">\(n\text{,}\)</span> <span class="process-math">\(p_n(x_j) = f(x_j)\)</span> for <span class="process-math">\(j=1,2,\ldots,k\text{.}\)</span> <br/> Hint: The polynomial <span class="process-math">\((x-x_1)(x-x_2)\cdots(x-x_{\ell-1})(x-x_{\ell+1})
+\cdots(x-x_k)\)</span> is zero at <span class="process-math">\(x_j\)</span> for <span class="process-math">\(j \neq \ell\)</span> but nonzero at <span class="process-math">\(x_\ell\text{.}\)</span>  Use it to construct a polynomial that takes prescribed values at <span class="process-math">\(x_1,x_2,\ldots,x_k\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_finitelymanyweierequal-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 11.7.14.b"><a aria-label="Copy heading and permalink for Item 11.7.14.b" href="#exercise_finitelymanyweierequal-1-2-2" title="Copy heading and permalink for Item 11.7.14.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 11.7.14"><a aria-label="Copy heading and permalink for Exercise 11.7.14" href="#exercise_finitelymanyweierequal" title="Copy heading and permalink for Exercise 11.7.14">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 11.7.3"><a aria-label="Copy heading and permalink for Exercises 11.7.3" href="#sec_stoneweier-5" title="Copy heading and permalink for Exercises 11.7.3">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 11.7: The Stone–Weierstrass theorem"><a aria-label="Copy heading and permalink for Section 11.7: The Stone–Weierstrass theorem" href="#sec_stoneweier" title="Copy heading and permalink for Section 11.7: The Stone–Weierstrass theorem">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_arzelaascoli.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_fourier.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

@@ -1,0 +1,999 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Path integrals · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_pathintegral">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Path integrals</span>
+</h2>
+<section class="introduction" id="sec_pathintegral-2">
+<div class="para" id="sec_pathintegral-2-1">
+<em class="emphasis">Note: 2–3 lectures</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section>
+<section class="subsection" id="sec_pathintegral-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.2.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Piecewise smooth paths</span>
+</h3>
+<div class="para" id="sec_pathintegral-3-2">Let <span class="process-math">\(\gamma \colon [a,b] \to \R^n\)</span> be a function and write <span class="process-math">\(\gamma = (\gamma_1,\gamma_2,\ldots,\gamma_n)\text{.}\)</span> Suppose <span class="process-math">\(\gamma\)</span> is <em class="emphasis">continuously differentiable</em>, meaning it is differentiable and the derivative is continuous. In other words, there exists a continuous function <span class="process-math">\(\gamma' \colon [a,b]
+\to \R^n\)</span> such that for every <span class="process-math">\(t \in [a,b]\text{,}\)</span> we have <span class="process-math">\(\lim\limits_{h \to 0}
+\frac{\snorm{\gamma(t+h)-\gamma(t) - \gamma'(t) \, h}}{\sabs{h}} = 0\text{.}\)</span> We treat <span class="process-math">\(\gamma'(t)\)</span> either as a linear operator (an <span class="process-math">\(n \times 1\)</span> matrix) or a vector, <span class="process-math">\(\gamma'(t) =
+\bigl( \gamma_1'(t), \gamma_2'(t), \ldots, \gamma_n'(t) \bigr)\text{.}\)</span> Equivalently, <span class="process-math">\(\gamma_j\)</span> is a continuously differentiable function on <span class="process-math">\([a,b]\)</span> for every <span class="process-math">\(j=1,2,\ldots,n\text{.}\)</span> By <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_normsmatsdets.html#exercise_normonedim" title="Exercise 8.2.6">Exercise 8.2.6</a>, the operator norm of the operator <span class="process-math">\(\gamma'(t)\)</span> equals the euclidean norm of the corresponding vector, which allows us to write <span class="process-math">\(\bnorm{\gamma'(t)}\)</span> without any confusion.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-3-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_pathintegral-3-3"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.2.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_pathintegral-3-3-1-1">A continuously differentiable function <span class="process-math">\(\gamma \colon [a,b] \to \R^n\)</span> is called a <em class="emphasis">smooth path</em> or a <em class="emphasis">continuously differentiable path</em><details aria-live="polite" class="ptx-footnote" id="sec_pathintegral-3-3-1-1-4"><summary class="ptx-footnote__number" title="Footnote 9.2.1"><sup> 1 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_pathintegral-3-3-1-1-4">The word “smooth” can sometimes mean “infinitely differentiable” in the literature.
+</div></details> if <span class="process-math">\(\gamma\)</span> is continuously differentiable and <span class="process-math">\(\gamma'(t) \neq 0\)</span> for all <span class="process-math">\(t \in [a,b]\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-3-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_pathintegral-3-3-1-2">The function <span class="process-math">\(\gamma \colon [a,b] \to \R^n\)</span> is called a <em class="emphasis">piecewise smooth path</em> or a <em class="emphasis">piecewise continuously differentiable path</em> if there exist finitely many points <span class="process-math">\(t_0 = a &lt; t_1 &lt; t_2 &lt; \cdots &lt; t_k = b\)</span> such that the restriction <span class="process-math">\(\gamma|_{[t_{j-1},t_j]}\)</span> is a smooth path for every <span class="process-math">\(j=1,2,\ldots,k\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-3-3-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_pathintegral-3-3-1-3">A path <span class="process-math">\(\gamma\)</span> is a <em class="emphasis">closed path</em> if <span class="process-math">\(\gamma(a) = \gamma(b)\text{,}\)</span> that is, the path starts and ends at the same point. A path <span class="process-math">\(\gamma\)</span> is a <em class="emphasis">simple path</em> if either 1) <span class="process-math">\(\gamma\)</span> is a one-to-one function, or 2) <span class="process-math">\(\gamma|_{[a,b)}\)</span> is one-to-one and <span class="process-math">\(\gamma(a)=\gamma(b)\)</span> (<span class="process-math">\(\gamma\)</span> is a simple closed path).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-3-3-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 9.2.1"><a aria-label="Copy heading and permalink for Definition 9.2.1" href="#sec_pathintegral-3-3" title="Copy heading and permalink for Definition 9.2.1">🔗</a></div>
+</article>
+<article class="example example-like" id="mv_example_unitsquarepath"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.2.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="mv_example_unitsquarepath-1-1">
+<div class="para">Let <span class="process-math">\(\gamma \colon [0,4] \to \R^2\)</span> be defined by</div>
+<div class="displaymath process-math" id="mv_example_unitsquarepath-1-1-2">
+\begin{equation}
+\gamma(t) \coloneqq
+\begin{cases}
+(t,0)   &amp; \text{if } t \in [0,1],\\
+(1,t-1) &amp; \text{if } t \in (1,2],\\
+(3-t,1) &amp; \text{if } t \in (2,3],\\
+(0,4-t) &amp; \text{if } t \in (3,4].
+\end{cases}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_example_unitsquarepath-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <hr class="rahr"/>
+<figure class="figure figure-like" id="fig_squarepath"><img alt="A diagram of a square in the xy-plane with arrows showing that at t equals 0 we are at the origin. Then there is an arrow rightwards to (1,0) where we are at t equals 1. Then there is an arrow upwards to (1,1) where we are at t equals 2. Then there is an arrow leftwards to (0,1) where we are at t equals 3. Finally, there is an arrow downwards to the origin where we are at t equals 4." class="raimg" role="img" src="figures/squarepath-mbx.svg" style="width:143pt; height:97pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>The path <span class="process-math">\(\gamma\)</span> traversing the unit square.<div class="autopermalink" data-description="Figure 9.3"><a aria-label="Copy heading and permalink for Figure 9.3" href="#fig_squarepath" title="Copy heading and permalink for Figure 9.3">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para" id="mv_example_unitsquarepath-1-5">The path <span class="process-math">\(\gamma\)</span> is the unit square traversed counterclockwise.  See <a class="internal" href="sec_pathintegral.html#fig_squarepath" title="Figure 9.3">Figure 9.3</a>.  It is a piecewise smooth path.  For example, <span class="process-math">\(\gamma|_{[1,2]}(t) = (1,t-1)\)</span> and so <span class="process-math">\((\gamma|_{[1,2]})'(t) = (0,1) \neq 0\text{.}\)</span>  Similarly for the other three sides. Notice that <span class="process-math">\((\gamma|_{[1,2]})'(1) = (0,1)\text{,}\)</span> <span class="process-math">\((\gamma|_{[0,1]})'(1) = (1,0)\text{,}\)</span> but <span class="process-math">\(\gamma'(1)\)</span> does not exist.  At the corners <span class="process-math">\(\gamma\)</span> is not differentiable. The path <span class="process-math">\(\gamma\)</span> is a simple closed path, as <span class="process-math">\(\gamma|_{[0,4)}\)</span> is one-to-one and <span class="process-math">\(\gamma(0)=\gamma(4)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_example_unitsquarepath-1-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 9.2.2"><a aria-label="Copy heading and permalink for Example 9.2.2" href="#mv_example_unitsquarepath" title="Copy heading and permalink for Example 9.2.2">🔗</a></div>
+</article>
+<div class="para" id="sec_pathintegral-3-5">The definition of a piecewise smooth path as we have given it implies continuity (exercise).  For general functions, many authors also allow finitely many discontinuities, when they use the term <em class="emphasis">piecewise smooth</em>, and so one may say that we defined a piecewise smooth path to be a <em class="emphasis">continuous piecewise smooth</em> function. While one may get by with smooth paths, for computations, the simplest paths to write down are often piecewise smooth.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-3-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_pathintegral-3-6">Generally, we are interested in the direct image <span class="process-math">\(\gamma\bigl([a,b]\bigr)\text{,}\)</span> rather than the specific parametrization, although that is also important to some degree.  When we informally talk about a path or a curve, we often mean the set <span class="process-math">\(\gamma\bigl([a,b]\bigr)\text{,}\)</span> depending on context.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-3-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_pathintegral-3-7"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.2.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_pathintegral-3-7-1-1">
+<div class="para">The condition <span class="process-math">\(\gamma'(t) \neq 0\)</span> means that the image <span class="process-math">\(\gamma\bigl([a,b]\bigr)\)</span> has no “corners” where <span class="process-math">\(\gamma\)</span> is smooth. Consider</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_cornersmoothpath.html" id="sec_pathintegral-3-7-1-1-5">
+\begin{equation}
+\gamma(t) \coloneqq
+\begin{cases}
+(t^2,0) &amp; \text{if } t &lt; 0,\\
+(0,t^2) &amp; \text{if } t \geq 0.
+\end{cases}
+\end{equation}
+</div>
+<div class="para">See <a class="internal" href="sec_pathintegral.html#fig_cornersmoothpath" title="Figure 9.4">Figure 9.4</a>. It is left for the reader to check that <span class="process-math">\(\gamma\)</span> is continuously differentiable, yet the image <span class="process-math">\(\gamma(\R) = \bigl\{ (x,y) \in \R^2 : (x,y) =
+(s,0) \text{ or } (x,y) = (0,s) \text{ for some } s \geq 0 \bigr\}\)</span> has a “corner” at the origin.  And that is because <span class="process-math">\(\gamma'(0) = (0,0)\text{.}\)</span> More complicated examples with, say, infinitely many corners exist, see the exercises.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-3-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <hr class="rahr"/>
+<figure class="figure figure-like" id="fig_cornersmoothpath"><img alt="A diagram of a path in the plane. The path has an arrow indicating the following movement. Starting above the origin on the y-axis a point where t equals minus 1 is marked. The path moves along the y-axis downwards and then, much closer to the origin, is a point marked t equals minus one half. The origin is labeled t equals 0. The path suddenly changes direction rightwards to go along the x-axis. A point near the origin is marked t equals one half, then some distance further is a point marked t equals 1." class="raimg" role="img" src="figures/cornersmoothpath-mbx.svg" style="width:160pt; height:119pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>“Smooth” path with a corner if we allow zero derivative.  The points corresponding to several values of <span class="process-math">\(t\)</span> are marked with dots.<div class="autopermalink" data-description="Figure 9.4"><a aria-label="Copy heading and permalink for Figure 9.4" href="#fig_cornersmoothpath" title="Copy heading and permalink for Figure 9.4">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="autopermalink" data-description="Example 9.2.3"><a aria-label="Copy heading and permalink for Example 9.2.3" href="#sec_pathintegral-3-7" title="Copy heading and permalink for Example 9.2.3">🔗</a></div>
+</article>
+<div class="para" id="sec_pathintegral-3-8">The condition <span class="process-math">\(\gamma'(t) \neq 0\)</span> even at the endpoints of every subinterval guarantees not only no corners, but also that the path ends nicely, that is, it can extend a little bit past the endpoints if needed.  Again, see the exercises.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-3-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_pathintegral-3-9"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.2.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_pathintegral-3-9-1-1">
+<div class="para">A graph of a continuously differentiable function <span class="process-math">\(f \colon [a,b] \to \R\)</span> is a smooth path. Define <span class="process-math">\(\gamma \colon [a,b] \to \R^2\)</span> by</div>
+<div class="displaymath process-math" id="sec_pathintegral-3-9-1-1-3">
+\begin{equation}
+\gamma(t) \coloneqq \bigl(t,f(t)\bigr) .
+\end{equation}
+</div>
+<div class="para">Then <span class="process-math">\(\gamma'(t) = \bigl( 1 , f'(t) \bigr)\text{,}\)</span> which is never zero, and <span class="process-math">\(\gamma\bigl([a,b]\bigr)\)</span> is the graph of <span class="process-math">\(f\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-3-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_pathintegral-3-9-1-2">
+<div class="para">There are other ways of parametrizing the path.  That is, there are different paths with the same image. The function <span class="process-math">\(t \mapsto (1-t)a+tb\text{,}\)</span> takes the interval <span class="process-math">\([0,1]\)</span> to <span class="process-math">\([a,b]\text{.}\)</span> Define <span class="process-math">\(\alpha \colon [0,1] \to \R^2\)</span> by</div>
+<div class="displaymath process-math" id="sec_pathintegral-3-9-1-2-5">
+\begin{equation}
+\alpha(t) \coloneqq \bigl((1-t)a+tb,f((1-t)a+tb)\bigr) .
+\end{equation}
+</div>
+<div class="para">Then <span class="process-math">\(\alpha'(t) = \bigl( b-a ,~ (b-a)f'((1-t)a+tb) \bigr)\text{,}\)</span> which is never zero. As sets, <span class="process-math">\(\alpha\bigl([0,1]\bigr) = \gamma\bigl([a,b]\bigr)
+= \bigl\{ (x,y) \in \R^2 : x \in [a,b] \text{ and } f(x) = y \bigr\}\text{,}\)</span> which is just the graph of <span class="process-math">\(f\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-3-9-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 9.2.4"><a aria-label="Copy heading and permalink for Example 9.2.4" href="#sec_pathintegral-3-9" title="Copy heading and permalink for Example 9.2.4">🔗</a></div>
+</article>
+<div class="para" id="sec_pathintegral-3-10">The last example leads us to a definition.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-3-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_pathintegral-3-11"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.2.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_pathintegral-3-11-1-1">Let <span class="process-math">\(\gamma \colon [a,b] \to \R^n\)</span> be a smooth path and <span class="process-math">\(h \colon [c,d] \to [a,b]\)</span> a continuously differentiable bijective function such that <span class="process-math">\(h'(t) \neq 0\)</span> for all <span class="process-math">\(t \in [c,d]\text{.}\)</span>  Then the composition <span class="process-math">\(\gamma \circ h\)</span> is called a <em class="emphasis">smooth reparametrization</em> of <span class="process-math">\(\gamma\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-3-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_pathintegral-3-11-1-2">Let <span class="process-math">\(\gamma\)</span> be a piecewise smooth path, and <span class="process-math">\(h\)</span> a piecewise smooth bijective function with nonzero one-sided limits of <span class="process-math">\(h'\text{.}\)</span> The composition <span class="process-math">\(\gamma \circ h\)</span> is called a <em class="emphasis">piecewise smooth reparametrization</em> of <span class="process-math">\(\gamma\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-3-11-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_pathintegral-3-11-1-3">If <span class="process-math">\(h\)</span> is strictly increasing, then <span class="process-math">\(h\)</span> is said to <em class="emphasis">preserve orientation</em>.  If <span class="process-math">\(h\)</span> does not preserve orientation, then <span class="process-math">\(h\)</span> is said to <em class="emphasis">reverse orientation</em>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-3-11-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 9.2.5"><a aria-label="Copy heading and permalink for Definition 9.2.5" href="#sec_pathintegral-3-11" title="Copy heading and permalink for Definition 9.2.5">🔗</a></div>
+</article>
+<div class="para" id="sec_pathintegral-3-12">A reparametrization is another path for the same set.  That is, <span class="process-math">\((\gamma \circ h)\bigl([c,d]\bigr) =
+\gamma \bigl([a,b]\bigr)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-3-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_pathintegral-3-13">The conditions on the piecewise smooth <span class="process-math">\(h\)</span> mean that there is some partition <span class="process-math">\(t_0 = c &lt; t_1 &lt; t_2 &lt; \cdots &lt; t_k = d\text{,}\)</span> such that <span class="process-math">\(h|_{[t_{j-1},t_j]}\)</span> is continuously differentiable and <span class="process-math">\(\bigl(h|_{[t_{j-1},t_j]}\bigr)'(t) \neq 0\)</span> for all <span class="process-math">\(t \in [t_{j-1},t_j]\text{.}\)</span> Since <span class="process-math">\(h\)</span> is bijective, it is either strictly increasing or strictly decreasing.  So either <span class="process-math">\(\bigl(h|_{[t_{j-1},t_j]}\bigr)'(t) &gt; 0\)</span> for all <span class="process-math">\(t\)</span> or <span class="process-math">\(\bigl(h|_{[t_{j-1},t_j]}\bigr)'(t) &lt; 0\)</span> for all <span class="process-math">\(t\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-3-13" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_reparamapiecewisesmooth"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.2.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="prop_reparamapiecewisesmooth-1-1">If <span class="process-math">\(\gamma \colon [a,b] \to \R^n\)</span> is a piecewise smooth path, and <span class="process-math">\(\gamma \circ h \colon [c,d] \to \R^n\)</span> is a piecewise smooth reparametrization, then <span class="process-math">\(\gamma \circ h\)</span> is a piecewise smooth path.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_reparamapiecewisesmooth-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 9.2.6"><a aria-label="Copy heading and permalink for Proposition 9.2.6" href="#prop_reparamapiecewisesmooth" title="Copy heading and permalink for Proposition 9.2.6">🔗</a></div>
+</article>
+<article class="proof" id="sec_pathintegral-3-15"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_pathintegral-3-15-1">Assume that <span class="process-math">\(h\)</span> preserves orientation, that is, <span class="process-math">\(h\)</span> is strictly increasing. If <span class="process-math">\(h \colon [c,d] \to [a,b]\)</span> gives a piecewise smooth reparametrization, then for some partition <span class="process-math">\(r_0 = c &lt; r_1 &lt; r_2 &lt; \cdots &lt; r_\ell = d\text{,}\)</span> the restriction <span class="process-math">\(h|_{[r_{j-1},r_j]}\)</span> is continuously differentiable with a positive derivative.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-3-15-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_pathintegral-3-15-2">
+<div class="para">Let <span class="process-math">\(t_0 = a &lt; t_1 &lt; t_2 &lt; \cdots &lt; t_k = b\)</span> be the partition from the definition of piecewise smooth for <span class="process-math">\(\gamma\)</span> together with the points <span class="process-math">\(\{ h(r_0), h(r_1), h(r_2), \ldots, h(r_\ell) \}\text{.}\)</span> Let <span class="process-math">\(s_j \coloneqq h^{-1}(t_j)\text{.}\)</span>  Then <span class="process-math">\(s_0 = c &lt; s_1 &lt; s_2 &lt; \cdots &lt; s_k = d\)</span> is a partition that includes (is a refinement of) the <span class="process-math">\(\{ r_0,r_1,\ldots,r_\ell \}\text{.}\)</span> If <span class="process-math">\(\tau \in [s_{j-1},s_j]\text{,}\)</span> then <span class="process-math">\(h(\tau) \in [t_{j-1},t_j]\)</span> since <span class="process-math">\(h(s_{j-1}) = t_{j-1}\text{,}\)</span> <span class="process-math">\(h(s_{j}) = t_j\text{,}\)</span> and <span class="process-math">\(h\)</span> is strictly increasing. Also <span class="process-math">\(h|_{[s_{j-1},s_j]}\)</span> is continuously differentiable, and <span class="process-math">\(\gamma|_{[t_{j-1},t_j]}\)</span> is also continuously differentiable. Then</div>
+<div class="displaymath process-math" id="sec_pathintegral-3-15-2-14">
+\begin{equation}
+(\gamma \circ h)|_{[s_{j-1},s_{j}]} (\tau)
+=
+\gamma|_{[t_{j-1},t_{j}]} \bigl( h|_{[s_{j-1},s_j]}(\tau) \bigr) .
+\end{equation}
+</div>
+<div class="para">The function <span class="process-math">\((\gamma \circ h)|_{[s_{j-1},s_{j}]}\)</span> is therefore continuously differentiable and by the chain rule</div>
+<div class="displaymath process-math" id="sec_pathintegral-3-15-2-16">
+\begin{equation}
+\bigl( (\gamma \circ h)|_{[s_{j-1},s_{j}]} \bigr) ' (\tau)
+=
+\bigl( \gamma|_{[t_{j-1},t_{j}]} \bigr)' \bigl( h(\tau) \bigr)
+\bigl(h|_{[s_{j-1},s_j]}\bigr)'(\tau) \neq 0 .
+\end{equation}
+</div>
+<div class="para">Consequently, <span class="process-math">\(\gamma \circ h\)</span> is a piecewise smooth path. The proof for orientation reversing <span class="process-math">\(h\)</span> is left as an exercise.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-3-15-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 9.2.1.1"><a aria-label="Copy heading and permalink for Proof 9.2.1.1" href="#sec_pathintegral-3-15" title="Copy heading and permalink for Proof 9.2.1.1">🔗</a></div>
+</article>
+<div class="para" id="sec_pathintegral-3-16">If two paths are simple and their images are the same, it is left as an exercise that there exists a reparametrization. Here is where our assumption that <span class="process-math">\(\gamma'\)</span> is never zero is important.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-3-16" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 9.2.1: Piecewise smooth paths"><a aria-label="Copy heading and permalink for Subsection 9.2.1: Piecewise smooth paths" href="#sec_pathintegral-3" title="Copy heading and permalink for Subsection 9.2.1: Piecewise smooth paths">🔗</a></div>
+</section>
+<section class="subsection" id="sec_pathintegral-4">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.2.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Path integral of a one-form</span>
+</h3>
+<article class="definition definition-like" id="sec_pathintegral-4-2"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.2.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_pathintegral-4-2-1-1">
+<div class="para">Let <span class="process-math">\((x_1,x_2,\ldots,x_n) \in \R^n\)</span> be our coordinates. Given <span class="process-math">\(n\)</span> real-valued continuous functions <span class="process-math">\(\omega_1,\omega_2,\ldots,\omega_n\)</span> defined on a set <span class="process-math">\(S \subset \R^n\text{,}\)</span> we define a <em class="emphasis">one-form</em> to be an object of the form</div>
+<div class="displaymath process-math" id="sec_pathintegral-4-2-1-1-7">
+\begin{equation}
+\omega = \omega_1 \,dx_1 + \omega_2 \,dx_2 + \cdots + \omega_n \,dx_n .
+\end{equation}
+</div>
+<div class="para">We could represent <span class="process-math">\(\omega\)</span> as a continuous function from <span class="process-math">\(S\)</span> to <span class="process-math">\(\R^n\text{,}\)</span> although it is better to think of it as a different object.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-4-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 9.2.7"><a aria-label="Copy heading and permalink for Definition 9.2.7" href="#sec_pathintegral-4-2" title="Copy heading and permalink for Definition 9.2.7">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_pathintegral-4-3"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.2.8</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_pathintegral-4-3-1-1">
+<div class="displaymath process-math" id="sec_pathintegral-4-3-1-1-1">
+\begin{equation}
+\omega(x,y) \coloneqq \frac{-y}{x^2+y^2} \,dx + \frac{x}{x^2+y^2} \,dy
+\end{equation}
+</div>
+<div class="para">is a one-form defined on <span class="process-math">\(\R^2 \setminus \{ (0,0) \}\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-4-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 9.2.8"><a aria-label="Copy heading and permalink for Example 9.2.8" href="#sec_pathintegral-4-3" title="Copy heading and permalink for Example 9.2.8">🔗</a></div>
+</article>
+<article class="definition definition-like" id="sec_pathintegral-4-4"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.2.9</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_pathintegral-4-4-1-1">
+<div class="para">Let <span class="process-math">\(\gamma \colon [a,b] \to \R^n\)</span> be a smooth path and let</div>
+<div class="displaymath process-math" id="sec_pathintegral-4-4-1-1-2">
+\begin{equation}
+\omega = \omega_1 \,dx_1 + \omega_2 \,dx_2 + \cdots + \omega_n \,dx_n
+\end{equation}
+</div>
+<div class="para">be a one-form defined on the direct image <span class="process-math">\(\gamma\bigl([a,b]\bigr)\text{.}\)</span> Write <span class="process-math">\(\gamma = (\gamma_1,\gamma_2,\ldots,\gamma_n)\text{.}\)</span> Define:</div>
+<div class="displaymath process-math" id="sec_pathintegral-4-4-1-1-5">
+\begin{equation}
+\begin{split}
+\int_{\gamma} \omega
+&amp; \coloneqq
+\int_a^b 
+\Bigl(
+\omega_1\bigl(\gamma(t)\bigr) \gamma_1'(t) +
+\omega_2\bigl(\gamma(t)\bigr) \gamma_2'(t) + \cdots +
+\omega_n\bigl(\gamma(t)\bigr) \gamma_n'(t) \Bigr) dt
+\\
+&amp;\phantom{:}=
+\int_a^b 
+\left(
+\sum_{j=1}^n
+\omega_j\bigl(\gamma(t)\bigr) \gamma_j'(t) \right) dt .
+\end{split}
+\end{equation}
+</div>
+<div class="para">To remember the definition note that <span class="process-math">\(x_j\)</span> is <span class="process-math">\(\gamma_j(t)\text{,}\)</span> so <span class="process-math">\(dx_j\)</span> becomes  <span class="process-math">\(\gamma_j'(t) \, dt\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-4-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_pathintegral-4-4-1-2">
+<div class="para">If <span class="process-math">\(\gamma\)</span> is piecewise smooth, take the corresponding partition <span class="process-math">\(t_0 = a &lt; t_1 &lt; t_2 &lt; \ldots &lt; t_k = b\text{,}\)</span> and assume the partition is minimal in the sense that <span class="process-math">\(\gamma\)</span> is not differentiable at <span class="process-math">\(t_1,t_2,\ldots,t_{k-1}\text{.}\)</span>  As each <span class="process-math">\(\gamma|_{[t_{j-1},t_j]}\)</span> is a smooth path, define</div>
+<div class="displaymath process-math" id="sec_pathintegral-4-4-1-2-6">
+\begin{equation}
+\int_{\gamma} \omega
+\coloneqq
+\int_{\gamma|_{[t_0,t_1]}} \omega
+\,
++
+\,
+\int_{\gamma|_{[t_1,t_2]}} \omega
+\,
++ \, \cdots \, + \,
+\int_{\gamma|_{[t_{k-1},t_k]}} \omega .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-4-4-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 9.2.9"><a aria-label="Copy heading and permalink for Definition 9.2.9" href="#sec_pathintegral-4-4" title="Copy heading and permalink for Definition 9.2.9">🔗</a></div>
+</article>
+<div class="para" id="sec_pathintegral-4-5">The notation for an integral of a one-form makes sense from the “<span class="process-math">\(u\)</span>-substitution” formula you remember from calculus. Somewhat informally, if <span class="process-math">\(x_j(t) = \gamma_j(t)\text{,}\)</span> then <span class="process-math">\(dx_j = \gamma_j'(t) \, dt\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-4-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_pathintegral-4-6">Paths can be cut up or concatenated.  The proof is a direct application of the additivity of the Riemann integral, and is left as an exercise. The proposition justifies why we defined the integral over a piecewise smooth path in the way we did, and it justifies that we may as well have taken any partition not just the minimal one in the definition.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-4-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="mv_prop_pathconcat"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.2.10</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="mv_prop_pathconcat-1-1">
+<div class="para">Let <span class="process-math">\(\gamma \colon [a,c] \to \R^n\)</span> be a piecewise smooth path, and <span class="process-math">\(b \in (a,c)\text{.}\)</span> Define the piecewise smooth paths <span class="process-math">\(\alpha \coloneqq \gamma|_{[a,b]}\)</span> and <span class="process-math">\(\beta \coloneqq \gamma|_{[b,c]}\text{.}\)</span> Let <span class="process-math">\(\omega\)</span> be a one-form defined on <span class="process-math">\(\gamma\bigl([a,c]\bigr)\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" id="mv_prop_pathconcat-1-1-7">
+\begin{equation}
+\int_{\gamma} \omega =
+\int_{\alpha} \omega +
+\int_{\beta} \omega .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_prop_pathconcat-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 9.2.10"><a aria-label="Copy heading and permalink for Proposition 9.2.10" href="#mv_prop_pathconcat" title="Copy heading and permalink for Proposition 9.2.10">🔗</a></div>
+</article>
+<article class="example example-like" id="example_mv_irrotoneformint"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.2.11</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="example_mv_irrotoneformint-1-1">
+<div class="para">Let the one-form <span class="process-math">\(\omega\)</span> and the path <span class="process-math">\(\gamma \colon [0,2\pi] \to \R^2\)</span> be defined by</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_circlepathrepar.html" id="example_mv_irrotoneformint-1-1-3">
+\begin{equation}
+\omega(x,y) \coloneqq \frac{-y}{x^2+y^2} \,dx + \frac{x}{x^2+y^2} \,dy,
+\qquad
+\gamma(t) \coloneqq \bigl(\cos(t),\sin(t)\bigr) .
+\end{equation}
+</div>
+<div class="para">Then</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_circlepathrepar.html" id="example_mv_irrotoneformint-1-1-4">
+\begin{equation}
+\begin{split}
+\int_{\gamma} \omega
+&amp; =
+\int_0^{2\pi}
+\Biggl(
+\frac{-\sin(t)}{{\bigl(\cos(t)\bigr)}^2+{\bigl(\sin(t)\bigr)}^2}
+\bigl(-\sin(t)\bigr)
+\\
+&amp; \phantom{=\int_0^{2\pi}\Biggl(~}
++
+\frac{\cos(t)}{{\bigl(\cos(t)\bigr)}^2+{\bigl(\sin(t)\bigr)}^2}
+\bigl(\cos(t)\bigr)
+\Biggr) \, dt
+\\
+&amp; =
+\int_0^{2\pi}
+1 \, dt
+= 2\pi .
+\end{split}
+\end{equation}
+</div>
+<div class="para">Next, parametrize the same curve as <span class="process-math">\(\alpha \colon [0,1] \to \R^2\)</span> defined by <span class="process-math">\(\alpha(t) \coloneqq \bigl(\cos(2\pi
+t),\sin(2 \pi t)\bigr)\text{,}\)</span> that is, <span class="process-math">\(\alpha\)</span> is a smooth reparametrization of <span class="process-math">\(\gamma\text{.}\)</span> Then</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_circlepathrepar.html" id="example_mv_irrotoneformint-1-1-9">
+\begin{equation}
+\begin{split}
+\int_{\alpha} \omega
+&amp; =
+\int_0^{1}
+\Biggl(
+\frac{-\sin(2\pi t)}{{\bigl(\cos(2\pi t)\bigr)}^2+{\bigl(\sin(2\pi t)\bigr)}^2}
+\bigl(-2\pi \sin(2\pi t)\bigr)
+\\
+&amp; \phantom{=\int_0^1\Biggl(~}
++
+\frac{\cos(2 \pi t)}{{\bigl(\cos(2 \pi t)\bigr)}^2+{\bigl(\sin(2 \pi t)\bigr)}^2}
+\bigl(2 \pi \cos(2 \pi t)\bigr)
+\Biggr) \, dt
+\\
+&amp; =
+\int_0^{1}
+2\pi \, dt
+= 2\pi .
+\end{split}
+\end{equation}
+</div>
+<div class="para">Finally, reparametrize with <span class="process-math">\(\beta \colon [0,2\pi] \to \R^2\)</span> as <span class="process-math">\(\beta(t) \coloneqq \bigl(\cos(-t),\sin(-t)\bigr)\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_circlepathrepar.html" id="example_mv_irrotoneformint-1-1-12">
+\begin{equation}
+\begin{split}
+\int_{\beta} \omega
+&amp; =
+\int_0^{2\pi}
+\Biggl(
+\frac{-\sin(-t)}{{\bigl(\cos(-t)\bigr)}^2+{\bigl(\sin(-t)\bigr)}^2}
+\bigl(\sin(-t)\bigr)
+\\
+&amp; \phantom{=\int_0^{2\pi}\Biggl(~}
++
+\frac{\cos(-t)}{{\bigl(\cos(-t)\bigr)}^2+{\bigl(\sin(-t)\bigr)}^2}
+\bigl(-\cos(-t)\bigr)
+\Biggr) \, dt
+\\
+&amp; =
+\int_0^{2\pi}
+(-1) \, dt
+= -2\pi .
+\end{split}
+\end{equation}
+</div>
+<div class="para">The path <span class="process-math">\(\alpha\)</span> is an orientation preserving reparametrization of <span class="process-math">\(\gamma\text{,}\)</span> and the integrals are the same.  The path <span class="process-math">\(\beta\)</span> is an orientation reversing reparametrization of <span class="process-math">\(\gamma\)</span> and the integral is minus the original.  See <a class="internal" href="sec_pathintegral.html#fig_circlepathrepar" title="Figure 9.5">Figure 9.5</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_mv_irrotoneformint-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <hr class="rahr"/>
+<figure class="figure figure-like" id="fig_circlepathrepar"><img alt="A path going counterclockwise around the origin. The point on the positive x-axis is marked as the start and is labeled as gamma of 0 equals alpha of 0 equals beta of 2 pi. The next point on the path in the first quadrant halfway to the positive y-axis is labeled as gamma of pi over 4 equals alpha of one eighth equals beta of 7 pi over 4. The next point on the positive y-axis is labeled as gamma of pi over 2 equals alpha of one quarter equals beta of 3 pi over 2. The next point on the negative x-axis is labeled as gamma of pi equals alpha of one half equals beta of pi. The next point on the negative y-axis is labeled as gamma of 3 pi over 2 equals alpha of three quarters equals beta of pi over 2. The last point, which is the same as the first point, is labeled as gamma of 2 pi equals alpha of one equals beta of 0." class="raimg" role="img" src="figures/circlepathrepar-mbx.svg" style="width:343pt; height:159pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>A circular path reparametrized in two different ways. The arrow indicates the orientation of <span class="process-math">\(\gamma\)</span> and <span class="process-math">\(\alpha\text{.}\)</span> The path <span class="process-math">\(\beta\)</span> traverses the circle in the opposite direction.<div class="autopermalink" data-description="Figure 9.5"><a aria-label="Copy heading and permalink for Figure 9.5" href="#fig_circlepathrepar" title="Copy heading and permalink for Figure 9.5">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="autopermalink" data-description="Example 9.2.11"><a aria-label="Copy heading and permalink for Example 9.2.11" href="#example_mv_irrotoneformint" title="Copy heading and permalink for Example 9.2.11">🔗</a></div>
+</article>
+<div class="para" id="sec_pathintegral-4-9">The previous example is not a fluke. The path integral does not depend on the parametrization of the curve, the only thing that matters is the direction in which the curve is traversed.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-4-9" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="mv_prop_pathintrepararam"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.2.12</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="mv_prop_pathintrepararam-1-1">
+<div class="para">Let <span class="process-math">\(\gamma \colon [a,b] \to \R^n\)</span> be a piecewise smooth path and <span class="process-math">\(\gamma \circ h \colon [c,d] \to \R^n\)</span> a piecewise smooth reparametrization. Suppose <span class="process-math">\(\omega\)</span> is a one-form defined on the set <span class="process-math">\(\gamma\bigl([a,b]\bigr)\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" id="mv_prop_pathintrepararam-1-1-5">
+\begin{equation}
+\int_{\gamma \circ h} \omega =
+\begin{cases}
+\int_{\gamma} \omega  &amp; \text{if } h \text{ preserves orientation,}\\
+-\int_{\gamma} \omega &amp; \text{if } h \text{ reverses orientation.}
+\end{cases}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_prop_pathintrepararam-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 9.2.12"><a aria-label="Copy heading and permalink for Proposition 9.2.12" href="#mv_prop_pathintrepararam" title="Copy heading and permalink for Proposition 9.2.12">🔗</a></div>
+</article>
+<article class="proof" id="sec_pathintegral-4-11"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_pathintegral-4-11-1">
+<div class="para">Assume first that <span class="process-math">\(\gamma\)</span> and <span class="process-math">\(h\)</span> are both smooth. Write <span class="process-math">\(\omega = \omega_1 \, dx_1 + \omega_2 \, dx_2 + \cdots +
+\omega_n \, dx_n\text{.}\)</span> Suppose that <span class="process-math">\(h\)</span> is orientation preserving.  Use the change of variables formula for the Riemann integral:</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/mv_exercise_pathpiece.html" id="sec_pathintegral-4-11-1-5">
+\begin{equation}
+\begin{split}
+\int_{\gamma} \omega
+&amp; =
+\int_a^b 
+\left(
+\sum_{j=1}^n
+\omega_j\bigl(\gamma(t)\bigr) \gamma_j'(t)
+\right) dt
+\\
+&amp; =
+\int_c^d 
+\left(
+\sum_{j=1}^n
+\omega_j\Bigl(\gamma\bigl(h(\tau)\bigr)\Bigr) \gamma_j'\bigl(h(\tau)\bigr)
+\right) h'(\tau) \, d\tau
+\\
+&amp; =
+\int_c^d 
+\left(
+\sum_{j=1}^n
+\omega_j\Bigl(\gamma\bigl(h(\tau)\bigr)\Bigr) (\gamma_j \circ h)'(\tau)
+\right) d\tau
+=
+\int_{\gamma \circ h} \omega .
+\end{split}
+\end{equation}
+</div>
+<div class="para">If <span class="process-math">\(h\)</span> is orientation reversing, it swaps the order of the limits on the integral and introduces a minus sign. The details, along with finishing the proof for piecewise smooth paths, is left as <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_pathintegral.html#mv_exercise_pathpiece" title="Exercise 9.2.4">Exercise 9.2.4</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-4-11-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 9.2.2.1"><a aria-label="Copy heading and permalink for Proof 9.2.2.1" href="#sec_pathintegral-4-11" title="Copy heading and permalink for Proof 9.2.2.1">🔗</a></div>
+</article>
+<div class="para logical" id="sec_pathintegral-4-12">
+<div class="para">Due to this proposition (and the exercises), if <span class="process-math">\(\Gamma
+\subset \R^n\)</span> is the image of a simple piecewise smooth path <span class="process-math">\(\gamma\bigl([a,b]\bigr)\text{,}\)</span> then as long as we somehow indicate the orientation, that is, the direction in which we traverse the curve, we can write</div>
+<div class="displaymath process-math" id="sec_pathintegral-4-12-3">
+\begin{equation}
+\int_{\Gamma} \omega ,
+\end{equation}
+</div>
+<div class="para">without mentioning the specific <span class="process-math">\(\gamma\text{.}\)</span> Furthermore, for a simple closed path, it does not even matter where we start the parametrization.  See the exercises.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-4-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_pathintegral-4-13">Recall that <em class="emphasis">simple</em> means that <span class="process-math">\(\gamma\)</span> is one-to-one except perhaps at the endpoints, in particular it is one-to-one when restricted to <span class="process-math">\([a,b)\text{.}\)</span> We may relax the condition that the path is simple a little bit. For example, it is enough to suppose that <span class="process-math">\(\gamma \colon [a,b] \to \R^n\)</span> is one-to-one except at finitely many points. See <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_pathintegral.html#mv_exercise_curveintegral" title="Exercise 9.2.14">Exercise 9.2.14</a>.  But we cannot remove the condition completely as is illustrated by the following example.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-4-13" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_pathintegral-4-14"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.2.13</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_pathintegral-4-14-1-1">Take <span class="process-math">\(\gamma \colon [0,2\pi] \to \R^2\)</span> given by <span class="process-math">\(\gamma(t) \coloneqq
+\bigl(\cos(t),\sin(t)\bigr)\text{,}\)</span> and <span class="process-math">\(\beta \colon [0,2\pi] \to \R^2\)</span> by <span class="process-math">\(\beta(t) \coloneqq
+\bigl(\cos(2t),\sin(2t)\bigr)\text{.}\)</span>  Notice that <span class="process-math">\(\gamma\bigl([0,2\pi]\bigr) = \beta\bigl([0,2\pi]\bigr)\text{;}\)</span> we travel around the same curve, the unit circle.  But <span class="process-math">\(\gamma\)</span> goes around the unit circle once in the counterclockwise direction, and <span class="process-math">\(\beta\)</span> goes around the unit circle twice (in the same direction). See <a class="internal" href="sec_pathintegral.html#fig_circlepathrepar2" title="Figure 9.6">Figure 9.6</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-4-14-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <hr class="rahr"/>
+<figure class="figure figure-like" id="fig_circlepathrepar2"><img alt="A path going counterclockwise around the origin. The point on the positive x-axis is marked as the start and is labeled as gamma of 0 equals beta of 0 equals beta of pi. The next point on the path in the first quadrant halfway to the positive y-axis is labeled as gamma of pi over 4 equals beta of pi over 8 equals beta of 9 pi over 8. The next point on the positive y-axis is labeled as gamma of pi over 2 equals beta of pi over 4 equals beta of 5 pi over 4. The next point on the negative x-axis is labeled as gamma of pi equals beta of pi over 2 equals beta of 3 pi over 2. The next point on the negative y-axis is labeled as gamma of 3 pi over 2 equals beta of 3 pi over 4 equals beta of 7 pi over 4. The last point, which is the same as the first point, is labeled as gamma of 2 pi equals beta of 2 pi." class="raimg" role="img" src="figures/circlepathrepar2-mbx.svg" style="width:354pt; height:159pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Circular path traversed once by <span class="process-math">\(\gamma \colon [0,2\pi] \to \R^2\)</span> and twice by <span class="process-math">\(\beta \colon [0,2\pi] \to \R^2\text{.}\)</span><div class="autopermalink" data-description="Figure 9.6"><a aria-label="Copy heading and permalink for Figure 9.6" href="#fig_circlepathrepar2" title="Copy heading and permalink for Figure 9.6">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para logical" id="sec_pathintegral-4-14-1-5">
+<div class="para">Compute</div>
+<div class="displaymath process-math" id="sec_pathintegral-4-14-1-5-1">
+\begin{equation}
+\begin{aligned}
+&amp; \int_{\gamma} -y\, dx + x\,dy
+=
+\int_0^{2\pi}
+\Bigl( \bigl(-\sin(t) \bigr) \bigl(-\sin(t) \bigr) + \cos(t) \cos(t) \Bigr) dt
+=
+2 \pi,\\
+&amp; \int_{\beta} -y\, dx + x\,dy
+=
+\int_0^{2\pi}
+\Bigl( \bigl(-\sin(2t) \bigr) \bigl(-2\sin(2t) \bigr) + \cos(2t)
+\bigl(2\cos(2t)\bigr) \Bigr) dt
+=
+4 \pi.
+\end{aligned}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-4-14-1-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 9.2.13"><a aria-label="Copy heading and permalink for Example 9.2.13" href="#sec_pathintegral-4-14" title="Copy heading and permalink for Example 9.2.13">🔗</a></div>
+</article>
+<div class="para logical" id="sec_pathintegral-4-15">
+<div class="para">It is sometimes convenient to define a path integral over <span class="process-math">\(\gamma \colon
+[a,b] \to \R^n\)</span> that is not a path. Define</div>
+<div class="displaymath process-math" id="sec_pathintegral-4-15-2">
+\begin{equation}
+\int_{\gamma} \omega \coloneqq \int_a^b
+\left(
+\sum_{j=1}^n
+\omega_j\bigl(\gamma(t)\bigr) \gamma_j'(t)
+\right) dt 
+\end{equation}
+</div>
+<div class="para">for every continuously differentiable <span class="process-math">\(\gamma\text{.}\)</span>  A case that comes up naturally is when <span class="process-math">\(\gamma\)</span> is constant.  Then <span class="process-math">\(\gamma'(t) = 0\)</span> for all <span class="process-math">\(t\text{,}\)</span> and <span class="process-math">\(\gamma\bigl([a,b]\bigr)\)</span> is a single point, which we regard as a “curve” of length zero.  Then, <span class="process-math">\(\int_{\gamma} \omega = 0\)</span> for every <span class="process-math">\(\omega\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-4-15" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 9.2.2: Path integral of a one-form"><a aria-label="Copy heading and permalink for Subsection 9.2.2: Path integral of a one-form" href="#sec_pathintegral-4" title="Copy heading and permalink for Subsection 9.2.2: Path integral of a one-form">🔗</a></div>
+</section>
+<section class="subsection" id="sec_pathintegral-5">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.2.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Path integral of a function</span>
+</h3>
+<div class="para" id="sec_pathintegral-5-2">Next, we integrate a function against the <em class="emphasis">arc-length measure</em> <span class="process-math">\(ds\text{.}\)</span>  The geometric picture we have in mind is the area under the graph of the function over a path. Imagine a fence erected over <span class="process-math">\(\gamma\)</span> with height given by the function. The integral is the area of the fence. See <a class="internal" href="sec_pathintegral.html#fig_fenceintegral" title="Figure 9.7">Figure 9.7</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-5-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="fig_fenceintegral"><img alt="A diagram in the xyz-space. A curve gamma is given on the xy-plane in a bold line. A fence-like (vertical) shaded surface is raised above this curve, which has varying heights above different points." class="raimg" role="img" src="figures/fenceintegral-mbx.svg" style="width:156pt; height:132pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>A path <span class="process-math">\(\gamma \colon [a,b] \to \R^2\)</span> in the <span class="process-math">\(xy\)</span>-plane (bold curve), and a function <span class="process-math">\(z=f(x,y)\)</span> graphed above it in the <span class="process-math">\(z\)</span> direction.  The integral is the shaded area depicted.<div class="autopermalink" data-description="Figure 9.7"><a aria-label="Copy heading and permalink for Figure 9.7" href="#fig_fenceintegral" title="Copy heading and permalink for Figure 9.7">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<article class="definition definition-like" id="sec_pathintegral-5-6"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.2.14</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_pathintegral-5-6-1-1">
+<div class="para">Suppose <span class="process-math">\(\gamma \colon [a,b] \to \R^n\)</span> is a smooth path, and <span class="process-math">\(f\)</span> is a continuous function defined on the image <span class="process-math">\(\gamma\bigl([a,b]\bigr)\text{.}\)</span>  Then define</div>
+<div class="displaymath process-math" id="sec_pathintegral-5-6-1-1-4">
+\begin{equation}
+\int_{\gamma} f \,ds \coloneqq
+\int_a^b f\bigl( \gamma(t) \bigr) \bnorm{\gamma'(t)} \, dt .
+\end{equation}
+</div>
+<div class="para">To emphasize the variables we may use</div>
+<div class="displaymath process-math" id="sec_pathintegral-5-6-1-1-5">
+\begin{equation}
+\int_{\gamma} f(x) \,ds(x) \coloneqq \int_{\gamma} f \,ds .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-5-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_pathintegral-5-6-1-2">The definition for a piecewise smooth path is similar as before and is left to the reader.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-5-6-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 9.2.14"><a aria-label="Copy heading and permalink for Definition 9.2.14" href="#sec_pathintegral-5-6" title="Copy heading and permalink for Definition 9.2.14">🔗</a></div>
+</article>
+<div class="para" id="sec_pathintegral-5-7">The path integral of a function is also independent of the parametrization, and in this case, the orientation does not matter.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-5-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="mv_prop_lineintrepararam"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.2.15</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="mv_prop_lineintrepararam-1-1">
+<div class="para">Let <span class="process-math">\(\gamma \colon [a,b] \to \R^n\)</span> be a piecewise smooth path and <span class="process-math">\(\gamma \circ h \colon [c,d] \to \R^n\)</span> a piecewise smooth reparametrization. Suppose <span class="process-math">\(f\)</span> is a continuous function defined on the set <span class="process-math">\(\gamma\bigl([a,b]\bigr)\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" id="mv_prop_lineintrepararam-1-1-5">
+\begin{equation}
+\int_{\gamma \circ h} f\, ds = \int_{\gamma} f\, ds .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_prop_lineintrepararam-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 9.2.15"><a aria-label="Copy heading and permalink for Proposition 9.2.15" href="#mv_prop_lineintrepararam" title="Copy heading and permalink for Proposition 9.2.15">🔗</a></div>
+</article>
+<article class="proof" id="sec_pathintegral-5-9"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_pathintegral-5-9-1">
+<div class="para">Suppose <span class="process-math">\(h\)</span> is orientation preserving and that <span class="process-math">\(\gamma\)</span> and <span class="process-math">\(h\)</span> are both smooth.  Then</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/mv_exercise_linepiece.html" id="sec_pathintegral-5-9-1-4">
+\begin{equation}
+\begin{split}
+\int_{\gamma} f \, ds
+&amp; =
+\int_a^b 
+f\bigl(\gamma(t)\bigr) \bnorm{\gamma'(t)} \, dt
+\\
+&amp; =
+\int_c^d 
+f\Bigl(\gamma\bigl(h(\tau)\bigr)\Bigr)
+\bnorm{\gamma'\bigl(h(\tau)\bigr)} h'(\tau) \, d\tau
+\\
+&amp; =
+\int_c^d 
+f\Bigl(\gamma\bigl(h(\tau)\bigr)\Bigr)
+\bnorm{\gamma'\bigl(h(\tau)\bigr) h'(\tau)} \, d\tau
+\\
+&amp; =
+\int_c^d 
+f\bigl((\gamma \circ h)(\tau)\bigr) \bnorm{(\gamma \circ h)'(\tau)} \, d\tau
+\\
+&amp; = 
+\int_{\gamma \circ h} f \, ds .
+\end{split}
+\end{equation}
+</div>
+<div class="para">If <span class="process-math">\(h\)</span> is orientation reversing it swaps the order of the limits on the integral, but you also have to introduce a minus sign in order to take <span class="process-math">\(h'\)</span> inside the norm. The details, along with finishing the proof for piecewise smooth paths is left to the reader as <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_pathintegral.html#mv_exercise_linepiece" title="Exercise 9.2.5">Exercise 9.2.5</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-5-9-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 9.2.3.1"><a aria-label="Copy heading and permalink for Proof 9.2.3.1" href="#sec_pathintegral-5-9" title="Copy heading and permalink for Proof 9.2.3.1">🔗</a></div>
+</article>
+<div class="para logical" id="sec_pathintegral-5-10">
+<div class="para">As before, due to this proposition (and the exercises), if <span class="process-math">\(\gamma\)</span> is simple, it does not matter which parametrization we use.  Therefore, if <span class="process-math">\(\Gamma = \gamma\bigl( [a,b] \bigr)\text{,}\)</span> we can simply write</div>
+<div class="displaymath process-math" id="sec_pathintegral-5-10-3">
+\begin{equation}
+\int_\Gamma f\, ds .
+\end{equation}
+</div>
+<div class="para">In this case we do not need to worry about orientation, either way we get the same integral.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-5-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_pathintegral-5-11"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.2.16</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_pathintegral-5-11-1-1">
+<div class="para">Let <span class="process-math">\(f(x,y) \coloneqq x\text{.}\)</span>  Let <span class="process-math">\(C \subset \R^2\)</span> be half of the unit circle for <span class="process-math">\(x
+\geq 0\text{.}\)</span>  We wish to compute</div>
+<div class="displaymath process-math" id="sec_pathintegral-5-11-1-1-4">
+\begin{equation}
+\int_C f \, ds .
+\end{equation}
+</div>
+<div class="para">Parametrize the curve <span class="process-math">\(C\)</span> via <span class="process-math">\(\gamma \colon
+[\nicefrac{-\pi}{2},\nicefrac{\pi}{2}] \to \R^2\)</span> defined as <span class="process-math">\(\gamma(t) \coloneqq \bigl(\cos(t),\sin(t)\bigr)\text{.}\)</span> Then <span class="process-math">\(\gamma'(t) = \bigl(-\sin(t),\cos(t)\bigr)\text{,}\)</span> and</div>
+<div class="displaymath process-math" id="sec_pathintegral-5-11-1-1-9">
+\begin{equation}
+\int_C f \, ds =
+\int_\gamma f \, ds
+=
+\int_{-\pi/2}^{\pi/2} \cos(t) \sqrt{ {\bigl(-\sin(t)\bigr)}^2 +  
+{\bigl(\cos(t)\bigr)}^2 } \, dt
+=
+\int_{-\pi/2}^{\pi/2} \cos(t) \, dt = 2.
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-5-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 9.2.16"><a aria-label="Copy heading and permalink for Example 9.2.16" href="#sec_pathintegral-5-11" title="Copy heading and permalink for Example 9.2.16">🔗</a></div>
+</article>
+<article class="definition definition-like" id="sec_pathintegral-5-12"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.2.17</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_pathintegral-5-12-1-1">
+<div class="para">Suppose <span class="process-math">\(\Gamma \subset \R^n\)</span> is parametrized by a simple piecewise smooth path <span class="process-math">\(\gamma \colon [a,b] \to \R^n\text{,}\)</span> that is, <span class="process-math">\(\gamma\bigl( [a,b] \bigr) = \Gamma\text{.}\)</span>  We define the <em class="emphasis">length</em> by</div>
+<div class="displaymath process-math" id="sec_pathintegral-5-12-1-1-6">
+\begin{equation}
+\ell(\Gamma) \coloneqq \int_{\Gamma} ds = \int_{\gamma} ds .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-5-12-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 9.2.17"><a aria-label="Copy heading and permalink for Definition 9.2.17" href="#sec_pathintegral-5-12" title="Copy heading and permalink for Definition 9.2.17">🔗</a></div>
+</article>
+<div class="para logical" id="sec_pathintegral-5-13">
+<div class="para">If <span class="process-math">\(\gamma\)</span> is smooth,</div>
+<div class="displaymath process-math" id="sec_pathintegral-5-13-2">
+\begin{equation}
+\ell(\Gamma) = 
+\int_a^b
+\bnorm{\gamma'(t)}\, dt .
+\end{equation}
+</div>
+<div class="para">This may be a good time to mention that it is common to write <span class="process-math">\(\int_a^b
+\bnorm{\gamma'(t)}\, dt\)</span> even if the path is only piecewise smooth. That is because <span class="process-math">\(\bnorm{\gamma'(t)}\)</span> is defined and continuous at all but finitely many points and is bounded, and so the integral exists.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-5-13" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_pathintegral-5-14"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.2.18</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_pathintegral-5-14-1-1">
+<div class="para">Let <span class="process-math">\(x,y \in \R^n\)</span> be two points and write <span class="process-math">\([x,y]\)</span> as the straight line segment between the two points <span class="process-math">\(x\)</span> and <span class="process-math">\(y\text{.}\)</span>  Parametrize <span class="process-math">\([x,y]\)</span> by <span class="process-math">\(\gamma(t) \coloneqq (1-t)x + ty\)</span> for <span class="process-math">\(t\)</span> running between <span class="process-math">\(0\)</span> and <span class="process-math">\(1\text{.}\)</span> See <a class="internal" href="sec_pathintegral.html#fig_straightpath" title="Figure 9.8">Figure 9.8</a>. Then <span class="process-math">\(\gamma'(t) = y-x\text{,}\)</span> and therefore</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_straightpath.html" id="sec_pathintegral-5-14-1-1-12">
+\begin{equation}
+\ell\bigl([x,y]\bigr)
+=
+\int_{[x,y]} ds
+=
+\int_0^1 \snorm{y-x} \, dt
+=
+\snorm{y-x} .
+\end{equation}
+</div>
+<div class="para">The length of <span class="process-math">\([x,y]\)</span> is the standard euclidean distance between <span class="process-math">\(x\)</span> and <span class="process-math">\(y\text{,}\)</span> justifying the name.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-5-14-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <hr class="rahr"/>
+<figure class="figure figure-like" id="fig_straightpath"><img alt="A diagram of a straight line path from a point x to the point y, with this direction is indicated by an arrow. The path is labeled [x,y]. The point x is also labeled as t equals 0 and the point y is also labeled as t equals 1." class="raimg" role="img" src="figures/straightpath-mbx.svg" style="width:144pt; height:109pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Straight path between <span class="process-math">\(x\)</span> and <span class="process-math">\(y\)</span> parametrized by <span class="process-math">\((1-t)x + ty\text{.}\)</span><div class="autopermalink" data-description="Figure 9.8"><a aria-label="Copy heading and permalink for Figure 9.8" href="#fig_straightpath" title="Copy heading and permalink for Figure 9.8">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="autopermalink" data-description="Example 9.2.18"><a aria-label="Copy heading and permalink for Example 9.2.18" href="#sec_pathintegral-5-14" title="Copy heading and permalink for Example 9.2.18">🔗</a></div>
+</article>
+<div class="para logical" id="sec_pathintegral-5-15">
+<div class="para">A simple piecewise smooth path <span class="process-math">\(\gamma \colon [0,r] \to \R^n\)</span> is said to be an <em class="emphasis">arc-length parametrization</em> if for all <span class="process-math">\(t \in [0,r]\text{,}\)</span> we have</div>
+<div class="displaymath process-math" id="sec_pathintegral-5-15-4">
+\begin{equation}
+\ell\bigl( \gamma\bigl([0,t]\bigr) \bigr) = t .
+\end{equation}
+</div>
+<div class="para">If <span class="process-math">\(\gamma\)</span> is smooth, then</div>
+<div class="displaymath process-math" id="sec_pathintegral-5-15-6">
+\begin{equation}
+\int_0^t d\tau =
+t = \ell\bigl( \gamma\bigl([0,t]\bigr) \bigr) =
+\int_0^t
+\bnorm{\gamma'(\tau)}
+\, d\tau
+\end{equation}
+</div>
+<div class="para">for all <span class="process-math">\(t\text{.}\)</span> The fundamental theorem of calculus then says that <span class="process-math">\(\bnorm{\gamma'(t)} = 1\)</span> for all <span class="process-math">\(t\text{.}\)</span> Similarly for piecewise smooth <span class="process-math">\(\gamma\text{,}\)</span> we get <span class="process-math">\(\bnorm{\gamma'(t)} = 1\)</span> for all <span class="process-math">\(t\)</span> where the derivative exists. Think of such a parametrization as moving around your curve at speed 1.  If <span class="process-math">\(\gamma \colon [0,r] \to \R^n\)</span> is an arclength parametrization, it is common to use <span class="process-math">\(s\)</span> as the variable as <span class="process-math">\(\int_\gamma f \,ds
+= \int_0^r f\bigl(\gamma(s)\bigr) \,ds\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-5-15" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 9.2.3: Path integral of a function"><a aria-label="Copy heading and permalink for Subsection 9.2.3: Path integral of a function" href="#sec_pathintegral-5" title="Copy heading and permalink for Subsection 9.2.3: Path integral of a function">🔗</a></div>
+</section>
+<section class="exercises" id="sec_pathintegral-6">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.2.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_pathintegral-6-1"><h4 class="heading"><span class="codenumber">9.2.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_pathintegral-6-1-1-1">Show that if <span class="process-math">\(\varphi \colon [a,b] \to \R^n\)</span> is a piecewise smooth path as we defined it, then <span class="process-math">\(\varphi\)</span> is a continuous function.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-6-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 9.2.1"><a aria-label="Copy heading and permalink for Exercise 9.2.1" href="#sec_pathintegral-6-1" title="Copy heading and permalink for Exercise 9.2.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_pathintegral-6-2"><h4 class="heading"><span class="codenumber">9.2.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_pathintegral-6-2-1-1">Finish the proof of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_pathintegral.html#prop_reparamapiecewisesmooth" title="Proposition 9.2.6">Proposition 9.2.6</a> for orientation reversing reparametrizations.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-6-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 9.2.2"><a aria-label="Copy heading and permalink for Exercise 9.2.2" href="#sec_pathintegral-6-2" title="Copy heading and permalink for Exercise 9.2.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_pathintegral-6-3"><h4 class="heading"><span class="codenumber">9.2.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_pathintegral-6-3-1-1">Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_pathintegral.html#mv_prop_pathconcat" title="Proposition 9.2.10">Proposition 9.2.10</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-6-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 9.2.3"><a aria-label="Copy heading and permalink for Exercise 9.2.3" href="#sec_pathintegral-6-3" title="Copy heading and permalink for Exercise 9.2.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="mv_exercise_pathpiece"><h4 class="heading"><span class="codenumber">9.2.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="mv_exercise_pathpiece-1-1">Finish the proof of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_pathintegral.html#mv_prop_pathintrepararam" title="Proposition 9.2.12">Proposition 9.2.12</a> for<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_exercise_pathpiece-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="mv_exercise_pathpiece-1-2">
+<li id="mv_exercise_pathpiece-1-2-1">
+<div class="para" id="mv_exercise_pathpiece-1-2-1-1">orientation reversing reparametrizations, and<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_exercise_pathpiece-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 9.2.4.a"><a aria-label="Copy heading and permalink for Item 9.2.4.a" href="#mv_exercise_pathpiece-1-2-1" title="Copy heading and permalink for Item 9.2.4.a">🔗</a></div>
+</li>
+<li id="mv_exercise_pathpiece-1-2-2">
+<div class="para" id="mv_exercise_pathpiece-1-2-2-1">piecewise smooth paths and reparametrizations.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_exercise_pathpiece-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 9.2.4.b"><a aria-label="Copy heading and permalink for Item 9.2.4.b" href="#mv_exercise_pathpiece-1-2-2" title="Copy heading and permalink for Item 9.2.4.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 9.2.4"><a aria-label="Copy heading and permalink for Exercise 9.2.4" href="#mv_exercise_pathpiece" title="Copy heading and permalink for Exercise 9.2.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="mv_exercise_linepiece"><h4 class="heading"><span class="codenumber">9.2.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="mv_exercise_linepiece-1-1">Finish the proof of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_pathintegral.html#mv_prop_lineintrepararam" title="Proposition 9.2.15">Proposition 9.2.15</a> for<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_exercise_linepiece-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="mv_exercise_linepiece-1-2">
+<li id="mv_exercise_linepiece-1-2-1">
+<div class="para" id="mv_exercise_linepiece-1-2-1-1">orientation reversing reparametrizations, and<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_exercise_linepiece-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 9.2.5.a"><a aria-label="Copy heading and permalink for Item 9.2.5.a" href="#mv_exercise_linepiece-1-2-1" title="Copy heading and permalink for Item 9.2.5.a">🔗</a></div>
+</li>
+<li id="mv_exercise_linepiece-1-2-2">
+<div class="para" id="mv_exercise_linepiece-1-2-2-1">piecewise smooth paths and reparametrizations.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_exercise_linepiece-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 9.2.5.b"><a aria-label="Copy heading and permalink for Item 9.2.5.b" href="#mv_exercise_linepiece-1-2-2" title="Copy heading and permalink for Item 9.2.5.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 9.2.5"><a aria-label="Copy heading and permalink for Exercise 9.2.5" href="#mv_exercise_linepiece" title="Copy heading and permalink for Exercise 9.2.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_pathintegral-6-6"><h4 class="heading"><span class="codenumber">9.2.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_pathintegral-6-6-1-1">Suppose <span class="process-math">\(\gamma \colon [a,b] \to \R^n\)</span> is a piecewise smooth path, and <span class="process-math">\(f\)</span> is a continuous function defined on the image <span class="process-math">\(\gamma\bigl([a,b]\bigr)\text{.}\)</span> Provide a definition of <span class="process-math">\(\int_{\gamma} f \,ds\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-6-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 9.2.6"><a aria-label="Copy heading and permalink for Exercise 9.2.6" href="#sec_pathintegral-6-6" title="Copy heading and permalink for Exercise 9.2.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_pathintegral-6-7"><h4 class="heading"><span class="codenumber">9.2.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_pathintegral-6-7-1-1">Directly using the definitions compute:<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-6-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_pathintegral-6-7-1-2">
+<li id="sec_pathintegral-6-7-1-2-1">
+<div class="para" id="sec_pathintegral-6-7-1-2-1-1">The arc-length of the unit square from <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_pathintegral.html#mv_example_unitsquarepath" title="Example 9.2.2">Example 9.2.2</a> using the given parametrization.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-6-7-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 9.2.7.a"><a aria-label="Copy heading and permalink for Item 9.2.7.a" href="#sec_pathintegral-6-7-1-2-1" title="Copy heading and permalink for Item 9.2.7.a">🔗</a></div>
+</li>
+<li id="sec_pathintegral-6-7-1-2-2">
+<div class="para" id="sec_pathintegral-6-7-1-2-2-1">The arc-length of the unit circle using the parametrization <span class="process-math">\(\gamma \colon [0,1] \to \R^2\text{,}\)</span> <span class="process-math">\(\gamma(t) \coloneqq \bigl(\cos(2\pi t),\sin(2\pi t)\bigr)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-6-7-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 9.2.7.b"><a aria-label="Copy heading and permalink for Item 9.2.7.b" href="#sec_pathintegral-6-7-1-2-2" title="Copy heading and permalink for Item 9.2.7.b">🔗</a></div>
+</li>
+<li id="sec_pathintegral-6-7-1-2-3">
+<div class="para" id="sec_pathintegral-6-7-1-2-3-1">The arc-length of the unit circle using the parametrization <span class="process-math">\(\beta \colon [0,2\pi] \to \R^2\text{,}\)</span> <span class="process-math">\(\beta(t) \coloneqq \bigl(\cos(t),\sin(t)\bigr)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-6-7-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 9.2.7.c"><a aria-label="Copy heading and permalink for Item 9.2.7.c" href="#sec_pathintegral-6-7-1-2-3" title="Copy heading and permalink for Item 9.2.7.c">🔗</a></div>
+</li>
+</ol>
+<div class="para" id="sec_pathintegral-6-7-1-3">Note: Feel free to use what you know about sine and cosine from calculus.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-6-7-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 9.2.7"><a aria-label="Copy heading and permalink for Exercise 9.2.7" href="#sec_pathintegral-6-7" title="Copy heading and permalink for Exercise 9.2.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_pathintegral-6-8"><h4 class="heading"><span class="codenumber">9.2.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_pathintegral-6-8-1-1">Suppose <span class="process-math">\(\gamma \colon [0,1] \to \R^n\)</span> is a smooth path, and <span class="process-math">\(\omega\)</span> is a one-form defined on the image <span class="process-math">\(\gamma\bigl([a,b]\bigr)\text{.}\)</span> For <span class="process-math">\(r \in [0,1]\text{,}\)</span> let <span class="process-math">\(\gamma_r \colon [0,r] \to \R^n\)</span> be defined as simply the restriction of <span class="process-math">\(\gamma\)</span> to <span class="process-math">\([0,r]\text{.}\)</span>  Show that the function <span class="process-math">\(h(r) \coloneqq \int_{\gamma_r} \omega\)</span> is a continuously differentiable function on <span class="process-math">\([0,1]\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-6-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 9.2.8"><a aria-label="Copy heading and permalink for Exercise 9.2.8" href="#sec_pathintegral-6-8" title="Copy heading and permalink for Exercise 9.2.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_pathintegral-6-9"><h4 class="heading"><span class="codenumber">9.2.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_pathintegral-6-9-1-1">Suppose <span class="process-math">\(\gamma \colon [a,b] \to \R^n\)</span> is a smooth path. Show that there exists an <span class="process-math">\(\epsilon &gt; 0\)</span> and a continuously differentiable function <span class="process-math">\(\widetilde{\gamma} \colon (a-\epsilon,b+\epsilon) \to \R^n\)</span> with <span class="process-math">\(\widetilde{\gamma}(t) = \gamma(t)\)</span> for all <span class="process-math">\(t \in [a,b]\)</span> and <span class="process-math">\(\widetilde{\gamma}'(t) \neq 0\)</span> for all <span class="process-math">\(t \in 
+(a-\epsilon,b+\epsilon)\text{.}\)</span>  That is, prove that a smooth path extends some small distance past the end points.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-6-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 9.2.9"><a aria-label="Copy heading and permalink for Exercise 9.2.9" href="#sec_pathintegral-6-9" title="Copy heading and permalink for Exercise 9.2.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_pathintegral-6-10"><h4 class="heading"><span class="codenumber">9.2.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_pathintegral-6-10-1-1">Suppose <span class="process-math">\(\alpha \colon [a,b] \to \R^n\)</span> and <span class="process-math">\(\beta \colon [c,d] \to \R^n\)</span> are piecewise smooth paths such that <span class="process-math">\(\Gamma \coloneqq \alpha\bigl([a,b]\bigr) = \beta\bigl([c,d]\bigr)\text{.}\)</span> Show that there exist finitely many points <span class="process-math">\(\{ p_1,p_2,\ldots,p_k\} \in \Gamma\text{,}\)</span> such that the sets <span class="process-math">\(\alpha^{-1}\bigl( \{ p_1,p_2,\ldots,p_k\} \bigr)\)</span> and <span class="process-math">\(\beta^{-1}\bigl( \{ p_1,p_2,\ldots,p_k\} \bigr)\)</span> are partitions of <span class="process-math">\([a,b]\)</span> and <span class="process-math">\([c,d]\)</span> such that on every subinterval the paths are smooth (that is, they are partitions as in the definition of piecewise smooth path).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-6-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 9.2.10"><a aria-label="Copy heading and permalink for Exercise 9.2.10" href="#sec_pathintegral-6-10" title="Copy heading and permalink for Exercise 9.2.10">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_pathintegral-6-11"><h4 class="heading"><span class="codenumber">9.2.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_pathintegral-6-11-1-1"><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-6-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div></div>
+<ol class="lower-alpha ol-marker-3" id="sec_pathintegral-6-11-1-2">
+<li id="sec_pathintegral-6-11-1-2-1">
+<div class="para" id="sec_pathintegral-6-11-1-2-1-1">Suppose <span class="process-math">\(\gamma \colon [a,b] \to \R^n\)</span> and <span class="process-math">\(\alpha \colon [c,d] \to \R^n\)</span> are two smooth paths that are one-to-one and <span class="process-math">\(\gamma\bigl([a,b]\bigr) = \alpha\bigl([c,d]\bigr)\text{.}\)</span>  Then there exists a smooth reparametrization <span class="process-math">\(h \colon [a,b] \to [c,d]\)</span> such that <span class="process-math">\(\gamma = \alpha \circ h\text{.}\)</span><br/> Hint 1: It is not hard to show <span class="process-math">\(h\)</span> exists. The trick is to prove it is continuously differentiable with a nonzero derivative.  Apply the implicit function theorem though it may at first seem the dimensions are wrong.<br/> Hint 2: Worry about derivative of <span class="process-math">\(h\)</span> in <span class="process-math">\((a,b)\)</span> first.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-6-11-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 9.2.11.a"><a aria-label="Copy heading and permalink for Item 9.2.11.a" href="#sec_pathintegral-6-11-1-2-1" title="Copy heading and permalink for Item 9.2.11.a">🔗</a></div>
+</li>
+<li id="sec_pathintegral-6-11-1-2-2">
+<div class="para" id="sec_pathintegral-6-11-1-2-2-1">Prove the same thing as part a, but now for simple closed paths with the further assumption that <span class="process-math">\(\gamma(a) = \gamma(b) = \alpha(c) = \alpha(d)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-6-11-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 9.2.11.b"><a aria-label="Copy heading and permalink for Item 9.2.11.b" href="#sec_pathintegral-6-11-1-2-2" title="Copy heading and permalink for Item 9.2.11.b">🔗</a></div>
+</li>
+<li id="sec_pathintegral-6-11-1-2-3">
+<div class="para" id="sec_pathintegral-6-11-1-2-3-1">Prove parts a) and b) but for piecewise smooth paths, obtaining piecewise smooth reparametrizations.<br/> Hint: The trick is to find two partitions such that when restricted to a subinterval of the partition both paths have the same image and are smooth, see the exercise above.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-6-11-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 9.2.11.c"><a aria-label="Copy heading and permalink for Item 9.2.11.c" href="#sec_pathintegral-6-11-1-2-3" title="Copy heading and permalink for Item 9.2.11.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 9.2.11"><a aria-label="Copy heading and permalink for Exercise 9.2.11" href="#sec_pathintegral-6-11" title="Copy heading and permalink for Exercise 9.2.11">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_pathintegral-6-12"><h4 class="heading"><span class="codenumber">9.2.12<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_pathintegral-6-12-1-1">
+<div class="para">Suppose <span class="process-math">\(\alpha \colon [a,b] \to \R^n\)</span> and <span class="process-math">\(\beta \colon [b,c] \to \R^n\)</span> are piecewise smooth paths with <span class="process-math">\(\alpha(b)=\beta(b)\text{.}\)</span>  Let <span class="process-math">\(\gamma \colon [a,c] \to \R^n\)</span> be defined by</div>
+<div class="displaymath process-math" id="sec_pathintegral-6-12-1-1-5">
+\begin{equation}
+\gamma(t) \coloneqq
+\begin{cases}
+\alpha(t) &amp; \text{if } t \in [a,b], \\
+\beta(t)  &amp; \text{if } t \in (b,c].
+\end{cases}
+\end{equation}
+</div>
+<div class="para">Show that <span class="process-math">\(\gamma\)</span> is a piecewise smooth path, and that if <span class="process-math">\(\omega\)</span> is a one-form defined on the curve given by <span class="process-math">\(\gamma\text{,}\)</span> then</div>
+<div class="displaymath process-math" id="sec_pathintegral-6-12-1-1-9">
+\begin{equation}
+\int_{\gamma} \omega =
+\int_{\alpha} \omega +
+\int_{\beta} \omega .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-6-12-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 9.2.12"><a aria-label="Copy heading and permalink for Exercise 9.2.12" href="#sec_pathintegral-6-12" title="Copy heading and permalink for Exercise 9.2.12">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="mv_exercise_closedcurveintegral"><h4 class="heading"><span class="codenumber">9.2.13<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="mv_exercise_closedcurveintegral-1-1">
+<div class="para">Suppose <span class="process-math">\(\gamma \colon [a,b] \to \R^n\)</span> and <span class="process-math">\(\beta \colon [c,d] \to \R^n\)</span> are two simple closed piecewise smooth paths. That is, <span class="process-math">\(\gamma(a)=\gamma(b)\)</span> and <span class="process-math">\(\beta(c) = \beta(d)\)</span> and the restrictions <span class="process-math">\(\gamma|_{[a,b)}\)</span> and <span class="process-math">\(\beta|_{[c,d)}\)</span> are one-to-one. Suppose <span class="process-math">\(\Gamma = \gamma\bigl([a,b]\bigr) = \beta\bigl([c,d]\bigr)\)</span> and <span class="process-math">\(\omega\)</span> is a one-form defined on <span class="process-math">\(\Gamma \subset \R^n\text{.}\)</span>  Show that either</div>
+<div class="displaymath process-math" id="mv_exercise_closedcurveintegral-1-1-10">
+\begin{equation}
+\int_\gamma \omega = 
+\int_\beta \omega,
+\qquad \text{or} \qquad 
+\int_\gamma \omega = 
+- \int_\beta \omega.
+\end{equation}
+</div>
+<div class="para">In particular, the notation <span class="process-math">\(\int_{\Gamma} \omega\)</span> makes sense if we indicate the direction in which the integral is evaluated. Hint: See previous three exercises.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_exercise_closedcurveintegral-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 9.2.13"><a aria-label="Copy heading and permalink for Exercise 9.2.13" href="#mv_exercise_closedcurveintegral" title="Copy heading and permalink for Exercise 9.2.13">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="mv_exercise_curveintegral"><h4 class="heading"><span class="codenumber">9.2.14<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="mv_exercise_curveintegral-1-1">
+<div class="para">Suppose <span class="process-math">\(\gamma \colon [a,b] \to \R^n\)</span> and <span class="process-math">\(\beta \colon [c,d] \to \R^n\)</span> are two piecewise smooth paths which are one-to-one except at finitely many points.  That is, there exist finite sets <span class="process-math">\(S \subset [a,b]\)</span> and <span class="process-math">\(T \subset [c,d]\)</span> such that <span class="process-math">\(\gamma|_{[a,b]\setminus S}\)</span> and <span class="process-math">\(\beta|_{[c,d]\setminus T}\)</span> are one-to-one. Suppose <span class="process-math">\(\Gamma = \gamma\bigl([a,b]\bigr) = \beta\bigl([c,d]\bigr)\)</span> and <span class="process-math">\(\omega\)</span> is a one-form defined on <span class="process-math">\(\Gamma \subset \R^n\text{.}\)</span>  Show that either</div>
+<div class="displaymath process-math" id="mv_exercise_curveintegral-1-1-10">
+\begin{equation}
+\int_\gamma \omega = 
+\int_\beta \omega,
+\qquad \text{or} \qquad 
+\int_\gamma \omega = 
+- \int_\beta \omega.
+\end{equation}
+</div>
+<div class="para">In particular, the notation <span class="process-math">\(\int_{\Gamma} \omega\)</span> makes sense if we indicate the direction in which the integral is evaluated. <br/> Hint: Same hint as the last exercise.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_exercise_curveintegral-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 9.2.14"><a aria-label="Copy heading and permalink for Exercise 9.2.14" href="#mv_exercise_curveintegral" title="Copy heading and permalink for Exercise 9.2.14">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_pathintegral-6-15"><h4 class="heading"><span class="codenumber">9.2.15<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_pathintegral-6-15-1-1">Define <span class="process-math">\(\gamma \colon [0,1] \to \R^2\)</span> by <span class="process-math">\(\gamma(t) \coloneqq \Bigl( t^3 \sin(\nicefrac{1}{t}),\,
+t{\bigl(3t^2\sin(\nicefrac{1}{t})-t\cos(\nicefrac{1}{t})\bigr)}^2 \Bigr)\)</span> for <span class="process-math">\(t \neq 0\)</span> and <span class="process-math">\(\gamma(0) = (0,0)\text{.}\)</span>  Show that<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-6-15-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_pathintegral-6-15-1-2">
+<li id="sec_pathintegral-6-15-1-2-1">
+<div class="para" id="sec_pathintegral-6-15-1-2-1-1">
+<span class="process-math">\(\gamma\)</span> is continuously differentiable on <span class="process-math">\([0,1]\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-6-15-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 9.2.15.a"><a aria-label="Copy heading and permalink for Item 9.2.15.a" href="#sec_pathintegral-6-15-1-2-1" title="Copy heading and permalink for Item 9.2.15.a">🔗</a></div>
+</li>
+<li id="sec_pathintegral-6-15-1-2-2">
+<div class="para" id="sec_pathintegral-6-15-1-2-2-1">Show that there exists an infinite sequence <span class="process-math">\(\{ t_n \}_{n=1}^\infty\)</span> in <span class="process-math">\([0,1]\)</span> converging to 0, such that <span class="process-math">\(\gamma'(t_n) = (0,0)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-6-15-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 9.2.15.b"><a aria-label="Copy heading and permalink for Item 9.2.15.b" href="#sec_pathintegral-6-15-1-2-2" title="Copy heading and permalink for Item 9.2.15.b">🔗</a></div>
+</li>
+<li id="sec_pathintegral-6-15-1-2-3">
+<div class="para" id="sec_pathintegral-6-15-1-2-3-1">Show that the points <span class="process-math">\(\gamma(t_n)\)</span> lie on the line <span class="process-math">\(y=0\)</span> and such that the <span class="process-math">\(x\)</span>-coordinate of <span class="process-math">\(\gamma(t_n)\)</span> alternates between positive and negative (if they do not alternate you only found a subsequence, you need to find them all).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-6-15-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 9.2.15.c"><a aria-label="Copy heading and permalink for Item 9.2.15.c" href="#sec_pathintegral-6-15-1-2-3" title="Copy heading and permalink for Item 9.2.15.c">🔗</a></div>
+</li>
+<li id="sec_pathintegral-6-15-1-2-4">
+<div class="para" id="sec_pathintegral-6-15-1-2-4-1">Show that there is no piecewise smooth path <span class="process-math">\(\alpha\)</span> whose image equals <span class="process-math">\(\gamma\bigl([0,1]\bigr)\text{.}\)</span>  Hint: Look at part c) and show that <span class="process-math">\(\alpha'\)</span> must be zero where it reaches the origin.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-6-15-1-2-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 9.2.15.d"><a aria-label="Copy heading and permalink for Item 9.2.15.d" href="#sec_pathintegral-6-15-1-2-4" title="Copy heading and permalink for Item 9.2.15.d">🔗</a></div>
+</li>
+<li id="sec_pathintegral-6-15-1-2-5">
+<div class="para" id="sec_pathintegral-6-15-1-2-5-1">(Computer) If you know a plotting software that allows you to plot parametric curves, make a plot of the curve, but only for <span class="process-math">\(t\)</span> in the range <span class="process-math">\([0,0.1]\)</span> otherwise you will not see the behavior.  In particular, you should notice that <span class="process-math">\(\gamma\bigl([0,1]\bigr)\)</span> has infinitely many “corners” near the origin.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-6-15-1-2-5-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 9.2.15.e"><a aria-label="Copy heading and permalink for Item 9.2.15.e" href="#sec_pathintegral-6-15-1-2-5" title="Copy heading and permalink for Item 9.2.15.e">🔗</a></div>
+</li>
+</ol>
+<div class="para" id="sec_pathintegral-6-15-1-3">Note: Feel free to use what you know about sine and cosine from calculus.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathintegral-6-15-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 9.2.15"><a aria-label="Copy heading and permalink for Exercise 9.2.15" href="#sec_pathintegral-6-15" title="Copy heading and permalink for Exercise 9.2.15">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 9.2.4"><a aria-label="Copy heading and permalink for Exercises 9.2.4" href="#sec_pathintegral-6" title="Copy heading and permalink for Exercises 9.2.4">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 9.2: Path integrals"><a aria-label="Copy heading and permalink for Section 9.2: Path integrals" href="#sec_pathintegral" title="Copy heading and permalink for Section 9.2: Path integrals">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_diffunderint.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_pathind.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

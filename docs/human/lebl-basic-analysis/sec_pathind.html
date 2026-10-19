@@ -1,0 +1,627 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Path independence · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_pathind">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Path independence</span>
+</h2>
+<section class="introduction" id="sec_pathind-2">
+<div class="para" id="sec_pathind-2-1">
+<em class="emphasis">Note: 2 lectures</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section>
+<section class="subsection" id="sec_pathind-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.3.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Path independent integrals</span>
+</h3>
+<div class="para logical" id="sec_pathind-3-2">
+<div class="para">Let <span class="process-math">\(U \subset \R^n\)</span> be an open set and <span class="process-math">\(\omega\)</span> a one-form defined on <span class="process-math">\(U\text{.}\)</span> The integral of <span class="process-math">\(\omega\)</span> is said to be <em class="emphasis">path independent</em> if for every pair of points <span class="process-math">\(x,y \in U\)</span> and every pair of piecewise smooth paths <span class="process-math">\(\gamma \colon [a,b] \to U\)</span> and <span class="process-math">\(\beta \colon [c,d] \to U\)</span> such that <span class="process-math">\(\gamma(a) = \beta(c) = x\)</span> and <span class="process-math">\(\gamma(b) = \beta(d) = y\text{,}\)</span> we have</div>
+<div class="displaymath process-math" id="sec_pathind-3-2-11">
+\begin{equation}
+\int_\gamma \omega = \int_\beta \omega .
+\end{equation}
+</div>
+<div class="para">In this case, we simply write</div>
+<div class="displaymath process-math" id="sec_pathind-3-2-12">
+\begin{equation}
+\int_x^y \omega \coloneqq \int_\gamma \omega = \int_\beta \omega .
+\end{equation}
+</div>
+<div class="para">Not every one-form gives a path independent integral.  Most do not.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-3-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_pathind-3-3"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.3.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_pathind-3-3-1-1">
+<div class="para">Let <span class="process-math">\(\gamma \colon [0,1] \to \R^2\)</span> be the path <span class="process-math">\(\gamma(t) \coloneqq (t,0)\)</span> going from <span class="process-math">\((0,0)\)</span> to <span class="process-math">\((1,0)\text{.}\)</span>  Let <span class="process-math">\(\beta \colon [0,1] \to \R^2\)</span> be the path <span class="process-math">\(\beta(t) \coloneqq \bigl(t,(1-t)t\bigr)\)</span> also going between the same points.  Then</div>
+<div class="displaymath process-math" id="sec_pathind-3-3-1-1-7">
+\begin{equation}
+\begin{aligned}
+&amp; \int_\gamma y \, dx = 
+\int_0^1 \gamma_2(t) \gamma_1'(t) \, dt
+=
+\int_0^1 0 (1) \, dt = 0 ,\\
+&amp; \int_\beta y \, dx = 
+\int_0^1 \beta_2(t) \beta_1'(t) \, dt
+=
+\int_0^1 (1-t)t(1) \, dt = \frac{1}{6} .
+\end{aligned}
+\end{equation}
+</div>
+<div class="para">The integral of <span class="process-math">\(y\,dx\)</span> is not path independent. In particular, <span class="process-math">\(\int_{(0,0)}^{(1,0)} y\,dx\)</span> does not make sense.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-3-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 9.3.1"><a aria-label="Copy heading and permalink for Example 9.3.1" href="#sec_pathind-3-3" title="Copy heading and permalink for Example 9.3.1">🔗</a></div>
+</article>
+<article class="definition definition-like" id="sec_pathind-3-4"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.3.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_pathind-3-4-1-1">
+<div class="para">Let <span class="process-math">\(U \subset \R^n\)</span> be an open set and <span class="process-math">\(f \colon U \to \R\)</span> a continuously differentiable function.  The one-form</div>
+<div class="displaymath process-math" id="sec_pathind-3-4-1-1-3">
+\begin{equation}
+df \coloneqq
+\frac{\partial f}{\partial x_1} \, dx_1 + 
+\frac{\partial f}{\partial x_2} \, dx_2 + \cdots +
+\frac{\partial f}{\partial x_n} \, dx_n 
+\end{equation}
+</div>
+<div class="para">is called the <em class="emphasis">total derivative</em> of <span class="process-math">\(f\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-3-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_pathind-3-4-1-2">An open set <span class="process-math">\(U \subset \R^n\)</span> is said to be <em class="emphasis">path connected</em><details aria-live="polite" class="ptx-footnote" id="sec_pathind-3-4-1-2-3"><summary class="ptx-footnote__number" title="Footnote 9.3.1"><sup> 1 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_pathind-3-4-1-2-3">Normally only a continuous path is used in this definition, but for open sets the two definitions are equivalent.  See the exercises.
+</div></details> if for every two points <span class="process-math">\(x\)</span> and <span class="process-math">\(y\)</span> in <span class="process-math">\(U\text{,}\)</span> there exists a piecewise smooth path starting at <span class="process-math">\(x\)</span> and ending at <span class="process-math">\(y\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-3-4-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 9.3.2"><a aria-label="Copy heading and permalink for Definition 9.3.2" href="#sec_pathind-3-4" title="Copy heading and permalink for Definition 9.3.2">🔗</a></div>
+</article>
+<div class="para" id="sec_pathind-3-5">We leave as an exercise that every connected open set is path connected.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-3-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="mv_prop_pathinddf"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.3.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="mv_prop_pathinddf-1-1">Let <span class="process-math">\(U \subset \R^n\)</span> be a path connected open set and <span class="process-math">\(\omega\)</span> a one-form defined on <span class="process-math">\(U\text{.}\)</span>  Then <span class="process-math">\(\int_x^y \omega\)</span> is path independent (for all <span class="process-math">\(x,y \in U\)</span>) if and only if there exists a continuously differentiable <span class="process-math">\(f \colon U \to \R\)</span> such that <span class="process-math">\(\omega = df\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_prop_pathinddf-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="mv_prop_pathinddf-1-2">
+<div class="para">In fact, if such an <span class="process-math">\(f\)</span> exists, then for every pair of points <span class="process-math">\(x,y \in U\)</span>
+</div>
+<div class="displaymath process-math" id="mv_prop_pathinddf-1-2-3">
+\begin{equation}
+\int_{x}^y \omega = f(y)-f(x) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_prop_pathinddf-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 9.3.3"><a aria-label="Copy heading and permalink for Proposition 9.3.3" href="#mv_prop_pathinddf" title="Copy heading and permalink for Proposition 9.3.3">🔗</a></div>
+</article>
+<div class="para" id="sec_pathind-3-7">In other words, if we fix <span class="process-math">\(p \in U\text{,}\)</span> then <span class="process-math">\(f(x) = C + \int_{p}^x \omega\)</span> for some constant <span class="process-math">\(C\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-3-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_pathind-3-8"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_pathind-3-8-1">
+<div class="para">First suppose that the integral is path independent.  Pick <span class="process-math">\(p \in U\text{.}\)</span>  Since <span class="process-math">\(U\)</span> is path connected, there exists a path from <span class="process-math">\(p\)</span> to every <span class="process-math">\(x \in U\text{.}\)</span> Define</div>
+<div class="displaymath process-math" id="sec_pathind-3-8-1-5">
+\begin{equation}
+f(x) \coloneqq \int_{p}^x \omega .
+\end{equation}
+</div>
+<div class="para">Write <span class="process-math">\(\omega = \omega_1 \,dx_1 + \omega_2 \,dx_2 + \cdots + \omega_n \,dx_n\text{.}\)</span> We wish to show that for every <span class="process-math">\(j = 1,2,\ldots,n\text{,}\)</span> the partial derivative <span class="process-math">\(\frac{\partial f}{\partial x_j}\)</span> exists and is equal to <span class="process-math">\(\omega_j\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-3-8-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_pathind-3-8-2">
+<div class="para">Let <span class="process-math">\(e_j\)</span> be an arbitrary standard basis vector, and <span class="process-math">\(h\)</span> a nonzero real number.  Compute</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/mv_prop_pathconcat.html ./knowl/xref/fig_pathindantider.html" id="sec_pathind-3-8-2-3">
+\begin{equation}
+\frac{f(x+h e_j) - f(x)}{h} =
+\frac{1}{h} \left( \int_{p}^{x+he_j} \omega - \int_{p}^x \omega \right)
+=
+\frac{1}{h} \int_{x}^{x+he_j} \omega ,
+\end{equation}
+</div>
+<div class="para">which follows by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_pathintegral.html#mv_prop_pathconcat" title="Proposition 9.2.10">Proposition 9.2.10</a> and path independence as <span class="process-math">\(\int_{p}^{x+he_j} \omega =
+\int_{p}^{x} \omega +
+\int_{x}^{x+he_j} \omega\text{,}\)</span> because we pick a path from <span class="process-math">\(p\)</span> to <span class="process-math">\(x+he_j\)</span> that also happens to pass through <span class="process-math">\(x\text{,}\)</span> and then we cut this path in two, see <a class="internal" href="sec_pathind.html#fig_pathindantider" title="Figure 9.9">Figure 9.9</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-3-8-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="fig_pathindantider"><img alt="A diagram where the horizontal direction is labeled as e sub j. A point p is marked, and then a path going in a curved way to a point marked x. Then a straight line path rightwards (horizontally) goes to the point x plus h times e sub j." class="raimg" role="img" src="figures/pathindantider-mbxpdft.svg" style="width:107pt; height:65pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Using path independence in computing the partial derivative.<div class="autopermalink" data-description="Figure 9.9"><a aria-label="Copy heading and permalink for Figure 9.9" href="#fig_pathindantider" title="Copy heading and permalink for Figure 9.9">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para logical" id="sec_pathind-3-8-6">
+<div class="para">Since <span class="process-math">\(U\)</span> is open, suppose <span class="process-math">\(h\)</span> is so small that all points of distance <span class="process-math">\(\sabs{h}\)</span> or less from <span class="process-math">\(x\)</span> are in <span class="process-math">\(U\text{.}\)</span> As the integral is path independent, pick the simplest path possible from <span class="process-math">\(x\)</span> to <span class="process-math">\(x+he_j\text{,}\)</span> that is, <span class="process-math">\(\gamma(t) \coloneqq x+t he_j\)</span> for <span class="process-math">\(t \in [0,1]\text{.}\)</span>  The path is in <span class="process-math">\(U\text{.}\)</span> Notice <span class="process-math">\(\gamma'(t) = h e_j\)</span> has only one nonzero component and that is the <span class="process-math">\(j\)</span>th component, which is <span class="process-math">\(h\text{.}\)</span>  Therefore,</div>
+<div class="displaymath process-math" id="sec_pathind-3-8-6-14">
+\begin{equation}
+\frac{1}{h} \int_{x}^{x+he_j} \omega 
+=
+\frac{1}{h} \int_{\gamma} \omega 
+=
+\frac{1}{h} \int_0^1 \omega_j(x+the_j) h \, dt 
+=
+\int_0^1 \omega_j(x+the_j) \, dt  .
+\end{equation}
+</div>
+<div class="para">We wish to take the limit as <span class="process-math">\(h \to 0\text{.}\)</span>  The function <span class="process-math">\(\omega_j\)</span> is continuous at <span class="process-math">\(x\text{.}\)</span>  Given <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> suppose <span class="process-math">\(h\)</span> is small enough so that <span class="process-math">\(\babs{\omega_j(x)-\omega_j(y)} &lt; \epsilon\)</span> whenever <span class="process-math">\(\snorm{x-y} \leq \sabs{h}\text{.}\)</span> Thus, <span class="process-math">\(\babs{\omega_j(x+the_j)-\omega_j(x)} &lt; \epsilon\)</span> for all <span class="process-math">\(t \in [0,1]\text{,}\)</span> and we estimate</div>
+<div class="displaymath process-math" id="sec_pathind-3-8-6-24">
+\begin{equation}
+\abs{\int_0^1 \omega_j(x+the_j) \, dt  - \omega_j(x)}
+=
+\abs{\int_0^1 \bigl( \omega_j(x+the_j) - \omega_j(x) \bigr) \, dt}
+\leq
+\epsilon .
+\end{equation}
+</div>
+<div class="para">That is,</div>
+<div class="displaymath process-math" id="sec_pathind-3-8-6-25">
+\begin{equation}
+\lim_{h\to 0}\frac{f(x+h e_j) - f(x)}{h} = \omega_j(x) .
+\end{equation}
+</div>
+<div class="para">All partials of <span class="process-math">\(f\)</span> exist and are equal to <span class="process-math">\(\omega_j\text{,}\)</span> which are continuous functions.  Thus, <span class="process-math">\(f\)</span> is continuously differentiable, and furthermore <span class="process-math">\(df = \omega\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-3-8-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_pathind-3-8-7">
+<div class="para">For the other direction, suppose a continuously differentiable <span class="process-math">\(f\)</span> exists such that <span class="process-math">\(df = \omega\text{.}\)</span> Take a smooth path <span class="process-math">\(\gamma \colon [a,b] \to U\)</span> such that <span class="process-math">\(\gamma(a) = x\)</span> and <span class="process-math">\(\gamma(b) = y\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" id="sec_pathind-3-8-7-6">
+\begin{equation}
+\begin{split}
+\int_\gamma df
+&amp; =
+\int_a^b
+\biggl(
+\frac{\partial f}{\partial x_1}\bigl(\gamma(t)\bigr) \gamma_1'(t)+
+\frac{\partial f}{\partial x_2}\bigl(\gamma(t)\bigr) \gamma_2'(t)+ \cdots +
+\frac{\partial f}{\partial x_n}\bigl(\gamma(t)\bigr) \gamma_n'(t)
+\biggr) \, dt
+\\
+&amp; = 
+\int_a^b
+\frac{d}{dt} \Bigl[ f\bigl(\gamma(t)\bigr) \Bigr]\, dt
+\\
+&amp; = f(y)-f(x) .
+\end{split}
+\end{equation}
+</div>
+<div class="para">The value of the integral only depends on <span class="process-math">\(x\)</span> and <span class="process-math">\(y\text{,}\)</span> not the path taken.  Therefore the integral is path independent. We leave checking this fact for a piecewise smooth path as an exercise.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-3-8-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 9.3.1.1"><a aria-label="Copy heading and permalink for Proof 9.3.1.1" href="#sec_pathind-3-8" title="Copy heading and permalink for Proof 9.3.1.1">🔗</a></div>
+</article>
+<div class="para" id="sec_pathind-3-9">Path independence can be stated more neatly in terms of integrals over closed paths.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-3-9" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_pathind-3-10"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.3.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_pathind-3-10-1-1">
+<div class="para">Let <span class="process-math">\(U \subset \R^n\)</span> be a path connected open set and <span class="process-math">\(\omega\)</span> a one-form defined on <span class="process-math">\(U\text{.}\)</span> Then <span class="process-math">\(\omega = df\)</span> for some continuously differentiable <span class="process-math">\(f \colon U \to
+\R\)</span> if and only if</div>
+<div class="displaymath process-math" id="sec_pathind-3-10-1-1-6">
+\begin{equation}
+\int_{\gamma} \omega = 0
+\qquad
+\text{for every piecewise smooth closed path } \gamma \colon [a,b] \to U.
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-3-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 9.3.4"><a aria-label="Copy heading and permalink for Proposition 9.3.4" href="#sec_pathind-3-10" title="Copy heading and permalink for Proposition 9.3.4">🔗</a></div>
+</article>
+<article class="proof" id="sec_pathind-3-11"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_pathind-3-11-1">
+<div class="para">Suppose <span class="process-math">\(\omega = df\)</span> and let <span class="process-math">\(\gamma\)</span> be a piecewise smooth closed path. Since <span class="process-math">\(\gamma(a) = \gamma(b)\)</span> for a closed path, the previous proposition says</div>
+<div class="displaymath process-math" id="sec_pathind-3-11-1-4">
+\begin{equation}
+\int_{\gamma} \omega = f\bigl(\gamma(b)\bigr) - f\bigl(\gamma(a)\bigr) = 0 .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-3-11-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_pathind-3-11-2">Now suppose that for every piecewise smooth closed path <span class="process-math">\(\gamma\text{,}\)</span> <span class="process-math">\(\int_{\gamma} \omega = 0\text{.}\)</span> Let <span class="process-math">\(x,y\)</span> be two points in <span class="process-math">\(U\)</span> and let <span class="process-math">\(\alpha \colon [0,1] \to U\)</span> and <span class="process-math">\(\beta \colon [0,1] \to U\)</span> be two piecewise smooth paths with <span class="process-math">\(\alpha(0) = \beta(0) = x\)</span> and <span class="process-math">\(\alpha(1) = \beta(1) = y\text{.}\)</span>  See <a class="internal" href="sec_pathind.html#fig_twopaths" title="Figure 9.10">Figure 9.10</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-3-11-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="fig_twopaths"><img alt="A diagram of two points, x and y, and two different paths, alpha and beta, both starting at x and ending at y." class="raimg" role="img" src="figures/twopaths-mbxpdft.svg" style="width:86pt; height:46pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Two paths from <span class="process-math">\(x\)</span> to <span class="process-math">\(y\text{.}\)</span><div class="autopermalink" data-description="Figure 9.10"><a aria-label="Copy heading and permalink for Figure 9.10" href="#fig_twopaths" title="Copy heading and permalink for Figure 9.10">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para logical" id="sec_pathind-3-11-6">
+<div class="para">Define <span class="process-math">\(\gamma \colon [0,2] \to U\)</span> by</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/mv_prop_pathconcat.html" id="sec_pathind-3-11-6-2">
+\begin{equation}
+\gamma(t) \coloneqq
+\begin{cases}
+\alpha(t)  &amp; \text{if } t \in [0,1], \\
+\beta(2-t) &amp; \text{if } t \in (1,2].
+\end{cases}
+\end{equation}
+</div>
+<div class="para">This path is piecewise smooth.  This is due to the fact that <span class="process-math">\(\gamma|_{[0,1]}(t) = \alpha(t)\)</span> and <span class="process-math">\(\gamma|_{[1,2]}(t) = \beta(2-t)\)</span> (note especially <span class="process-math">\(\gamma(1) = \alpha(1) =
+\beta(2-1)\)</span>). It is also closed as <span class="process-math">\(\gamma(0) = \alpha(0) = \beta(0) = \gamma(2)\text{.}\)</span> So</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/mv_prop_pathconcat.html" id="sec_pathind-3-11-6-7">
+\begin{equation}
+0 = \int_{\gamma} \omega = \int_{\alpha} \omega - \int_{\beta} \omega .
+\end{equation}
+</div>
+<div class="para">This follows first by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_pathintegral.html#mv_prop_pathconcat" title="Proposition 9.2.10">Proposition 9.2.10</a>, and then noticing that the second part is <span class="process-math">\(\beta\)</span> traveled backwards so that we get minus the <span class="process-math">\(\beta\)</span> integral.  Thus the integral of <span class="process-math">\(\omega\)</span> on <span class="process-math">\(U\)</span> is path independent.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-3-11-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 9.3.1.2"><a aria-label="Copy heading and permalink for Proof 9.3.1.2" href="#sec_pathind-3-11" title="Copy heading and permalink for Proof 9.3.1.2">🔗</a></div>
+</article>
+<div class="para" id="sec_pathind-3-12">However one states path independence, it is often a difficult criterion to check—you have to check something “for all paths.” There is an easier local criterion, a differential equation, that guarantees path independence, or in other words it guarantees an <em class="emphasis">antiderivative</em> <span class="process-math">\(f\)</span> whose total derivative is the given one-form <span class="process-math">\(\omega\text{.}\)</span>  Since the criterion is local, we generally only find the function <span class="process-math">\(f\)</span> locally. We can find the antiderivative in every <em class="emphasis">simply connected</em> domain, which informally is a connected open set where every path between two points can be “continuously deformed” into any other path between those two points.  But to make matters simple, we prove the result for what are called star-shaped domains, which is often good enough. As a bonus the proof in the star-shaped case constructs the antiderivative explicitly. As balls are star-shaped, we then have the result locally.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-3-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_pathind-3-13"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.3.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_pathind-3-13-1-1">Let <span class="process-math">\(U \subset \R^n\)</span> be an open set and <span class="process-math">\(p \in U\text{.}\)</span>  We say <span class="process-math">\(U\)</span> is a <em class="emphasis">star-shaped domain</em> with respect to <span class="process-math">\(p\)</span> if for every other point <span class="process-math">\(x \in U\text{,}\)</span> the line segment <span class="process-math">\([p,x]\)</span> is in <span class="process-math">\(U\text{,}\)</span> that is, if <span class="process-math">\((1-t)p + tx \in U\)</span> for all <span class="process-math">\(t \in [0,1]\text{.}\)</span> If we say simply <em class="emphasis">star-shaped</em>, then <span class="process-math">\(U\)</span> is star-shaped with respect to some <span class="process-math">\(p \in U\text{.}\)</span>  See <a class="internal" href="sec_pathind.html#fig_starshaped" title="Figure 9.11">Figure 9.11</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-3-13-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <hr class="rahr"/>
+<figure class="figure figure-like" id="fig_starshaped"><img alt="A picture of a shaded set which vaguely looks like a star. A point p is marked as well as a number of other random points in the set (one of which is labeled x). Each of these points is connected by a line segment with p, and we note that the entire line segment stays in the set." class="raimg" role="img" src="figures/starshaped-mbxpdft.svg" style="width:140pt; height:89pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>A star-shaped domain with respect to <span class="process-math">\(p\text{.}\)</span><div class="autopermalink" data-description="Figure 9.11"><a aria-label="Copy heading and permalink for Figure 9.11" href="#fig_starshaped" title="Copy heading and permalink for Figure 9.11">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="autopermalink" data-description="Definition 9.3.5"><a aria-label="Copy heading and permalink for Definition 9.3.5" href="#sec_pathind-3-13" title="Copy heading and permalink for Definition 9.3.5">🔗</a></div>
+</article>
+<div class="para" id="sec_pathind-3-14">Notice the difference between star-shaped and convex.  Convex implies star-shaped, but a star-shaped domain need not be convex.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-3-14" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="sec_pathind-3-15"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.3.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Poincaré lemma.</span>
+</h4>
+<div class="para logical" id="sec_pathind-3-15-2-1">
+<div class="para">Let <span class="process-math">\(U \subset \R^n\)</span> be a star-shaped domain and <span class="process-math">\(\omega\)</span> a continuously differentiable one-form defined on <span class="process-math">\(U\text{.}\)</span>  That is,</div>
+<div class="displaymath process-math" id="sec_pathind-3-15-2-1-4">
+\begin{equation}
+\omega =
+\omega_1 \,dx_1 +
+\omega_2 \,dx_2 + \cdots +
+\omega_n \,dx_n ,
+\end{equation}
+</div>
+<div class="para">where <span class="process-math">\(\omega_1,\omega_2,\ldots,\omega_n\)</span> are continuously differentiable functions.  Suppose that for every <span class="process-math">\(j\)</span> and <span class="process-math">\(k\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_pathind-3-15-2-1-8">
+\begin{equation}
+\frac{\partial \omega_j}{\partial x_k} = \frac{\partial \omega_k}{\partial x_j} .
+\end{equation}
+</div>
+<div class="para">Then there exists a twice continuously differentiable function <span class="process-math">\(f \colon U
+\to \R\)</span> such that <span class="process-math">\(df = \omega\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-3-15-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 9.3.6: Poincaré lemma"><a aria-label="Copy heading and permalink for Theorem 9.3.6: Poincaré lemma" href="#sec_pathind-3-15" title="Copy heading and permalink for Theorem 9.3.6: Poincaré lemma">🔗</a></div>
+</article>
+<div class="para logical" id="sec_pathind-3-16">
+<div class="para">The condition on the derivatives of <span class="process-math">\(\omega\)</span> is precisely the condition that the second partial derivatives commute.  That is, if <span class="process-math">\(df = \omega\text{,}\)</span> and <span class="process-math">\(f\)</span> is twice continuously differentiable, then</div>
+<div class="displaymath process-math" id="sec_pathind-3-16-4">
+\begin{equation}
+\frac{\partial \omega_j}{\partial x_k}
+=
+\frac{\partial^2 f}{\partial x_k \partial x_j} 
+=
+\frac{\partial^2 f}{\partial x_j \partial x_k} 
+=
+\frac{\partial \omega_k}{\partial x_j} .
+\end{equation}
+</div>
+<div class="para">The condition is clearly necessary.  The Poincaré lemma says that it is sufficient for a star-shaped <span class="process-math">\(U\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-3-16" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_pathind-3-17"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_pathind-3-17-1">
+<div class="para">Suppose <span class="process-math">\(U\)</span> is a star-shaped domain with respect to <span class="process-math">\(p=(p_1,p_2,\ldots,p_n) \in U\text{.}\)</span> Given <span class="process-math">\(x = (x_1,x_2,\ldots,x_n) \in U\text{,}\)</span> define the path <span class="process-math">\(\gamma \colon [0,1] \to U\)</span> as <span class="process-math">\(\gamma(t) \coloneqq (1-t)p + tx\text{,}\)</span> so <span class="process-math">\(\gamma'(t) = x-p\text{.}\)</span>  Let</div>
+<div class="displaymath process-math" id="sec_pathind-3-17-1-7">
+\begin{equation}
+f(x) \coloneqq \int_{\gamma} \omega
+=
+\int_0^1
+\left(
+\sum_{k=1}^n
+\omega_k \bigl((1-t)p + tx \bigr) \, (x_k-p_k)
+\right) dt .
+\end{equation}
+</div>
+<div class="para">We differentiate in <span class="process-math">\(x_j\)</span> under the integral, which is allowed as everything, including the partials, is continuous:</div>
+<div class="displaymath process-math" id="sec_pathind-3-17-1-9">
+\begin{equation}
+\begin{split}
+\frac{\partial f}{\partial x_j}(x) &amp; =
+\int_0^1
+\left(
+\left(
+\sum_{k=1}^n
+\frac{\partial \omega_k}{\partial x_j} \bigl((1-t)p + tx \bigr) \, t
+(x_k-p_k)
+\right)
++
+\omega_j \bigl((1-t)p + tx \bigr)
+\right)
+dt
+\\
+&amp; = 
+\int_0^1
+\left(
+\left(
+\sum_{k=1}^n
+\frac{\partial \omega_j}{\partial x_k} \bigl((1-t)p + tx \bigr) \, t
+(x_k-p_k)
+\right)
++
+\omega_j \bigl((1-t)p + tx \bigr)
+\right) dt
+\\
+&amp; = 
+\int_0^1
+\frac{d}{dt}
+\Bigl[
+t \omega_j\bigl((1-t)p + tx \bigr)
+\Bigr]
+\,
+dt
+\\
+&amp;= \omega_j(x) .
+\end{split}
+\end{equation}
+</div>
+<div class="para">That is precisely what we wanted.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-3-17-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 9.3.1.3"><a aria-label="Copy heading and permalink for Proof 9.3.1.3" href="#sec_pathind-3-17" title="Copy heading and permalink for Proof 9.3.1.3">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_pathind-3-18"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.3.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_pathind-3-18-1-1">
+<div class="para">Without some hypothesis on <span class="process-math">\(U\text{,}\)</span> the theorem is not true. On <span class="process-math">\(\R^2 \setminus \{ (0,0) \}\text{,}\)</span> let</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/example_mv_irrotoneformint.html" id="sec_pathind-3-18-1-1-3">
+\begin{equation}
+\omega(x,y) \coloneqq \frac{-y}{x^2+y^2} \,dx + \frac{x}{x^2+y^2} \,dy
+\end{equation}
+</div>
+<div class="para">Then</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/example_mv_irrotoneformint.html" id="sec_pathind-3-18-1-1-4">
+\begin{equation}
+\frac{\partial}{\partial y} \left[ 
+\frac{-y}{x^2+y^2} \right] =
+\frac{y^2-x^2}{{(x^2+y^2)}^2}
+=
+\frac{\partial}{\partial x} \left[ 
+\frac{x}{x^2+y^2} \right] .
+\end{equation}
+</div>
+<div class="para">However, there is no <span class="process-math">\(f \colon \R^2 \setminus \{ (0,0) \} \to \R\)</span> such that <span class="process-math">\(df = \omega\text{.}\)</span>  In <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_pathintegral.html#example_mv_irrotoneformint" title="Example 9.2.11">Example 9.2.11</a>, we integrated from <span class="process-math">\((1,0)\)</span> to <span class="process-math">\((1,0)\)</span> along the unit circle counterclockwise, that is, <span class="process-math">\(\gamma(t) = \bigl(\cos(t),\sin(t)\bigr)\)</span> for <span class="process-math">\(t \in [0,2\pi]\text{,}\)</span> and we found the integral to be <span class="process-math">\(2\pi\text{.}\)</span>  We would have gotten <span class="process-math">\(0\)</span> if the integral was path independent, or in other words if there existed an <span class="process-math">\(f\)</span> such that <span class="process-math">\(df = \omega\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-3-18-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 9.3.7"><a aria-label="Copy heading and permalink for Example 9.3.7" href="#sec_pathind-3-18" title="Copy heading and permalink for Example 9.3.7">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 9.3.1: Path independent integrals"><a aria-label="Copy heading and permalink for Subsection 9.3.1: Path independent integrals" href="#sec_pathind-3" title="Copy heading and permalink for Subsection 9.3.1: Path independent integrals">🔗</a></div>
+</section>
+<section class="subsection" id="sec_pathind-4">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.3.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Vector fields</span>
+</h3>
+<div class="para" id="sec_pathind-4-2">If at each point we have a vector, what we call a vector field, we can integrate its component along a path. Such an integral computes, for example, the work done by a force field on a particle travelling along a path.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_pathind-4-3"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.3.8</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_pathind-4-3-1-1">Let <span class="process-math">\(U \subset \R^n\)</span> be a set. A continuous function <span class="process-math">\(v \colon U \to \R^n\)</span> is called a <em class="emphasis">vector field</em>.  Write <span class="process-math">\(v = (v_1,v_2,\ldots,v_n)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-4-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_pathind-4-3-1-2">
+<div class="para">Given a smooth path <span class="process-math">\(\gamma \colon [a,b] \to \R^n\)</span> with <span class="process-math">\(\gamma\bigl([a,b]\bigr) \subset U\text{,}\)</span> we define the path integral of the vector field <span class="process-math">\(v\)</span> as</div>
+<div class="displaymath process-math" id="sec_pathind-4-3-1-2-4">
+\begin{equation}
+\int_{\gamma} v \cdot d\gamma
+\coloneqq
+\int_a^b v\bigl(\gamma(t)\bigr) \cdot \gamma'(t) \, dt ,
+\end{equation}
+</div>
+<div class="para">where the dot in the definition is the standard dot product. The definition for a piecewise smooth path is, again, done by integrating over each smooth interval and adding the results.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-4-3-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 9.3.8"><a aria-label="Copy heading and permalink for Definition 9.3.8" href="#sec_pathind-4-3" title="Copy heading and permalink for Definition 9.3.8">🔗</a></div>
+</article>
+<div class="para logical" id="sec_pathind-4-4">
+<div class="para">Unraveling the definition, we find that</div>
+<div class="displaymath process-math" id="sec_pathind-4-4-1">
+\begin{equation}
+\int_{\gamma} v \cdot d\gamma
+=
+\int_{\gamma} v_1 \,dx_1 + v_2 \,dx_2 + \cdots + v_n \,dx_n .
+\end{equation}
+</div>
+<div class="para">What we know about integration of one-forms carries over to the integration of vector fields. For example, path independence for integration of vector fields is simply that</div>
+<div class="displaymath process-math" id="sec_pathind-4-4-2">
+\begin{equation}
+\int_x^y v \cdot d\gamma
+\end{equation}
+</div>
+<div class="para">is path independent if and only if <span class="process-math">\(v = \nabla f\text{,}\)</span> that is, <span class="process-math">\(v\)</span> is the gradient of a function.  The function <span class="process-math">\(f\)</span> is then called a <em class="emphasis">potential</em> for <span class="process-math">\(v\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-4-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_pathind-4-5">A vector field <span class="process-math">\(v\)</span> whose path integrals are path independent is called a <em class="emphasis">conservative vector field</em>.  The rationale for the naming is that such vector fields arise in physical systems where a certain quantity, the energy, is conserved.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-4-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 9.3.2: Vector fields"><a aria-label="Copy heading and permalink for Subsection 9.3.2: Vector fields" href="#sec_pathind-4" title="Copy heading and permalink for Subsection 9.3.2: Vector fields">🔗</a></div>
+</section>
+<section class="exercises" id="sec_pathind-5">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.3.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_pathind-5-1"><h4 class="heading"><span class="codenumber">9.3.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_pathind-5-1-1-1">Find an <span class="process-math">\(f \colon \R^2 \to \R\)</span> such that <span class="process-math">\(df = xe^{x^2+y^2}\, dx +
+ye^{x^2+y^2} \, dy\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-5-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 9.3.1"><a aria-label="Copy heading and permalink for Exercise 9.3.1" href="#sec_pathind-5-1" title="Copy heading and permalink for Exercise 9.3.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_pathind-5-2"><h4 class="heading"><span class="codenumber">9.3.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_pathind-5-2-1-1">Find an <span class="process-math">\(\omega_2 \colon \R^2 \to \R\)</span> such that there exists a continuously differentiable <span class="process-math">\(f \colon \R^2 \to \R\)</span> for which <span class="process-math">\(df = e^{xy} \,dx + \omega_2 \,dy\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-5-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 9.3.2"><a aria-label="Copy heading and permalink for Exercise 9.3.2" href="#sec_pathind-5-2" title="Copy heading and permalink for Exercise 9.3.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_pathind-5-3"><h4 class="heading"><span class="codenumber">9.3.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_pathind-5-3-1-1">Finish the proof of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_pathind.html#mv_prop_pathinddf" title="Proposition 9.3.3">Proposition 9.3.3</a>, that is, we only proved the second direction for a smooth path, not a piecewise smooth path.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-5-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 9.3.3"><a aria-label="Copy heading and permalink for Exercise 9.3.3" href="#sec_pathind-5-3" title="Copy heading and permalink for Exercise 9.3.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_pathind-5-4"><h4 class="heading"><span class="codenumber">9.3.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_pathind-5-4-1-1">Show that if <span class="process-math">\(U \subset \R^n\)</span> is a star-shaped domain, then it is path connected.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-5-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 9.3.4"><a aria-label="Copy heading and permalink for Exercise 9.3.4" href="#sec_pathind-5-4" title="Copy heading and permalink for Exercise 9.3.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_pathind-5-5"><h4 class="heading"><span class="codenumber">9.3.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_pathind-5-5-1-1">Show that <span class="process-math">\(U \coloneqq \R^2 \setminus \{ (x,y) \in \R^2 : x \leq 0, y=0 \}\)</span> is a star-shaped domain and find all points <span class="process-math">\((x_0,y_0) \in U\)</span> such that <span class="process-math">\(U\)</span> is star-shaped with respect to <span class="process-math">\((x_0,y_0)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-5-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 9.3.5"><a aria-label="Copy heading and permalink for Exercise 9.3.5" href="#sec_pathind-5-5" title="Copy heading and permalink for Exercise 9.3.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_pathind-5-6"><h4 class="heading"><span class="codenumber">9.3.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_pathind-5-6-1-1">Suppose <span class="process-math">\(U_1\)</span> and <span class="process-math">\(U_2\)</span> are two open sets in <span class="process-math">\(\R^n\)</span> with <span class="process-math">\(U_1 \cap U_2\)</span> nonempty and path connected. Suppose there exists an <span class="process-math">\(f_1 \colon U_1 \to \R\)</span> and <span class="process-math">\(f_2 \colon U_2 \to \R\text{,}\)</span> both twice continuously differentiable such that <span class="process-math">\(d f_1 = d f_2\)</span> on <span class="process-math">\(U_1 \cap U_2\text{.}\)</span> Then there exists a twice differentiable function <span class="process-math">\(F \colon U_1 \cup U_2 \to
+\R\)</span> such that <span class="process-math">\(dF = df_1\)</span> on <span class="process-math">\(U_1\)</span> and <span class="process-math">\(dF = df_2\)</span> on <span class="process-math">\(U_2\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-5-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 9.3.6"><a aria-label="Copy heading and permalink for Exercise 9.3.6" href="#sec_pathind-5-6" title="Copy heading and permalink for Exercise 9.3.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_pathind-5-7"><h4 class="heading"><span class="codenumber">9.3.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_pathind-5-7-1-1">
+<em class="emphasis">(Hard)</em>   Let <span class="process-math">\(\gamma \colon [a,b] \to \R^n\)</span> be a simple nonclosed piecewise smooth path (so <span class="process-math">\(\gamma\)</span> is one-to-one).  Suppose <span class="process-math">\(\omega\)</span> is a continuously differentiable one-form defined on some open set <span class="process-math">\(V\)</span> with <span class="process-math">\(\gamma\bigl([a,b]\bigr) \subset V\)</span> and <span class="process-math">\(\frac{\partial \omega_j}{\partial x_k} = \frac{\partial \omega_k}{\partial
+x_j}\)</span> for all <span class="process-math">\(j\)</span> and <span class="process-math">\(k\text{.}\)</span>  Prove that there exists an open set <span class="process-math">\(U\)</span> with <span class="process-math">\(\gamma\bigl([a,b]\bigr) \subset U \subset V\)</span> and a twice continuously differentiable function <span class="process-math">\(f \colon U \to \R\)</span> such that <span class="process-math">\(df = \omega\text{.}\)</span> <br/> Hint 1: <span class="process-math">\(\gamma\bigl([a,b]\bigr)\)</span> is compact.<br/> Hint 2: Show that you can cover the curve by finitely many balls in sequence so that the <span class="process-math">\(k\)</span>th ball only intersects the <span class="process-math">\((k-1)\)</span>th ball.<br/> Hint 3: See previous exercise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-5-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 9.3.7"><a aria-label="Copy heading and permalink for Exercise 9.3.7" href="#sec_pathind-5-7" title="Copy heading and permalink for Exercise 9.3.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_pathind-5-8"><h4 class="heading"><span class="codenumber">9.3.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_pathind-5-8-1-1"><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-5-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div></div>
+<ol class="lower-alpha ol-marker-3" id="sec_pathind-5-8-1-2">
+<li id="sec_pathind-5-8-1-2-1">
+<div class="para" id="sec_pathind-5-8-1-2-1-1">Show that a connected open set <span class="process-math">\(U \subset \R^n\)</span> is path connected. Hint: Start with a point <span class="process-math">\(x \in U\text{,}\)</span> and let <span class="process-math">\(U_x \subset U\)</span> be the set of points that are reachable by a path from <span class="process-math">\(x\text{.}\)</span>  Show that <span class="process-math">\(U_x\)</span> and <span class="process-math">\(U \setminus U_x\)</span> are both open, and since <span class="process-math">\(U_x\)</span> is nonempty (<span class="process-math">\(x \in U_x\)</span>) it must be that <span class="process-math">\(U_x = U\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-5-8-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 9.3.8.a"><a aria-label="Copy heading and permalink for Item 9.3.8.a" href="#sec_pathind-5-8-1-2-1" title="Copy heading and permalink for Item 9.3.8.a">🔗</a></div>
+</li>
+<li id="sec_pathind-5-8-1-2-2">
+<div class="para" id="sec_pathind-5-8-1-2-2-1">Prove the converse, that is, an open<details aria-live="polite" class="ptx-footnote" id="sec_pathind-5-8-1-2-2-1-1"><summary class="ptx-footnote__number" title="Footnote 9.3.2"><sup> 2 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_pathind-5-8-1-2-2-1-1">If the definition of “path connected” is as in the next exercise, “open” would not be needed for this part.
+</div></details> path connected set <span class="process-math">\(U \subset \R^n\)</span> is connected.  Hint: For contradiction assume there exist two disjoint nonempty open sets whose union is <span class="process-math">\(U\)</span> and then assume there is a piecewise smooth (and therefore continuous) path between a point in one to a point in the other.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-5-8-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 9.3.8.b"><a aria-label="Copy heading and permalink for Item 9.3.8.b" href="#sec_pathind-5-8-1-2-2" title="Copy heading and permalink for Item 9.3.8.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 9.3.8"><a aria-label="Copy heading and permalink for Exercise 9.3.8" href="#sec_pathind-5-8" title="Copy heading and permalink for Exercise 9.3.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_pathind-5-9"><h4 class="heading"><span class="codenumber">9.3.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_pathind-5-9-1-1">Usually path connectedness is defined using continuous paths rather than piecewise smooth paths.  Prove that for open subsets of <span class="process-math">\(\R^n\)</span> the definitions are equivalent, in other words prove:<br/> Suppose <span class="process-math">\(U \subset \R^n\)</span> is open and for every <span class="process-math">\(x,y \in U\text{,}\)</span> there exists a continuous function <span class="process-math">\(\gamma \colon [a,b] \to U\)</span> such that <span class="process-math">\(\gamma(a) = x\)</span> and <span class="process-math">\(\gamma(b) = y\text{.}\)</span> Then <span class="process-math">\(U\)</span> is path connected, that is, there is a piecewise smooth path in <span class="process-math">\(U\)</span> from <span class="process-math">\(x\)</span> to <span class="process-math">\(y\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-5-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 9.3.9"><a aria-label="Copy heading and permalink for Exercise 9.3.9" href="#sec_pathind-5-9" title="Copy heading and permalink for Exercise 9.3.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_pathind-5-10"><h4 class="heading"><span class="codenumber">9.3.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_pathind-5-10-1-1">
+<div class="para">
+<em class="emphasis">(Hard)</em>   Take</div>
+<div class="displaymath process-math" id="sec_pathind-5-10-1-1-4">
+\begin{equation}
+\omega(x,y) \coloneqq \frac{-y}{x^2+y^2} \, dx + \frac{x}{x^2+y^2} \, dy
+\end{equation}
+</div>
+<div class="para">defined on <span class="process-math">\(\R^2 \setminus \{ (0,0) \}\text{.}\)</span>  Let <span class="process-math">\(\gamma \colon [a,b] \to \R^2
+\setminus \{ (0,0) \}\)</span> be a closed piecewise smooth path. Let <span class="process-math">\(R \coloneqq \{ (x,y) \in \R^2 : x \leq 0 \text{ and } y=0 \}\text{.}\)</span> Suppose <span class="process-math">\(R \cap \gamma\bigl([a,b]\bigr)\)</span> is a finite set of <span class="process-math">\(k\)</span> points. Prove that</div>
+<div class="displaymath process-math" id="sec_pathind-5-10-1-1-10">
+\begin{equation}
+\int_{\gamma} \omega = 2 \pi \ell 
+\end{equation}
+</div>
+<div class="para">for some integer <span class="process-math">\(\ell\)</span> with <span class="process-math">\(\sabs{\ell} \leq k\text{.}\)</span><br/> Hint 1: First prove that for a path <span class="process-math">\(\beta\)</span> that starts and end on <span class="process-math">\(R\)</span> but does not intersect it otherwise, you find that <span class="process-math">\(\int_{\beta} \omega\)</span> is <span class="process-math">\(-2\pi\text{,}\)</span> 0, or <span class="process-math">\(2\pi\text{.}\)</span> <br/> Hint 2: You proved above that <span class="process-math">\(\R^2 \setminus R\)</span> is star-shaped. <br/> Note: The number <span class="process-math">\(\ell\)</span> is called the <em class="emphasis">winding number</em> it measures how many times <span class="process-math">\(\gamma\)</span> winds around the origin in the counterclockwise direction.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_pathind-5-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 9.3.10"><a aria-label="Copy heading and permalink for Exercise 9.3.10" href="#sec_pathind-5-10" title="Copy heading and permalink for Exercise 9.3.10">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 9.3.3"><a aria-label="Copy heading and permalink for Exercises 9.3.3" href="#sec_pathind-5" title="Copy heading and permalink for Exercises 9.3.3">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 9.3: Path independence"><a aria-label="Copy heading and permalink for Section 9.3: Path independence" href="#sec_pathind" title="Copy heading and permalink for Section 9.3: Path independence">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_pathintegral.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="mi_chapter.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

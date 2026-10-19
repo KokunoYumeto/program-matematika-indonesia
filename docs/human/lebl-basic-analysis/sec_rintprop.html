@@ -1,0 +1,970 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Properties of the integral · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_rintprop">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Properties of the integral</span>
+</h2>
+<section class="introduction" id="sec_rintprop-2">
+<div class="para" id="sec_rintprop-2-1">
+<em class="emphasis">Note: 2 lectures, integrability of functions with discontinuities can safely be skipped</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section>
+<section class="subsection" id="sec_rintprop-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.2.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Additivity</span>
+</h3>
+<div class="para" id="sec_rintprop-3-2">Adding a bunch of things in two parts and then adding those two parts should be the same as adding everything all at once. The corresponding property for integrals is called the additive property of the integral.  First, we prove the additivity property for the lower and upper Darboux integrals.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-3-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="lemma theorem-like" id="lemma_darbouxadd"><h4 class="heading">
+<span class="type">Lemma</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.2.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="lemma_darbouxadd-1-1">
+<div class="para">Suppose <span class="process-math">\(a &lt; b &lt; c\)</span> and <span class="process-math">\(f \colon [a,c] \to \R\)</span> is a bounded function. Then</div>
+<div class="displaymath process-math" id="lemma_darbouxadd-1-1-3">
+\begin{equation}
+\underline{\int_a^c} f
+=
+\underline{\int_a^b} f
++
+\underline{\int_b^c} f
+\quad \text{and} \quad
+\overline{\int_a^c} f
+=
+\overline{\int_a^b} f
++
+\overline{\int_b^c} f .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#lemma_darbouxadd-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Lemma 5.2.1"><a aria-label="Copy heading and permalink for Lemma 5.2.1" href="#lemma_darbouxadd" title="Copy heading and permalink for Lemma 5.2.1">🔗</a></div>
+</article>
+<article class="proof" id="sec_rintprop-3-4"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_rintprop-3-4-1">
+<div class="para">If we have partitions <span class="process-math">\(P_1 = \{ x_0,x_1,\ldots,x_k \}\)</span> of <span class="process-math">\([a,b]\)</span> and <span class="process-math">\(P_2 = \{ x_k, x_{k+1}, \ldots, x_n \}\)</span> of <span class="process-math">\([b,c]\text{,}\)</span> then the set <span class="process-math">\(P \coloneqq P_1 \cup P_2 = \{ x_0, x_1, \ldots, x_n \}\)</span> is a partition of <span class="process-math">\([a,c]\text{.}\)</span>  We find</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_dominatingb.html ./knowl/xref/exercise_supofsum.html" id="sec_rintprop-3-4-1-7">
+\begin{equation}
+L(P,f) =
+\sum_{i=1}^n m_i \Delta x_i
+=
+\sum_{i=1}^k m_i \Delta x_i
++
+\sum_{i=k+1}^n m_i \Delta x_i
+=
+L(P_1,f) + L(P_2,f) .
+\end{equation}
+</div>
+<div class="para">When we take the supremum of the right-hand side over all <span class="process-math">\(P_1\)</span> and <span class="process-math">\(P_2\text{,}\)</span> we are taking a supremum of the left-hand side over all partitions <span class="process-math">\(P\)</span> of <span class="process-math">\([a,c]\)</span> that contain <span class="process-math">\(b\text{.}\)</span>  If <span class="process-math">\(Q\)</span> is a partition of <span class="process-math">\([a,c]\)</span> and <span class="process-math">\(P = Q \cup \{ b \}\text{,}\)</span> then <span class="process-math">\(P\)</span> is a refinement of <span class="process-math">\(Q\)</span> and so <span class="process-math">\(L(Q,f) \leq L(P,f)\text{.}\)</span>  Therefore, taking a supremum only over the <span class="process-math">\(P\)</span> that contain <span class="process-math">\(b\)</span> is sufficient to find the supremum of <span class="process-math">\(L(P,f)\)</span> over all partitions <span class="process-math">\(P\text{,}\)</span> see <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicpropsrn.html#exercise_dominatingb" title="Exercise 1.1.9">Exercise 1.1.9</a>. Finally, recall <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_setofreals.html#exercise_supofsum" title="Exercise 1.2.9">Exercise 1.2.9</a> to compute</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_dominatingb.html ./knowl/xref/exercise_supofsum.html" id="sec_rintprop-3-4-1-25">
+\begin{equation}
+\begin{split}
+\underline{\int_a^c} f
+&amp; =
+\sup \, \bigl\{ L(P,f) : P \text{ a partition of } [a,c] \bigr\}
+\\
+&amp; =
+\sup \, \bigl\{ L(P,f) : P \text{ a partition of } [a,c], b \in P \bigr\}
+\\
+&amp; =
+\sup \, \bigl\{ L(P_1,f) + L(P_2,f) :
+P_1 \text{ a partition of } [a,b], P_2 \text{ a partition of } [b,c] \bigr\}
+\\
+&amp; =
+\sup \, \bigl\{ L(P_1,f) : P_1 \text{ a partition of } [a,b] \bigr\}
++
+\sup \, \bigl\{ L(P_2,f) : P_2 \text{ a partition of } [b,c] \bigr\}
+\\
+&amp;=
+\underline{\int_a^b} f + \underline{\int_b^c} f .
+\end{split}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-3-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_rintprop-3-4-2">
+<div class="para">Similarly, for <span class="process-math">\(P\text{,}\)</span> <span class="process-math">\(P_1\text{,}\)</span> and <span class="process-math">\(P_2\)</span> as above, we obtain</div>
+<div class="displaymath process-math" id="sec_rintprop-3-4-2-4">
+\begin{equation}
+U(P,f) =
+\sum_{i=1}^n M_i \Delta x_i
+=
+\sum_{i=1}^k M_i \Delta x_i
++
+\sum_{i=k+1}^n M_i \Delta x_i
+=
+U(P_1,f) + U(P_2,f) .
+\end{equation}
+</div>
+<div class="para">We wish to take the infimum on the right over all <span class="process-math">\(P_1\)</span> and <span class="process-math">\(P_2\text{,}\)</span> and so we are taking the infimum over all partitions <span class="process-math">\(P\)</span> of <span class="process-math">\([a,c]\)</span> that contain <span class="process-math">\(b\text{.}\)</span>  If <span class="process-math">\(Q\)</span> is a partition of <span class="process-math">\([a,c]\)</span> and <span class="process-math">\(P = Q \cup \{ b \}\text{,}\)</span> then <span class="process-math">\(P\)</span> is a refinement of <span class="process-math">\(Q\)</span> and so <span class="process-math">\(U(Q,f) \geq U(P,f)\text{.}\)</span>  Therefore, taking an infimum only over the <span class="process-math">\(P\)</span> that contain <span class="process-math">\(b\)</span> is sufficient to find the infimum of <span class="process-math">\(U(P,f)\)</span> for all <span class="process-math">\(P\text{.}\)</span> We obtain</div>
+<div class="displaymath process-math" id="sec_rintprop-3-4-2-20">
+\begin{equation}
+\overline{\int_a^c} f
+=
+\overline{\int_a^b} f + \overline{\int_b^c} f .  \qedhere
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-3-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 5.2.1.1"><a aria-label="Copy heading and permalink for Proof 5.2.1.1" href="#sec_rintprop-3-4" title="Copy heading and permalink for Proof 5.2.1.1">🔗</a></div>
+</article>
+<article class="proposition theorem-like" id="sec_rintprop-3-5"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.2.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_rintprop-3-5-1-1">
+<div class="para">Let <span class="process-math">\(a &lt; b &lt; c\text{.}\)</span>  A function <span class="process-math">\(f \colon [a,c] \to \R\)</span> is Riemann integrable if and only if <span class="process-math">\(f\)</span> is Riemann integrable on <span class="process-math">\([a,b]\)</span> and <span class="process-math">\([b,c]\text{.}\)</span>  If <span class="process-math">\(f\)</span> is Riemann integrable, then</div>
+<div class="displaymath process-math" id="sec_rintprop-3-5-1-1-7">
+\begin{equation}
+\int_a^c f
+=
+\int_a^b f
++
+\int_b^c f .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-3-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 5.2.2"><a aria-label="Copy heading and permalink for Proposition 5.2.2" href="#sec_rintprop-3-5" title="Copy heading and permalink for Proposition 5.2.2">🔗</a></div>
+</article>
+<article class="proof" id="sec_rintprop-3-6"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_rintprop-3-6-1">
+<div class="para">Suppose <span class="process-math">\(f \in \sR\bigl([a,c]\bigr)\text{.}\)</span>  Then it is bounded and <span class="process-math">\(\overline{\int_a^c} f = 
+\underline{\int_a^c} f = 
+\int_a^c f\text{.}\)</span>  The lemma gives</div>
+<div class="displaymath process-math" id="sec_rintprop-3-6-1-3">
+\begin{equation}
+\int_a^c f
+=
+\underline{\int_a^c} f
+=
+\underline{\int_a^b} f + \underline{\int_b^c} f
+\leq
+\overline{\int_a^b} f + \overline{\int_b^c} f
+=
+\overline{\int_a^c} f
+=
+\int_a^c f .
+\end{equation}
+</div>
+<div class="para">Thus the inequality is an equality:</div>
+<div class="displaymath process-math" id="sec_rintprop-3-6-1-4">
+\begin{equation}
+\underline{\int_a^b} f + \underline{\int_b^c} f
+=
+\overline{\int_a^b} f + \overline{\int_b^c} f .
+\end{equation}
+</div>
+<div class="para">As we also know <span class="process-math">\(\underline{\int_a^b} f \leq \overline{\int_a^b} f\)</span> and <span class="process-math">\(\underline{\int_b^c} f \leq \overline{\int_b^c} f\text{,}\)</span> we conclude</div>
+<div class="displaymath process-math" id="sec_rintprop-3-6-1-7">
+\begin{equation}
+\underline{\int_a^b} f
+=
+\overline{\int_a^b} f
+\qquad \text{and} \qquad
+\underline{\int_b^c} f
+=
+\overline{\int_b^c} f .
+\end{equation}
+</div>
+<div class="para">Thus <span class="process-math">\(f\)</span> is Riemann integrable on <span class="process-math">\([a,b]\)</span> and <span class="process-math">\([b,c]\)</span> and the desired formula holds.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-3-6-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_rintprop-3-6-2">
+<div class="para">Now assume <span class="process-math">\(f\)</span> is Riemann integrable on <span class="process-math">\([a,b]\)</span> and on <span class="process-math">\([b,c]\text{.}\)</span> Again it is bounded, and the lemma gives</div>
+<div class="displaymath process-math" id="sec_rintprop-3-6-2-4">
+\begin{equation}
+\underline{\int_a^c} f
+=
+\underline{\int_a^b} f + \underline{\int_b^c} f
+=
+\int_a^b f + \int_b^c f
+=
+\overline{\int_a^b} f + \overline{\int_b^c} f
+=
+\overline{\int_a^c} f .
+\end{equation}
+</div>
+<div class="para">Therefore, <span class="process-math">\(f\)</span> is Riemann integrable on <span class="process-math">\([a,c]\text{,}\)</span> and the integral is computed as indicated.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-3-6-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 5.2.1.2"><a aria-label="Copy heading and permalink for Proof 5.2.1.2" href="#sec_rintprop-3-6" title="Copy heading and permalink for Proof 5.2.1.2">🔗</a></div>
+</article>
+<div class="para" id="sec_rintprop-3-7">An easy consequence of the additivity is the following corollary.  We leave the details to the reader as an exercise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-3-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="corollary theorem-like" id="intsubcor"><h4 class="heading">
+<span class="type">Corollary</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.2.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="intsubcor-1-1">If <span class="process-math">\(f \in \sR\bigl([a,b]\bigr)\)</span> and <span class="process-math">\([c,d] \subset [a,b]\text{,}\)</span> then the restriction <span class="process-math">\(f|_{[c,d]}\)</span> is in <span class="process-math">\(\sR\bigl([c,d]\bigr)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#intsubcor-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Corollary 5.2.3"><a aria-label="Copy heading and permalink for Corollary 5.2.3" href="#intsubcor" title="Copy heading and permalink for Corollary 5.2.3">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 5.2.1: Additivity"><a aria-label="Copy heading and permalink for Subsection 5.2.1: Additivity" href="#sec_rintprop-3" title="Copy heading and permalink for Subsection 5.2.1: Additivity">🔗</a></div>
+</section>
+<section class="subsection" id="sec_rintprop-4">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.2.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Linearity and monotonicity</span>
+</h3>
+<div class="para" id="sec_rintprop-4-2">A sum is a linear function of the summands.  So is the integral.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_integrallinear"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.2.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Linearity.</span>
+</h4>
+<div class="para" id="prop_integrallinear-3-1">Let <span class="process-math">\(f\)</span> and <span class="process-math">\(g\)</span> be in <span class="process-math">\(\sR\bigl([a,b]\bigr)\)</span> and <span class="process-math">\(\alpha \in \R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_integrallinear-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="prop_integrallinear-3-2">
+<li id="prop_integrallinear-3-2-1">
+<div class="para logical" id="prop_integrallinear-3-2-1-1">
+<div class="para">
+<span class="process-math">\(\alpha f\)</span> is in <span class="process-math">\(\sR\bigl([a,b]\bigr)\)</span> and</div>
+<div class="displaymath process-math" id="prop_integrallinear-3-2-1-1-3">
+\begin{equation}
+\int_a^b \alpha f(x) \,dx = \alpha \int_a^b f(x) \,dx .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_integrallinear-3-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#prop_integrallinear-3-2-1" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="prop_integrallinear-3-2-2">
+<div class="para logical" id="prop_integrallinear-3-2-2-1">
+<div class="para">
+<span class="process-math">\(f+g\)</span> is in <span class="process-math">\(\sR\bigl([a,b]\bigr)\)</span> and</div>
+<div class="displaymath process-math" id="prop_integrallinear-3-2-2-1-3">
+\begin{equation}
+\int_a^b \bigl( f(x)+g(x) \bigr) \,dx = 
+\int_a^b f(x) \,dx 
++
+\int_a^b g(x) \,dx .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_integrallinear-3-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#prop_integrallinear-3-2-2" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Proposition 5.2.4: Linearity"><a aria-label="Copy heading and permalink for Proposition 5.2.4: Linearity" href="#prop_integrallinear" title="Copy heading and permalink for Proposition 5.2.4: Linearity">🔗</a></div>
+</article>
+<article class="proof" id="sec_rintprop-4-4"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_rintprop-4-4-1">
+<div class="para">Let us prove the first item for <span class="process-math">\(\alpha \geq 0\text{.}\)</span> Let <span class="process-math">\(P\)</span> be a partition of <span class="process-math">\([a,b]\text{,}\)</span> and <span class="process-math">\(m_i \coloneqq \inf \bigl\{ f(x) : x \in [x_{i-1},x_i] \bigr\}\)</span> as usual. As <span class="process-math">\(\alpha \geq 0\text{,}\)</span> the multiplication by <span class="process-math">\(\alpha\)</span> moves past the infimum,</div>
+<div class="displaymath process-math" id="sec_rintprop-4-4-1-7">
+\begin{equation}
+\inf \bigl\{ \alpha f(x) : x \in [x_{i-1},x_i] \bigr\}
+=
+\alpha \inf \bigl\{ f(x) : x \in [x_{i-1},x_i] \bigr\} = \alpha m_i .
+\end{equation}
+</div>
+<div class="para">Therefore,</div>
+<div class="displaymath process-math" id="sec_rintprop-4-4-1-8">
+\begin{equation}
+L(P,\alpha f) =
+\sum_{i=1}^n \alpha m_i \Delta x_i = \alpha \sum_{i=1}^n m_i \Delta x_i = \alpha
+L(P,f).
+\end{equation}
+</div>
+<div class="para">Similarly,</div>
+<div class="displaymath process-math" id="sec_rintprop-4-4-1-9">
+\begin{equation}
+U(P,\alpha f) = \alpha U(P,f) .
+\end{equation}
+</div>
+<div class="para">Again, as <span class="process-math">\(\alpha \geq 0\text{,}\)</span> we may move multiplication by <span class="process-math">\(\alpha\)</span> past the supremum.  Hence,</div>
+<div class="displaymath process-math" id="sec_rintprop-4-4-1-12">
+\begin{equation}
+\begin{split}
+\underline{\int_a^b} \alpha f(x)\,dx &amp; =
+\sup \, \bigl\{ L(P,\alpha f) : P \text{ a partition of } [a,b] \bigr\}
+\\
+&amp; =
+\sup \, \bigl\{ \alpha L(P,f) : P \text{ a partition of } [a,b] \bigr\}
+\\
+&amp; =
+\alpha \,
+\sup \, \bigl\{ L(P,f) : P \text{ a partition of } [a,b] \bigr\}
+\\
+&amp; =
+\alpha
+\underline{\int_a^b} f(x)\,dx .
+\end{split}
+\end{equation}
+</div>
+<div class="para">Similarly, we show</div>
+<div class="displaymath process-math" id="sec_rintprop-4-4-1-13">
+\begin{equation}
+\overline{\int_a^b} \alpha f(x)\,dx
+=
+\alpha
+\overline{\int_a^b} f(x)\,dx .
+\end{equation}
+</div>
+<div class="para">The conclusion now follows for <span class="process-math">\(\alpha \geq 0\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-4-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_rintprop-4-4-2">To finish the proof of the first item (for <span class="process-math">\(\alpha &lt; 0\)</span>), we need to show that <span class="process-math">\(-f\)</span> is Riemann integrable and <span class="process-math">\(\int_a^b - f(x)\,dx =
+-
+\int_a^b f(x)\,dx\text{.}\)</span>  The proof of this fact is left as <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rintprop.html#exercise_proofoflinpropparti" title="Exercise 5.2.1">Exercise 5.2.1</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-4-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_rintprop-4-4-3">The proof of the second item is left as <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rintprop.html#exercise_proofoflinproppartii" title="Exercise 5.2.2">Exercise 5.2.2</a>. It is not difficult, but it is not as trivial as it may appear at first glance.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-4-4-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 5.2.2.1"><a aria-label="Copy heading and permalink for Proof 5.2.2.1" href="#sec_rintprop-4-4" title="Copy heading and permalink for Proof 5.2.2.1">🔗</a></div>
+</article>
+<div class="para" id="sec_rintprop-4-5">The second item in the proposition does not hold with equality for the Darboux integrals, but we do obtain inequalities. The proof of the following proposition is <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rintprop.html#exercise_upperlowerlinineq" title="Exercise 5.2.16">Exercise 5.2.16</a>. It follows for upper and lower sums on a fixed partition by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_absval.html#exercise_sumofsup" title="Exercise 1.3.7">Exercise 1.3.7</a>, that is, supremum of a sum is less than or equal to the sum of suprema and similarly for infima.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-4-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_upperlowerlinineq"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.2.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="prop_upperlowerlinineq-1-1">
+<div class="para">Let <span class="process-math">\(f \colon [a,b] \to \R\)</span> and <span class="process-math">\(g \colon [a,b] \to \R\)</span> be bounded functions.  Then</div>
+<div class="displaymath process-math" id="prop_upperlowerlinineq-1-1-3">
+\begin{equation}
+\overline{\int_a^b} (f+g) \leq \overline{\int_a^b}f+\overline{\int_a^b}g
+,
+\qquad
+\text{and}
+\qquad
+\underline{\int_a^b} (f+g) \geq \underline{\int_a^b}f+\underline{\int_a^b}g
+.
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_upperlowerlinineq-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 5.2.5"><a aria-label="Copy heading and permalink for Proposition 5.2.5" href="#prop_upperlowerlinineq" title="Copy heading and permalink for Proposition 5.2.5">🔗</a></div>
+</article>
+<div class="para" id="sec_rintprop-4-7">Adding up smaller numbers should give us a smaller result. That is true for an integral as well.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-4-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_rintprop-4-8"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.2.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Monotonicity.</span>
+</h4>
+<div class="para logical" id="sec_rintprop-4-8-3-1">
+<div class="para">Let <span class="process-math">\(f \colon [a,b] \to \R\)</span> and <span class="process-math">\(g \colon [a,b] \to \R\)</span> be bounded, and <span class="process-math">\(f(x) \leq g(x)\)</span> for all <span class="process-math">\(x \in [a,b]\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" id="sec_rintprop-4-8-3-1-5">
+\begin{equation}
+\underline{\int_a^b} f 
+\leq
+\underline{\int_a^b} g 
+\qquad \text{and} \qquad
+\overline{\int_a^b} f 
+\leq
+\overline{\int_a^b} g .
+\end{equation}
+</div>
+<div class="para">Moreover, if <span class="process-math">\(f\)</span> and <span class="process-math">\(g\)</span> are in <span class="process-math">\(\sR\bigl([a,b]\bigr)\text{,}\)</span> then</div>
+<div class="displaymath process-math" id="sec_rintprop-4-8-3-1-9">
+\begin{equation}
+\int_a^b f 
+\leq
+\int_a^b g .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-4-8-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 5.2.6: Monotonicity"><a aria-label="Copy heading and permalink for Proposition 5.2.6: Monotonicity" href="#sec_rintprop-4-8" title="Copy heading and permalink for Proposition 5.2.6: Monotonicity">🔗</a></div>
+</article>
+<article class="proof" id="sec_rintprop-4-9"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_rintprop-4-9-1">
+<div class="para">Let <span class="process-math">\(P = \{ x_0, x_1, \ldots, x_n \}\)</span> be a partition of <span class="process-math">\([a,b]\text{.}\)</span>  Then let</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_funcsupinf.html" id="sec_rintprop-4-9-1-3">
+\begin{equation}
+m_i \coloneqq \inf \, \bigl\{ f(x) : x \in [x_{i-1},x_i] \bigr\}
+\qquad \text{and} \qquad
+\widetilde{m}_i \coloneqq \inf \, \bigl\{ g(x) : x \in [x_{i-1},x_i] \bigr\} .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(f(x) \leq g(x)\text{,}\)</span> we have <span class="process-math">\(m_i \leq \widetilde{m}_i\text{.}\)</span> Therefore,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_funcsupinf.html" id="sec_rintprop-4-9-1-6">
+\begin{equation}
+L(P,f)
+=
+\sum_{i=1}^n m_i \Delta x_i
+\leq
+\sum_{i=1}^n \widetilde{m}_i \Delta x_i
+=
+L(P,g) .
+\end{equation}
+</div>
+<div class="para">We take the supremum over all <span class="process-math">\(P\)</span> (see <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_absval.html#prop_funcsupinf" title="Proposition 1.3.7">Proposition 1.3.7</a>) to obtain</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_funcsupinf.html" id="sec_rintprop-4-9-1-9">
+\begin{equation}
+\underline{\int_a^b} f 
+\leq
+\underline{\int_a^b} g .
+\end{equation}
+</div>
+<div class="para">Similarly, we obtain the same conclusion for the upper integrals. Finally, if <span class="process-math">\(f\)</span> and <span class="process-math">\(g\)</span> are Riemann integrable all the integrals are equal, and the conclusion follows.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-4-9-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 5.2.2.2"><a aria-label="Copy heading and permalink for Proof 5.2.2.2" href="#sec_rintprop-4-9" title="Copy heading and permalink for Proof 5.2.2.2">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 5.2.2: Linearity and monotonicity"><a aria-label="Copy heading and permalink for Subsection 5.2.2: Linearity and monotonicity" href="#sec_rintprop-4" title="Copy heading and permalink for Subsection 5.2.2: Linearity and monotonicity">🔗</a></div>
+</section>
+<section class="subsection" id="sec_rintprop-5">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.2.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Continuous functions</span>
+</h3>
+<div class="para" id="sec_rintprop-5-2">Let us show that continuous functions are Riemann integrable. We can even allow some discontinuities.  We start with a function continuous on the whole closed interval <span class="process-math">\([a,b]\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-5-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="lemma theorem-like" id="lemma_contint"><h4 class="heading">
+<span class="type">Lemma</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.2.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="lemma_contint-1-1">If <span class="process-math">\(f \colon [a,b] \to \R\)</span> is a continuous function, then <span class="process-math">\(f \in \sR\bigl([a,b]\bigr)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#lemma_contint-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Lemma 5.2.7"><a aria-label="Copy heading and permalink for Lemma 5.2.7" href="#lemma_contint" title="Copy heading and permalink for Lemma 5.2.7">🔗</a></div>
+</article>
+<article class="proof" id="sec_rintprop-5-4"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_rintprop-5-4-1">As <span class="process-math">\(f\)</span> is continuous on a closed bounded interval, it is bounded and uniformly continuous. Given <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> find a <span class="process-math">\(\delta &gt; 0\)</span> such that <span class="process-math">\(\sabs{x-y} &lt; \delta\)</span> implies <span class="process-math">\(\babs{f(x)-f(y)} &lt; \frac{\epsilon}{b-a}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-5-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_rintprop-5-4-2">
+<div class="para">Let <span class="process-math">\(P = \{ x_0, x_1, \ldots, x_n \}\)</span> be a partition of <span class="process-math">\([a,b]\)</span> such that <span class="process-math">\(\Delta x_i &lt; \delta\)</span> for all <span class="process-math">\(i = 1,2,
+\ldots, n\text{.}\)</span>  For example, take <span class="process-math">\(n\)</span> such that <span class="process-math">\(\frac{b-a}{n} &lt; \delta\text{,}\)</span> and let <span class="process-math">\(x_i \coloneqq \frac{i}{n}(b-a) + a\text{.}\)</span> Then for all <span class="process-math">\(x, y \in [x_{i-1},x_i]\text{,}\)</span> we have <span class="process-math">\(\sabs{x-y} \leq \Delta x_i &lt; \delta\text{,}\)</span> and so</div>
+<div class="displaymath process-math" id="sec_rintprop-5-4-2-10">
+\begin{equation}
+f(x)-f(y) \leq \babs{f(x)-f(y)} &lt; \frac{\epsilon}{b-a} .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(f\)</span> is continuous on <span class="process-math">\([x_{i-1},x_i]\text{,}\)</span> it attains a maximum and a minimum on this interval. Let <span class="process-math">\(x\)</span> be a point where <span class="process-math">\(f\)</span> attains the maximum and <span class="process-math">\(y\)</span> be a point where <span class="process-math">\(f\)</span> attains the minimum.  Then <span class="process-math">\(f(x) = M_i\)</span> and <span class="process-math">\(f(y) = m_i\)</span> in the notation from the definition of the integral. Therefore,</div>
+<div class="displaymath process-math" id="sec_rintprop-5-4-2-19">
+\begin{equation}
+M_i-m_i = f(x)-f(y) &lt; 
+\frac{\epsilon}{b-a} .
+\end{equation}
+</div>
+<div class="para">And so</div>
+<div class="displaymath process-math" id="sec_rintprop-5-4-2-20">
+\begin{equation}
+\begin{split}
+\overline{\int_a^b} f - 
+\underline{\int_a^b} f 
+&amp; \leq
+U(P,f) - L(P,f)
+\\
+&amp; =
+\left(
+\sum_{i=1}^n
+M_i \Delta x_i
+\right)
+-
+\left(
+\sum_{i=1}^n
+m_i \Delta x_i
+\right)
+\\
+&amp; =
+\sum_{i=1}^n
+(M_i-m_i) \Delta x_i
+\\
+&amp; &lt;
+\frac{\epsilon}{b-a}
+\sum_{i=1}^n
+\Delta x_i
+\\
+&amp; =
+\frac{\epsilon}{b-a} (b-a)
+= \epsilon .
+\end{split}
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(\epsilon &gt; 0\)</span> was arbitrary,</div>
+<div class="displaymath process-math" id="sec_rintprop-5-4-2-22">
+\begin{equation}
+\overline{\int_a^b} f = \underline{\int_a^b} f ,
+\end{equation}
+</div>
+<div class="para">and <span class="process-math">\(f\)</span> is Riemann integrable on <span class="process-math">\([a,b]\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-5-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 5.2.3.1"><a aria-label="Copy heading and permalink for Proof 5.2.3.1" href="#sec_rintprop-5-4" title="Copy heading and permalink for Proof 5.2.3.1">🔗</a></div>
+</article>
+<div class="para" id="sec_rintprop-5-5">The second lemma says that we need the function to only be “Riemann integrable inside the interval,” as long as it is bounded.  It also tells us how to compute the integral.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-5-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="lemma theorem-like" id="lemma_boundedimpriemann"><h4 class="heading">
+<span class="type">Lemma</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.2.8</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="lemma_boundedimpriemann-1-1">
+<div class="para">Let <span class="process-math">\(f \colon [a,b] \to \R\)</span> be a bounded function, <span class="process-math">\(\{ a_n \}_{n=1}^\infty\)</span> and <span class="process-math">\(\{b_n \}_{n=1}^\infty\)</span> be sequences such that <span class="process-math">\(a &lt; a_n &lt; b_n &lt; b\)</span> for all <span class="process-math">\(n\text{,}\)</span> with <span class="process-math">\(\lim_{n\to\infty} a_n = a\)</span> and <span class="process-math">\(\lim_{n\to\infty} b_n = b\text{.}\)</span> Suppose <span class="process-math">\(f \in \sR\bigl([a_n,b_n]\bigr)\)</span> for all <span class="process-math">\(n\text{.}\)</span> Then <span class="process-math">\(f \in \sR\bigl([a,b]\bigr)\)</span> and</div>
+<div class="displaymath process-math" id="lemma_boundedimpriemann-1-1-11">
+\begin{equation}
+\int_a^b f = 
+\lim_{n \to \infty} \int_{a_n}^{b_n} f .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#lemma_boundedimpriemann-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Lemma 5.2.8"><a aria-label="Copy heading and permalink for Lemma 5.2.8" href="#lemma_boundedimpriemann" title="Copy heading and permalink for Lemma 5.2.8">🔗</a></div>
+</article>
+<article class="proof" id="sec_rintprop-5-7"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_rintprop-5-7-1">
+<div class="para">Let <span class="process-math">\(M &gt; 0\)</span> be a real number such that <span class="process-math">\(\babs{f(x)} \leq M\text{.}\)</span> As <span class="process-math">\((b-a) \geq (b_n-a_n)\text{,}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_bwseq.html" id="sec_rintprop-5-7-1-4">
+\begin{equation}
+-M(b-a) \leq
+-M(b_n-a_n) \leq
+\int_{a_n}^{b_n} f
+\leq
+M(b_n-a_n) \leq
+M(b-a) .
+\end{equation}
+</div>
+<div class="para">Therefore, the sequence of numbers <span class="process-math">\(\bigl\{ \int_{a_n}^{b_n} f \bigr\}_{n=1}^\infty\)</span> is bounded and by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_bw.html#thm_bwseq" title="Theorem 2.3.8: Bolzano–Weierstrass">Bolzano–Weierstrass</a> has a convergent subsequence indexed by <span class="process-math">\(n_k\text{.}\)</span>  Let us call <span class="process-math">\(L\)</span> the limit of the subsequence <span class="process-math">\(\bigl\{ \int_{a_{n_k}}^{b_{n_k}} f \bigr\}_{k=1}^\infty\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-5-7-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_rintprop-5-7-2">
+<div class="para">
+<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rintprop.html#lemma_darbouxadd" title="Lemma 5.2.1">Lemma 5.2.1</a> says that the lower and upper integral are additive and the hypothesis says that <span class="process-math">\(f\)</span> is integrable on <span class="process-math">\([a_{n_k},b_{n_k}]\text{.}\)</span> Therefore,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/lemma_darbouxadd.html" id="sec_rintprop-5-7-2-4">
+\begin{equation}
+\underline{\int_a^b} f
+=
+\underline{\int_a^{a_{n_k}}} f
++
+\int_{a_{n_k}}^{b_{n_k}} f
++
+\underline{\int_{b_{n_k}}^b} f
+\geq
+-M(a_{n_k}-a)
++
+\int_{a_{n_k}}^{b_{n_k}} f
+-
+M(b-b_{n_k}) .
+\end{equation}
+</div>
+<div class="para">We take the limit as <span class="process-math">\(k\)</span> goes to <span class="process-math">\(\infty\)</span> on the right-hand side,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/lemma_darbouxadd.html" id="sec_rintprop-5-7-2-7">
+\begin{equation}
+\underline{\int_a^b} f
+\geq
+-M\cdot 0
++
+L
+-
+M\cdot 0
+= L .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-5-7-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_rintprop-5-7-3">
+<div class="para">Next we use additivity of the upper integral,</div>
+<div class="displaymath process-math" id="sec_rintprop-5-7-3-1">
+\begin{equation}
+\overline{\int_a^b} f
+=
+\overline{\int_a^{a_{n_k}}} f
++
+\int_{a_{n_k}}^{b_{n_k}} f
++
+\overline{\int_{b_{n_k}}^b} f
+\leq
+M(a_{n_k}-a)
++
+\int_{a_{n_k}}^{b_{n_k}} f
++
+M(b-b_{n_k}) .
+\end{equation}
+</div>
+<div class="para">We take the same subsequence <span class="process-math">\(\{ \int_{a_{n_k}}^{b_{n_k}} f \}_{k=1}^\infty\)</span> and take the limit to obtain</div>
+<div class="displaymath process-math" id="sec_rintprop-5-7-3-3">
+\begin{equation}
+\overline{\int_a^b} f
+\leq
+M\cdot 0
++
+L
++
+M\cdot 0
+= L .
+\end{equation}
+</div>
+<div class="para">Thus <span class="process-math">\(\overline{\int_a^b} f = \underline{\int_a^b} f = L\)</span> and hence <span class="process-math">\(f\)</span> is Riemann integrable and <span class="process-math">\(\int_a^b f = L\text{.}\)</span> In particular, no matter what subsequence we choose, the <span class="process-math">\(L\)</span> is the same number.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-5-7-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_rintprop-5-7-4">To prove the final statement of the lemma we use <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_bw.html#seqconvsubseqconv_prop" title="Proposition 2.3.7">Proposition 2.3.7</a>.  We have shown that every convergent subsequence <span class="process-math">\(\bigl\{ \int_{a_{n_k}}^{b_{n_k}} f \bigr\}_{k=1}^\infty\)</span> converges to <span class="process-math">\(L = \int_a^b f\text{.}\)</span> Therefore, the sequence <span class="process-math">\(\bigl\{ \int_{a_n}^{b_n} f \bigr\}_{n=1}^\infty\)</span> is convergent and converges to <span class="process-math">\(\int_a^b f\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-5-7-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 5.2.3.2"><a aria-label="Copy heading and permalink for Proof 5.2.3.2" href="#sec_rintprop-5-7" title="Copy heading and permalink for Proof 5.2.3.2">🔗</a></div>
+</article>
+<div class="para" id="sec_rintprop-5-8">We say a function <span class="process-math">\(f \colon [a,b] \to \R\)</span> has <em class="emphasis">finitely many discontinuities</em> if there exists a finite set <span class="process-math">\(S = \{ x_1, x_2, \ldots, x_n \}
+\subset [a,b]\text{,}\)</span> and <span class="process-math">\(f\)</span> is continuous at all points of <span class="process-math">\([a,b] \setminus S\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-5-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="sec_rintprop-5-9"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.2.9</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_rintprop-5-9-1-1">Let <span class="process-math">\(f \colon [a,b] \to \R\)</span> be a bounded function with finitely many discontinuities.  Then <span class="process-math">\(f \in \sR\bigl([a,b]\bigr)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-5-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 5.2.9"><a aria-label="Copy heading and permalink for Theorem 5.2.9" href="#sec_rintprop-5-9" title="Copy heading and permalink for Theorem 5.2.9">🔗</a></div>
+</article>
+<article class="proof" id="sec_rintprop-5-10"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_rintprop-5-10-1">We divide the interval into finitely many intervals <span class="process-math">\([a_i,b_i]\)</span> so that <span class="process-math">\(f\)</span> is continuous on the interior <span class="process-math">\((a_i,b_i)\text{.}\)</span>  If <span class="process-math">\(f\)</span> is continuous on <span class="process-math">\((a_i,b_i)\text{,}\)</span> then it is continuous and hence integrable on <span class="process-math">\([c_i,d_i]\)</span> whenever <span class="process-math">\(a_i &lt; c_i &lt; d_i &lt; b_i\text{.}\)</span>  By <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rintprop.html#lemma_boundedimpriemann" title="Lemma 5.2.8">Lemma 5.2.8</a>, the restriction of <span class="process-math">\(f\)</span> to <span class="process-math">\([a_i,b_i]\)</span> is integrable. By additivity of the integral (and <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicset.html#induction_thm" title="Theorem 0.3.6: Principle of induction">induction</a>), <span class="process-math">\(f\)</span> is integrable on the union of the intervals.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-5-10-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 5.2.3.3"><a aria-label="Copy heading and permalink for Proof 5.2.3.3" href="#sec_rintprop-5-10" title="Copy heading and permalink for Proof 5.2.3.3">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 5.2.3: Continuous functions"><a aria-label="Copy heading and permalink for Subsection 5.2.3: Continuous functions" href="#sec_rintprop-5" title="Copy heading and permalink for Subsection 5.2.3: Continuous functions">🔗</a></div>
+</section>
+<section class="subsection" id="sec_rintprop-6">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.2.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">More on integrable functions</span>
+</h3>
+<div class="para" id="sec_rintprop-6-2">Sometimes it is convenient (or necessary) to change certain values of a function and then integrate.  The next result says that if we change the values at finitely many points, the integral does not change.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-6-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_rintprop-6-3"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.2.10</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_rintprop-6-3-1-1">
+<div class="para">Let <span class="process-math">\(f \colon [a,b] \to \R\)</span> be Riemann integrable.  Let <span class="process-math">\(g \colon [a,b] \to
+\R\)</span> be such that <span class="process-math">\(f(x) = g(x)\)</span> for all <span class="process-math">\(x \in [a,b] \setminus S\text{,}\)</span> where <span class="process-math">\(S\)</span> is a finite set. Then <span class="process-math">\(g\)</span> is Riemann integrable and</div>
+<div class="displaymath process-math" id="sec_rintprop-6-3-1-1-7">
+\begin{equation}
+\int_a^b g = \int_a^b f.
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-6-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 5.2.10"><a aria-label="Copy heading and permalink for Proposition 5.2.10" href="#sec_rintprop-6-3" title="Copy heading and permalink for Proposition 5.2.10">🔗</a></div>
+</article>
+<article class="proof" id="sec_rintprop-6-4"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_rintprop-6-4-1">
+<em class="emphasis">(Sketch of proof)</em> Using additivity of the integral, split the interval <span class="process-math">\([a,b]\)</span> into smaller intervals such that <span class="process-math">\(f(x) = g(x)\)</span> holds for all <span class="process-math">\(x\)</span> except at the endpoints (details are left to the reader).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-6-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_rintprop-6-4-2">Therefore, without loss of generality suppose <span class="process-math">\(f(x) = g(x)\)</span> for all <span class="process-math">\(x \in (a,b)\text{.}\)</span>  The proof follows by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rintprop.html#lemma_boundedimpriemann" title="Lemma 5.2.8">Lemma 5.2.8</a>, and is left as <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rintprop.html#exercise_changeendpointsintegral" title="Exercise 5.2.3">Exercise 5.2.3</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-6-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 5.2.4.1"><a aria-label="Copy heading and permalink for Proof 5.2.4.1" href="#sec_rintprop-6-4" title="Copy heading and permalink for Proof 5.2.4.1">🔗</a></div>
+</article>
+<div class="para" id="sec_rintprop-6-5">Finally, monotone (increasing or decreasing) functions are always Riemann integrable.  The proof is left to the reader as part of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rintprop.html#exercise_boundedvariationintegrable" title="Exercise 5.2.14">Exercise 5.2.14</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-6-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_monotoneintegrable"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.2.11</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="prop_monotoneintegrable-1-1">Let <span class="process-math">\(f \colon [a,b] \to \R\)</span> be a monotone function.  Then <span class="process-math">\(f \in
+\sR\bigl([a,b]\bigr)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_monotoneintegrable-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 5.2.11"><a aria-label="Copy heading and permalink for Proposition 5.2.11" href="#prop_monotoneintegrable" title="Copy heading and permalink for Proposition 5.2.11">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 5.2.4: More on integrable functions"><a aria-label="Copy heading and permalink for Subsection 5.2.4: More on integrable functions" href="#sec_rintprop-6" title="Copy heading and permalink for Subsection 5.2.4: More on integrable functions">🔗</a></div>
+</section>
+<section class="exercises" id="sec_rintprop-7">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.2.5</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="exercise_proofoflinpropparti"><h4 class="heading"><span class="codenumber">5.2.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="exercise_proofoflinpropparti-1-1">
+<div class="para">Finish the proof of the first part of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rintprop.html#prop_integrallinear" title="Proposition 5.2.4: Linearity">Proposition 5.2.4</a>. Let <span class="process-math">\(f\)</span> be in <span class="process-math">\(\sR\bigl([a,b]\bigr)\text{.}\)</span>  Prove that <span class="process-math">\(-f\)</span> is in <span class="process-math">\(\sR\bigl([a,b]\bigr)\)</span> and</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_integrallinear.html" id="exercise_proofoflinpropparti-1-1-6">
+\begin{equation}
+\int_a^b - f(x) \,dx = - \int_a^b f(x) \,dx .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_proofoflinpropparti-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.2.1"><a aria-label="Copy heading and permalink for Exercise 5.2.1" href="#exercise_proofoflinpropparti" title="Copy heading and permalink for Exercise 5.2.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_proofoflinproppartii"><h4 class="heading"><span class="codenumber">5.2.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="exercise_proofoflinproppartii-1-1">
+<div class="para">Prove the second part of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rintprop.html#prop_integrallinear" title="Proposition 5.2.4: Linearity">Proposition 5.2.4</a>. Let <span class="process-math">\(f\)</span> and <span class="process-math">\(g\)</span> be in <span class="process-math">\(\sR\bigl([a,b]\bigr)\text{.}\)</span> Prove, without using <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rintprop.html#prop_upperlowerlinineq" title="Proposition 5.2.5">Proposition 5.2.5</a>, that <span class="process-math">\(f+g\)</span> is in <span class="process-math">\(\sR\bigl([a,b]\bigr)\)</span> and</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_integrallinear.html ./knowl/xref/prop_upperlowerlinineq.html ./knowl/xref/prop_refinement.html" id="exercise_proofoflinproppartii-1-1-8">
+\begin{equation}
+\int_a^b \bigl( f(x)+g(x) \bigr) \,dx = 
+\int_a^b f(x) \,dx 
++
+\int_a^b g(x) \,dx .
+\end{equation}
+</div>
+<div class="para">Hint: One way to do it is to use <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rint.html#prop_refinement" title="Proposition 5.1.7">Proposition 5.1.7</a> to find a single partition <span class="process-math">\(P\)</span> such that <span class="process-math">\(U(P,f)-L(P,f) &lt; \nicefrac{\epsilon}{2}\)</span> and <span class="process-math">\(U(P,g)-L(P,g) &lt; \nicefrac{\epsilon}{2}\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_proofoflinproppartii-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.2.2"><a aria-label="Copy heading and permalink for Exercise 5.2.2" href="#exercise_proofoflinproppartii" title="Copy heading and permalink for Exercise 5.2.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_changeendpointsintegral"><h4 class="heading"><span class="codenumber">5.2.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="exercise_changeendpointsintegral-1-1">
+<div class="para">Let <span class="process-math">\(f \colon [a,b] \to \R\)</span> be Riemann integrable, and <span class="process-math">\(g \colon [a,b] \to \R\)</span> be such that <span class="process-math">\(f(x) = g(x)\)</span> for all <span class="process-math">\(x \in (a,b)\text{.}\)</span> Prove that <span class="process-math">\(g\)</span> is Riemann integrable and that</div>
+<div class="displaymath process-math" id="exercise_changeendpointsintegral-1-1-6">
+\begin{equation}
+\int_a^b g = \int_a^b f.
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_changeendpointsintegral-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.2.3"><a aria-label="Copy heading and permalink for Exercise 5.2.3" href="#exercise_changeendpointsintegral" title="Copy heading and permalink for Exercise 5.2.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_rintprop-7-4"><h4 class="heading"><span class="codenumber">5.2.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_rintprop-7-4-1-1">Prove the <em class="emphasis">mean value theorem for integrals</em>: If <span class="process-math">\(f \colon [a,b] \to \R\)</span> is continuous, then there exists a <span class="process-math">\(c \in [a,b]\)</span> such that <span class="process-math">\(\int_a^b f = f(c)(b-a)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-7-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.2.4"><a aria-label="Copy heading and permalink for Exercise 5.2.4" href="#sec_rintprop-7-4" title="Copy heading and permalink for Exercise 5.2.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_rintprop-7-5"><h4 class="heading"><span class="codenumber">5.2.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_rintprop-7-5-1-1">Let <span class="process-math">\(f \colon [a,b] \to \R\)</span> be a continuous function such that <span class="process-math">\(f(x) \geq 0\)</span> for all <span class="process-math">\(x \in [a,b]\)</span> and <span class="process-math">\(\int_a^b f = 0\text{.}\)</span>  Prove that <span class="process-math">\(f(x) = 0\)</span> for all <span class="process-math">\(x\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-7-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.2.5"><a aria-label="Copy heading and permalink for Exercise 5.2.5" href="#sec_rintprop-7-5" title="Copy heading and permalink for Exercise 5.2.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_rintprop-7-6"><h4 class="heading"><span class="codenumber">5.2.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_rintprop-7-6-1-1">Let <span class="process-math">\(f \colon [a,b] \to \R\)</span> be a continuous function and <span class="process-math">\(\int_a^b f = 0\text{.}\)</span>  Prove that there exists a <span class="process-math">\(c \in [a,b]\)</span> such that <span class="process-math">\(f(c) = 0\text{.}\)</span> (Compare with the previous exercise.)<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-7-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.2.6"><a aria-label="Copy heading and permalink for Exercise 5.2.6" href="#sec_rintprop-7-6" title="Copy heading and permalink for Exercise 5.2.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_rintprop-7-7"><h4 class="heading"><span class="codenumber">5.2.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_rintprop-7-7-1-1">Let <span class="process-math">\(f \colon [a,b] \to \R\)</span> and <span class="process-math">\(g \colon [a,b] \to \R\)</span> be continuous functions such that <span class="process-math">\(\int_a^b f = \int_a^b g\text{.}\)</span> Show that there exists a <span class="process-math">\(c \in [a,b]\)</span> such that <span class="process-math">\(f(c) = g(c)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-7-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.2.7"><a aria-label="Copy heading and permalink for Exercise 5.2.7" href="#sec_rintprop-7-7" title="Copy heading and permalink for Exercise 5.2.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_rintprop-7-8"><h4 class="heading"><span class="codenumber">5.2.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_rintprop-7-8-1-1">
+<div class="para">Let <span class="process-math">\(f \in \sR\bigl([a,b]\bigr)\text{.}\)</span>  Let <span class="process-math">\(\alpha, \beta, \gamma\)</span> be arbitrary numbers in <span class="process-math">\([a,b]\)</span> (not necessarily ordered in any way).  Prove</div>
+<div class="displaymath process-math" id="sec_rintprop-7-8-1-1-4">
+\begin{equation}
+\int_\alpha^\gamma f =
+\int_\alpha^\beta f +
+\int_\beta^\gamma f .
+\end{equation}
+</div>
+<div class="para">Recall what <span class="process-math">\(\int_a^b f\)</span> means if <span class="process-math">\(b \leq a\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-7-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.2.8"><a aria-label="Copy heading and permalink for Exercise 5.2.8" href="#sec_rintprop-7-8" title="Copy heading and permalink for Exercise 5.2.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_rintprop-7-9"><h4 class="heading"><span class="codenumber">5.2.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_rintprop-7-9-1-1">Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rintprop.html#intsubcor" title="Corollary 5.2.3">Corollary 5.2.3</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-7-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.2.9"><a aria-label="Copy heading and permalink for Exercise 5.2.9" href="#sec_rintprop-7-9" title="Copy heading and permalink for Exercise 5.2.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_easyabsint"><h4 class="heading"><span class="codenumber">5.2.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="exercise_easyabsint-1-1">
+<div class="para">Suppose <span class="process-math">\(f \colon [a,b] \to \R\)</span> is bounded and has finitely many discontinuities. Show that as a function of <span class="process-math">\(x\)</span> the expression <span class="process-math">\(\babs{f(x)}\)</span> is bounded with finitely many discontinuities and is thus Riemann integrable.  Then show</div>
+<div class="displaymath process-math" id="exercise_easyabsint-1-1-4">
+\begin{equation}
+\abs{\int_a^b f(x)\,dx} \leq \int_a^b \babs{f(x)}\,dx .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_easyabsint-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.2.10"><a aria-label="Copy heading and permalink for Exercise 5.2.10" href="#exercise_easyabsint" title="Copy heading and permalink for Exercise 5.2.10">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_rintprop-7-11"><h4 class="heading"><span class="codenumber">5.2.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_rintprop-7-11-1-1">
+<em class="emphasis">(Hard)</em>   Show that the Thomae or popcorn function (see <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_cont.html#popcornfunction_example" title="Example 3.2.12">Example 3.2.12</a>) is Riemann integrable.  Therefore, there exists a function discontinuous at all rational numbers (a dense set) that is Riemann integrable.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-7-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_rintprop-7-11-1-2">
+<div class="para">That is, define <span class="process-math">\(f \colon [0,1] \to \R\)</span> by <span class="process-math">\(f(0)=1\)</span> and for <span class="process-math">\(x &gt; 0\)</span> by</div>
+<div class="displaymath process-math" id="sec_rintprop-7-11-1-2-4">
+\begin{equation}
+f(x) \coloneqq 
+\begin{cases}
+\nicefrac{1}{k} &amp; \text{if } x=\nicefrac{m}{k} \text{ where }
+m,k \in \N \text{ and } m \text{ and } k \text{ have no common divisors,} \\
+0               &amp; \text{if } x \text{ is irrational.}
+\end{cases}
+\end{equation}
+</div>
+<div class="para">Show <span class="process-math">\(\int_0^1 f = 0\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-7-11-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.2.11"><a aria-label="Copy heading and permalink for Exercise 5.2.11" href="#sec_rintprop-7-11" title="Copy heading and permalink for Exercise 5.2.11">🔗</a></div>
+</article>
+<div class="para logical" id="sec_rintprop-7-12">
+<div class="para">If <span class="process-math">\(I \subset \R\)</span> is a bounded interval, then the function</div>
+<div class="displaymath process-math" id="sec_rintprop-7-12-2">
+\begin{equation}
+\varphi_I(x) \coloneqq
+\begin{cases}
+1 &amp; \text{if } x \in I, \\
+0 &amp; \text{otherwise,}
+\end{cases}
+\end{equation}
+</div>
+<div class="para">is called an <em class="emphasis">elementary step function</em>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-7-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="exercise exercise-like" id="exercise_stepfunctionintegrable"><h4 class="heading"><span class="codenumber">5.2.12<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_stepfunctionintegrable-1-1">Let <span class="process-math">\(I\)</span> be an arbitrary bounded interval (you should consider all types of intervals: closed, open, half-open) and <span class="process-math">\(a &lt; b\text{,}\)</span> then using only the definition of the integral show that the elementary step function <span class="process-math">\(\varphi_I\)</span> is integrable on <span class="process-math">\([a,b]\text{,}\)</span> and find the integral in terms of <span class="process-math">\(a\text{,}\)</span> <span class="process-math">\(b\text{,}\)</span> and the endpoints of <span class="process-math">\(I\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_stepfunctionintegrable-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.2.12"><a aria-label="Copy heading and permalink for Exercise 5.2.12" href="#exercise_stepfunctionintegrable" title="Copy heading and permalink for Exercise 5.2.12">🔗</a></div>
+</article>
+<div class="para logical" id="sec_rintprop-7-14">
+<div class="para">A function <span class="process-math">\(f\)</span> is called a <em class="emphasis">step function</em> if it can be written as</div>
+<div class="displaymath process-math" id="sec_rintprop-7-14-3">
+\begin{equation}
+f(x) = \sum_{k=1}^n \alpha_k \varphi_{I_k} (x)
+\end{equation}
+</div>
+<div class="para">for some real numbers <span class="process-math">\(\alpha_1,\alpha_2, \ldots, \alpha_n\)</span> and some bounded intervals <span class="process-math">\(I_1,I_2,\ldots,I_n\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-7-14" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="exercise exercise-like" id="sec_rintprop-7-15"><h4 class="heading"><span class="codenumber">5.2.13<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_rintprop-7-15-1-1">Using <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rintprop.html#exercise_stepfunctionintegrable" title="Exercise 5.2.12">Exercise 5.2.12</a>, show that a step function (see above) is integrable on every interval <span class="process-math">\([a,b]\text{.}\)</span>  Furthermore, find the integral in terms of <span class="process-math">\(a\text{,}\)</span> <span class="process-math">\(b\text{,}\)</span> the endpoints of <span class="process-math">\(I_k\)</span> and the <span class="process-math">\(\alpha_k\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-7-15-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.2.13"><a aria-label="Copy heading and permalink for Exercise 5.2.13" href="#sec_rintprop-7-15" title="Copy heading and permalink for Exercise 5.2.13">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_boundedvariationintegrable"><h4 class="heading"><span class="codenumber">5.2.14<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_boundedvariationintegrable-1-1">Let <span class="process-math">\(f \colon [a,b] \to \R\)</span> be a function.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_boundedvariationintegrable-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="exercise_boundedvariationintegrable-1-2">
+<li id="exercise_boundedvariationintegrable-1-2-1">
+<div class="para" id="exercise_boundedvariationintegrable-1-2-1-1">Show that if <span class="process-math">\(f\)</span> is increasing, then it is Riemann integrable.  Hint: Use a uniform partition; each subinterval of same length.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_boundedvariationintegrable-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 5.2.14.a"><a aria-label="Copy heading and permalink for Item 5.2.14.a" href="#exercise_boundedvariationintegrable-1-2-1" title="Copy heading and permalink for Item 5.2.14.a">🔗</a></div>
+</li>
+<li id="exercise_boundedvariationintegrable-1-2-2">
+<div class="para" id="exercise_boundedvariationintegrable-1-2-2-1">Use part a) to show that if <span class="process-math">\(f\)</span> is decreasing, then it is Riemann integrable.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_boundedvariationintegrable-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 5.2.14.b"><a aria-label="Copy heading and permalink for Item 5.2.14.b" href="#exercise_boundedvariationintegrable-1-2-2" title="Copy heading and permalink for Item 5.2.14.b">🔗</a></div>
+</li>
+<li id="exercise_boundedvariationintegrable-1-2-3">
+<div class="para" id="exercise_boundedvariationintegrable-1-2-3-1">Suppose<details aria-live="polite" class="ptx-footnote" id="exercise_boundedvariationintegrable-1-2-3-1-1"><summary class="ptx-footnote__number" title="Footnote 5.2.1"><sup> 1 </sup></summary>
+<div class="ptx-footnote__contents" id="exercise_boundedvariationintegrable-1-2-3-1-1">Such an <span class="process-math">\(h\)</span> is said to be of <em class="emphasis">bounded variation</em>.
+</div></details> <span class="process-math">\(h = f-g\)</span> where <span class="process-math">\(f\)</span> and <span class="process-math">\(g\)</span> are increasing functions on <span class="process-math">\([a,b]\text{.}\)</span>  Show that <span class="process-math">\(h\)</span> is Riemann integrable.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_boundedvariationintegrable-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 5.2.14.c"><a aria-label="Copy heading and permalink for Item 5.2.14.c" href="#exercise_boundedvariationintegrable-1-2-3" title="Copy heading and permalink for Item 5.2.14.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 5.2.14"><a aria-label="Copy heading and permalink for Exercise 5.2.14" href="#exercise_boundedvariationintegrable" title="Copy heading and permalink for Exercise 5.2.14">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_hardabsint"><h4 class="heading"><span class="codenumber">5.2.15<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_hardabsint-1-1">
+<em class="emphasis">(Challenging)</em>   Suppose <span class="process-math">\(f \in \sR\bigl([a,b]\bigr)\text{.}\)</span>  Prove that the function that takes <span class="process-math">\(x\)</span> to <span class="process-math">\(\babs{f(x)}\)</span> is also Riemann integrable on <span class="process-math">\([a,b]\text{.}\)</span> Then show the same inequality as <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rintprop.html#exercise_easyabsint" title="Exercise 5.2.10">Exercise 5.2.10</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_hardabsint-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.2.15"><a aria-label="Copy heading and permalink for Exercise 5.2.15" href="#exercise_hardabsint" title="Copy heading and permalink for Exercise 5.2.15">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_upperlowerlinineq"><h4 class="heading"><span class="codenumber">5.2.16<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_upperlowerlinineq-1-1">Suppose <span class="process-math">\(f \colon [a,b] \to \R\)</span> and <span class="process-math">\(g \colon [a,b] \to \R\)</span> are bounded.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_upperlowerlinineq-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="exercise_upperlowerlinineq-1-2">
+<li id="exercise_upperlowerlinineq-1-2-1">
+<div class="para" id="exercise_upperlowerlinineq-1-2-1-1">Show <span class="process-math">\(\overline{\int_a^b} (f+g) \leq \overline{\int_a^b}f+\overline{\int_a^b}g\)</span> and <span class="process-math">\(\underline{\int_a^b} (f+g) \geq
+\underline{\int_a^b}f+\underline{\int_a^b}g\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_upperlowerlinineq-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 5.2.16.a"><a aria-label="Copy heading and permalink for Item 5.2.16.a" href="#exercise_upperlowerlinineq-1-2-1" title="Copy heading and permalink for Item 5.2.16.a">🔗</a></div>
+</li>
+<li id="exercise_upperlowerlinineq-1-2-2">
+<div class="para" id="exercise_upperlowerlinineq-1-2-2-1">Find example <span class="process-math">\(f\)</span> and <span class="process-math">\(g\)</span> where the inequality is strict.  Hint: <span class="process-math">\(f\)</span> and <span class="process-math">\(g\)</span> should not be Riemann integrable.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_upperlowerlinineq-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 5.2.16.b"><a aria-label="Copy heading and permalink for Item 5.2.16.b" href="#exercise_upperlowerlinineq-1-2-2" title="Copy heading and permalink for Item 5.2.16.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 5.2.16"><a aria-label="Copy heading and permalink for Exercise 5.2.16" href="#exercise_upperlowerlinineq" title="Copy heading and permalink for Exercise 5.2.16">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_rintprop-7-19"><h4 class="heading"><span class="codenumber">5.2.17<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_rintprop-7-19-1-1">
+<div class="para">Suppose <span class="process-math">\(f \colon [a,b] \to \R\)</span> is continuous and <span class="process-math">\(g \colon \R \to \R\)</span> is Lipschitz continuous.  Define</div>
+<div class="displaymath process-math" id="sec_rintprop-7-19-1-1-3">
+\begin{equation}
+h(x) \coloneqq \int_a^b g(t-x) f(t) \, dt .
+\end{equation}
+</div>
+<div class="para">Prove that <span class="process-math">\(h\)</span> is Lipschitz continuous.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rintprop-7-19-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.2.17"><a aria-label="Copy heading and permalink for Exercise 5.2.17" href="#sec_rintprop-7-19" title="Copy heading and permalink for Exercise 5.2.17">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_rieleblem"><h4 class="heading"><span class="codenumber">5.2.18<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="exercise_rieleblem-1-1">
+<div class="para">Prove a version of the <em class="emphasis">Riemann–Lebesgue Lemma</em> (one of several so named): Suppose <span class="process-math">\(f \colon [a,b] \to \R\)</span> is continuous and define the sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> by</div>
+<div class="displaymath process-math" id="exercise_rieleblem-1-1-4">
+\begin{equation}
+x_n \coloneqq \int_a^b f(t) \sin(nt) \, dt .
+\end{equation}
+</div>
+<div class="para">Prove that <span class="process-math">\(\lim\limits_{n\to\infty} x_n = 0\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_rieleblem-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.2.18"><a aria-label="Copy heading and permalink for Exercise 5.2.18" href="#exercise_rieleblem" title="Copy heading and permalink for Exercise 5.2.18">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 5.2.5"><a aria-label="Copy heading and permalink for Exercises 5.2.5" href="#sec_rintprop-7" title="Copy heading and permalink for Exercises 5.2.5">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 5.2: Properties of the integral"><a aria-label="Copy heading and permalink for Section 5.2: Properties of the integral" href="#sec_rintprop" title="Copy heading and permalink for Section 5.2: Properties of the integral">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_rint.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_ftc.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

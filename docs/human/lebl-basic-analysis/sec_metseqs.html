@@ -1,0 +1,530 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sequences and convergence · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_metseqs">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Sequences and convergence</span>
+</h2>
+<section class="introduction" id="sec_metseqs-2">
+<div class="para" id="sec_metseqs-2-1">
+<em class="emphasis">Note: 1 lecture</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section>
+<section class="subsection" id="sec_metseqs-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.3.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Sequences</span>
+</h3>
+<div class="para" id="sec_metseqs-3-2">The notion of a sequence in a metric space is very similar to a sequence of real numbers. The related definitions are essentially the same as those for real numbers in the sense of <a class="internal" href="seq_chapter.html" title="Chapter 2: Sequences and Series">Chapter 2</a>, where <span class="process-math">\(\R\)</span> with the standard metric <span class="process-math">\(d(x,y)=\sabs{x-y}\)</span> is replaced by an arbitrary metric space <span class="process-math">\((X,d)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-3-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_metseqs-3-3"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.3.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_metseqs-3-3-1-1">
+<div class="para">A <em class="emphasis">sequence</em> in a metric space <span class="process-math">\((X,d)\)</span> is a function <span class="process-math">\(x \colon \N \to X\text{.}\)</span>  As before we write <span class="process-math">\(x_n\)</span> for the <span class="process-math">\(n\)</span>th element in the sequence, and for the whole sequence use the notation</div>
+<div class="displaymath process-math" id="sec_metseqs-3-3-1-1-6">
+\begin{equation}
+\{ x_n \}_{n=1}^\infty .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-3-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_metseqs-3-3-1-2">
+<div class="para">A sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is <em class="emphasis">bounded</em> if there exists a point <span class="process-math">\(p \in X\)</span> and <span class="process-math">\(B \in \R\)</span> such that</div>
+<div class="displaymath process-math" id="sec_metseqs-3-3-1-2-6">
+\begin{equation}
+d(p,x_n) \leq B \qquad \text{for all } n \in \N.
+\end{equation}
+</div>
+<div class="para">In other words, the sequence <span class="process-math">\(\{x_n\}_{n=1}^\infty\)</span> is bounded whenever the set <span class="process-math">\(\{ x_n : n \in \N \}\)</span> is bounded.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-3-3-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_metseqs-3-3-1-3">If <span class="process-math">\(\{ n_k \}_{k=1}^\infty\)</span> is a sequence of natural numbers such that <span class="process-math">\(n_{k+1} &gt; n_k\)</span> for all <span class="process-math">\(k\text{,}\)</span> then the sequence <span class="process-math">\(\{ x_{n_k} \}_{k=1}^\infty\)</span> is said to be a <em class="emphasis">subsequence</em> of <span class="process-math">\(\{x_n \}_{n=1}^\infty\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-3-3-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 7.3.1"><a aria-label="Copy heading and permalink for Definition 7.3.1" href="#sec_metseqs-3-3" title="Copy heading and permalink for Definition 7.3.1">🔗</a></div>
+</article>
+<div class="para" id="sec_metseqs-3-4">Similarly, we define convergence. See <a class="internal" href="sec_metseqs.html#fig_sequence-convergence-metric" title="Figure 7.10">Figure 7.10</a>, for an idea of the definition.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-3-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_metseqs-3-5"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.3.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_metseqs-3-5-1-1">
+<div class="para">A sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> in a metric space <span class="process-math">\((X,d)\)</span> is said to <em class="emphasis">converge</em> to a point <span class="process-math">\(p \in X\)</span> if for every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there exists an <span class="process-math">\(M \in \N\)</span> such that <span class="process-math">\(d(x_n,p) &lt; \epsilon\)</span> for all <span class="process-math">\(n \geq M\text{.}\)</span>  The point <span class="process-math">\(p\)</span> is said to be a <em class="emphasis">limit</em> of <span class="process-math">\(\{ x_n \}_{n=1}^\infty\text{.}\)</span> We will prove the limit is unique, and so we write</div>
+<div class="displaymath process-math" id="sec_metseqs-3-5-1-1-13">
+\begin{equation}
+\lim_{n\to \infty} x_n \coloneqq p .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-3-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_metseqs-3-5-1-2">A sequence that converges is <em class="emphasis">convergent</em>. Otherwise, the sequence is <em class="emphasis">divergent</em>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-3-5-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <hr class="rahr"/>
+<figure class="figure figure-like" id="fig_sequence-convergence-metric"><img alt="A dotted circle of radius epsilon centered at p is drawn. A bunch of points from the beginning of the sequence are shown for x sub 1 through x sub 10. The points x sub 1, x sub 3, x sub 4, x sub 5, and x sub 6 are outside the circle, but all the other points are inside." class="raimg" role="img" src="figures/sequence-convergence-metric-mbx.svg" style="width:183pt; height:80pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Sequence converging to <span class="process-math">\(p\text{.}\)</span>  The first 10 points are shown and <span class="process-math">\(M=7\)</span> for this <span class="process-math">\(\epsilon\text{.}\)</span><div class="autopermalink" data-description="Figure 7.10"><a aria-label="Copy heading and permalink for Figure 7.10" href="#fig_sequence-convergence-metric" title="Copy heading and permalink for Figure 7.10">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="autopermalink" data-description="Definition 7.3.2"><a aria-label="Copy heading and permalink for Definition 7.3.2" href="#sec_metseqs-3-5" title="Copy heading and permalink for Definition 7.3.2">🔗</a></div>
+</article>
+<div class="para" id="sec_metseqs-3-6">We start by proving the limit is unique.  The proof is almost identical (word for word) to the proof of the same fact for sequences of real numbers, <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_seqsandlims.html#prop_limisunique" title="Proposition 2.1.6">Proposition 2.1.6</a>. Proofs of many results we know for sequences of real numbers can be adapted to the more general settings of metric spaces.  We must replace <span class="process-math">\(\sabs{x-y}\)</span> with <span class="process-math">\(d(x,y)\)</span> in the proofs and apply the triangle inequality correctly.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-3-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_mslimisunique"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.3.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="prop_mslimisunique-1-1">A convergent sequence in a metric space has a unique limit.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_mslimisunique-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 7.3.3"><a aria-label="Copy heading and permalink for Proposition 7.3.3" href="#prop_mslimisunique" title="Copy heading and permalink for Proposition 7.3.3">🔗</a></div>
+</article>
+<article class="proof" id="sec_metseqs-3-8"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_metseqs-3-8-1">
+<div class="para">Suppose <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> has limits <span class="process-math">\(x\)</span> and <span class="process-math">\(y\text{.}\)</span> Take an arbitrary <span class="process-math">\(\epsilon &gt; 0\text{.}\)</span> From the definition find an <span class="process-math">\(M_1\)</span> such that for all <span class="process-math">\(n \geq M_1\text{,}\)</span> <span class="process-math">\(d(x_n,x) &lt; \nicefrac{\epsilon}{2}\text{.}\)</span>  Similarly, find an <span class="process-math">\(M_2\)</span> such that for all <span class="process-math">\(n \geq M_2\text{,}\)</span> we have <span class="process-math">\(d(x_n,y) &lt; \nicefrac{\epsilon}{2}\text{.}\)</span>  Now take an <span class="process-math">\(n\)</span> such that <span class="process-math">\(n \geq M_1\)</span> and also <span class="process-math">\(n \geq M_2\text{,}\)</span> and estimate</div>
+<div class="displaymath process-math" id="sec_metseqs-3-8-1-14">
+\begin{equation}
+\begin{split}
+d(y,x)
+&amp; \leq
+d(y,x_n) + d(x_n,x) \\
+&amp; &lt;
+\frac{\epsilon}{2} + \frac{\epsilon}{2} = \epsilon .
+\end{split}
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(d(y,x) &lt; \epsilon\)</span> for all <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> we have <span class="process-math">\(d(x,y) = 0\)</span> and so <span class="process-math">\(y=x\text{.}\)</span>  Hence, the limit (if it exists) is unique.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-3-8-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 7.3.1.1"><a aria-label="Copy heading and permalink for Proof 7.3.1.1" href="#sec_metseqs-3-8" title="Copy heading and permalink for Proof 7.3.1.1">🔗</a></div>
+</article>
+<div class="para" id="sec_metseqs-3-9">The proofs of the following propositions are left as exercises.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-3-9" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_msconvbound"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.3.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="prop_msconvbound-1-1">A convergent sequence in a metric space is bounded.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_msconvbound-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 7.3.4"><a aria-label="Copy heading and permalink for Proposition 7.3.4" href="#prop_msconvbound" title="Copy heading and permalink for Proposition 7.3.4">🔗</a></div>
+</article>
+<article class="proposition theorem-like" id="prop_msconvifa"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.3.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="prop_msconvifa-1-1">
+<div class="para">A sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> in a metric space <span class="process-math">\((X,d)\)</span> converges to <span class="process-math">\(p \in X\)</span> if and only if there exists a sequence <span class="process-math">\(\{ a_n \}_{n=1}^\infty\)</span> of real numbers such that</div>
+<div class="displaymath process-math" id="prop_msconvifa-1-1-5">
+\begin{equation}
+d(x_n,p) \leq a_n \quad \text{for all } n \in \N,
+\qquad
+\text{and}
+\qquad
+\lim_{n\to\infty} a_n = 0.
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_msconvifa-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 7.3.5"><a aria-label="Copy heading and permalink for Proposition 7.3.5" href="#prop_msconvifa" title="Copy heading and permalink for Proposition 7.3.5">🔗</a></div>
+</article>
+<article class="proposition theorem-like" id="prop_mssubseq"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.3.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="prop_mssubseq-1-1">Let <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> be a sequence in a metric space <span class="process-math">\((X,d)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_mssubseq-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="prop_mssubseq-1-2">
+<li id="prop_mssubseq-1-2-1">
+<div class="para" id="prop_mssubseq-1-2-1-1">If <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> converges to <span class="process-math">\(p \in X\text{,}\)</span> then every subsequence <span class="process-math">\(\{ x_{n_k} \}_{k=1}^\infty\)</span> converges to <span class="process-math">\(p\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_mssubseq-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#prop_mssubseq-1-2-1" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="prop_mssubseq-1-2-2">
+<div class="para" id="prop_mssubseq-1-2-2-1">If for some <span class="process-math">\(K \in \N\)</span> the <span class="process-math">\(K\)</span>-tail <span class="process-math">\(\{ x_n \}_{n=K+1}^\infty\)</span> converges to <span class="process-math">\(p \in X\text{,}\)</span> then <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> converges to <span class="process-math">\(p\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_mssubseq-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#prop_mssubseq-1-2-2" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Proposition 7.3.6"><a aria-label="Copy heading and permalink for Proposition 7.3.6" href="#prop_mssubseq" title="Copy heading and permalink for Proposition 7.3.6">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_metseqs-3-13"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.3.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_metseqs-3-13-1-1">Take <span class="process-math">\(C\bigl([a,b],\R\bigr)\)</span> to be the set of continuous functions with the metric being the uniform norm.  We saw that we obtain a metric space. If we look at the definition of convergence, we notice that it is identical to uniform convergence.  That is, <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> converges uniformly if and only if it converges in the metric space sense.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-3-13-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 7.3.7"><a aria-label="Copy heading and permalink for Example 7.3.7" href="#sec_metseqs-3-13" title="Copy heading and permalink for Example 7.3.7">🔗</a></div>
+</article>
+<article class="remark remark-like" id="sec_metseqs-3-14"><h4 class="heading">
+<span class="type">Remark</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.3.8</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_metseqs-3-14-1-1">It is perhaps surprising that on the set of functions <span class="process-math">\(f \colon [a,b] \to
+\R\)</span> (continuous or not) there is no metric that gives pointwise convergence as the domain <span class="process-math">\([a,b]\)</span> is uncountable.  The proof of this fact is beyond the scope of this book.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-3-14-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Remark 7.3.8"><a aria-label="Copy heading and permalink for Remark 7.3.8" href="#sec_metseqs-3-14" title="Copy heading and permalink for Remark 7.3.8">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 7.3.1: Sequences"><a aria-label="Copy heading and permalink for Subsection 7.3.1: Sequences" href="#sec_metseqs-3" title="Copy heading and permalink for Subsection 7.3.1: Sequences">🔗</a></div>
+</section>
+<section class="subsection" id="sec_metseqs-4">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.3.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Convergence in euclidean space</span>
+</h3>
+<div class="para" id="sec_metseqs-4-2">In the euclidean space <span class="process-math">\(\R^n\text{,}\)</span> a sequence converges if and only if every component converges:<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_msconveuc"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.3.9</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="prop_msconveuc-1-1">
+<div class="para">Let <span class="process-math">\(\{ x_m \}_{m=1}^\infty\)</span> be a sequence in <span class="process-math">\(\R^n\text{,}\)</span> where <span class="process-math">\(x_m = \bigl(x_{m,1},x_{m,2},\ldots,x_{m,n}\bigr) \in \R^n\text{.}\)</span> Then <span class="process-math">\(\{ x_m \}_{m=1}^\infty\)</span> converges if and only if <span class="process-math">\(\{ x_{m,k} \}_{m=1}^\infty\)</span> converges for every <span class="process-math">\(k=1,2,\ldots,n\text{,}\)</span> in which case</div>
+<div class="displaymath process-math" id="prop_msconveuc-1-1-7">
+\begin{equation}
+\lim_{m\to\infty}
+x_m =
+\Bigl(
+\lim_{m\to\infty} x_{m,1},
+\lim_{m\to\infty} x_{m,2},
+\ldots,
+\lim_{m\to\infty} x_{m,n}
+\Bigr) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_msconveuc-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 7.3.9"><a aria-label="Copy heading and permalink for Proposition 7.3.9" href="#prop_msconveuc" title="Copy heading and permalink for Proposition 7.3.9">🔗</a></div>
+</article>
+<article class="proof" id="sec_metseqs-4-4"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_metseqs-4-4-1">
+<div class="para">Suppose <span class="process-math">\(\{ x_m \}_{m=1}^\infty\)</span> converges to <span class="process-math">\(y = (y_1,y_2,\ldots,y_n) \in \R^n\text{.}\)</span> Given <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there exists an <span class="process-math">\(M\)</span> such that for all <span class="process-math">\(m \geq M\text{,}\)</span> we have</div>
+<div class="displaymath process-math" id="sec_metseqs-4-4-1-6">
+\begin{equation}
+d(y,x_m) &lt; \epsilon.
+\end{equation}
+</div>
+<div class="para">Fix some <span class="process-math">\(k=1,2,\ldots,n\text{.}\)</span>  For all <span class="process-math">\(m \geq M\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_metseqs-4-4-1-9">
+\begin{equation}
+\bigl\lvert y_k - x_{m,k} \bigr\rvert
+=
+\sqrt{{\bigl(y_k - x_{m,k} \bigr)}^2}
+\leq
+\sqrt{\sum_{\ell=1}^n {\bigl(y_\ell-x_{m,\ell}\bigr)}^2}
+= d(y,x_m) &lt; \epsilon .
+\end{equation}
+</div>
+<div class="para">Hence, the sequence <span class="process-math">\(\{ x_{m,k} \}_{m=1}^\infty\)</span> converges to <span class="process-math">\(y_k\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-4-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_metseqs-4-4-2">
+<div class="para">For the other direction, suppose <span class="process-math">\(\{ x_{m,k} \}_{m=1}^\infty\)</span> converges to <span class="process-math">\(y_k\)</span> for every <span class="process-math">\(k=1,2,\ldots,n\text{.}\)</span> Given <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> pick an <span class="process-math">\(M\)</span> such that if <span class="process-math">\(m \geq M\text{,}\)</span> then <span class="process-math">\(\bigl\lvert y_k-x_{m,k} \bigr\rvert &lt; \nicefrac{\epsilon}{\sqrt{n}}\)</span> for all <span class="process-math">\(k=1,2,\ldots,n\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" id="sec_metseqs-4-4-2-9">
+\begin{equation}
+d(y,x_m)
+=
+\sqrt{\sum_{k=1}^n {\bigl(y_k-x_{m,k}\bigr)}^2}
+&lt;
+\sqrt{\sum_{k=1}^n {\left(\frac{\epsilon}{\sqrt{n}}\right)}^2}
+=
+\sqrt{\sum_{k=1}^n \frac{{\epsilon^2}}{n}}
+= \epsilon .
+\end{equation}
+</div>
+<div class="para">That is, the sequence <span class="process-math">\(\{ x_m \}_{m=1}^\infty\)</span> converges to <span class="process-math">\(y = (y_1,y_2,\ldots,y_n) \in \R^n\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-4-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 7.3.2.1"><a aria-label="Copy heading and permalink for Proof 7.3.2.1" href="#sec_metseqs-4-4" title="Copy heading and permalink for Proof 7.3.2.1">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_metseqs-4-5"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.3.10</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_metseqs-4-5-1-1">As we said, the set <span class="process-math">\(\C\)</span> of complex numbers <span class="process-math">\(z = x+iy\)</span> is considered as the metric space <span class="process-math">\(\R^2\text{.}\)</span>  The proposition says that the sequence <span class="process-math">\(\{ z_n \}_{n=1}^\infty = \{ x_n + iy_n \}_{n=1}^\infty\)</span> converges to <span class="process-math">\(z = x+iy\)</span> if and only if <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> converges to <span class="process-math">\(x\)</span> and <span class="process-math">\(\{ y_n \}_{n=1}^\infty\)</span> converges to <span class="process-math">\(y\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-4-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 7.3.10"><a aria-label="Copy heading and permalink for Example 7.3.10" href="#sec_metseqs-4-5" title="Copy heading and permalink for Example 7.3.10">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 7.3.2: Convergence in euclidean space"><a aria-label="Copy heading and permalink for Subsection 7.3.2: Convergence in euclidean space" href="#sec_metseqs-4" title="Copy heading and permalink for Subsection 7.3.2: Convergence in euclidean space">🔗</a></div>
+</section>
+<section class="subsection" id="sec_metseqs-5">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.3.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Convergence and topology</span>
+</h3>
+<div class="para" id="sec_metseqs-5-2">The topology—the set of open sets of a space—encodes which sequences converge.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-5-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_msconvtopo"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.3.11</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="prop_msconvtopo-1-1">Let <span class="process-math">\((X,d)\)</span> be a metric space and <span class="process-math">\(\{x_n\}_{n=1}^\infty\)</span> a sequence in <span class="process-math">\(X\text{.}\)</span>  Then <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> converges to <span class="process-math">\(p \in X\)</span> if and only if for every open neighborhood <span class="process-math">\(U\)</span> of <span class="process-math">\(p\text{,}\)</span> there exists an <span class="process-math">\(M \in \N\)</span> such that for all <span class="process-math">\(n \geq M\text{,}\)</span> we have <span class="process-math">\(x_n \in U\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_msconvtopo-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 7.3.11"><a aria-label="Copy heading and permalink for Proposition 7.3.11" href="#prop_msconvtopo" title="Copy heading and permalink for Proposition 7.3.11">🔗</a></div>
+</article>
+<article class="proof" id="sec_metseqs-5-4"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metseqs-5-4-1">Suppose <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> converges to <span class="process-math">\(p\text{.}\)</span>  Let <span class="process-math">\(U\)</span> be an open neighborhood of <span class="process-math">\(p\text{.}\)</span>  There exists an <span class="process-math">\(\epsilon &gt; 0\)</span> such that <span class="process-math">\(B(p,\epsilon) \subset
+U\text{.}\)</span>  As the sequence converges, find an <span class="process-math">\(M \in \N\)</span> such that for all <span class="process-math">\(n \geq
+M\text{,}\)</span> we have <span class="process-math">\(d(p,x_n) &lt; \epsilon\text{,}\)</span> or in other words <span class="process-math">\(x_n \in B(p,\epsilon)
+\subset U\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-5-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_metseqs-5-4-2">Let us prove the other direction.  Given <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> let <span class="process-math">\(U \coloneqq
+B(p,\epsilon)\)</span> be the neighborhood of <span class="process-math">\(p\text{.}\)</span>  Then there is an <span class="process-math">\(M \in \N\)</span> such that for <span class="process-math">\(n \geq M\text{,}\)</span> we have <span class="process-math">\(x_n \in U = B(p,\epsilon)\text{,}\)</span> or in other words, <span class="process-math">\(d(p,x_n) &lt; \epsilon\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-5-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 7.3.3.1"><a aria-label="Copy heading and permalink for Proof 7.3.3.1" href="#sec_metseqs-5-4" title="Copy heading and permalink for Proof 7.3.3.1">🔗</a></div>
+</article>
+<div class="para" id="sec_metseqs-5-5">A closed set contains the limits of its convergent sequences.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-5-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_msclosedlim"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.3.12</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="prop_msclosedlim-1-1">Let <span class="process-math">\((X,d)\)</span> be a metric space, <span class="process-math">\(E \subset X\)</span> a closed set, and <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> a sequence in <span class="process-math">\(E\)</span> that converges to some <span class="process-math">\(p \in X\text{.}\)</span> Then <span class="process-math">\(p \in E\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_msclosedlim-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 7.3.12"><a aria-label="Copy heading and permalink for Proposition 7.3.12" href="#prop_msclosedlim" title="Copy heading and permalink for Proposition 7.3.12">🔗</a></div>
+</article>
+<article class="proof" id="sec_metseqs-5-7"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metseqs-5-7-1">Let us prove the contrapositive. Suppose <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is a sequence in <span class="process-math">\(X\)</span> that converges to <span class="process-math">\(p \in E^c\text{.}\)</span> As <span class="process-math">\(E^c\)</span> is open, <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metseqs.html#prop_msconvtopo" title="Proposition 7.3.11">Proposition 7.3.11</a> says that there is an <span class="process-math">\(M\)</span> such that for all <span class="process-math">\(n \geq M\text{,}\)</span> <span class="process-math">\(x_n \in E^c\text{.}\)</span>  So <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span>  is not a sequence in <span class="process-math">\(E\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-5-7-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 7.3.3.2"><a aria-label="Copy heading and permalink for Proof 7.3.3.2" href="#sec_metseqs-5-7" title="Copy heading and permalink for Proof 7.3.3.2">🔗</a></div>
+</article>
+<div class="para" id="sec_metseqs-5-8">To take a closure of a set <span class="process-math">\(A\text{,}\)</span> we start with <span class="process-math">\(A\text{,}\)</span> and we throw in points that are limits of sequences in <span class="process-math">\(A\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-5-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_msclosureapprseq"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.3.13</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="prop_msclosureapprseq-1-1">Let <span class="process-math">\((X,d)\)</span> be a metric space and <span class="process-math">\(A \subset X\text{.}\)</span> Then <span class="process-math">\(p \in \widebar{A}\)</span> if and only if there exists a sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> of elements in <span class="process-math">\(A\)</span> such that <span class="process-math">\(\lim\limits_{n\to\infty} x_n = p\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_msclosureapprseq-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 7.3.13"><a aria-label="Copy heading and permalink for Proposition 7.3.13" href="#prop_msclosureapprseq" title="Copy heading and permalink for Proposition 7.3.13">🔗</a></div>
+</article>
+<article class="proof" id="sec_metseqs-5-10"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metseqs-5-10-1">Let <span class="process-math">\(p \in \widebar{A}\text{.}\)</span>  For every <span class="process-math">\(n \in \N\text{,}\)</span> <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mettop.html#prop_msclosureappr" title="Proposition 7.2.22">Proposition 7.2.22</a> guarantees a point <span class="process-math">\(x_n \in B(p,\nicefrac{1}{n}) \cap A\text{.}\)</span> As <span class="process-math">\(d(p,x_n) &lt; \nicefrac{1}{n}\text{,}\)</span> we have <span class="process-math">\(\lim_{n\to\infty} x_n = p\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-5-10-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_metseqs-5-10-2">For the other direction, see <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metseqs.html#exercise_reverseclosedseq" title="Exercise 7.3.1">Exercise 7.3.1</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-5-10-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 7.3.3.3"><a aria-label="Copy heading and permalink for Proof 7.3.3.3" href="#sec_metseqs-5-10" title="Copy heading and permalink for Proof 7.3.3.3">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 7.3.3: Convergence and topology"><a aria-label="Copy heading and permalink for Subsection 7.3.3: Convergence and topology" href="#sec_metseqs-5" title="Copy heading and permalink for Subsection 7.3.3: Convergence and topology">🔗</a></div>
+</section>
+<section class="exercises" id="sec_metseqs-6">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.3.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="exercise_reverseclosedseq"><h4 class="heading"><span class="codenumber">7.3.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_reverseclosedseq-1-1">Finish the proof of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metseqs.html#prop_msclosureapprseq" title="Proposition 7.3.13">Proposition 7.3.13</a>: Let <span class="process-math">\((X,d)\)</span> be a metric space and <span class="process-math">\(A \subset X\text{.}\)</span>  Let <span class="process-math">\(p \in X\)</span> be such that there exists a sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> in <span class="process-math">\(A\)</span> that converges to <span class="process-math">\(p\text{.}\)</span> Prove that <span class="process-math">\(p \in \widebar{A}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_reverseclosedseq-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.3.1"><a aria-label="Copy heading and permalink for Exercise 7.3.1" href="#exercise_reverseclosedseq" title="Copy heading and permalink for Exercise 7.3.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metseqs-6-2"><h4 class="heading"><span class="codenumber">7.3.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metseqs-6-2-1-1"><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-6-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div></div>
+<ol class="lower-alpha ol-marker-3" id="sec_metseqs-6-2-1-2">
+<li id="sec_metseqs-6-2-1-2-1">
+<div class="para" id="sec_metseqs-6-2-1-2-1-1">Show that <span class="process-math">\(d(x,y) \coloneqq \min \bigl\{ 1, \sabs{x-y} \bigr\}\)</span> defines a metric on <span class="process-math">\(\R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-6-2-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.3.2.a"><a aria-label="Copy heading and permalink for Item 7.3.2.a" href="#sec_metseqs-6-2-1-2-1" title="Copy heading and permalink for Item 7.3.2.a">🔗</a></div>
+</li>
+<li id="sec_metseqs-6-2-1-2-2">
+<div class="para" id="sec_metseqs-6-2-1-2-2-1">Show that a sequence converges in <span class="process-math">\((\R,d)\)</span> if and only if it converges in the standard metric.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-6-2-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.3.2.b"><a aria-label="Copy heading and permalink for Item 7.3.2.b" href="#sec_metseqs-6-2-1-2-2" title="Copy heading and permalink for Item 7.3.2.b">🔗</a></div>
+</li>
+<li id="sec_metseqs-6-2-1-2-3">
+<div class="para" id="sec_metseqs-6-2-1-2-3-1">Find a bounded sequence in <span class="process-math">\((\R,d)\)</span> that contains no convergent subsequence.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-6-2-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.3.2.c"><a aria-label="Copy heading and permalink for Item 7.3.2.c" href="#sec_metseqs-6-2-1-2-3" title="Copy heading and permalink for Item 7.3.2.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 7.3.2"><a aria-label="Copy heading and permalink for Exercise 7.3.2" href="#sec_metseqs-6-2" title="Copy heading and permalink for Exercise 7.3.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metseqs-6-3"><h4 class="heading"><span class="codenumber">7.3.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metseqs-6-3-1-1">Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metseqs.html#prop_msconvbound" title="Proposition 7.3.4">Proposition 7.3.4</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-6-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.3.3"><a aria-label="Copy heading and permalink for Exercise 7.3.3" href="#sec_metseqs-6-3" title="Copy heading and permalink for Exercise 7.3.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metseqs-6-4"><h4 class="heading"><span class="codenumber">7.3.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metseqs-6-4-1-1">Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metseqs.html#prop_msconvifa" title="Proposition 7.3.5">Proposition 7.3.5</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-6-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.3.4"><a aria-label="Copy heading and permalink for Exercise 7.3.4" href="#sec_metseqs-6-4" title="Copy heading and permalink for Exercise 7.3.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metseqs-6-5"><h4 class="heading"><span class="codenumber">7.3.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metseqs-6-5-1-1">Suppose <span class="process-math">\(\{x_n\}_{n=1}^\infty\)</span> converges to <span class="process-math">\(p\text{.}\)</span>  Suppose <span class="process-math">\(f \colon \N
+\to \N\)</span> is a one-to-one function.  Show that <span class="process-math">\(\{ x_{f(n)} \}_{n=1}^\infty\)</span> converges to <span class="process-math">\(p\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-6-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.3.5"><a aria-label="Copy heading and permalink for Exercise 7.3.5" href="#sec_metseqs-6-5" title="Copy heading and permalink for Exercise 7.3.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metseqs-6-6"><h4 class="heading"><span class="codenumber">7.3.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metseqs-6-6-1-1">Let <span class="process-math">\((X,d)\)</span> be a metric space where <span class="process-math">\(d\)</span> is the discrete metric.  Suppose <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is a convergent sequence in <span class="process-math">\(X\text{.}\)</span>  Show that there exists a <span class="process-math">\(K \in \N\)</span> such that for all <span class="process-math">\(n \geq K\text{,}\)</span> we have <span class="process-math">\(x_n = x_K\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-6-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.3.6"><a aria-label="Copy heading and permalink for Exercise 7.3.6" href="#sec_metseqs-6-6" title="Copy heading and permalink for Exercise 7.3.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metseqs-6-7"><h4 class="heading"><span class="codenumber">7.3.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metseqs-6-7-1-1">A set <span class="process-math">\(S \subset X\)</span> is said to be <em class="emphasis">dense</em> in <span class="process-math">\(X\)</span> if <span class="process-math">\(X \subset \widebar{S}\)</span> or in other words if for every <span class="process-math">\(p \in X\text{,}\)</span> there exists a sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> in <span class="process-math">\(S\)</span> that converges to <span class="process-math">\(p\text{.}\)</span> Prove that <span class="process-math">\(\R^n\)</span> contains a countable dense subset.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-6-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.3.7"><a aria-label="Copy heading and permalink for Exercise 7.3.7" href="#sec_metseqs-6-7" title="Copy heading and permalink for Exercise 7.3.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metseqs-6-8"><h4 class="heading"><span class="codenumber">7.3.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metseqs-6-8-1-1">
+<em class="emphasis">(Tricky)</em>   Suppose <span class="process-math">\(\{ U_n \}_{n=1}^\infty\)</span> is a decreasing (<span class="process-math">\(U_{n+1} \subset U_n\)</span> for all <span class="process-math">\(n\)</span>) sequence of open sets in a metric space <span class="process-math">\((X,d)\)</span> such that <span class="process-math">\(\bigcap_{n=1}^\infty U_n = \{ p \}\)</span> for some <span class="process-math">\(p \in X\text{.}\)</span>  Suppose <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is a sequence of points in <span class="process-math">\(X\)</span> such that <span class="process-math">\(x_n \in U_n\text{.}\)</span>  Does <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> necessarily converge to <span class="process-math">\(p\text{?}\)</span>  Prove or construct a counterexample.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-6-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.3.8"><a aria-label="Copy heading and permalink for Exercise 7.3.8" href="#sec_metseqs-6-8" title="Copy heading and permalink for Exercise 7.3.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metseqs-6-9"><h4 class="heading"><span class="codenumber">7.3.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metseqs-6-9-1-1">Let <span class="process-math">\(E \subset X\)</span> be closed and let <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> be a sequence in <span class="process-math">\(X\)</span> converging to <span class="process-math">\(p \in X\text{.}\)</span>  Suppose <span class="process-math">\(x_n \in E\)</span> for infinitely many <span class="process-math">\(n \in \N\text{.}\)</span>  Show <span class="process-math">\(p \in E\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-6-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.3.9"><a aria-label="Copy heading and permalink for Exercise 7.3.9" href="#sec_metseqs-6-9" title="Copy heading and permalink for Exercise 7.3.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_extendedrealsmetric"><h4 class="heading"><span class="codenumber">7.3.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_extendedrealsmetric-1-1">Take <span class="process-math">\(\R^* = \{ -\infty \} \cup \R \cup \{ \infty \}\)</span> be the extended reals. Define <span class="process-math">\(d(x,y) \coloneqq \babs{ \frac{x}{1+\sabs{x}} - \frac{y}{1+\sabs{y}} }\)</span> if <span class="process-math">\(x, y \in \R\text{,}\)</span> define <span class="process-math">\(d(\infty,x) \coloneqq \babs{ 1 - \frac{x}{1+\sabs{x}} }\text{,}\)</span> <span class="process-math">\(d(-\infty,x) \coloneqq \babs{ 1 + \frac{x}{1+\sabs{x}} }\)</span> for all <span class="process-math">\(x \in \R\text{,}\)</span> and let <span class="process-math">\(d(\infty,-\infty) \coloneqq 2\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_extendedrealsmetric-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="exercise_extendedrealsmetric-1-2">
+<li id="exercise_extendedrealsmetric-1-2-1">
+<div class="para" id="exercise_extendedrealsmetric-1-2-1-1">Show that <span class="process-math">\((\R^*,d)\)</span> is a metric space.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_extendedrealsmetric-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.3.10.a"><a aria-label="Copy heading and permalink for Item 7.3.10.a" href="#exercise_extendedrealsmetric-1-2-1" title="Copy heading and permalink for Item 7.3.10.a">🔗</a></div>
+</li>
+<li id="exercise_extendedrealsmetric-1-2-2">
+<div class="para" id="exercise_extendedrealsmetric-1-2-2-1">Suppose <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is a sequence of real numbers such that for every <span class="process-math">\(M \in \R\text{,}\)</span> there exists an <span class="process-math">\(N\)</span> such that <span class="process-math">\(x_n \geq M\)</span> for all <span class="process-math">\(n \geq N\text{.}\)</span>  Show that <span class="process-math">\(\lim\limits_{n\to\infty} x_n = \infty\)</span> in <span class="process-math">\((\R^*,d)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_extendedrealsmetric-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.3.10.b"><a aria-label="Copy heading and permalink for Item 7.3.10.b" href="#exercise_extendedrealsmetric-1-2-2" title="Copy heading and permalink for Item 7.3.10.b">🔗</a></div>
+</li>
+<li id="exercise_extendedrealsmetric-1-2-3">
+<div class="para" id="exercise_extendedrealsmetric-1-2-3-1">Show that a sequence of real numbers converges to a real number in <span class="process-math">\((\R^*,d)\)</span> if and only if it converges in <span class="process-math">\(\R\)</span> with the standard metric.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_extendedrealsmetric-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.3.10.c"><a aria-label="Copy heading and permalink for Item 7.3.10.c" href="#exercise_extendedrealsmetric-1-2-3" title="Copy heading and permalink for Item 7.3.10.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 7.3.10"><a aria-label="Copy heading and permalink for Exercise 7.3.10" href="#exercise_extendedrealsmetric" title="Copy heading and permalink for Exercise 7.3.10">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metseqs-6-11"><h4 class="heading"><span class="codenumber">7.3.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metseqs-6-11-1-1">Suppose <span class="process-math">\(\{ V_n \}_{n=1}^\infty\)</span> is a sequence of open sets in <span class="process-math">\((X,d)\)</span> such that <span class="process-math">\(V_{n+1} \supset V_n\)</span> for all <span class="process-math">\(n\text{.}\)</span>  Let <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> be a sequence such that <span class="process-math">\(x_n \in V_{n+1} \setminus V_n\)</span> and suppose <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> converges to <span class="process-math">\(p \in X\text{.}\)</span>  Show that <span class="process-math">\(p \in \partial V\)</span> where <span class="process-math">\(V = \bigcup_{n=1}^\infty V_n\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-6-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.3.11"><a aria-label="Copy heading and permalink for Exercise 7.3.11" href="#sec_metseqs-6-11" title="Copy heading and permalink for Exercise 7.3.11">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metseqs-6-12"><h4 class="heading"><span class="codenumber">7.3.12<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metseqs-6-12-1-1">Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metseqs.html#prop_mssubseq" title="Proposition 7.3.6">Proposition 7.3.6</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-6-12-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.3.12"><a aria-label="Copy heading and permalink for Exercise 7.3.12" href="#sec_metseqs-6-12" title="Copy heading and permalink for Exercise 7.3.12">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metseqs-6-13"><h4 class="heading"><span class="codenumber">7.3.13<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metseqs-6-13-1-1">Let <span class="process-math">\((X,d)\)</span> be a metric space and <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> a sequence in <span class="process-math">\(X\text{.}\)</span> Prove that <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> converges to <span class="process-math">\(p \in X\)</span> if and only if every subsequence of <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> has a subsequence that converges to <span class="process-math">\(p\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-6-13-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.3.13"><a aria-label="Copy heading and permalink for Exercise 7.3.13" href="#sec_metseqs-6-13" title="Copy heading and permalink for Exercise 7.3.13">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metseqs-6-14"><h4 class="heading"><span class="codenumber">7.3.14<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metseqs-6-14-1-1">Consider <span class="process-math">\(\R^n\text{,}\)</span> and let <span class="process-math">\(d\)</span> be the standard euclidean metric. Let <span class="process-math">\(d'(x,y) \coloneqq \sum_{\ell=1}^n \sabs{x_\ell-y_\ell}\)</span> and <span class="process-math">\(d''(x,y) \coloneqq \max \bigl\{
+\sabs{x_1-y_1},\sabs{x_2-y_2},\cdots,\sabs{x_n-y_n}
+\bigr\}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-6-14-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_metseqs-6-14-1-2">
+<li id="sec_metseqs-6-14-1-2-1">
+<div class="para" id="sec_metseqs-6-14-1-2-1-1">Use <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metric.html#exercise_mscross" title="Exercise 7.1.6">Exercise 7.1.6</a>, to show that <span class="process-math">\((\R^n,d')\)</span> and <span class="process-math">\((\R^n,d'')\)</span> are metric spaces.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-6-14-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.3.14.a"><a aria-label="Copy heading and permalink for Item 7.3.14.a" href="#sec_metseqs-6-14-1-2-1" title="Copy heading and permalink for Item 7.3.14.a">🔗</a></div>
+</li>
+<li id="sec_metseqs-6-14-1-2-2">
+<div class="para" id="sec_metseqs-6-14-1-2-2-1">Let <span class="process-math">\(\{ x_k \}_{k=1}^\infty\)</span> be a sequence in <span class="process-math">\(\R^n\)</span> and <span class="process-math">\(p \in \R^n\text{.}\)</span> Prove that the following statements are equivalent:<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-6-14-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="decimal ol-marker-4" id="sec_metseqs-6-14-1-2-2-2">
+<li id="sec_metseqs-6-14-1-2-2-2-1">
+<div class="para" id="sec_metseqs-6-14-1-2-2-2-1-1">
+<span class="process-math">\(\{ x_k \}_{k=1}^\infty\)</span> converges to <span class="process-math">\(p\)</span> in <span class="process-math">\((\R^n,d)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-6-14-1-2-2-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.3.14.b.1"><a aria-label="Copy heading and permalink for Item 7.3.14.b.1" href="#sec_metseqs-6-14-1-2-2-2-1" title="Copy heading and permalink for Item 7.3.14.b.1">🔗</a></div>
+</li>
+<li id="sec_metseqs-6-14-1-2-2-2-2">
+<div class="para" id="sec_metseqs-6-14-1-2-2-2-2-1">
+<span class="process-math">\(\{ x_k \}_{k=1}^\infty\)</span> converges to <span class="process-math">\(p\)</span> in <span class="process-math">\((\R^n,d')\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-6-14-1-2-2-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.3.14.b.2"><a aria-label="Copy heading and permalink for Item 7.3.14.b.2" href="#sec_metseqs-6-14-1-2-2-2-2" title="Copy heading and permalink for Item 7.3.14.b.2">🔗</a></div>
+</li>
+<li id="sec_metseqs-6-14-1-2-2-2-3">
+<div class="para" id="sec_metseqs-6-14-1-2-2-2-3-1">
+<span class="process-math">\(\{ x_k \}_{k=1}^\infty\)</span> converges to <span class="process-math">\(p\)</span> in <span class="process-math">\((\R^n,d'')\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metseqs-6-14-1-2-2-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.3.14.b.3"><a aria-label="Copy heading and permalink for Item 7.3.14.b.3" href="#sec_metseqs-6-14-1-2-2-2-3" title="Copy heading and permalink for Item 7.3.14.b.3">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Item 7.3.14.b"><a aria-label="Copy heading and permalink for Item 7.3.14.b" href="#sec_metseqs-6-14-1-2-2" title="Copy heading and permalink for Item 7.3.14.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 7.3.14"><a aria-label="Copy heading and permalink for Exercise 7.3.14" href="#sec_metseqs-6-14" title="Copy heading and permalink for Exercise 7.3.14">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 7.3.4"><a aria-label="Copy heading and permalink for Exercises 7.3.4" href="#sec_metseqs-6" title="Copy heading and permalink for Exercises 7.3.4">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 7.3: Sequences and convergence"><a aria-label="Copy heading and permalink for Section 7.3: Sequences and convergence" href="#sec_metseqs" title="Copy heading and permalink for Section 7.3: Sequences and convergence">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_mettop.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_metcompact.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

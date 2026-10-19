@@ -1,0 +1,622 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Iterated integrals and the Fubini theorem · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_iteratedints">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Iterated integrals and the Fubini theorem</span>
+</h2>
+<div class="para" id="sec_iteratedints-2">
+<em class="emphasis">Note: 1–2 lectures</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_iteratedints-3">
+<div class="para">The Riemann integral in several variables is hard to compute via the definition. For the one-dimensional Riemann integral, we have the fundamental theorem of calculus (see <a class="internal" href="sec_ftc.html" title="Section 5.3: Fundamental theorem of calculus">Section 5.3</a>), which allows computing many integrals without having to appeal to the definition of the integral. We will rewrite a Riemann integral in several variables into several one-dimensional Riemann integrals by iterating.  However, if <span class="process-math">\(f \colon [0,1]^2 \to \R\)</span> is a Riemann integrable function, it is not immediately clear if the three expressions</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/sec_ftc.html" id="sec_iteratedints-3-3">
+\begin{equation}
+\int_{[0,1]^2} f ,
+\qquad
+\int_0^1 \int_0^1 f(x,y) \, dx \, dy ,
+\qquad \text{and}
+\qquad
+\int_0^1 \int_0^1 f(x,y) \, dy \, dx
+\end{equation}
+</div>
+<div class="para">are equal, or if the last two are even well-defined.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_iteratedints-4"><h3 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.2.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para logical" id="sec_iteratedints-4-1-1">
+<div class="para">Define</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_fubinibad.html" id="sec_iteratedints-4-1-1-1">
+\begin{equation}
+f(x,y) \coloneqq 
+\begin{cases}
+1 &amp; \text{if } x=\nicefrac{1}{2} \text{ and } y \in \Q, \\
+0 &amp; \text{otherwise.}
+\end{cases}
+\end{equation}
+</div>
+<div class="para">Then <span class="process-math">\(f\)</span> is Riemann integrable on <span class="process-math">\(R \coloneqq [0,1]^2\)</span> and <span class="process-math">\(\int_R f = 0\text{.}\)</span> Moreover, <span class="process-math">\(\int_0^1 \int_0^1 f(x,y) \, dx \, dy = 0\text{.}\)</span> However,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_fubinibad.html" id="sec_iteratedints-4-1-1-6">
+\begin{equation}
+\int_0^1 f(\nicefrac{1}{2},y) \, dy
+\end{equation}
+</div>
+<div class="para">does not exist, so strictly speaking, <span class="process-math">\(\int_0^1 \int_0^1 f(x,y) \, dy \, dx\)</span> does not make sense. See <a class="internal" href="sec_iteratedints.html#fig_fubinibad" title="Figure 10.5">Figure 10.5</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <hr class="rahr"/>
+<figure class="figure figure-like" id="fig_fubinibad"><img alt="Three diagrams of squares. On the left a white square with a horizontal gray line in the upper part of the square and a vertical dotted line running through the middle. In the middle diagram, there is the same dotted line, but the gray line now is also vertical in the left part of the square. The right diagram has the same dotted line with a dashed vertical line very near on each side. The region to the left of the first dotted line is shaded dark, the region to the right of the second dotted line is shaded in medium gray, and the thin region around the dotted line is shaded in the lightest color." class="raimg" role="img" src="figures/fubinibad-mbxpdft.svg" style="width:290pt; height:73pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Left: <span class="process-math">\([0,1]^2\)</span> with the line <span class="process-math">\(x=\nicefrac{1}{2}\)</span> marked dotted and <span class="process-math">\(\int_0^1 f(x,y) \, dx\)</span> marked as a gray solid line for a generic <span class="process-math">\(y\text{.}\)</span> Center: Similar picture but <span class="process-math">\(\int_0^1 f(x,y) \, dy\)</span> marked for some <span class="process-math">\(x \neq \nicefrac{1}{2}\text{.}\)</span> Right: The three different rectangles in the partition used to integrate <span class="process-math">\(f\)</span> in different grays.<div class="autopermalink" data-description="Figure 10.5"><a aria-label="Copy heading and permalink for Figure 10.5" href="#fig_fubinibad" title="Copy heading and permalink for Figure 10.5">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para logical" id="sec_iteratedints-4-1-5">
+<div class="para">Proof: We start with integrability of <span class="process-math">\(f\text{.}\)</span>  Consider the partition of <span class="process-math">\([0,1]^2\)</span> where the partition in the <span class="process-math">\(x\)</span> direction is <span class="process-math">\(\{ 0, \nicefrac{1}{2}-\epsilon,
+\nicefrac{1}{2}+\epsilon,1\}\)</span> and in the <span class="process-math">\(y\)</span> direction <span class="process-math">\(\{ 0, 1 \}\text{.}\)</span> The corresponding subrectangles are</div>
+<div class="displaymath process-math" id="sec_iteratedints-4-1-5-7">
+\begin{equation}
+R_1 \coloneqq [0, \nicefrac{1}{2}-\epsilon] \times [0,1],
+\quad
+R_2 \coloneqq [\nicefrac{1}{2}-\epsilon,
+\nicefrac{1}{2}+\epsilon] \times [0,1],
+\quad
+R_3 \coloneqq [\nicefrac{1}{2}+\epsilon,1] \times [0,1] .
+\end{equation}
+</div>
+<div class="para">We have <span class="process-math">\(m_1 = M_1 = 0\text{,}\)</span> <span class="process-math">\(m_2 =0\text{,}\)</span> <span class="process-math">\(M_2 = 1\text{,}\)</span> and <span class="process-math">\(m_3 = M_3 = 0\text{.}\)</span> Therefore,</div>
+<div class="displaymath process-math" id="sec_iteratedints-4-1-5-12">
+\begin{equation}
+L(P,f) = 
+m_1 V(R_1)
++
+m_2 V(R_2)
++
+m_3 V(R_3)
+=
+0 (\nicefrac{1}{2}-\epsilon)
++
+0 (2\epsilon)
++
+0 (\nicefrac{1}{2}-\epsilon) = 0 ,
+\end{equation}
+</div>
+<div class="para">and</div>
+<div class="displaymath process-math" id="sec_iteratedints-4-1-5-13">
+\begin{equation}
+U(P,f) = 
+M_1 V(R_1)
++
+M_2 V(R_2)
++
+M_3 V(R_3)
+=
+0 (\nicefrac{1}{2}-\epsilon)
++
+1 (2\epsilon)
++
+0 (\nicefrac{1}{2}-\epsilon) = 2 \epsilon .
+\end{equation}
+</div>
+<div class="para">The upper and lower sums are arbitrarily close and the lower sum is always zero, so the function is integrable and <span class="process-math">\(\int_R f = 0\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-4-1-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_iteratedints-4-1-6">For every fixed <span class="process-math">\(y\text{,}\)</span> the function that takes <span class="process-math">\(x\)</span> to <span class="process-math">\(f(x,y)\)</span> is zero except perhaps at a single point <span class="process-math">\(x=\nicefrac{1}{2}\text{.}\)</span>  Such a function is integrable and <span class="process-math">\(\int_0^1 f(x,y) \, dx = 0\text{.}\)</span>  Therefore, <span class="process-math">\(\int_0^1 \int_0^1 f(x,y) \, dx \, dy = 0\text{.}\)</span> However, if <span class="process-math">\(x=\nicefrac{1}{2}\text{,}\)</span> the function that takes <span class="process-math">\(y\)</span> to <span class="process-math">\(f(\nicefrac{1}{2},y)\)</span> is the nonintegrable function that is 1 on the rationals and 0 on the irrationals. See <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rint.html#example_dirichletfunc" title="Example 5.1.4">Example 5.1.4</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-4-1-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 10.2.1"><a aria-label="Copy heading and permalink for Example 10.2.1" href="#sec_iteratedints-4" title="Copy heading and permalink for Example 10.2.1">🔗</a></div>
+</article>
+<div class="para" id="sec_iteratedints-5">We solve this problem of undefined inside integrals by using the upper and lower integrals, which are always defined for any bounded function.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_iteratedints-6">
+<div class="para">Split the coordinates of <span class="process-math">\(\R^{n+m}\)</span> into two parts: Write the coordinates on <span class="process-math">\(\R^{n+m} = \R^n \times \R^m\)</span> as <span class="process-math">\((x,y)\)</span> where <span class="process-math">\(x \in \R^n\)</span> and <span class="process-math">\(y \in \R^m\text{.}\)</span>  For a function <span class="process-math">\(f(x,y)\text{,}\)</span> write</div>
+<div class="displaymath process-math" id="sec_iteratedints-6-7">
+\begin{equation}
+f_x(y) \coloneqq f(x,y)
+\end{equation}
+</div>
+<div class="para">when <span class="process-math">\(x\)</span> is fixed and we want a function of <span class="process-math">\(y\text{.}\)</span> Write</div>
+<div class="displaymath process-math" id="sec_iteratedints-6-10">
+\begin{equation}
+f^y(x) \coloneqq f(x,y)
+\end{equation}
+</div>
+<div class="para">when <span class="process-math">\(y\)</span> is fixed and we want a function of <span class="process-math">\(x\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="mv_fubinivA"><h3 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.2.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Fubini version A.</span>
+</h3>
+<div class="para logical" id="mv_fubinivA-3-1">
+<div class="para">
+<details aria-live="polite" class="ptx-footnote" id="mv_fubinivA-3-1-1"><summary class="ptx-footnote__number" title="Footnote 10.2.1"><sup> 1 </sup></summary>
+<div class="ptx-footnote__contents" id="mv_fubinivA-3-1-1">Named after the Italian mathematician <a class="external" href="https://en.wikipedia.org/wiki/Guido_Fubini" target="_blank">Guido Fubini</a> (1879–1943).
+</div></details> Let <span class="process-math">\(R \times S \subset \R^n \times \R^m\)</span> be a closed rectangle and <span class="process-math">\(f \colon R \times S \to \R\)</span> be integrable. The functions <span class="process-math">\(g \colon R \to \R\)</span> and <span class="process-math">\(h \colon R \to \R\)</span> defined by</div>
+<div class="displaymath process-math" id="mv_fubinivA-3-1-6">
+\begin{equation}
+g(x) \coloneqq \underline{\int_S} f_x \qquad
+\text{and} \qquad
+h(x) \coloneqq \overline{\int_S} f_x 
+\end{equation}
+</div>
+<div class="para">are integrable on <span class="process-math">\(R\)</span> and</div>
+<div class="displaymath process-math" id="mv_fubinivA-3-1-8">
+\begin{equation}
+\int_R g = \int_R h = \int_{R \times S} f .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_fubinivA-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 10.2.2: Fubini version A"><a aria-label="Copy heading and permalink for Theorem 10.2.2: Fubini version A" href="#mv_fubinivA" title="Copy heading and permalink for Theorem 10.2.2: Fubini version A">🔗</a></div>
+</article>
+<div class="para logical" id="sec_iteratedints-8">
+<div class="para">In other words,</div>
+<div class="displaymath process-math" id="sec_iteratedints-8-1">
+\begin{equation}
+\int_{R \times S} f
+=
+\int_R \left(
+\underline{\int_S} f(x,y) \, dy
+\right) \, dx
+=
+\int_R \left(
+\overline{\int_S} f(x,y) \, dy
+\right) \, dx .
+\end{equation}
+</div>
+<div class="para">If <span class="process-math">\(f_x\)</span> is integrable for all <span class="process-math">\(x\text{,}\)</span> for example when <span class="process-math">\(f\)</span> is continuous, we obtain the more familiar</div>
+<div class="displaymath process-math" id="sec_iteratedints-8-5">
+\begin{equation}
+\int_{R \times S} f
+=
+\int_R \int_S f(x,y) \, dy \, dx .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_iteratedints-9"><h3 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h3>
+<div class="para" id="sec_iteratedints-9-1">A partition of <span class="process-math">\(R \times S\)</span> can be written as <span class="process-math">\((P,P') = (P_1,P_2,\ldots,P_n,P'_1,P'_2,\ldots,P'_m)\text{,}\)</span> where <span class="process-math">\(P = (P_1,P_2,\ldots,P_n)\)</span> and <span class="process-math">\(P' = (P'_1,P'_2,\ldots,P'_m)\)</span> are partitions of <span class="process-math">\(R\)</span> and <span class="process-math">\(S\)</span> respectively. Let <span class="process-math">\(R_1,R_2,\ldots,R_N\)</span> be the subrectangles of <span class="process-math">\(P\)</span> and <span class="process-math">\(R'_1,R'_2,\ldots,R'_K\)</span> be the subrectangles of <span class="process-math">\(P'\text{.}\)</span> The subrectangles of <span class="process-math">\((P,P')\)</span> are <span class="process-math">\(R_i \times R'_j\)</span> where <span class="process-math">\(1 \leq i \leq N\)</span> and <span class="process-math">\(1 \leq j \leq K\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-9-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_iteratedints-9-2">
+<div class="para">Let</div>
+<div class="displaymath process-math" id="sec_iteratedints-9-2-1">
+\begin{equation}
+m_{i,j} \coloneqq
+\inf_{(x,y) \in R_i \times R'_j} f(x,y) .
+\end{equation}
+</div>
+<div class="para">Notice that <span class="process-math">\(V(R_i \times R'_j) = V(R_i)V(R'_j)\)</span> and hence</div>
+<div class="displaymath process-math" id="sec_iteratedints-9-2-3">
+\begin{equation}
+L\bigl((P,P'),f\bigr) =
+\sum_{i=1}^N
+\sum_{j=1}^K
+m_{i,j} \, V(R_i \times R'_j)
+=
+\sum_{i=1}^N
+\left(
+\sum_{j=1}^K
+m_{i,j} \, V(R'_j) \right) V(R_i) .
+\end{equation}
+</div>
+<div class="para">Define</div>
+<div class="displaymath process-math" id="sec_iteratedints-9-2-4">
+\begin{equation}
+m_j(x) \coloneqq \inf_{y \in R'_j} f(x,y) = \inf_{y \in R'_j} f_x(y) .
+\end{equation}
+</div>
+<div class="para">For <span class="process-math">\(x \in R_i\text{,}\)</span> we have <span class="process-math">\(m_{i,j} \leq m_j(x)\text{,}\)</span> and therefore,</div>
+<div class="displaymath process-math" id="sec_iteratedints-9-2-7">
+\begin{equation}
+\sum_{j=1}^K
+m_{i,j} \, V(R'_j)
+\leq \sum_{j=1}^K m_j(x) \, V(R'_j) = L(P',f_x) \leq
+\underline{\int_S} f_x = g(x) .
+\end{equation}
+</div>
+<div class="para">The inequality holds for all <span class="process-math">\(x \in R_i\text{,}\)</span> and so</div>
+<div class="displaymath process-math" id="sec_iteratedints-9-2-9">
+\begin{equation}
+\sum_{j=1}^K
+m_{i,j} \, V(R'_j)
+\leq \inf_{x \in R_i} g(x) .
+\end{equation}
+</div>
+<div class="para">We obtain</div>
+<div class="displaymath process-math" id="sec_iteratedints-9-2-10">
+\begin{equation}
+L\bigl((P,P'),f\bigr) 
+\leq
+\sum_{j=1}^N
+\left(
+\inf_{x \in R_j} g(x)
+\right) V(R_j) = L(P,g) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-9-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_iteratedints-9-3">
+<div class="para">Similarly, <span class="process-math">\(U\bigl((P,P'),f\bigr) \geq U(P,h)\text{,}\)</span> and the proof of this inequality is left as an exercise. Putting the two inequalities together with the fact that <span class="process-math">\(g(x) \leq h(x)\)</span> for all <span class="process-math">\(x\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_iteratedints-9-3-4">
+\begin{equation}
+L\bigl((P,P'),f\bigr)
+\leq
+L(P,g) \leq
+U(P,g) \leq
+U(P,h) \leq
+U\bigl((P,P'),f\bigr) .
+\end{equation}
+</div>
+<div class="para">Since <span class="process-math">\(f\)</span> is integrable, it must be that <span class="process-math">\(g\)</span> is integrable as</div>
+<div class="displaymath process-math" id="sec_iteratedints-9-3-7">
+\begin{equation}
+U(P,g) - L(P,g)
+\leq
+U\bigl((P,P'),f\bigr) -
+L\bigl((P,P'),f\bigr) ,
+\end{equation}
+</div>
+<div class="para">and we can make the right-hand side arbitrarily small. As for any partition we have <span class="process-math">\(L\bigl((P,P'),f\bigr) \leq L(P,g) \leq U\bigl((P,P'),f\bigr)\text{,}\)</span> we have <span class="process-math">\(\int_R g = \int_{R \times S} f\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-9-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_iteratedints-9-4">
+<div class="para">Likewise,</div>
+<div class="displaymath process-math" id="sec_iteratedints-9-4-1">
+\begin{equation}
+L\bigl((P,P'),f\bigr)
+\leq
+L(P,g) \leq
+L(P,h) \leq
+U(P,h) \leq
+U\bigl((P,P'),f\bigr) ,
+\end{equation}
+</div>
+<div class="para">and hence</div>
+<div class="displaymath process-math" id="sec_iteratedints-9-4-2">
+\begin{equation}
+U(P,h) - L(P,h)
+\leq
+U\bigl((P,P'),f\bigr) -
+L\bigl((P,P'),f\bigr) .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(f\)</span> is integrable, so is <span class="process-math">\(h\text{.}\)</span> Moreover, <span class="process-math">\(L\bigl((P,P'),f\bigr) \leq L(P,h) \leq U\bigl((P,P'),f\bigr)\)</span> implies <span class="process-math">\(\int_R h = \int_{R \times S} f\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-9-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 10.2.1"><a aria-label="Copy heading and permalink for Proof 10.2.1" href="#sec_iteratedints-9" title="Copy heading and permalink for Proof 10.2.1">🔗</a></div>
+</article>
+<div class="para" id="sec_iteratedints-10">We can also do the iterated integration in the opposite order. The proof of this version is almost identical to version A (or follows quickly from version A). We leave it as an exercise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="mv_fubinivB"><h3 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.2.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Fubini version B.</span>
+</h3>
+<div class="para logical" id="mv_fubinivB-3-1">
+<div class="para">Let <span class="process-math">\(R \times S \subset \R^n \times \R^m\)</span> be a closed rectangle and <span class="process-math">\(f \colon R \times S \to \R\)</span> be integrable. The functions <span class="process-math">\(g \colon S \to \R\)</span> and <span class="process-math">\(h \colon S \to \R\)</span> defined by</div>
+<div class="displaymath process-math" id="mv_fubinivB-3-1-5">
+\begin{equation}
+g(y) \coloneqq \underline{\int_R} f^y \qquad
+\text{and} \qquad
+h(y) \coloneqq \overline{\int_R} f^y 
+\end{equation}
+</div>
+<div class="para">are integrable on <span class="process-math">\(S\)</span> and</div>
+<div class="displaymath process-math" id="mv_fubinivB-3-1-7">
+\begin{equation}
+\int_S g = \int_S h = \int_{R \times S} f .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_fubinivB-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 10.2.3: Fubini version B"><a aria-label="Copy heading and permalink for Theorem 10.2.3: Fubini version B" href="#mv_fubinivB" title="Copy heading and permalink for Theorem 10.2.3: Fubini version B">🔗</a></div>
+</article>
+<div class="para logical" id="sec_iteratedints-12">
+<div class="para">That is,</div>
+<div class="displaymath process-math" id="sec_iteratedints-12-1">
+\begin{equation}
+\int_{R \times S} f
+=
+\int_S \left(
+\underline{\int_R} f(x,y) \, dx
+\right) \, dy
+=
+\int_S \left(
+\overline{\int_R} f(x,y) \, dx
+\right) \, dy .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_iteratedints-13">
+<div class="para">Next suppose <span class="process-math">\(f_x\)</span> and <span class="process-math">\(f^y\)</span> are integrable. For example, suppose <span class="process-math">\(f\)</span> is continuous.  By putting the two versions together we obtain the familiar</div>
+<div class="displaymath process-math" id="sec_iteratedints-13-4">
+\begin{equation}
+\int_{R \times S} f
+=
+\int_R 
+\int_S f(x,y) \, dy \, dx 
+=
+\int_S 
+\int_R f(x,y) \, dx \, dy .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-13" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_iteratedints-14">
+<div class="para">Often the Fubini theorem is stated in two dimensions for a continuous function <span class="process-math">\(f \colon R \to
+\R\)</span> on a rectangle <span class="process-math">\(R = [a,b] \times [c,d]\text{.}\)</span>  Then the Fubini theorem states that</div>
+<div class="displaymath process-math" id="sec_iteratedints-14-3">
+\begin{equation}
+\int_R f = \int_a^b \int_c^d f(x,y) \,dy\,dx
+=
+\int_c^d \int_a^b f(x,y) \,dx\,dy .
+\end{equation}
+</div>
+<div class="para">The Fubini theorem is commonly thought of as <em class="emphasis">the</em> theorem that allows us to swap the order of iterated integrals, although there are many variations on Fubini, and we have seen but two of them.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-14" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_iteratedints-15">
+<div class="para">Repeatedly applying the Fubini theorem gives the following corollary: Let <span class="process-math">\(R \coloneqq [a_1,b_1] \times [a_2,b_2] \times \cdots \times [a_n,b_n] \subset
+\R^n\)</span> be a closed rectangle and let <span class="process-math">\(f \colon R \to \R\)</span> be continuous.  Then</div>
+<div class="displaymath process-math" id="sec_iteratedints-15-3">
+\begin{equation}
+\int_R f = 
+\int_{a_1}^{b_1}
+\int_{a_2}^{b_2}
+\cdots
+\int_{a_n}^{b_n}
+f(x_1,x_2,\ldots,x_n)
+\,
+dx_n
+\,
+dx_{n-1}
+\cdots
+dx_1 .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-15" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_iteratedints-16">We may switch the order of integration to any order we please. We may relax the continuity requirement by making sure that all the intermediate functions are integrable, or by using upper or lower integrals appropriately.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-16" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<section class="exercises" id="sec_iteratedints-17">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber"></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_iteratedints-17-1"><h4 class="heading"><span class="codenumber">10.2.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_iteratedints-17-1-1-1">Compute <span class="process-math">\(\int_{0}^1 \int_{-1}^1 xe^{xy} \, dx \, dy\)</span> in a simple way.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-17-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.2.1"><a aria-label="Copy heading and permalink for Exercise 10.2.1" href="#sec_iteratedints-17-1" title="Copy heading and permalink for Exercise 10.2.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_iteratedints-17-2"><h4 class="heading"><span class="codenumber">10.2.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_iteratedints-17-2-1-1">Prove the assertion <span class="process-math">\(U\bigl((P,P'),f\bigr) \geq U(P,h)\)</span> from the proof of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_iteratedints.html#mv_fubinivA" title="Theorem 10.2.2: Fubini version A">Theorem 10.2.2</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-17-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.2.2"><a aria-label="Copy heading and permalink for Exercise 10.2.2" href="#sec_iteratedints-17-2" title="Copy heading and permalink for Exercise 10.2.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_iteratedints-17-3"><h4 class="heading"><span class="codenumber">10.2.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_iteratedints-17-3-1-1">
+<em class="emphasis">(Easy)</em>   Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_iteratedints.html#mv_fubinivB" title="Theorem 10.2.3: Fubini version B">Theorem 10.2.3</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-17-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.2.3"><a aria-label="Copy heading and permalink for Exercise 10.2.3" href="#sec_iteratedints-17-3" title="Copy heading and permalink for Exercise 10.2.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_iteratedints-17-4"><h4 class="heading"><span class="codenumber">10.2.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_iteratedints-17-4-1-1">
+<div class="para">Let <span class="process-math">\(R \coloneqq [a,b] \times [c,d]\)</span> and <span class="process-math">\(f(x,y)\)</span> be an integrable function on <span class="process-math">\(R\)</span> such that for every fixed <span class="process-math">\(y\text{,}\)</span> the function that takes <span class="process-math">\(x\)</span> to <span class="process-math">\(f(x,y)\)</span> is zero except at finitely many points.  Show</div>
+<div class="displaymath process-math" id="sec_iteratedints-17-4-1-1-8">
+\begin{equation}
+\int_R f = 0 .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-17-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.2.4"><a aria-label="Copy heading and permalink for Exercise 10.2.4" href="#sec_iteratedints-17-4" title="Copy heading and permalink for Exercise 10.2.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_iteratedints-17-5"><h4 class="heading"><span class="codenumber">10.2.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_iteratedints-17-5-1-1">
+<div class="para">Let <span class="process-math">\(R \coloneqq [a,b] \times [c,d]\)</span> and <span class="process-math">\(f(x,y) \coloneqq g(x)h(y)\)</span> for continuous functions <span class="process-math">\(g \colon [a,b] \to \R\)</span> and <span class="process-math">\(h \colon [c,d] \to \R\text{.}\)</span>  Prove</div>
+<div class="displaymath process-math" id="sec_iteratedints-17-5-1-1-5">
+\begin{equation}
+\int_R f = \left(\int_a^b g\right)\left(\int_c^d h\right) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-17-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.2.5"><a aria-label="Copy heading and permalink for Exercise 10.2.5" href="#sec_iteratedints-17-5" title="Copy heading and permalink for Exercise 10.2.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_iteratedints-17-6"><h4 class="heading"><span class="codenumber">10.2.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_iteratedints-17-6-1-1">
+<div class="para">Compute (using calculus)</div>
+<div class="displaymath process-math" id="sec_iteratedints-17-6-1-1-1">
+\begin{equation}
+\int_0^1 \int_0^1 \frac{x^2-y^2}{{(x^2+y^2)}^2} \, dx \, dy
+\qquad \text{and} \qquad
+\int_0^1 \int_0^1 \frac{x^2-y^2}{{(x^2+y^2)}^2} \, dy \, dx .
+\end{equation}
+</div>
+<div class="para">You will need to interpret the integrals as improper, that is, the limit of <span class="process-math">\(\int_\epsilon^1\)</span> as <span class="process-math">\(\epsilon \to 0^+\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-17-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.2.6"><a aria-label="Copy heading and permalink for Exercise 10.2.6" href="#sec_iteratedints-17-6" title="Copy heading and permalink for Exercise 10.2.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_iteratedints-17-7"><h4 class="heading"><span class="codenumber">10.2.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_iteratedints-17-7-1-1">
+<div class="para">Suppose <span class="process-math">\(f(x,y) \coloneqq g(x)\)</span> where <span class="process-math">\(g \colon [a,b] \to \R\)</span> is Riemann integrable. Show that <span class="process-math">\(f\)</span> is Riemann integrable for every <span class="process-math">\(R = [a,b] \times [c,d]\)</span> and</div>
+<div class="displaymath process-math" id="sec_iteratedints-17-7-1-1-5">
+\begin{equation}
+\int_R f = (d-c) \int_a^b g .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-17-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.2.7"><a aria-label="Copy heading and permalink for Exercise 10.2.7" href="#sec_iteratedints-17-7" title="Copy heading and permalink for Exercise 10.2.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_iteratedints-17-8"><h4 class="heading"><span class="codenumber">10.2.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_iteratedints-17-8-1-1">
+<div class="para">Define <span class="process-math">\(f \colon [-1,1] \times [0,1] \to \R\)</span> by</div>
+<div class="displaymath process-math" id="sec_iteratedints-17-8-1-1-2">
+\begin{equation}
+f(x,y) \coloneqq
+\begin{cases}
+x &amp; \text{if } y \in \Q, \\
+0 &amp; \text{else.} 
+\end{cases}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-17-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_iteratedints-17-8-1-2">
+<li id="sec_iteratedints-17-8-1-2-1">
+<div class="para" id="sec_iteratedints-17-8-1-2-1-1">Show <span class="process-math">\(\int_0^1 \int_{-1}^1 f(x,y) \, dx \, dy\)</span> exists, but <span class="process-math">\(\int_{-1}^1 \int_0^1 f(x,y) \, dy \, dx\)</span> does not.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-17-8-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.2.8.a"><a aria-label="Copy heading and permalink for Item 10.2.8.a" href="#sec_iteratedints-17-8-1-2-1" title="Copy heading and permalink for Item 10.2.8.a">🔗</a></div>
+</li>
+<li id="sec_iteratedints-17-8-1-2-2">
+<div class="para" id="sec_iteratedints-17-8-1-2-2-1">Compute <span class="process-math">\(\int_{-1}^1 \overline{\int_0^1} f(x,y) \, dy \, dx\)</span> and <span class="process-math">\(\int_{-1}^1 \underline{\int_0^1} f(x,y) \, dy \, dx\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-17-8-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.2.8.b"><a aria-label="Copy heading and permalink for Item 10.2.8.b" href="#sec_iteratedints-17-8-1-2-2" title="Copy heading and permalink for Item 10.2.8.b">🔗</a></div>
+</li>
+<li id="sec_iteratedints-17-8-1-2-3">
+<div class="para" id="sec_iteratedints-17-8-1-2-3-1">Show <span class="process-math">\(f\)</span> is not Riemann integrable on <span class="process-math">\([-1,1] \times [0,1]\)</span> (use Fubini).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-17-8-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.2.8.c"><a aria-label="Copy heading and permalink for Item 10.2.8.c" href="#sec_iteratedints-17-8-1-2-3" title="Copy heading and permalink for Item 10.2.8.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 10.2.8"><a aria-label="Copy heading and permalink for Exercise 10.2.8" href="#sec_iteratedints-17-8" title="Copy heading and permalink for Exercise 10.2.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_iteratedints-17-9"><h4 class="heading"><span class="codenumber">10.2.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_iteratedints-17-9-1-1">
+<div class="para">Define <span class="process-math">\(f \colon [0,1] \times [0,1] \to \R\)</span> by</div>
+<div class="displaymath process-math" id="sec_iteratedints-17-9-1-1-2">
+\begin{equation}
+f(x,y) \coloneqq
+\begin{cases}
+\nicefrac{1}{q} &amp; \text{if } x \in \Q, y \in \Q, \text{ and }
+y=\nicefrac{p}{q} \text{ in lowest terms,} \\
+0               &amp; \text{else.} 
+\end{cases}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-17-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_iteratedints-17-9-1-2">
+<li id="sec_iteratedints-17-9-1-2-1">
+<div class="para" id="sec_iteratedints-17-9-1-2-1-1">Show <span class="process-math">\(f\)</span> is Riemann integrable on <span class="process-math">\([0,1] \times [0,1]\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-17-9-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.2.9.a"><a aria-label="Copy heading and permalink for Item 10.2.9.a" href="#sec_iteratedints-17-9-1-2-1" title="Copy heading and permalink for Item 10.2.9.a">🔗</a></div>
+</li>
+<li id="sec_iteratedints-17-9-1-2-2">
+<div class="para" id="sec_iteratedints-17-9-1-2-2-1">Find <span class="process-math">\(\overline{\int_0^1} f(x,y) \, dx\)</span> and <span class="process-math">\(\underline{\int_0^1} f(x,y) \, dx\)</span> for all <span class="process-math">\(y \in [0,1]\text{,}\)</span> and show they are unequal for all <span class="process-math">\(y
+\in \Q\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-17-9-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.2.9.b"><a aria-label="Copy heading and permalink for Item 10.2.9.b" href="#sec_iteratedints-17-9-1-2-2" title="Copy heading and permalink for Item 10.2.9.b">🔗</a></div>
+</li>
+<li id="sec_iteratedints-17-9-1-2-3">
+<div class="para" id="sec_iteratedints-17-9-1-2-3-1">Show <span class="process-math">\(\int_0^1 \int_0^1 f(x,y) \, dy \, dx\)</span> exists, but <span class="process-math">\(\int_0^1 \int_0^1 f(x,y) \, dx \, dy\)</span> does not.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-17-9-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.2.9.c"><a aria-label="Copy heading and permalink for Item 10.2.9.c" href="#sec_iteratedints-17-9-1-2-3" title="Copy heading and permalink for Item 10.2.9.c">🔗</a></div>
+</li>
+</ol>
+<div class="para" id="sec_iteratedints-17-9-1-3">Note: By Fubini, <span class="process-math">\(\int_0^1 \overline{\int_0^1} f(x,y) \, dx \, dy\)</span> and <span class="process-math">\(\int_0^1 \underline{\int_0^1} f(x,y) \, dx \, dy\)</span> exist and equal <span class="process-math">\(\int_{[0,1]\times[0,1]} f\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_iteratedints-17-9-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.2.9"><a aria-label="Copy heading and permalink for Exercise 10.2.9" href="#sec_iteratedints-17-9" title="Copy heading and permalink for Exercise 10.2.9">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 10.2.1"><a aria-label="Copy heading and permalink for Exercises 10.2.1" href="#sec_iteratedints-17" title="Copy heading and permalink for Exercises 10.2.1">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 10.2: Iterated integrals and the Fubini theorem"><a aria-label="Copy heading and permalink for Section 10.2: Iterated integrals and the Fubini theorem" href="#sec_iteratedints" title="Copy heading and permalink for Section 10.2: Iterated integrals and the Fubini theorem">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_rirect.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_outermeasure.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

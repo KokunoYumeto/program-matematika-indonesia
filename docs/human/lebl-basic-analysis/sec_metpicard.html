@@ -1,0 +1,478 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Fixed point theorem and Picard’s theorem again · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_metpicard">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.6</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Fixed point theorem and Picard’s theorem again</span>
+</h2>
+<section class="introduction" id="sec_metpicard-2">
+<div class="para" id="sec_metpicard-2-1">
+<em class="emphasis">Note: 1 lecture (optional, does not require <a class="internal" href="sec_picard.html" title="Section 6.3: Picard’s theorem">Section 6.3</a>)</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_metpicard-2-2">In this section we prove the fixed point theorem for contraction mappings.  As an application we prove Picard’s theorem, which we proved without metric spaces in <a class="internal" href="sec_picard.html" title="Section 6.3: Picard’s theorem">Section 6.3</a>. The proof presented here is similar, but it goes much more smoothly with metric spaces and the fixed point theorem.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-2-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section>
+<section class="subsection" id="sec_metpicard-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.6.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Fixed point theorem</span>
+</h3>
+<article class="definition definition-like" id="sec_metpicard-3-2"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.6.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_metpicard-3-2-1-1">
+<div class="para">Let <span class="process-math">\((X,d_X)\)</span> and <span class="process-math">\((Y,d_Y)\)</span> be metric spaces. A map <span class="process-math">\(\varphi \colon X \to Y\)</span> is a <em class="emphasis">contraction</em> (or a contractive map) if it is a <span class="process-math">\(k\)</span>-Lipschitz map for some <span class="process-math">\(k &lt; 1\text{,}\)</span> i.e. if there exists a <span class="process-math">\(k &lt; 1\)</span> such that</div>
+<div class="displaymath process-math" id="sec_metpicard-3-2-1-1-8">
+\begin{equation}
+d_Y\bigl(\varphi(p),\varphi(q)\bigr) \leq k\, d_X(p,q)
+\qquad \text{for all } p,q \in X.
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-3-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_metpicard-3-2-1-2">Given a map <span class="process-math">\(\varphi \colon X \to X\text{,}\)</span> a point <span class="process-math">\(x \in X\)</span> is called a <em class="emphasis">fixed point</em> if <span class="process-math">\(\varphi(x)=x\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-3-2-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 7.6.1"><a aria-label="Copy heading and permalink for Definition 7.6.1" href="#sec_metpicard-3-2" title="Copy heading and permalink for Definition 7.6.1">🔗</a></div>
+</article>
+<article class="theorem theorem-like" id="thm_contr"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.6.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Contraction mapping principle or Banach fixed point theorem.</span>
+</h4>
+<div class="para" id="thm_contr-2-1">
+<details aria-live="polite" class="ptx-footnote" id="thm_contr-2-1-1"><summary class="ptx-footnote__number" title="Footnote 7.6.1"><sup> 1 </sup></summary>
+<div class="ptx-footnote__contents" id="thm_contr-2-1-1">Named after the Polish mathematician <a class="external" href="https://en.wikipedia.org/wiki/Stefan_Banach" target="_blank">Stefan Banach</a> (1892–1945) who first stated the theorem in 1922.
+</div></details> Let <span class="process-math">\((X,d)\)</span> be a nonempty complete metric space and <span class="process-math">\(\varphi \colon X \to X\)</span> a contraction. Then <span class="process-math">\(\varphi\)</span> has a unique fixed point.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#thm_contr-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 7.6.2: Contraction mapping principle or Banach fixed point theorem"><a aria-label="Copy heading and permalink for Theorem 7.6.2: Contraction mapping principle or Banach fixed point theorem" href="#thm_contr" title="Copy heading and permalink for Theorem 7.6.2: Contraction mapping principle or Banach fixed point theorem">🔗</a></div>
+</article>
+<div class="para" id="sec_metpicard-3-4">The words <em class="emphasis">complete</em> and <em class="emphasis">contraction</em> are necessary. See <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metpicard.html#exercise_nofixedpoint" title="Exercise 7.6.6">Exercise 7.6.6</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-3-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_metpicard-3-5"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_metpicard-3-5-1">
+<div class="para">Pick <span class="process-math">\(x_0 \in X\text{.}\)</span> Define a sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> by <span class="process-math">\(x_{n+1} \coloneqq \varphi(x_n)\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" id="sec_metpicard-3-5-1-4">
+\begin{equation}
+d(x_{n+1},x_n) = d\bigl(\varphi(x_n),\varphi(x_{n-1})\bigr)
+\leq k d(x_n,x_{n-1}) .
+\end{equation}
+</div>
+<div class="para">Repeating <span class="process-math">\(n\)</span> times, we get <span class="process-math">\(d(x_{n+1},x_n) \leq k^n d(x_1,x_0)\text{.}\)</span> For <span class="process-math">\(m &gt; n\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_metpicard-3-5-1-8">
+\begin{equation}
+\begin{split}
+d(x_m,x_n)
+&amp; \leq \sum_{i=n}^{m-1} d(x_{i+1},x_i) \\
+&amp; \leq \sum_{i=n}^{m-1} k^i d(x_1,x_0) \\
+&amp; = k^n d(x_1,x_0) \sum_{i=0}^{m-n-1} k^i \\
+&amp; \leq k^n d(x_1,x_0) \sum_{i=0}^{\infty} k^i
+= k^n d(x_1,x_0) \frac{1}{1-k} .
+\end{split}
+\end{equation}
+</div>
+<div class="para">In particular, the sequence is Cauchy (why?).  Since <span class="process-math">\(X\)</span> is complete, we let <span class="process-math">\(x \coloneqq \lim_{n\to\infty} x_n\text{,}\)</span> and we claim that <span class="process-math">\(x\)</span> is our unique fixed point.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-3-5-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_metpicard-3-5-2">
+<div class="para">Fixed point?  The function <span class="process-math">\(\varphi\)</span> is a contraction, so it is Lipschitz continuous:</div>
+<div class="displaymath process-math" id="sec_metpicard-3-5-2-2">
+\begin{equation}
+\varphi(x) = \varphi\Bigl( \lim_{n\to\infty} x_n\Bigr) = \lim_{n\to\infty}
+\varphi(x_n) =
+\lim_{n\to\infty} x_{n+1} = x .
+\end{equation}
+</div>
+<div class="para">Unique?  Let <span class="process-math">\(x\)</span> and <span class="process-math">\(y\)</span> be fixed points.</div>
+<div class="displaymath process-math" id="sec_metpicard-3-5-2-5">
+\begin{equation}
+d(x,y) = d\bigl(\varphi(x),\varphi(y)\bigr) \leq k\, d(x,y) .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(k &lt; 1\text{,}\)</span> the inequality means that <span class="process-math">\(d(x,y) = 0\text{,}\)</span> and hence <span class="process-math">\(x=y\text{.}\)</span>  The theorem is proved.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-3-5-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 7.6.1.1"><a aria-label="Copy heading and permalink for Proof 7.6.1.1" href="#sec_metpicard-3-5" title="Copy heading and permalink for Proof 7.6.1.1">🔗</a></div>
+</article>
+<div class="para" id="sec_metpicard-3-6">The proof is constructive.  Not only do we know a unique fixed point exists, we know how to find it.  Start with any point <span class="process-math">\(x_0 \in X\text{,}\)</span> then iterate <span class="process-math">\(\varphi(x_0)\text{,}\)</span> <span class="process-math">\(\varphi(\varphi(x_0))\text{,}\)</span> <span class="process-math">\(\varphi(\varphi(\varphi(x_0)))\text{,}\)</span> etc. to find better and better approximations. We can even find how far away from the fixed point we are. See the exercises.  The idea of the proof is therefore useful in real-world applications.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-3-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 7.6.1: Fixed point theorem"><a aria-label="Copy heading and permalink for Subsection 7.6.1: Fixed point theorem" href="#sec_metpicard-3" title="Copy heading and permalink for Subsection 7.6.1: Fixed point theorem">🔗</a></div>
+</section>
+<section class="subsection" id="sec_metpicard-4">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.6.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Picard’s theorem</span>
+</h3>
+<div class="para logical" id="sec_metpicard-4-2">
+<div class="para">We start with the metric space where we will apply the fixed point theorem: the space <span class="process-math">\(C\bigl([a,b],\R\bigr)\)</span> of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metric.html#example_msC01" title="Example 7.1.8">Example 7.1.8</a>, the space of continuous functions <span class="process-math">\(f \colon [a,b] \to \R\)</span> with the metric</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/example_msC01.html ./knowl/xref/prop_CabRcomplete.html" id="sec_metpicard-4-2-4">
+\begin{equation}
+d(f,g) \coloneqq \snorm{f-g}_{[a,b]} = \sup_{x \in [a,b]} \babs{f(x)-g(x)} .
+\end{equation}
+</div>
+<div class="para">Convergence in this metric is convergence in uniform norm, or in other words, uniform convergence.  Therefore, <span class="process-math">\(C\bigl([a,b],\R\bigr)\)</span> is a complete metric space, see <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metcompact.html#prop_CabRcomplete" title="Proposition 7.4.5">Proposition 7.4.5</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_metpicard-4-3">
+<div class="para">Consider now the ordinary differential equation</div>
+<div class="displaymath process-math" id="sec_metpicard-4-3-1">
+\begin{equation}
+\frac{dy}{dx} = F(x,y) .
+\end{equation}
+</div>
+<div class="para">Given some <span class="process-math">\(x_0, y_0\text{,}\)</span> we desire a function <span class="process-math">\(y=f(x)\)</span> such that <span class="process-math">\(f(x_0) = y_0\)</span> and such that</div>
+<div class="displaymath process-math" id="sec_metpicard-4-3-5">
+\begin{equation}
+f'(x) = F\bigl(x,f(x)\bigr) .
+\end{equation}
+</div>
+<div class="para">To avoid having to come up with many names, we often simply write <span class="process-math">\(y' = F(x,y)\)</span> for the equation and <span class="process-math">\(y(x)\)</span> for the solution.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-4-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_metpicard-4-4">The simplest example is the equation <span class="process-math">\(y' = y\text{,}\)</span> <span class="process-math">\(y(0) = 1\text{.}\)</span> The solution is the exponential <span class="process-math">\(y(x) = e^x\text{.}\)</span>  A somewhat more complicated example is <span class="process-math">\(y' = -2xy\text{,}\)</span> <span class="process-math">\(y(0) = 1\text{,}\)</span> whose solution is the Gaussian <span class="process-math">\(y(x) = e^{-x^2}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-4-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_metpicard-4-5">A subtle issue is how long the solution exists. Consider the equation <span class="process-math">\(y' = y^2\text{,}\)</span> <span class="process-math">\(y(0)=1\text{.}\)</span>  Then <span class="process-math">\(y(x) = \frac{1}{1-x}\)</span> is a solution.  While <span class="process-math">\(F\)</span> is a reasonably “nice” function and in particular it exists for all <span class="process-math">\(x\)</span> and <span class="process-math">\(y\text{,}\)</span> the solution “blows up” at <span class="process-math">\(x=1\text{.}\)</span> For more examples related to Picard’s theorem, see <a class="internal" href="sec_picard.html" title="Section 6.3: Picard’s theorem">Section 6.3</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-4-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_metpicard-4-6">
+<div class="para">We will look for the solution in <span class="process-math">\(C\bigl([a,b],\R\bigr)\text{,}\)</span> which may feel strange at first as we are searching for a differentiable function. The explanation is that we consider the corresponding integral equation</div>
+<div class="displaymath process-math" id="sec_metpicard-4-6-2">
+\begin{equation}
+f(x)
+=
+y_0 + \int_{x_0}^x F\bigl(t,f(t)\bigr)\,dt .
+\end{equation}
+</div>
+<div class="para">To solve this integral equation, we only need a continuous function, so in some sense our task should be easier—we have more candidate functions to try.  This way of thinking is quite typical when solving differential equations.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-4-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="sec_metpicard-4-7"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.6.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Picard’s theorem on existence and uniqueness.</span>
+</h4>
+<div class="para logical" id="sec_metpicard-4-7-4-1">
+<div class="para">Let <span class="process-math">\(I, J \subset \R\)</span> be closed and bounded intervals, let <span class="process-math">\(I^\circ\)</span> and <span class="process-math">\(J^\circ\)</span> be their interiors, and let <span class="process-math">\((x_0,y_0) \in I^\circ \times J^\circ\text{.}\)</span> Suppose <span class="process-math">\(F \colon I \times J \to \R\)</span> is continuous and Lipschitz in the second variable, that is, there exists an <span class="process-math">\(L \in \R\)</span> such that</div>
+<div class="displaymath process-math" id="sec_metpicard-4-7-4-1-7">
+\begin{equation}
+\babs{F(x,y) - F(x,z)} \leq L \sabs{y-z}
+\qquad \text{for all } y,z \in J, x \in I .
+\end{equation}
+</div>
+<div class="para">Then there exists an <span class="process-math">\(h &gt; 0\)</span> such that <span class="process-math">\([x_0-h,x_0+h] \subset I\)</span> and a unique differentiable function <span class="process-math">\(f \colon [x_0 - h, x_0 + h] \to J \subset \R\)</span> such that</div>
+<div class="displaymath process-math" id="sec_metpicard-4-7-4-1-11">
+\begin{equation}
+f'(x) = F\bigl(x,f(x)\bigr) \qquad \text{and} \qquad f(x_0) = y_0.
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-4-7-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 7.6.3: Picard’s theorem on existence and uniqueness"><a aria-label="Copy heading and permalink for Theorem 7.6.3: Picard’s theorem on existence and uniqueness" href="#sec_metpicard-4-7" title="Copy heading and permalink for Theorem 7.6.3: Picard’s theorem on existence and uniqueness">🔗</a></div>
+</article>
+<article class="proof" id="sec_metpicard-4-8"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_metpicard-4-8-1">
+<div class="para">Without loss of generality, assume <span class="process-math">\(x_0 =0\)</span> (exercise). As <span class="process-math">\(I \times J\)</span> is compact and <span class="process-math">\(F\)</span> is continuous, <span class="process-math">\(F\)</span> is bounded. So find an <span class="process-math">\(M &gt; 0\)</span> such that <span class="process-math">\(\babs{F(x,y)} \leq M\)</span> for all <span class="process-math">\((x,y) \in I\times J\text{.}\)</span> Pick <span class="process-math">\(\alpha &gt; 0\)</span> such that <span class="process-math">\([-\alpha,\alpha] \subset I\)</span> and <span class="process-math">\([y_0-\alpha, y_0 + \alpha] \subset J\text{.}\)</span> Let</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_closedcomplete.html" id="sec_metpicard-4-8-1-11">
+\begin{equation}
+h \coloneqq \min \left\{ \alpha, \frac{\alpha}{M+L\alpha} \right\} .
+\end{equation}
+</div>
+<div class="para">Note <span class="process-math">\([-h,h] \subset I\text{.}\)</span>  Let</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_closedcomplete.html" id="sec_metpicard-4-8-1-13">
+\begin{equation}
+Y \coloneqq \Bigl\{ f \in C\bigl([-h,h],\R\bigr) : f\bigl([-h,h]\bigr) \subset J \Bigr\} .
+\end{equation}
+</div>
+<div class="para">That is, <span class="process-math">\(Y\)</span> is the set of continuous functions on <span class="process-math">\([-h,h]\)</span> with values in <span class="process-math">\(J\text{,}\)</span> in other words, exactly those functions where <span class="process-math">\(F\bigl(x,f(x)\bigr)\)</span> makes sense. It is left as an exercise to show that <span class="process-math">\(Y\)</span> is a closed subset of <span class="process-math">\(C\bigl([-h,h],\R\bigr)\)</span> (because <span class="process-math">\(J\)</span> is closed). The space <span class="process-math">\(C\bigl([-h,h],\R\bigr)\)</span> is complete, and a closed subset of a complete metric space is a complete metric space with the subspace metric, see <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metcompact.html#prop_closedcomplete" title="Proposition 7.4.6">Proposition 7.4.6</a>.  So <span class="process-math">\(Y\)</span> with the subspace metric is a complete metric space. We will write <span class="process-math">\(d(f,g) = \snorm{f-g}_{[-h,h]}\)</span> for this metric.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-4-8-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_metpicard-4-8-2">
+<div class="para">Define a mapping <span class="process-math">\(T \colon Y \to C\bigl([-h,h],\R\bigr)\)</span> by</div>
+<div class="displaymath process-math" id="sec_metpicard-4-8-2-2">
+\begin{equation}
+T(f)(x)
+\coloneqq
+y_0 + \int_0^x F\bigl(t,f(t)\bigr)\,dt .
+\end{equation}
+</div>
+<div class="para">It is an exercise to check that <span class="process-math">\(T\)</span> is well-defined, and that for <span class="process-math">\(f \in Y\text{,}\)</span> <span class="process-math">\(T(f)\)</span> really is in <span class="process-math">\(C\bigl([-h,h],\R\bigr)\text{.}\)</span> Let <span class="process-math">\(f \in Y\)</span> and <span class="process-math">\(\sabs{x} \leq h\text{.}\)</span> As <span class="process-math">\(F\)</span> is bounded by <span class="process-math">\(M\text{,}\)</span> we have</div>
+<div class="displaymath process-math" id="sec_metpicard-4-8-2-11">
+\begin{equation}
+\begin{split}
+\babs{T(f)(x) - y_0}
+&amp;= \abs{\int_0^x F\bigl(t,f(t)\bigr)\,dt} \\
+&amp; \leq 
+\sabs{x} M \leq hM \leq \frac{\alpha M}{M+ L\alpha} \leq \alpha .
+\end{split}
+\end{equation}
+</div>
+<div class="para">So <span class="process-math">\(T(f)\bigl([-h,h]\bigr) \subset [y_0-\alpha,y_0+\alpha] \subset J\text{,}\)</span> and <span class="process-math">\(T(f) \in Y\text{.}\)</span>  In other words, <span class="process-math">\(T(Y) \subset Y\text{.}\)</span>  From now on, we consider <span class="process-math">\(T\)</span> as a mapping of <span class="process-math">\(Y\)</span> to <span class="process-math">\(Y\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-4-8-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_metpicard-4-8-3">
+<div class="para">We claim <span class="process-math">\(T \colon Y \to Y\)</span> is a contraction.  First, for <span class="process-math">\(x \in [-h,h]\)</span> and <span class="process-math">\(f,g \in Y\text{,}\)</span> we have</div>
+<div class="displaymath process-math" id="sec_metpicard-4-8-3-4">
+\begin{equation}
+\Babs{F\bigl(x,f(x)\bigr) - F\bigl(x,g(x)\bigr)} \leq
+L\babs{f(x)- g(x)} \leq L \, d(f,g) .
+\end{equation}
+</div>
+<div class="para">Therefore,</div>
+<div class="displaymath process-math" id="sec_metpicard-4-8-3-5">
+\begin{equation}
+\begin{split}
+\babs{T(f)(x) - T(g)(x)}
+&amp;= \abs{\int_0^x \Bigl( F\bigl(t,f(t)\bigr) - F\bigl(t,g(t)\bigr)\Bigr)\,dt} \\
+&amp; \leq \sabs{x} L \, d(f,g)
+\leq h L\, d(f,g)
+\leq \frac{L\alpha}{M+L\alpha} \, d(f,g) .
+\end{split}
+\end{equation}
+</div>
+<div class="para">We chose <span class="process-math">\(M &gt; 0\)</span> and so <span class="process-math">\(\frac{L\alpha}{M+L\alpha} &lt; 1\text{.}\)</span> Take supremum over <span class="process-math">\(x \in [-h,h]\)</span> of the left-hand side above to obtain <span class="process-math">\(d\bigl(T(f),T(g)\bigr) \leq \frac{L\alpha}{M+L\alpha} \, d(f,g)\text{,}\)</span> that is, <span class="process-math">\(T\)</span> is a contraction.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-4-8-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_metpicard-4-8-4">
+<div class="para">The fixed point theorem (<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metpicard.html#thm_contr" title="Theorem 7.6.2: Contraction mapping principle or Banach fixed point theorem">Theorem 7.6.2</a>) gives a unique <span class="process-math">\(f \in Y\)</span> such that <span class="process-math">\(T(f) = f\text{.}\)</span> In other words,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_contr.html ./knowl/xref/thm_FTCv2.html" id="sec_metpicard-4-8-4-4">
+\begin{equation}
+f(x) = y_0 + \int_0^x F\bigl(t,f(t)\bigr)\,dt .
+\end{equation}
+</div>
+<div class="para">Clearly, <span class="process-math">\(f(0) = y_0\text{.}\)</span> By the fundamental theorem of calculus (<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_ftc.html#thm_FTCv2" title="Theorem 5.3.3">Theorem 5.3.3</a>), <span class="process-math">\(f\)</span> is differentiable and its derivative is <span class="process-math">\(F\bigl(x,f(x)\bigr)\text{.}\)</span> Differentiable functions are continuous, so <span class="process-math">\(f\)</span> is the unique differentiable <span class="process-math">\(f \colon [-h,h] \to J\)</span> such that <span class="process-math">\(f'(x) = F\bigl(x,f(x)\bigr)\)</span> and <span class="process-math">\(f(0) = y_0\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-4-8-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 7.6.2.1"><a aria-label="Copy heading and permalink for Proof 7.6.2.1" href="#sec_metpicard-4-8" title="Copy heading and permalink for Proof 7.6.2.1">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 7.6.2: Picard’s theorem"><a aria-label="Copy heading and permalink for Subsection 7.6.2: Picard’s theorem" href="#sec_metpicard-4" title="Copy heading and permalink for Subsection 7.6.2: Picard’s theorem">🔗</a></div>
+</section>
+<section class="exercises" id="sec_metpicard-5">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.6.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<div class="para" id="sec_metpicard-5-1">For more exercises related to Picard’s theorem see <a class="internal" href="sec_picard.html" title="Section 6.3: Picard’s theorem">Section 6.3</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-5-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="exercise exercise-like" id="sec_metpicard-5-2"><h4 class="heading"><span class="codenumber">7.6.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metpicard-5-2-1-1">Let <span class="process-math">\(J\)</span> be a closed and bounded interval and <span class="process-math">\(Y \coloneqq \bigl\{ f \in C\bigl([-h,h],\R\bigr) : f\bigl([-h,h]\bigr) \subset J \bigr\}\text{.}\)</span> Show that <span class="process-math">\(Y \subset C\bigl([-h,h],\R\bigr)\)</span> is closed.  Hint: <span class="process-math">\(J\)</span> is closed.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-5-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.6.1"><a aria-label="Copy heading and permalink for Exercise 7.6.1" href="#sec_metpicard-5-2" title="Copy heading and permalink for Exercise 7.6.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metpicard-5-3"><h4 class="heading"><span class="codenumber">7.6.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_metpicard-5-3-1-1">
+<div class="para">In the proof of Picard’s theorem, show that if <span class="process-math">\(f \colon [-h,h] \to J\)</span> is continuous, then <span class="process-math">\(F\bigl(t,f(t)\bigr)\)</span> is continuous on <span class="process-math">\([-h,h]\)</span> as a function of <span class="process-math">\(t\text{.}\)</span>  Use this to show that</div>
+<div class="displaymath process-math" id="sec_metpicard-5-3-1-1-5">
+\begin{equation}
+T(f)(x)
+\coloneqq
+y_0 + \int_0^x F\bigl(t,f(t)\bigr)\,dt
+\end{equation}
+</div>
+<div class="para">is well-defined and that <span class="process-math">\(T(f) \in C\bigl([-h,h],\R\bigr)\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-5-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.6.2"><a aria-label="Copy heading and permalink for Exercise 7.6.2" href="#sec_metpicard-5-3" title="Copy heading and permalink for Exercise 7.6.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metpicard-5-4"><h4 class="heading"><span class="codenumber">7.6.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metpicard-5-4-1-1">Prove that in the proof of Picard’s theorem, the statement “Without loss of generality assume <span class="process-math">\(x_0 = 0\)</span>” is justified.  That is, prove that if we know the theorem with <span class="process-math">\(x_0 = 0\text{,}\)</span> the theorem is true as stated.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-5-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.6.3"><a aria-label="Copy heading and permalink for Exercise 7.6.3" href="#sec_metpicard-5-4" title="Copy heading and permalink for Exercise 7.6.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metpicard-5-5"><h4 class="heading"><span class="codenumber">7.6.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metpicard-5-5-1-1">Let <span class="process-math">\(F \colon \R \to \R\)</span> be defined by <span class="process-math">\(F(x) \coloneqq kx + b\)</span> where <span class="process-math">\(0 &lt; k &lt; 1\text{,}\)</span> <span class="process-math">\(b \in \R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-5-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_metpicard-5-5-1-2">
+<li id="sec_metpicard-5-5-1-2-1">
+<div class="para" id="sec_metpicard-5-5-1-2-1-1">Show that <span class="process-math">\(F\)</span> is a contraction.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-5-5-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.6.4.a"><a aria-label="Copy heading and permalink for Item 7.6.4.a" href="#sec_metpicard-5-5-1-2-1" title="Copy heading and permalink for Item 7.6.4.a">🔗</a></div>
+</li>
+<li id="sec_metpicard-5-5-1-2-2">
+<div class="para" id="sec_metpicard-5-5-1-2-2-1">Find the fixed point and show directly that it is unique.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-5-5-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.6.4.b"><a aria-label="Copy heading and permalink for Item 7.6.4.b" href="#sec_metpicard-5-5-1-2-2" title="Copy heading and permalink for Item 7.6.4.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 7.6.4"><a aria-label="Copy heading and permalink for Exercise 7.6.4" href="#sec_metpicard-5-5" title="Copy heading and permalink for Exercise 7.6.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metpicard-5-6"><h4 class="heading"><span class="codenumber">7.6.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metpicard-5-6-1-1">Let <span class="process-math">\(f \colon [0,\nicefrac{1}{4}] \to [0,\nicefrac{1}{4}]\)</span> be defined by <span class="process-math">\(f(x) \coloneqq x^2\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-5-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_metpicard-5-6-1-2">
+<li id="sec_metpicard-5-6-1-2-1">
+<div class="para" id="sec_metpicard-5-6-1-2-1-1">Show that <span class="process-math">\(f\)</span> is a contraction, and find the best (smallest) <span class="process-math">\(k\)</span> from the definition that works.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-5-6-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.6.5.a"><a aria-label="Copy heading and permalink for Item 7.6.5.a" href="#sec_metpicard-5-6-1-2-1" title="Copy heading and permalink for Item 7.6.5.a">🔗</a></div>
+</li>
+<li id="sec_metpicard-5-6-1-2-2">
+<div class="para" id="sec_metpicard-5-6-1-2-2-1">Find the fixed point and show directly that it is unique.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-5-6-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.6.5.b"><a aria-label="Copy heading and permalink for Item 7.6.5.b" href="#sec_metpicard-5-6-1-2-2" title="Copy heading and permalink for Item 7.6.5.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 7.6.5"><a aria-label="Copy heading and permalink for Exercise 7.6.5" href="#sec_metpicard-5-6" title="Copy heading and permalink for Exercise 7.6.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_nofixedpoint"><h4 class="heading"><span class="codenumber">7.6.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_nofixedpoint-1-1"><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_nofixedpoint-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div></div>
+<ol class="lower-alpha ol-marker-3" id="exercise_nofixedpoint-1-2">
+<li id="exercise_nofixedpoint-1-2-1">
+<div class="para" id="exercise_nofixedpoint-1-2-1-1">Find an example of a contraction <span class="process-math">\(f \colon X \to X\)</span> of a non-complete metric space <span class="process-math">\(X\)</span> with no fixed point.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_nofixedpoint-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.6.6.a"><a aria-label="Copy heading and permalink for Item 7.6.6.a" href="#exercise_nofixedpoint-1-2-1" title="Copy heading and permalink for Item 7.6.6.a">🔗</a></div>
+</li>
+<li id="exercise_nofixedpoint-1-2-2">
+<div class="para" id="exercise_nofixedpoint-1-2-2-1">Find a 1-Lipschitz map <span class="process-math">\(f \colon X \to X\)</span> of a complete metric space <span class="process-math">\(X\)</span> with no fixed point.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_nofixedpoint-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.6.6.b"><a aria-label="Copy heading and permalink for Item 7.6.6.b" href="#exercise_nofixedpoint-1-2-2" title="Copy heading and permalink for Item 7.6.6.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 7.6.6"><a aria-label="Copy heading and permalink for Exercise 7.6.6" href="#exercise_nofixedpoint" title="Copy heading and permalink for Exercise 7.6.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metpicard-5-8"><h4 class="heading"><span class="codenumber">7.6.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metpicard-5-8-1-1">Consider <span class="process-math">\(y' =y^2\text{,}\)</span> <span class="process-math">\(y(0)=1\text{.}\)</span>  Use the iteration scheme from the proof of the contraction mapping principle. Start with <span class="process-math">\(f_0(x) = 1\text{.}\)</span>  Find a few iterates (at least up to <span class="process-math">\(f_2\)</span>).  Prove that the pointwise limit of <span class="process-math">\(f_n\)</span> is <span class="process-math">\(\frac{1}{1-x}\text{,}\)</span> that is, for every <span class="process-math">\(x\)</span> with <span class="process-math">\(\sabs{x} &lt; h\)</span> for some <span class="process-math">\(h &gt; 0\text{,}\)</span> prove that <span class="process-math">\(\lim\limits_{n\to\infty}f_n(x) = \frac{1}{1-x}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-5-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.6.7"><a aria-label="Copy heading and permalink for Exercise 7.6.7" href="#sec_metpicard-5-8" title="Copy heading and permalink for Exercise 7.6.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metpicard-5-9"><h4 class="heading"><span class="codenumber">7.6.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metpicard-5-9-1-1">Suppose <span class="process-math">\(f \colon X \to X\)</span> is a contraction for <span class="process-math">\(k &lt; 1\text{.}\)</span>  Suppose you use the iteration procedure with <span class="process-math">\(x_{n+1} \coloneqq f(x_n)\)</span> as in the proof of the fixed point theorem. Suppose <span class="process-math">\(x\)</span> is the fixed point of <span class="process-math">\(f\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-5-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_metpicard-5-9-1-2">
+<li id="sec_metpicard-5-9-1-2-1">
+<div class="para" id="sec_metpicard-5-9-1-2-1-1">Show that <span class="process-math">\(d(x,x_n) \leq k^n d(x_1,x_0) \frac{1}{1-k}\)</span> for all <span class="process-math">\(n \in \N\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-5-9-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.6.8.a"><a aria-label="Copy heading and permalink for Item 7.6.8.a" href="#sec_metpicard-5-9-1-2-1" title="Copy heading and permalink for Item 7.6.8.a">🔗</a></div>
+</li>
+<li id="sec_metpicard-5-9-1-2-2">
+<div class="para" id="sec_metpicard-5-9-1-2-2-1">Suppose <span class="process-math">\(d(y_1,y_2) \leq 16\)</span> for all <span class="process-math">\(y_1,y_2 \in X\text{,}\)</span> and <span class="process-math">\(k=
+\nicefrac{1}{2}\text{.}\)</span>  Find an <span class="process-math">\(N\)</span> such that starting at any given point <span class="process-math">\(x_0 \in X\text{,}\)</span> <span class="process-math">\(d(x,x_n) \leq 2^{-16}\)</span> for all <span class="process-math">\(n \geq N\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-5-9-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.6.8.b"><a aria-label="Copy heading and permalink for Item 7.6.8.b" href="#sec_metpicard-5-9-1-2-2" title="Copy heading and permalink for Item 7.6.8.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 7.6.8"><a aria-label="Copy heading and permalink for Exercise 7.6.8" href="#sec_metpicard-5-9" title="Copy heading and permalink for Exercise 7.6.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metpicard-5-10"><h4 class="heading"><span class="codenumber">7.6.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metpicard-5-10-1-1">Let <span class="process-math">\(f(x) \coloneqq x-\frac{x^2-2}{2x}\)</span> (you may recognize Newton’s method for <span class="process-math">\(\sqrt{2}\)</span>).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-5-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_metpicard-5-10-1-2">
+<li id="sec_metpicard-5-10-1-2-1">
+<div class="para" id="sec_metpicard-5-10-1-2-1-1">Prove <span class="process-math">\(f\bigl([1,\infty)\bigr) \subset [1,\infty)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-5-10-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.6.9.a"><a aria-label="Copy heading and permalink for Item 7.6.9.a" href="#sec_metpicard-5-10-1-2-1" title="Copy heading and permalink for Item 7.6.9.a">🔗</a></div>
+</li>
+<li id="sec_metpicard-5-10-1-2-2">
+<div class="para" id="sec_metpicard-5-10-1-2-2-1">Prove that <span class="process-math">\(f \colon [1,\infty) \to [1,\infty)\)</span> is a contraction.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-5-10-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.6.9.b"><a aria-label="Copy heading and permalink for Item 7.6.9.b" href="#sec_metpicard-5-10-1-2-2" title="Copy heading and permalink for Item 7.6.9.b">🔗</a></div>
+</li>
+<li id="sec_metpicard-5-10-1-2-3">
+<div class="para" id="sec_metpicard-5-10-1-2-3-1">Show that the fixed point theorem applies, find the unique <span class="process-math">\(x \geq 1\)</span> such that <span class="process-math">\(f(x) = x\text{,}\)</span> and show that <span class="process-math">\(x = \sqrt{2}\text{.}\)</span> Note: In particular, the technique from the proof of the theorem can be used to approximate <span class="process-math">\(\sqrt{2}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-5-10-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.6.9.c"><a aria-label="Copy heading and permalink for Item 7.6.9.c" href="#sec_metpicard-5-10-1-2-3" title="Copy heading and permalink for Item 7.6.9.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 7.6.9"><a aria-label="Copy heading and permalink for Exercise 7.6.9" href="#sec_metpicard-5-10" title="Copy heading and permalink for Exercise 7.6.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metpicard-5-11"><h4 class="heading"><span class="codenumber">7.6.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metpicard-5-11-1-1">Suppose <span class="process-math">\(f \colon X \to X\)</span> is a contraction, and <span class="process-math">\((X,d)\)</span> is a metric space with the discrete metric, that is, <span class="process-math">\(d(x,y) = 1\)</span> whenever <span class="process-math">\(x \neq y\text{.}\)</span> Show that <span class="process-math">\(f\)</span> is constant, that is, there exists a <span class="process-math">\(c \in X\)</span> such that <span class="process-math">\(f(x) = c\)</span> for all <span class="process-math">\(x \in X\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-5-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.6.10"><a aria-label="Copy heading and permalink for Exercise 7.6.10" href="#sec_metpicard-5-11" title="Copy heading and permalink for Exercise 7.6.10">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metpicard-5-12"><h4 class="heading"><span class="codenumber">7.6.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metpicard-5-12-1-1">Suppose <span class="process-math">\((X,d)\)</span> is a nonempty complete metric space, <span class="process-math">\(f \colon X \to X\)</span> is a mapping, and denote by <span class="process-math">\(f^n\)</span> the <span class="process-math">\(n\)</span>th iterate of <span class="process-math">\(f\text{.}\)</span>  Suppose for every <span class="process-math">\(n\)</span> there exists a <span class="process-math">\(k_n &gt; 0\)</span> such that <span class="process-math">\(d\bigl(f^n(x),f^n(y)\bigr) \leq k_n \, d(x,y)\)</span> for all <span class="process-math">\(x,y \in X\text{,}\)</span> where <span class="process-math">\(\sum_{n=1}^\infty k_n &lt; \infty\text{.}\)</span> Prove that <span class="process-math">\(f\)</span> has a unique fixed point in <span class="process-math">\(X\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metpicard-5-12-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.6.11"><a aria-label="Copy heading and permalink for Exercise 7.6.11" href="#sec_metpicard-5-12" title="Copy heading and permalink for Exercise 7.6.11">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 7.6.3"><a aria-label="Copy heading and permalink for Exercises 7.6.3" href="#sec_metpicard-5" title="Copy heading and permalink for Exercises 7.6.3">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 7.6: Fixed point theorem and Picard’s theorem again"><a aria-label="Copy heading and permalink for Section 7.6: Fixed point theorem and Picard’s theorem again" href="#sec_metpicard" title="Copy heading and permalink for Section 7.6: Fixed point theorem and Picard’s theorem again">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_metcont.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="pd_chapter.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

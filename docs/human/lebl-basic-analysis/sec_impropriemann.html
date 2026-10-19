@@ -1,0 +1,1241 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Improper integrals · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_impropriemann">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.5</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Improper integrals</span>
+</h2>
+<section class="introduction" id="sec_impropriemann-2">
+<div class="para" id="sec_impropriemann-2-1">
+<em class="emphasis">Note: 2–3 lectures (optional section, can safely be skipped, requires the optional <a class="internal" href="sec_limitatinf.html" title="Section 3.5: Limits at infinity">Section 3.5</a>)</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_impropriemann-2-2">Often it is necessary to integrate over the entire real line, or an unbounded interval of the form <span class="process-math">\([a,\infty)\)</span> or <span class="process-math">\((-\infty,b]\text{.}\)</span>  We may also wish to integrate unbounded functions defined on an open bounded interval <span class="process-math">\((a,b)\text{.}\)</span> For such intervals or functions, the Riemann integral is not defined, but we will write down the integral anyway in the spirit of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rintprop.html#lemma_boundedimpriemann" title="Lemma 5.2.8">Lemma 5.2.8</a>. These integrals are called <em class="emphasis">improper integrals</em> and are limits of integrals rather than integrals themselves.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_impropriemann-2-3"><h3 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.5.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para logical" id="sec_impropriemann-2-3-1-1">
+<div class="para">Suppose <span class="process-math">\(f \colon [a,b) \to \R\)</span> is a function (not necessarily bounded) that is Riemann integrable on <span class="process-math">\([a,c]\)</span> for all <span class="process-math">\(c &lt; b\text{.}\)</span>  We define</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-3-1-1-4">
+\begin{equation}
+\int_a^b f \coloneqq \lim_{c \to b^-} \int_a^{c} f
+\end{equation}
+</div>
+<div class="para">if the limit exists.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_impropriemann-2-3-1-2">
+<div class="para">Suppose <span class="process-math">\(f \colon [a,\infty) \to \R\)</span> is a function such that <span class="process-math">\(f\)</span> is Riemann integrable on <span class="process-math">\([a,c]\)</span> for all <span class="process-math">\(c &lt; \infty\text{.}\)</span> We define</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-3-1-2-5">
+\begin{equation}
+\int_a^\infty f \coloneqq \lim_{c \to \infty} \int_a^c f
+\end{equation}
+</div>
+<div class="para">if the limit exists.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-3-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_impropriemann-2-3-1-3">If the limit exists, we say the improper integral <em class="emphasis">converges</em>. If the limit does not exist, we say the improper integral <em class="emphasis">diverges</em>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-3-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_impropriemann-2-3-1-4">We similarly define improper integrals for the left-hand endpoint. We leave this definition to the reader.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-3-1-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 5.5.1"><a aria-label="Copy heading and permalink for Definition 5.5.1" href="#sec_impropriemann-2-3" title="Copy heading and permalink for Definition 5.5.1">🔗</a></div>
+</article>
+<div class="para" id="sec_impropriemann-2-4">For a finite endpoint <span class="process-math">\(b\text{,}\)</span> if <span class="process-math">\(f\)</span> is bounded, then <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rintprop.html#lemma_boundedimpriemann" title="Lemma 5.2.8">Lemma 5.2.8</a> says that we defined nothing new.  What is new is that we can apply this definition to unbounded functions. The following set of examples is so useful that we state it as a proposition.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="impropriemann_ptest"><h3 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.5.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title"><span class="process-math">\(p\)</span>-test for integrals.</span>
+</h3>
+<div class="para logical" id="impropriemann_ptest-3-1">
+<div class="para">The improper integral</div>
+<div class="displaymath process-math" id="impropriemann_ptest-3-1-1">
+\begin{equation}
+\int_1^\infty \frac{1}{x^p} \,dx
+\end{equation}
+</div>
+<div class="para">converges to <span class="process-math">\(\frac{1}{p-1}\)</span> if <span class="process-math">\(p &gt; 1\)</span> and diverges if <span class="process-math">\(0 &lt; p \leq 1\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#impropriemann_ptest-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="impropriemann_ptest-3-2">
+<div class="para">The improper integral</div>
+<div class="displaymath process-math" id="impropriemann_ptest-3-2-1">
+\begin{equation}
+\int_0^1 \frac{1}{x^p} \,dx
+\end{equation}
+</div>
+<div class="para">converges to <span class="process-math">\(\frac{1}{1-p}\)</span> if <span class="process-math">\(0 &lt; p &lt; 1\)</span> and diverges if <span class="process-math">\(p \geq 1\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#impropriemann_ptest-3-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 5.5.2: p-test for integrals"><a aria-label="Copy heading and permalink for Proposition 5.5.2: p-test for integrals" href="#impropriemann_ptest" title="Copy heading and permalink for Proposition 5.5.2: p-test for integrals">🔗</a></div>
+</article>
+<article class="proof" id="sec_impropriemann-2-6"><h3 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h3>
+<div class="para" id="sec_impropriemann-2-6-1">The proof follows by application of the <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_ftc.html#thm_FTCv1" title="Theorem 5.3.1">fundamental theorem of calculus</a>. Let us do the proof for <span class="process-math">\(p &gt; 1\)</span> for the infinite right endpoint and leave the rest to the reader.  Hint: You should handle <span class="process-math">\(p=1\)</span> separately.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-6-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_impropriemann-2-6-2">
+<div class="para">Suppose <span class="process-math">\(p &gt; 1\text{.}\)</span>  Then using the fundamental theorem,</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-6-2-2">
+\begin{equation}
+\int_1^b \frac{1}{x^p} \,dx
+=
+\int_1^b x^{-p} \,dx
+=
+\frac{b^{-p+1}}{-p+1}
+-
+\frac{1^{-p+1}}{-p+1}
+=
+\frac{-1}{(p-1)b^{p-1}}
++
+\frac{1}{p-1} .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(p &gt; 1\text{,}\)</span> we have <span class="process-math">\(p-1 &gt; 0\text{.}\)</span>  Take the limit as <span class="process-math">\(b \to \infty\)</span> to obtain that <span class="process-math">\(\frac{1}{b^{p-1}}\)</span> goes to 0.  The result follows.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-6-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 1"><a aria-label="Copy heading and permalink for Proof 1" href="#sec_impropriemann-2-6" title="Copy heading and permalink for Proof 1">🔗</a></div>
+</article>
+<div class="para" id="sec_impropriemann-2-7">We state the following proposition on “tails” for just one type of improper integral, though the proof is straightforward and the same for other types of improper integrals.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="impropriemann_tail"><h3 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.5.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para logical" id="impropriemann_tail-1-1">
+<div class="para">Let <span class="process-math">\(f \colon [a,\infty) \to \R\)</span> be a function that is Riemann integrable on <span class="process-math">\([a,b]\)</span> for all <span class="process-math">\(b &gt; a\text{.}\)</span> For every <span class="process-math">\(b &gt; a\text{,}\)</span> the integral <span class="process-math">\(\int_b^\infty f\)</span> converges if and only if <span class="process-math">\(\int_a^\infty f\)</span> converges, in which case</div>
+<div class="displaymath process-math" id="impropriemann_tail-1-1-7">
+\begin{equation}
+\int_a^\infty f
+=
+\int_a^b f +
+\int_b^\infty f .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#impropriemann_tail-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 5.5.3"><a aria-label="Copy heading and permalink for Proposition 5.5.3" href="#impropriemann_tail" title="Copy heading and permalink for Proposition 5.5.3">🔗</a></div>
+</article>
+<article class="proof" id="sec_impropriemann-2-9"><h3 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h3>
+<div class="para logical" id="sec_impropriemann-2-9-1">
+<div class="para">Let <span class="process-math">\(c &gt; b\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-9-1-2">
+\begin{equation}
+\int_a^c f
+=
+\int_a^b f +
+\int_b^c f .
+\end{equation}
+</div>
+<div class="para">Taking the limit <span class="process-math">\(c \to \infty\)</span> finishes the proof.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-9-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 2"><a aria-label="Copy heading and permalink for Proof 2" href="#sec_impropriemann-2-9" title="Copy heading and permalink for Proof 2">🔗</a></div>
+</article>
+<div class="para" id="sec_impropriemann-2-10">Nonnegative functions are easier to work with as the following proposition demonstrates. The exercises will show that this proposition holds only for nonnegative functions. Analogues of this proposition exist for all the other types of improper integrals and are left to the student.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="impropriemann_possimp"><h3 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.5.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="impropriemann_possimp-1-1">Suppose <span class="process-math">\(f \colon [a,\infty) \to \R\)</span> is nonnegative (<span class="process-math">\(f(x)
+\geq 0\)</span> for all <span class="process-math">\(x\)</span>) and <span class="process-math">\(f\)</span> is Riemann integrable on <span class="process-math">\([a,b]\)</span> for all <span class="process-math">\(b &gt; a\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#impropriemann_possimp-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="impropriemann_possimp-1-2">
+<li id="impropriemann_possimp-1-2-1">
+<div class="para" id="p-derived-impropriemann_possimp-1-2-1"><div class="displaymath process-math" id="impropriemann_possimp-1-2-1-1">
+\begin{equation}
+\int_a^\infty f = \sup \left\{ \int_a^x f : x \geq a \right\} .
+\end{equation}
+</div></div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#impropriemann_possimp-1-2-1" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="impropriemann_possimp-1-2-2">
+<div class="para logical" id="impropriemann_possimp-1-2-2-1">
+<div class="para">Suppose <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is a sequence with <span class="process-math">\(\lim_{n\to\infty} x_n = \infty\text{.}\)</span>  Then <span class="process-math">\(\int_a^\infty f\)</span> converges if and only if <span class="process-math">\(\lim_{n\to\infty} \int_a^{x_n} f\)</span> exists, in which case</div>
+<div class="displaymath process-math" id="impropriemann_possimp-1-2-2-1-5">
+\begin{equation}
+\int_a^\infty f = \lim_{n\to\infty} \int_a^{x_n} f .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#impropriemann_possimp-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#impropriemann_possimp-1-2-2" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Proposition 5.5.4"><a aria-label="Copy heading and permalink for Proposition 5.5.4" href="#impropriemann_possimp" title="Copy heading and permalink for Proposition 5.5.4">🔗</a></div>
+</article>
+<div class="para" id="sec_impropriemann-2-12">In the first item we allow for the value of <span class="process-math">\(\infty\)</span> in the supremum indicating that the integral diverges to infinity.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_impropriemann-2-13"><h3 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h3>
+<div class="para" id="sec_impropriemann-2-13-1">We start with the first item. As <span class="process-math">\(f\)</span> is nonnegative, <span class="process-math">\(\int_a^x f\)</span> is increasing as a function of <span class="process-math">\(x\text{.}\)</span> If the supremum is infinite, then for every <span class="process-math">\(M \in \R\)</span> we find <span class="process-math">\(N\)</span> such that <span class="process-math">\(\int_a^N f \geq M\text{.}\)</span>  As <span class="process-math">\(\int_a^x f\)</span> is increasing, <span class="process-math">\(\int_a^x f \geq M\)</span> for all <span class="process-math">\(x \geq N\text{.}\)</span>  So <span class="process-math">\(\int_a^\infty f\)</span> diverges to infinity.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-13-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_impropriemann-2-13-2">Next suppose the supremum is finite, say <span class="process-math">\(A \coloneqq \sup \left\{ \int_a^x f : x \geq a \right\}\text{.}\)</span> For every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> we find an <span class="process-math">\(N\)</span> such that <span class="process-math">\(A - \int_a^N f &lt; \epsilon\text{.}\)</span>  As <span class="process-math">\(\int_a^x f\)</span> is increasing, then <span class="process-math">\(A - \int_a^x f &lt; \epsilon\)</span> for all <span class="process-math">\(x \geq N\)</span> and hence <span class="process-math">\(\int_a^\infty f\)</span> converges to <span class="process-math">\(A\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-13-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_impropriemann-2-13-3">
+<div class="para">Let us look at the second item. If <span class="process-math">\(\int_a^\infty f\)</span> converges, then every sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> going to infinity works.  The trick is proving the other direction.  Suppose <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is such that <span class="process-math">\(\lim_{n\to\infty} x_n = \infty\)</span> and</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-13-3-5">
+\begin{equation}
+\lim_{n\to\infty} \int_a^{x_n} f = A
+\end{equation}
+</div>
+<div class="para">converges.  Given <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> pick <span class="process-math">\(N\)</span> such that for all <span class="process-math">\(n \geq N\text{,}\)</span> we have <span class="process-math">\(A - \epsilon &lt; \int_a^{x_n} f &lt; A + \epsilon\text{.}\)</span> Because <span class="process-math">\(\int_a^x f\)</span> is increasing as a function of <span class="process-math">\(x\text{,}\)</span> we have that for all <span class="process-math">\(x \geq x_N\)</span>
+</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-13-3-13">
+\begin{equation}
+A - \epsilon &lt; \int_a^{x_N} f \leq \int_a^x f .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> goes to <span class="process-math">\(\infty\text{,}\)</span> we have that for any <span class="process-math">\(x\text{,}\)</span> there is an <span class="process-math">\(x_m\)</span> such that <span class="process-math">\(m \geq N\)</span> and <span class="process-math">\(x \leq x_m\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-13-3-20">
+\begin{equation}
+\int_a^{x} f \leq \int_a^{x_m} f &lt; A + \epsilon .
+\end{equation}
+</div>
+<div class="para">In particular, for all <span class="process-math">\(x \geq x_N\text{,}\)</span> we have <span class="process-math">\(\abs{\int_a^{x} f - A} &lt; \epsilon\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-13-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 3"><a aria-label="Copy heading and permalink for Proof 3" href="#sec_impropriemann-2-13" title="Copy heading and permalink for Proof 3">🔗</a></div>
+</article>
+<article class="proposition theorem-like" id="sec_impropriemann-2-14"><h3 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.5.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Comparison test for improper integrals.</span>
+</h3>
+<div class="para logical" id="sec_impropriemann-2-14-3-1">
+<div class="para">Let <span class="process-math">\(f \colon [a,\infty) \to \R\)</span> and <span class="process-math">\(g \colon [a,\infty) \to \R\)</span> be functions that are Riemann integrable on <span class="process-math">\([a,b]\)</span> for all <span class="process-math">\(b &gt; a\text{.}\)</span>   Suppose that for all <span class="process-math">\(x \geq a\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-14-3-1-6">
+\begin{equation}
+\babs{f(x)} \leq g(x) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-14-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="sec_impropriemann-2-14-3-2">
+<li id="sec_impropriemann-2-14-3-2-1">
+<div class="para" id="sec_impropriemann-2-14-3-2-1-1">If <span class="process-math">\(\int_a^\infty g\)</span> converges, then <span class="process-math">\(\int_a^\infty f\)</span> converges, and in this case <span class="process-math">\(\abs{\int_a^\infty f} \leq \int_a^\infty g\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-14-3-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#sec_impropriemann-2-14-3-2-1" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="sec_impropriemann-2-14-3-2-2">
+<div class="para" id="sec_impropriemann-2-14-3-2-2-1">If <span class="process-math">\(\int_a^\infty f\)</span> diverges, then <span class="process-math">\(\int_a^\infty g\)</span> diverges.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-14-3-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#sec_impropriemann-2-14-3-2-2" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Proposition 5.5.5: Comparison test for improper integrals"><a aria-label="Copy heading and permalink for Proposition 5.5.5: Comparison test for improper integrals" href="#sec_impropriemann-2-14" title="Copy heading and permalink for Proposition 5.5.5: Comparison test for improper integrals">🔗</a></div>
+</article>
+<article class="proof" id="sec_impropriemann-2-15"><h3 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h3>
+<div class="para logical" id="sec_impropriemann-2-15-1">
+<div class="para">We start with the first item. For every <span class="process-math">\(b\)</span> and <span class="process-math">\(c\text{,}\)</span> such that <span class="process-math">\(a \leq b \leq c\text{,}\)</span> we have <span class="process-math">\(-g(x) \leq f(x) \leq g(x)\text{,}\)</span> and so</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-15-1-5">
+\begin{equation}
+\int_b^c -g \leq \int_b^c f \leq \int_b^c g  .
+\end{equation}
+</div>
+<div class="para">In other words, <span class="process-math">\(\abs{\int_b^c f} \leq \int_b^c g\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-15-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_impropriemann-2-15-2">
+<div class="para">Let <span class="process-math">\(\epsilon &gt; 0\)</span> be given.  Because of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_impropriemann.html#impropriemann_tail" title="Proposition 5.5.3">Proposition 5.5.3</a>,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/impropriemann_tail.html" id="sec_impropriemann-2-15-2-3">
+\begin{equation}
+\int_a^\infty g =
+\int_a^b g +
+\int_b^\infty g .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(\int_a^b g\)</span> goes to <span class="process-math">\(\int_a^\infty g\)</span> as <span class="process-math">\(b\)</span> goes to infinity, <span class="process-math">\(\int_b^\infty g\)</span> goes to 0 as <span class="process-math">\(b\)</span> goes to infinity.  Choose <span class="process-math">\(B\)</span> such that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/impropriemann_tail.html" id="sec_impropriemann-2-15-2-10">
+\begin{equation}
+\int_B^\infty g &lt; \epsilon .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(g\)</span> is nonnegative, if <span class="process-math">\(B \leq b &lt; c\text{,}\)</span> then <span class="process-math">\(\int_b^c g &lt; \epsilon\)</span> as well. Let <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> be a sequence going to infinity.  Let <span class="process-math">\(M\)</span> be such that <span class="process-math">\(x_n \geq B\)</span> for all <span class="process-math">\(n \geq M\text{.}\)</span>  Take <span class="process-math">\(n, m \geq M\text{,}\)</span> with <span class="process-math">\(x_n \leq x_m\text{,}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/impropriemann_tail.html" id="sec_impropriemann-2-15-2-20">
+\begin{equation}
+\abs{\int_a^{x_m} f - \int_a^{x_n} f} 
+=
+\abs{\int_{x_n}^{x_m} f} 
+\leq \int_{x_n}^{x_m} g &lt; \epsilon .
+\end{equation}
+</div>
+<div class="para">Therefore, the sequence <span class="process-math">\(\bigl\{ \int_a^{x_n} f \bigr\}_{n=1}^\infty\)</span> is Cauchy and hence converges.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-15-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_impropriemann-2-15-3">
+<div class="para">We need to show that the limit is unique.  Suppose <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is a sequence converging to infinity such that <span class="process-math">\(\bigl\{ \int_a^{x_n} f \bigr\}_{n=1}^\infty\)</span> converges to <span class="process-math">\(L_1\text{,}\)</span> and <span class="process-math">\(\{
+y_n \}_{n=1}^\infty\)</span> is a sequence converging to infinity such that <span class="process-math">\(\bigl\{ \int_a^{y_n} f \bigr\}_{n=1}^\infty\)</span> converges to <span class="process-math">\(L_2\text{.}\)</span>  Then there must be some <span class="process-math">\(n\)</span> such that <span class="process-math">\(\babs{\int_a^{x_n} f - L_1} &lt; \epsilon\)</span> and <span class="process-math">\(\babs{\int_a^{y_n} f - L_2} &lt; \epsilon\text{.}\)</span>  We can also suppose <span class="process-math">\(x_n \geq B\)</span> and <span class="process-math">\(y_n \geq B\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-15-3-12">
+\begin{equation}
+\sabs{L_1 - L_2} \leq
+\abs{L_1 - \int_a^{x_n} f}
++
+\abs{\int_a^{x_n} f- \int_a^{y_n} f}
++
+\abs{\int_a^{y_n} f - L_2}
+&lt;
+\epsilon
++
+\abs{\int_{x_n}^{y_n} f}
++
+\epsilon
+&lt;
+3 \epsilon.
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(\epsilon &gt; 0\)</span> was arbitrary, <span class="process-math">\(L_1 = L_2\text{,}\)</span> and hence <span class="process-math">\(\int_a^\infty f\)</span> converges. Above we have shown that <span class="process-math">\(\abs{\int_a^c f} \leq \int_a^c g\)</span> for all <span class="process-math">\(c &gt; a\text{.}\)</span> By taking the limit <span class="process-math">\(c \to \infty\text{,}\)</span> the first item is proved.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-15-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_impropriemann-2-15-4">The second item is simply a contrapositive of the first item.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-15-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 4"><a aria-label="Copy heading and permalink for Proof 4" href="#sec_impropriemann-2-15" title="Copy heading and permalink for Proof 4">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_impropriemann-2-16"><h3 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.5.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para logical" id="sec_impropriemann-2-16-1-1">
+<div class="para">The improper integral</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-16-1-1-1">
+\begin{equation}
+\int_0^\infty \frac{\sin(x^2)(x+2)}{x^3+1} \,dx
+\end{equation}
+</div>
+<div class="para">converges.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-16-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_impropriemann-2-16-1-2">
+<div class="para">Proof:  Observe we simply need to show that the integral converges when going from 1 to infinity. For <span class="process-math">\(x \geq 1\)</span> we obtain</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-16-1-2-2">
+\begin{equation}
+\abs{\frac{\sin(x^2)(x+2)}{x^3+1}}
+\leq
+\frac{x+2}{x^3+1}
+\leq \frac{x+2}{x^3} \leq
+\frac{x+2x}{x^3} \leq \frac{3}{x^2} .
+\end{equation}
+</div>
+<div class="para">Then</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-16-1-2-3">
+\begin{equation}
+\int_1^\infty \frac{3}{x^2}\,dx
+=
+3 \int_1^\infty \frac{1}{x^2}\,dx
+=
+3 .
+\end{equation}
+</div>
+<div class="para">So using the comparison test and the tail test, the original integral converges.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-16-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 5.5.6"><a aria-label="Copy heading and permalink for Example 5.5.6" href="#sec_impropriemann-2-16" title="Copy heading and permalink for Example 5.5.6">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_impropriemann-2-17"><h3 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.5.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para logical" id="sec_impropriemann-2-17-1-1">
+<div class="para">You should be careful when doing formal manipulations with improper integrals. The integral</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-17-1-1-1">
+\begin{equation}
+\int_2^\infty \frac{2}{x^2-1}\,dx
+\end{equation}
+</div>
+<div class="para">converges via the comparison test using <span class="process-math">\(\nicefrac{1}{x^2}\)</span> again.  However, if you succumb to the temptation to write</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-17-1-1-3">
+\begin{equation}
+\frac{2}{x^2-1} = 
+\frac{1}{x-1}
+-
+\frac{1}{x+1} 
+\end{equation}
+</div>
+<div class="para">and try to integrate each part separately, you will not succeed. It is <em class="emphasis">not</em> true that you can split the improper integral in two; you cannot split the limit.</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-17-1-1-5">
+\begin{equation}
+\begin{split}
+\int_2^\infty \frac{2}{x^2-1} \,dx &amp;=
+\lim_{b\to \infty} \int_2^b \frac{2}{x^2-1} \,dx
+\\
+&amp;=
+\lim_{b\to \infty}
+\left(
+\int_2^b \frac{1}{x-1}\,dx
+-
+\int_2^b \frac{1}{x+1}\,dx
+\right)
+\\
+&amp;\neq
+\int_2^\infty \frac{1}{x-1}\,dx
+-
+\int_2^\infty \frac{1}{x+1}\,dx .
+\end{split}
+\end{equation}
+</div>
+<div class="para">The last line in the computation does not even make sense.  Both of the integrals diverge to infinity, since we can apply the comparison test appropriately with <span class="process-math">\(\nicefrac{1}{x}\text{.}\)</span>  We get <span class="process-math">\(\infty - \infty\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-17-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 5.5.7"><a aria-label="Copy heading and permalink for Example 5.5.7" href="#sec_impropriemann-2-17" title="Copy heading and permalink for Example 5.5.7">🔗</a></div>
+</article>
+<div class="para" id="sec_impropriemann-2-18">Now suppose we need to take limits at both endpoints.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-18" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_impropriemann-2-19"><h3 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.5.8</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para logical" id="sec_impropriemann-2-19-1-1">
+<div class="para">Suppose <span class="process-math">\(f \colon (a,b) \to \R\)</span> is a function that is Riemann integrable on <span class="process-math">\([c,d]\)</span> for all <span class="process-math">\(c\text{,}\)</span> <span class="process-math">\(d\)</span> such that <span class="process-math">\(a &lt; c &lt; d &lt; b\text{,}\)</span> then we define</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-19-1-1-6">
+\begin{equation}
+\int_a^b f \coloneqq \lim_{c \to a^+} \, \lim_{d \to b^-} \, \int_{c}^{d} f
+\end{equation}
+</div>
+<div class="para">if the limits exist.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-19-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_impropriemann-2-19-1-2">
+<div class="para">Suppose <span class="process-math">\(f \colon \R \to \R\)</span> is a function such that <span class="process-math">\(f\)</span> is Riemann integrable on all bounded intervals <span class="process-math">\([a,b]\text{.}\)</span>  Then we define</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-19-1-2-4">
+\begin{equation}
+\int_{-\infty}^\infty f \coloneqq \lim_{c \to -\infty} \, \lim_{d \to \infty} \, \int_c^d f
+\end{equation}
+</div>
+<div class="para">if the limits exist.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-19-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_impropriemann-2-19-1-3">We similarly define improper integrals with one infinite and one finite improper endpoint.  We leave this definition to the reader.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-19-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 5.5.8"><a aria-label="Copy heading and permalink for Definition 5.5.8" href="#sec_impropriemann-2-19" title="Copy heading and permalink for Definition 5.5.8">🔗</a></div>
+</article>
+<div class="para" id="sec_impropriemann-2-20">One ought to always be careful about double limits.  The definition given above says that we first take the limit as <span class="process-math">\(d\)</span> goes to <span class="process-math">\(b\)</span> or <span class="process-math">\(\infty\)</span> for a fixed <span class="process-math">\(c\text{,}\)</span> and then we take the limit in <span class="process-math">\(c\text{.}\)</span> We will have to prove that in this case it does not matter which limit we compute first.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-20" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_impropriemann-2-21"><h3 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.5.9</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para logical" id="sec_impropriemann-2-21-1-1">
+<div class="displaymath process-math" id="sec_impropriemann-2-21-1-1-1">
+\begin{equation}
+\int_{-\infty}^\infty \frac{1}{1+x^2} \, dx
+=
+\lim_{a \to -\infty} \, \lim_{b \to \infty} \,
+\int_{a}^b \frac{1}{1+x^2} \, dx
+=
+\lim_{a \to -\infty} \, \lim_{b \to \infty}
+\bigl( \arctan(b) - \arctan(a) \bigr)
+=
+\pi .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-21-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 5.5.9"><a aria-label="Copy heading and permalink for Example 5.5.9" href="#sec_impropriemann-2-21" title="Copy heading and permalink for Example 5.5.9">🔗</a></div>
+</article>
+<div class="para" id="sec_impropriemann-2-22">In the definition, the order of the limits can always be switched if they exist.  Let us state and prove this fact only for the limits at infinity.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-22" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_impropriemann-2-23"><h3 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.5.10</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para logical" id="sec_impropriemann-2-23-1-1">
+<div class="para">Suppose <span class="process-math">\(f \colon \R \to \R\)</span> is integrable on every bounded interval <span class="process-math">\([a,b]\text{.}\)</span> Then</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-23-1-1-3">
+\begin{equation}
+\lim_{a \to -\infty} \, \lim_{b \to \infty} \, \int_a^b f
+\quad \text{converges} \qquad \text{if and only if} \qquad
+\lim_{b \to \infty}
+\,
+\lim_{a \to -\infty}
+\,
+\int_a^b f
+\quad
+\text{converges,}
+\end{equation}
+</div>
+<div class="para">in which case the two expressions are equal.  If either of the expressions converges, then the improper integral converges and</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-23-1-1-4">
+\begin{equation}
+\lim_{a\to\infty}
+\int_{-a}^a f
+=
+\int_{-\infty}^\infty f .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-23-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 5.5.10"><a aria-label="Copy heading and permalink for Proposition 5.5.10" href="#sec_impropriemann-2-23" title="Copy heading and permalink for Proposition 5.5.10">🔗</a></div>
+</article>
+<article class="proof" id="sec_impropriemann-2-24"><h3 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h3>
+<div class="para logical" id="sec_impropriemann-2-24-1">
+<div class="para">Without loss of generality, assume <span class="process-math">\(a &lt; 0\)</span> and <span class="process-math">\(b &gt; 0\text{.}\)</span>  Suppose the first expression converges.  Then</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-24-1-3">
+\begin{equation}
+\begin{split}
+\lim_{a \to -\infty} \, \lim_{b \to \infty} \, \int_a^b f
+&amp; =
+\lim_{a \to -\infty} \, \lim_{b \to \infty}
+\left(
+\int_a^0 f
++
+\int_0^b f
+\right)
+=
+\left(
+\lim_{a \to -\infty}
+\int_a^0 f
+\right)
++
+\left(
+\lim_{b \to \infty}
+\int_0^b f
+\right) \\
+&amp; = 
+\lim_{b \to \infty}
+\left(
+\left(
+\lim_{a \to -\infty}
+\int_a^0 f
+\right) 
++
+\int_0^b f
+\right)
+=
+\lim_{b \to \infty} \,
+\lim_{a \to -\infty}
+\left(
+\int_a^0 f
++
+\int_0^b f
+\right)  .
+\end{split}
+\end{equation}
+</div>
+<div class="para">Similar computation shows the other direction.  Therefore, if either expression converges, then the improper integral converges and</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-24-1-4">
+\begin{multline*}
+\int_{-\infty}^\infty f
+=
+\lim_{a \to -\infty} \, \lim_{b \to \infty} \, \int_a^b f
+=
+\left(
+\lim_{a \to -\infty}
+\int_a^0 f
+\right)
++
+\left(
+\lim_{b \to \infty}
+\int_0^b f
+\right)
+\\
+=
+\left(
+\lim_{a \to \infty}
+\int_{-a}^0 f
+\right)
++
+\left(
+\lim_{a \to \infty}
+\int_0^a f
+\right)
+=
+\lim_{a \to \infty}
+\left(
+\int_{-a}^0 f
++
+\int_0^a f
+\right)
+=
+\lim_{a \to \infty}
+\int_{-a}^a f .
+\end{multline*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-24-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 5"><a aria-label="Copy heading and permalink for Proof 5" href="#sec_impropriemann-2-24" title="Copy heading and permalink for Proof 5">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_impropriemann-2-25"><h3 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.5.11</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para logical" id="sec_impropriemann-2-25-1-1">
+<div class="para">On the other hand, you must be careful to take the limits independently before you know convergence.  Let <span class="process-math">\(f(x) = \frac{x}{\sabs{x}}\)</span> for <span class="process-math">\(x \neq 0\)</span> and <span class="process-math">\(f(0) = 0\text{.}\)</span> If <span class="process-math">\(a &lt; 0\)</span> and <span class="process-math">\(b &gt; 0\text{,}\)</span> then</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-25-1-1-6">
+\begin{equation}
+\int_{a}^b f
+=
+\int_{a}^0 f
++
+\int_{0}^b f
+=
+a+b .
+\end{equation}
+</div>
+<div class="para">For every fixed <span class="process-math">\(a &lt; 0\text{,}\)</span> the limit as <span class="process-math">\(b \to \infty\)</span> is infinite. So even the first limit does not exist, and the improper integral <span class="process-math">\(\int_{-\infty}^\infty f\)</span> does not converge. On the other hand, if <span class="process-math">\(a &gt; 0\text{,}\)</span> then</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-25-1-1-11">
+\begin{equation}
+\int_{-a}^{a} f
+=
+(-a)+a = 0 .
+\end{equation}
+</div>
+<div class="para">Therefore,</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-25-1-1-12">
+\begin{equation}
+\lim_{a\to\infty}
+\int_{-a}^{a} f
+= 0 .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-25-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 5.5.11"><a aria-label="Copy heading and permalink for Example 5.5.11" href="#sec_impropriemann-2-25" title="Copy heading and permalink for Example 5.5.11">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_impropriemann-2-26"><h3 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.5.12</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para logical" id="sec_impropriemann-2-26-1-1">
+<div class="para">An example to keep in mind for improper integrals is the <em class="emphasis">sinc function</em><details aria-live="polite" class="ptx-footnote" id="sec_impropriemann-2-26-1-1-2"><summary class="ptx-footnote__number" title="Footnote 5.5.1"><sup> 1 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_impropriemann-2-26-1-1-2">Shortened from Latin: <em class="emphasis">sinus cardinalis</em>
+</div></details>. This function comes up quite often in both pure and applied mathematics.  Define</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-26-1-1-3">
+\begin{equation}
+\operatorname{sinc}(x) \coloneqq
+\begin{cases}
+\frac{\sin(x)}{x} &amp; \text{if } x \neq 0 , \\
+1 &amp; \text{if } x = 0 .
+\end{cases}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-26-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <hr class="rahr"/>
+<figure class="figure figure-like" id="figsinc"><img alt="A graph of the sinc function on the interval from minus 4 pi to 4 pi. It oscillates sort of like the sine function to the right of the origin, and sort of like minus sine to the left of the origin. The root at the origin disappears and the function is simply 1 at the origin. The oscillations quickly get smaller and smaller as we go away from the origin. The function is clearly even." class="raimg" role="img" src="figures/sincfig-mbx.svg" style="width:221pt; height:155pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>The sinc function.<div class="autopermalink" data-description="Figure 5.8"><a aria-label="Copy heading and permalink for Figure 5.8" href="#figsinc" title="Copy heading and permalink for Figure 5.8">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para logical" id="sec_impropriemann-2-26-1-5">
+<div class="para">It is not difficult to show that the sinc function is continuous at zero, but that is not important right now.  What is important is that</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-26-1-5-1">
+\begin{equation}
+\int_{-\infty}^\infty \operatorname{sinc}(x) \,dx = \pi ,
+\qquad \text{while} \qquad
+\int_{-\infty}^\infty \babs{\operatorname{sinc}(x)} \,dx = \infty .
+\end{equation}
+</div>
+<div class="para">The integral of the sinc function is a continuous analogue of the alternating harmonic series <span class="process-math">\(\sum_{n=1}^\infty \nicefrac{{(-1)}^n}{n}\text{,}\)</span> while the absolute value is like the regular harmonic series <span class="process-math">\(\sum_{n=1}^\infty \nicefrac{1}{n}\text{.}\)</span> In particular, the fact that the integral converges must be done directly rather than using the comparison test.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-26-1-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_impropriemann-2-26-1-6">
+<div class="para">We will not prove the first statement exactly.  Let us simply prove that the integral of the sinc function converges, but we will not worry about the exact limit.  Because <span class="process-math">\(\frac{\sin(-x)}{-x} = \frac{\sin(x)}{x}\text{,}\)</span> it is enough to show that</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-26-1-6-2">
+\begin{equation}
+\int_{2\pi}^\infty \frac{\sin(x)}{x}\,dx
+\end{equation}
+</div>
+<div class="para">converges.  We also avoid <span class="process-math">\(x=0\)</span> this way to make our life simpler.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-26-1-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_impropriemann-2-26-1-7">
+<div class="para">For every <span class="process-math">\(n \in \N\text{,}\)</span> we have that for <span class="process-math">\(x \in [\pi 2n, \pi (2n+1)]\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-26-1-7-3">
+\begin{equation}
+\frac{\sin(x)}{\pi (2n+1)}
+\leq
+\frac{\sin(x)}{x}
+\leq
+\frac{\sin(x)}{\pi 2n} ,
+\end{equation}
+</div>
+<div class="para">as <span class="process-math">\(\sin(x) \geq 0\text{.}\)</span>  For <span class="process-math">\(x \in [\pi (2n+1), \pi (2n+2)]\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-26-1-7-6">
+\begin{equation}
+\frac{\sin(x)}{\pi (2n+1)}
+\leq
+\frac{\sin(x)}{x}
+\leq
+\frac{\sin(x)}{\pi (2n+2)} ,
+\end{equation}
+</div>
+<div class="para">as <span class="process-math">\(\sin(x) \leq 0\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-26-1-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_impropriemann-2-26-1-8">
+<div class="para">Via the fundamental theorem of calculus,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_sincbound.html" id="sec_impropriemann-2-26-1-8-1">
+\begin{equation}
+\begin{aligned}
+\frac{2}{\pi (2n+1)}
+=
+\int_{\pi 2n}^{\pi (2n+1)}
+\frac{\sin(x)}{\pi (2n+1)}
+\,dx
+&amp;
+\leq
+\int_{\pi 2n}^{\pi (2n+1)}
+\frac{\sin(x)}{x}
+\,dx
+\\
+&amp;
+\leq
+\int_{\pi 2n}^{\pi (2n+1)}
+\frac{\sin(x)}{\pi 2n}
+\,dx
+=
+\frac{1}{\pi n} .
+\end{aligned}
+\end{equation}
+</div>
+<div class="para">Similarly,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_sincbound.html" id="sec_impropriemann-2-26-1-8-2">
+\begin{equation}
+\frac{-2}{\pi (2n+1)}
+\leq
+\int_{\pi (2n+1)}^{\pi (2n+2)}
+\frac{\sin(x)}{x}
+\,dx
+\leq
+\frac{-1}{\pi (n+1)} .
+\end{equation}
+</div>
+<div class="para">Adding the two together we find</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_sincbound.html" id="sec_impropriemann-2-26-1-8-3">
+\begin{equation}
+\begin{aligned}
+0
+=
+\frac{2}{\pi (2n+1)}
++
+\frac{-2}{\pi (2n+1)}
+&amp;
+\leq
+\int_{2\pi n}^{2\pi (n+1)}
+\frac{\sin(x)}{x}
+\,dx
+\\
+&amp;
+\leq
+\frac{1}{\pi n} 
++
+\frac{-1}{\pi (n+1)} 
+=
+\frac{1}{\pi n(n+1)} .
+\end{aligned}
+\end{equation}
+</div>
+<div class="para">See <a class="internal" href="sec_impropriemann.html#fig_sincbound" title="Figure 5.9">Figure 5.9</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-26-1-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <hr class="rahr"/>
+<figure class="figure figure-like" id="fig_sincbound"><img alt="A graph of several functions on the interval from pi times 2 n to pi times quantity 2 n plus 2 is shown. They all look like a sine wave that is losing amplitude. A dark bold line is the function sine of x all over x graphed over the entire interval. Like all the other functions it is zero at the left-hand endpoint, the right-hand endpoint and the middle point pi times quantity 2 n plus 1. A dotted line on the first subinterval (the left half) very close to and below the solid line denotes the function sine of x all over quantity pi times quantity 2 n plus 1. A dashed line over the first subinterval very close to and above the solid line denotes the function sine of x over quantity pi 2 n. The area between the dashed line and the x-axis over the first subinterval is shaded. On the right half of the interval, a dotted line denotes the same function as before, and again it is below the solid line. A dash-dotted line that is slightly above the solid line now denotes the function sine of x all over quantity pi times quantity 2 n plus 2. The area above the dash-dotted line is shaded." class="raimg" role="img" src="figures/sincbound-mbx.svg" style="width:372pt; height:146pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Bound of <span class="process-math">\(\int_{2\pi n}^{2\pi (n+1)} \frac{\sin(x)}{x} \,dx\)</span> using the shaded integral (signed area <span class="process-math">\(\frac{1}{\pi n} 
++
+\frac{-1}{\pi (n+1)}\)</span>).<div class="autopermalink" data-description="Figure 5.9"><a aria-label="Copy heading and permalink for Figure 5.9" href="#fig_sincbound" title="Copy heading and permalink for Figure 5.9">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para logical" id="sec_impropriemann-2-26-1-12">
+<div class="para">For <span class="process-math">\(k \in \N\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-26-1-12-2">
+\begin{equation}
+\int_{2\pi}^{2k\pi} \frac{\sin(x)}{x} \,dx
+=
+\sum_{n=1}^{k-1}
+\int_{2\pi n}^{2\pi (n+1)} \frac{\sin(x)}{x} \,dx 
+\leq
+\sum_{n=1}^{k-1}
+\frac{1}{\pi n(n+1)} .
+\end{equation}
+</div>
+<div class="para">We find the partial sums of a series with positive terms. The series converges as <span class="process-math">\(\sum_{n=1}^\infty \frac{1}{\pi n (n+1)}\)</span> is a convergent series.  Thus as a sequence,</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-26-1-12-4">
+\begin{equation}
+\lim_{k\to \infty} \int_{2\pi}^{2k\pi} \frac{\sin(x)}{x} \,dx
+=L \leq
+\sum_{n=1}^{\infty}
+\frac{1}{\pi n(n+1)} &lt; \infty .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-26-1-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_impropriemann-2-26-1-13">
+<div class="para">Let <span class="process-math">\(M &gt; 2\pi\)</span> be arbitrary, and let <span class="process-math">\(k \in \N\)</span> be the largest integer such that <span class="process-math">\(2k\pi \leq M\text{.}\)</span> For <span class="process-math">\(x \in [2k\pi,M]\text{,}\)</span> we have <span class="process-math">\(\frac{-1}{2k\pi} \leq \frac{\sin(x)}{x} \leq \frac{1}{2k\pi}\text{,}\)</span> and so</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-26-1-13-6">
+\begin{equation}
+\abs{\int_{2k\pi}^{M} \frac{\sin(x)}{x} \,dx }  \leq
+\frac{M-2k\pi}{2k\pi} \leq \frac{1}{k} .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(k\)</span> is the largest <span class="process-math">\(k\)</span> such that <span class="process-math">\(2k\pi \leq M\text{,}\)</span> then as <span class="process-math">\(M\in \R\)</span> goes to infinity, so does <span class="process-math">\(k \in \N\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-26-1-13" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_impropriemann-2-26-1-14">
+<div class="para">Then</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-26-1-14-1">
+\begin{equation}
+\int_{2\pi}^M \frac{\sin(x)}{x}\,dx
+=
+\int_{2\pi}^{2k\pi} \frac{\sin(x)}{x} \,dx
++
+\int_{2k\pi}^{M} \frac{\sin(x)}{x} \,dx .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(M\)</span> goes to infinity, the first term on the right-hand side goes to <span class="process-math">\(L\text{,}\)</span> and the second term on the right-hand side goes to zero.  Hence,</div>
+<div class="displaymath process-math" id="sec_impropriemann-2-26-1-14-4">
+\begin{equation}
+\int_{2\pi}^\infty \frac{\sin(x)}{x} \,dx = L .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-26-1-14" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_impropriemann-2-26-1-15">The double-sided integral of sinc also exists as noted above. We leave the other statement—that the integral of the absolute value of the sinc function diverges—as an exercise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-2-26-1-15" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 5.5.12"><a aria-label="Copy heading and permalink for Example 5.5.12" href="#sec_impropriemann-2-26" title="Copy heading and permalink for Example 5.5.12">🔗</a></div>
+</article></section>
+<section class="subsection" id="sec_impropriemann-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.5.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Integral test for series</span>
+</h3>
+<div class="para" id="sec_impropriemann-3-2">The fundamental theorem of calculus can be used in proving a series is summable and to estimate its sum.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-3-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_impropriemann-3-3"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.5.13</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Integral test.</span>
+</h4>
+<div class="para logical" id="sec_impropriemann-3-3-3-1">
+<div class="para">Suppose <span class="process-math">\(f \colon [k,\infty) \to \R\)</span> is a decreasing nonnegative function where <span class="process-math">\(k \in \Z\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" id="sec_impropriemann-3-3-3-1-3">
+\begin{equation}
+\sum_{n=k}^\infty f(n)
+\quad \text{converges} \qquad \text{if and only if}
+\qquad
+\int_k^\infty f
+\quad \text{converges}.
+\end{equation}
+</div>
+<div class="para">In this case</div>
+<div class="displaymath process-math" id="sec_impropriemann-3-3-3-1-4">
+\begin{equation}
+\int_k^\infty f
+\leq
+\sum_{n=k}^\infty f(n)
+\leq
+f(k)+
+\int_k^\infty f .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-3-3-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 5.5.13: Integral test"><a aria-label="Copy heading and permalink for Proposition 5.5.13: Integral test" href="#sec_impropriemann-3-3" title="Copy heading and permalink for Proposition 5.5.13: Integral test">🔗</a></div>
+</article>
+<div class="para" id="sec_impropriemann-3-4">See <a class="internal" href="sec_impropriemann.html#fig_integraltest" title="Figure 5.10">Figure 5.10</a>, for an illustration with <span class="process-math">\(k=1\text{.}\)</span> By <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rintprop.html#prop_monotoneintegrable" title="Proposition 5.2.11">Proposition 5.2.11</a>, <span class="process-math">\(f\)</span> is integrable on every interval <span class="process-math">\([k,b]\)</span> for all <span class="process-math">\(b &gt; k\text{,}\)</span> so the statement of the theorem makes sense without additional hypotheses of integrability.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-3-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="fig_integraltest"><img alt="A diagram of the Darboux rectangles for a decreasing function starting at x equals 1 and going in intervals of 1 until x equals 10 on the right. As the function is decreasing, we notice that the function graph goes through the top left corner of the entire rectangle and also the top right corner of the shaded rectangle." class="raimg" role="img" src="figures/integraltest-mbx.svg" style="width:274pt; height:134pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>The area under the curve, <span class="process-math">\(\int_1^\infty f\text{,}\)</span> is bounded below by the area of the shaded rectangles, <span class="process-math">\(f(2)+f(3)+f(4)+\cdots\text{,}\)</span> and bounded above by the area of the entire rectangles, both the shaded and unshaded parts, <span class="process-math">\(f(1)+f(2)+f(3)+\cdots\text{.}\)</span><div class="autopermalink" data-description="Figure 5.10"><a aria-label="Copy heading and permalink for Figure 5.10" href="#fig_integraltest" title="Copy heading and permalink for Figure 5.10">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<article class="proof" id="sec_impropriemann-3-8"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_impropriemann-3-8-1">
+<div class="para">Let <span class="process-math">\(\ell, m \in \Z\)</span> be such that <span class="process-math">\(m &gt; \ell \geq k\text{.}\)</span> Because <span class="process-math">\(f\)</span> is decreasing, we have <span class="process-math">\(\int_{n}^{n+1} f \leq f(n) \leq \int_{n-1}^{n} f\text{.}\)</span>  Therefore,</div>
+<div class="displaymath process-math" id="impropriemann_eqseries">
+\begin{equation}
+\int_\ell^m f
+=
+\sum_{n=\ell}^{m-1} \int_{n}^{n+1} f
+\leq
+\sum_{n=\ell}^{m-1} f(n)
+\leq
+f(\ell) +
+\sum_{n=\ell+1}^{m-1} \int_{n-1}^{n} f
+\leq
+f(\ell)+
+\int_\ell^{m-1} f .\tag{5.3}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-3-8-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_impropriemann-3-8-2">
+<div class="para">Suppose first that <span class="process-math">\(\int_k^\infty f\)</span> converges and let <span class="process-math">\(\epsilon &gt; 0\)</span> be given. As before, since <span class="process-math">\(f\)</span> is positive, there exists an <span class="process-math">\(L \in \N\)</span> such that if <span class="process-math">\(\ell \geq L\text{,}\)</span> then <span class="process-math">\(\int_\ell^{m} f &lt; \nicefrac{\epsilon}{2}\)</span> for all <span class="process-math">\(m \geq \ell\text{.}\)</span> The function <span class="process-math">\(f\)</span> must decrease to zero (why?), so make <span class="process-math">\(L\)</span> large enough so that for <span class="process-math">\(\ell \geq L\text{,}\)</span> we have <span class="process-math">\(f(\ell) &lt; \nicefrac{\epsilon}{2}\text{.}\)</span> Thus, for <span class="process-math">\(m &gt; \ell \geq L\text{,}\)</span> we have via <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_impropriemann.html#impropriemann_eqseries" title="Equation 5.3">(5.3)</a>,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/impropriemann_eqseries.html ./knowl/xref/impropriemann_eqseries.html" id="sec_impropriemann-3-8-2-14">
+\begin{equation}
+\sum_{n=\ell}^{m} f(n)
+\leq
+f(\ell)+
+\int_\ell^{m} f &lt; \nicefrac{\epsilon}{2} + \nicefrac{\epsilon}{2} = \epsilon .
+\end{equation}
+</div>
+<div class="para">The series is therefore Cauchy and thus converges.  The estimate in the proposition is obtained by letting <span class="process-math">\(m\)</span> go to infinity in <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_impropriemann.html#impropriemann_eqseries" title="Equation 5.3">(5.3)</a> with <span class="process-math">\(\ell = k\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-3-8-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_impropriemann-3-8-3">
+<div class="para">Conversely, suppose <span class="process-math">\(\int_k^\infty f\)</span> diverges. As <span class="process-math">\(f\)</span> is positive, by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_impropriemann.html#impropriemann_possimp" title="Proposition 5.5.4">Proposition 5.5.4</a>, the sequence <span class="process-math">\(\{ \int_k^m f \}_{m=k}^\infty\)</span> diverges to infinity. Using <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_impropriemann.html#impropriemann_eqseries" title="Equation 5.3">(5.3)</a> with <span class="process-math">\(\ell = k\text{,}\)</span> we find</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/impropriemann_possimp.html ./knowl/xref/impropriemann_eqseries.html" id="sec_impropriemann-3-8-3-7">
+\begin{equation}
+\int_k^m f
+\leq
+\sum_{n=k}^{m-1} f(n) .
+\end{equation}
+</div>
+<div class="para">As the left-hand side goes to infinity as <span class="process-math">\(m \to \infty\text{,}\)</span> so does the right-hand side.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-3-8-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 5.5.1.1"><a aria-label="Copy heading and permalink for Proof 5.5.1.1" href="#sec_impropriemann-3-8" title="Copy heading and permalink for Proof 5.5.1.1">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_impropriemann-3-9"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.5.14</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_impropriemann-3-9-1-1">The integral test can be used not only to show that a series converges, but to estimate its sum to arbitrary precision. Let us show <span class="process-math">\(\sum_{n=1}^\infty \frac{1}{n^2}\)</span> exists and estimate its sum to within 0.01.  As this series is the <span class="process-math">\(p\)</span>-series for <span class="process-math">\(p=2\text{,}\)</span> we already proved it converges (let us pretend we do not know that), but we only roughly estimated its sum.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-3-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_impropriemann-3-9-1-2">
+<div class="para">The fundamental theorem of calculus says that for all <span class="process-math">\(k \in \N\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_impropriemann-3-9-1-2-2">
+\begin{equation}
+\int_{k}^\infty \frac{1}{x^2}\,dx = \frac{1}{k} .
+\end{equation}
+</div>
+<div class="para">In particular, the series must converge.  But we also have</div>
+<div class="displaymath process-math" id="sec_impropriemann-3-9-1-2-3">
+\begin{equation}
+\frac{1}{k} = \int_k^\infty \frac{1}{x^2}\,dx
+\leq
+\sum_{n=k}^\infty \frac{1}{n^2}
+\leq
+\frac{1}{k^2}
++
+\int_k^\infty \frac{1}{x^2}\,dx
+=
+\frac{1}{k^2}
++
+\frac{1}{k} .
+\end{equation}
+</div>
+<div class="para">Adding the partial sum up to <span class="process-math">\(k-1\)</span> we get</div>
+<div class="displaymath process-math" id="sec_impropriemann-3-9-1-2-5">
+\begin{equation}
+\frac{1}{k} + \sum_{n=1}^{k-1} \frac{1}{n^2}
+\leq
+\sum_{n=1}^\infty \frac{1}{n^2}
+\leq
+\frac{1}{k^2}
++
+\frac{1}{k} + \sum_{n=1}^{k-1} \frac{1}{n^2} .
+\end{equation}
+</div>
+<div class="para">In other words, <span class="process-math">\(\nicefrac{1}{k} + \sum_{n=1}^{k-1} \nicefrac{1}{n^2}\)</span> is an estimate for the sum to within <span class="process-math">\(\nicefrac{1}{k^2}\text{.}\)</span>  Therefore, if we wish to find the sum to within 0.01, we note <span class="process-math">\(\nicefrac{1}{{10}^2} = 0.01\text{.}\)</span>  We obtain</div>
+<div class="displaymath process-math" id="sec_impropriemann-3-9-1-2-9">
+\begin{equation}
+1.6397\ldots
+\approx
+\frac{1}{10} + \sum_{n=1}^{9} \frac{1}{n^2}
+\leq
+\sum_{n=1}^\infty \frac{1}{n^2}
+\leq
+\frac{1}{100}
++
+\frac{1}{10} + \sum_{n=1}^{9} \frac{1}{n^2}
+\approx
+1.6497\ldots .
+\end{equation}
+</div>
+<div class="para">The actual sum is <span class="process-math">\(\nicefrac{\pi^2}{6} \approx 1.6449\ldots\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-3-9-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 5.5.14"><a aria-label="Copy heading and permalink for Example 5.5.14" href="#sec_impropriemann-3-9" title="Copy heading and permalink for Example 5.5.14">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 5.5.1: Integral test for series"><a aria-label="Copy heading and permalink for Subsection 5.5.1: Integral test for series" href="#sec_impropriemann-3" title="Copy heading and permalink for Subsection 5.5.1: Integral test for series">🔗</a></div>
+</section>
+<section class="exercises" id="sec_impropriemann-4">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.5.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_impropriemann-4-1"><h4 class="heading"><span class="codenumber">5.5.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_impropriemann-4-1-1-1">Finish the proof of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_impropriemann.html#impropriemann_ptest" title="Proposition 5.5.2: p-test for integrals">Proposition 5.5.2</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-4-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.5.1"><a aria-label="Copy heading and permalink for Exercise 5.5.1" href="#sec_impropriemann-4-1" title="Copy heading and permalink for Exercise 5.5.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_impropriemann-4-2"><h4 class="heading"><span class="codenumber">5.5.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_impropriemann-4-2-1-1">Find out for which <span class="process-math">\(a \in \R\)</span> does <span class="process-math">\(\sum_{n=1}^\infty e^{an}\)</span> converge. When the series converges, find an upper bound for the sum.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-4-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.5.2"><a aria-label="Copy heading and permalink for Exercise 5.5.2" href="#sec_impropriemann-4-2" title="Copy heading and permalink for Exercise 5.5.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_impropriemann-4-3"><h4 class="heading"><span class="codenumber">5.5.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_impropriemann-4-3-1-1"><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-4-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div></div>
+<ol class="lower-alpha ol-marker-3" id="sec_impropriemann-4-3-1-2">
+<li id="sec_impropriemann-4-3-1-2-1">
+<div class="para" id="sec_impropriemann-4-3-1-2-1-1">Estimate <span class="process-math">\(\sum_{n=1}^\infty \frac{1}{n(n+1)}\)</span> correct to within 0.01 using the integral test.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-4-3-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 5.5.3.a"><a aria-label="Copy heading and permalink for Item 5.5.3.a" href="#sec_impropriemann-4-3-1-2-1" title="Copy heading and permalink for Item 5.5.3.a">🔗</a></div>
+</li>
+<li id="sec_impropriemann-4-3-1-2-2">
+<div class="para" id="sec_impropriemann-4-3-1-2-2-1">Compute the limit of the series exactly and compare.  Hint: The sum telescopes.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-4-3-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 5.5.3.b"><a aria-label="Copy heading and permalink for Item 5.5.3.b" href="#sec_impropriemann-4-3-1-2-2" title="Copy heading and permalink for Item 5.5.3.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 5.5.3"><a aria-label="Copy heading and permalink for Exercise 5.5.3" href="#sec_impropriemann-4-3" title="Copy heading and permalink for Exercise 5.5.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_impropriemann-4-4"><h4 class="heading"><span class="codenumber">5.5.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_impropriemann-4-4-1-1">
+<div class="para">Prove</div>
+<div class="displaymath process-math" id="sec_impropriemann-4-4-1-1-1">
+\begin{equation}
+\int_{-\infty}^\infty \babs{\operatorname{sinc}(x)}\,dx = \infty .
+\end{equation}
+</div>
+<div class="para">Hint: Again, it is enough to show this on just one side.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-4-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.5.4"><a aria-label="Copy heading and permalink for Exercise 5.5.4" href="#sec_impropriemann-4-4" title="Copy heading and permalink for Exercise 5.5.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_impropriemann-4-5"><h4 class="heading"><span class="codenumber">5.5.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_impropriemann-4-5-1-1">
+<div class="para">Can you interpret</div>
+<div class="displaymath process-math" id="sec_impropriemann-4-5-1-1-1">
+\begin{equation}
+\int_{-1}^1 \frac{1}{\sqrt{\sabs{x}}}\,dx
+\end{equation}
+</div>
+<div class="para">as an improper integral?  If so, compute its value.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-4-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.5.5"><a aria-label="Copy heading and permalink for Exercise 5.5.5" href="#sec_impropriemann-4-5" title="Copy heading and permalink for Exercise 5.5.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_impropriemann-4-6"><h4 class="heading"><span class="codenumber">5.5.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_impropriemann-4-6-1-1">
+<div class="para">Take <span class="process-math">\(f \colon [0,\infty) \to \R\text{,}\)</span> Riemann integrable on every interval <span class="process-math">\([0,b]\text{,}\)</span> and such that there exist <span class="process-math">\(M\text{,}\)</span> <span class="process-math">\(a\text{,}\)</span> and <span class="process-math">\(T\text{,}\)</span> such that <span class="process-math">\(\babs{f(t)} \leq M e^{at}\)</span> for all <span class="process-math">\(t \geq T\text{.}\)</span>  Show that the <em class="emphasis">Laplace transform</em> of <span class="process-math">\(f\)</span> exists.  That is, for every <span class="process-math">\(s &gt; a\)</span> the following integral converges:</div>
+<div class="displaymath process-math" id="sec_impropriemann-4-6-1-1-11">
+\begin{equation}
+F(s) \coloneqq \int_{0}^\infty f(t) e^{-st} \,dt .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-4-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.5.6"><a aria-label="Copy heading and permalink for Exercise 5.5.6" href="#sec_impropriemann-4-6" title="Copy heading and permalink for Exercise 5.5.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_impropriemann-4-7"><h4 class="heading"><span class="codenumber">5.5.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_impropriemann-4-7-1-1">
+<div class="para">Let <span class="process-math">\(f \colon \R \to \R\)</span> be a Riemann integrable function on every interval <span class="process-math">\([a,b]\text{,}\)</span> and such that <span class="process-math">\(\int_{-\infty}^\infty \babs{f(x)}\,dx &lt; \infty\text{.}\)</span>  Show that the <em class="emphasis">Fourier sine and cosine transforms</em> exist.  That is, for every <span class="process-math">\(\omega \geq 0\)</span> the following integrals converge</div>
+<div class="displaymath process-math" id="sec_impropriemann-4-7-1-1-6">
+\begin{equation}
+F^s(\omega) \coloneqq \frac{1}{\pi} \int_{-\infty}^\infty f(t) \sin(\omega t) \,dt ,
+\qquad
+F^c(\omega) \coloneqq \frac{1}{\pi} \int_{-\infty}^\infty f(t) \cos(\omega t) \,dt .
+\end{equation}
+</div>
+<div class="para">Furthermore, show that <span class="process-math">\(F^s\)</span> and <span class="process-math">\(F^c\)</span> are bounded functions.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-4-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.5.7"><a aria-label="Copy heading and permalink for Exercise 5.5.7" href="#sec_impropriemann-4-7" title="Copy heading and permalink for Exercise 5.5.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_impropriemann-4-8"><h4 class="heading"><span class="codenumber">5.5.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_impropriemann-4-8-1-1">Suppose <span class="process-math">\(f \colon [0,\infty) \to \R\)</span> is Riemann integrable on every interval <span class="process-math">\([0,b]\text{.}\)</span>  Show that  <span class="process-math">\(\int_0^\infty f\)</span> converges if and only if for every <span class="process-math">\(\epsilon &gt; 0\)</span> there exists an <span class="process-math">\(M\)</span> such that if <span class="process-math">\(M \leq a &lt; b\text{,}\)</span> then <span class="process-math">\(\babs{\int_a^b f} &lt; \epsilon\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-4-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.5.8"><a aria-label="Copy heading and permalink for Exercise 5.5.8" href="#sec_impropriemann-4-8" title="Copy heading and permalink for Exercise 5.5.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_impropriemann-4-9"><h4 class="heading"><span class="codenumber">5.5.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_impropriemann-4-9-1-1">Suppose <span class="process-math">\(f \colon [0,\infty) \to \R\)</span> is nonnegative and <em class="emphasis">decreasing</em>.  Prove:<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-4-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_impropriemann-4-9-1-2">
+<li id="sec_impropriemann-4-9-1-2-1">
+<div class="para" id="sec_impropriemann-4-9-1-2-1-1">If <span class="process-math">\(\int_0^\infty f &lt; \infty\text{,}\)</span> then <span class="process-math">\(\lim\limits_{x\to\infty} f(x) = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-4-9-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 5.5.9.a"><a aria-label="Copy heading and permalink for Item 5.5.9.a" href="#sec_impropriemann-4-9-1-2-1" title="Copy heading and permalink for Item 5.5.9.a">🔗</a></div>
+</li>
+<li id="sec_impropriemann-4-9-1-2-2">
+<div class="para" id="sec_impropriemann-4-9-1-2-2-1">The converse does not hold.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-4-9-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 5.5.9.b"><a aria-label="Copy heading and permalink for Item 5.5.9.b" href="#sec_impropriemann-4-9-1-2-2" title="Copy heading and permalink for Item 5.5.9.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 5.5.9"><a aria-label="Copy heading and permalink for Exercise 5.5.9" href="#sec_impropriemann-4-9" title="Copy heading and permalink for Exercise 5.5.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_impropriemann-4-10"><h4 class="heading"><span class="codenumber">5.5.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_impropriemann-4-10-1-1">Find an example of an <em class="emphasis">unbounded</em> continuous function <span class="process-math">\(f \colon
+[0,\infty) \to \R\)</span> that is nonnegative and such that <span class="process-math">\(\int_0^\infty f &lt; \infty\text{.}\)</span> Note that <span class="process-math">\(\lim_{x\to\infty} f(x)\)</span> will not exist; compare previous exercise. Hint: On each interval <span class="process-math">\([k,k+1]\text{,}\)</span> <span class="process-math">\(k \in \N\text{,}\)</span> define a function whose integral over this interval is less than say <span class="process-math">\(2^{-k}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-4-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.5.10"><a aria-label="Copy heading and permalink for Exercise 5.5.10" href="#sec_impropriemann-4-10" title="Copy heading and permalink for Exercise 5.5.10">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_impropriemann-4-11"><h4 class="heading"><span class="codenumber">5.5.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_impropriemann-4-11-1-1">
+<em class="emphasis">(More challenging)</em>   Find an example of a function <span class="process-math">\(f \colon [0,\infty) \to \R\)</span> integrable on all intervals such that <span class="process-math">\(\lim_{n\to\infty} \int_0^n f\)</span> exists as a limit of a sequence (so <span class="process-math">\(n \in \N\)</span>), but such that <span class="process-math">\(\int_0^\infty f\)</span> does not exist. Hint: For all <span class="process-math">\(n\in \N\text{,}\)</span> divide <span class="process-math">\([n,n+1]\)</span> into two halves.  On one half make the function negative, on the other make the function positive.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-4-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.5.11"><a aria-label="Copy heading and permalink for Exercise 5.5.11" href="#sec_impropriemann-4-11" title="Copy heading and permalink for Exercise 5.5.11">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_impropriemann-4-12"><h4 class="heading"><span class="codenumber">5.5.12<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_impropriemann-4-12-1-1">Suppose <span class="process-math">\(f \colon [1,\infty) \to \R\)</span> is such that <span class="process-math">\(g(x) \coloneqq x^2 f(x)\)</span> is a bounded function. Prove that <span class="process-math">\(\int_1^\infty f\)</span> converges.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-4-12-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.5.12"><a aria-label="Copy heading and permalink for Exercise 5.5.12" href="#sec_impropriemann-4-12" title="Copy heading and permalink for Exercise 5.5.12">🔗</a></div>
+</article>
+<div class="para logical" id="sec_impropriemann-4-13">
+<div class="para">It is sometimes desirable to assign a value to integrals that normally cannot be interpreted even as improper integrals, e.g. <span class="process-math">\(\int_{-1}^1 \nicefrac{1}{x}\,dx\text{.}\)</span> Suppose <span class="process-math">\(f \colon [a,b] \to \R\)</span> is a function and <span class="process-math">\(a &lt; c &lt; b\text{,}\)</span> where <span class="process-math">\(f\)</span> is Riemann integrable on the intervals <span class="process-math">\([a,c-\epsilon]\)</span> and <span class="process-math">\([c+\epsilon,b]\)</span> for all <span class="process-math">\(\epsilon &gt; 0\text{.}\)</span> Define the <em class="emphasis">Cauchy principal value</em> of <span class="process-math">\(\int_a^b f\)</span> as</div>
+<div class="displaymath process-math" id="sec_impropriemann-4-13-10">
+\begin{equation}
+p.v.\!\int_a^b f \coloneqq \lim_{\epsilon\to 0^+}
+\left(
+\int_a^{c-\epsilon} f + 
+\int_{c+\epsilon}^b f
+\right) ,
+\end{equation}
+</div>
+<div class="para">if the limit exists.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-4-13" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="exercise exercise-like" id="sec_impropriemann-4-14"><h4 class="heading"><span class="codenumber">5.5.13<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_impropriemann-4-14-1-1"><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-4-14-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div></div>
+<ol class="lower-alpha ol-marker-3" id="sec_impropriemann-4-14-1-2">
+<li id="sec_impropriemann-4-14-1-2-1">
+<div class="para" id="sec_impropriemann-4-14-1-2-1-1">Compute <span class="process-math">\(p.v.\!\int_{-1}^1 \nicefrac{1}{x}\,dx\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-4-14-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 5.5.13.a"><a aria-label="Copy heading and permalink for Item 5.5.13.a" href="#sec_impropriemann-4-14-1-2-1" title="Copy heading and permalink for Item 5.5.13.a">🔗</a></div>
+</li>
+<li id="sec_impropriemann-4-14-1-2-2">
+<div class="para" id="sec_impropriemann-4-14-1-2-2-1">Compute <span class="process-math">\(\lim_{\epsilon\to 0^+}
+( \int_{-1}^{-\epsilon} \nicefrac{1}{x}\,dx + 
+\int_{2\epsilon}^1 \nicefrac{1}{x}\,dx )\)</span> and show it is not equal to the principal value.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-4-14-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 5.5.13.b"><a aria-label="Copy heading and permalink for Item 5.5.13.b" href="#sec_impropriemann-4-14-1-2-2" title="Copy heading and permalink for Item 5.5.13.b">🔗</a></div>
+</li>
+<li id="sec_impropriemann-4-14-1-2-3">
+<div class="para" id="sec_impropriemann-4-14-1-2-3-1">Show that if <span class="process-math">\(f\)</span> is integrable on <span class="process-math">\([a,b]\text{,}\)</span> then <span class="process-math">\(p.v.\!\int_a^b f = \int_a^b f\)</span> (for an arbitrary <span class="process-math">\(c \in (a,b)\)</span>).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-4-14-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 5.5.13.c"><a aria-label="Copy heading and permalink for Item 5.5.13.c" href="#sec_impropriemann-4-14-1-2-3" title="Copy heading and permalink for Item 5.5.13.c">🔗</a></div>
+</li>
+<li id="sec_impropriemann-4-14-1-2-4">
+<div class="para" id="sec_impropriemann-4-14-1-2-4-1">Suppose <span class="process-math">\(f \colon [-1,1] \to \R\)</span> is an odd function (<span class="process-math">\(f(-x)=-f(x)\)</span>) that is integrable on <span class="process-math">\([-1,-\epsilon]\)</span> and <span class="process-math">\([\epsilon,1]\)</span> for all <span class="process-math">\(\epsilon &gt;0\text{.}\)</span> Prove that <span class="process-math">\(p.v.\!\int_{-1}^1 f = 0\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-4-14-1-2-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 5.5.13.d"><a aria-label="Copy heading and permalink for Item 5.5.13.d" href="#sec_impropriemann-4-14-1-2-4" title="Copy heading and permalink for Item 5.5.13.d">🔗</a></div>
+</li>
+<li id="sec_impropriemann-4-14-1-2-5">
+<div class="para" id="sec_impropriemann-4-14-1-2-5-1">Suppose <span class="process-math">\(f \colon [-1,1] \to \R\)</span> is continuous and differentiable at 0.  Show that <span class="process-math">\(p.v.\!\int_{-1}^1 \frac{f(x)}{x}\,dx\)</span> exists.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-4-14-1-2-5-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 5.5.13.e"><a aria-label="Copy heading and permalink for Item 5.5.13.e" href="#sec_impropriemann-4-14-1-2-5" title="Copy heading and permalink for Item 5.5.13.e">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 5.5.13"><a aria-label="Copy heading and permalink for Exercise 5.5.13" href="#sec_impropriemann-4-14" title="Copy heading and permalink for Exercise 5.5.13">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_impropriemann-4-15"><h4 class="heading"><span class="codenumber">5.5.14<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_impropriemann-4-15-1-1">Let <span class="process-math">\(f \colon \R \to \R\)</span> and <span class="process-math">\(g \colon \R \to \R\)</span> be continuous functions, where <span class="process-math">\(g(x) = 0\)</span> for all <span class="process-math">\(x \notin [a,b]\)</span> for some interval <span class="process-math">\([a,b]\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-4-15-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_impropriemann-4-15-1-2">
+<li id="sec_impropriemann-4-15-1-2-1">
+<div class="para logical" id="sec_impropriemann-4-15-1-2-1-1">
+<div class="para">Show that the <em class="emphasis">convolution</em>
+</div>
+<div class="displaymath process-math" id="sec_impropriemann-4-15-1-2-1-1-2">
+\begin{equation}
+(g * f)(x) \coloneqq \int_{-\infty}^\infty f(t)g(x-t)\,dt 
+\end{equation}
+</div>
+<div class="para">is well-defined for all <span class="process-math">\(x \in \R\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-4-15-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 5.5.14.a"><a aria-label="Copy heading and permalink for Item 5.5.14.a" href="#sec_impropriemann-4-15-1-2-1" title="Copy heading and permalink for Item 5.5.14.a">🔗</a></div>
+</li>
+<li id="sec_impropriemann-4-15-1-2-2">
+<div class="para logical" id="sec_impropriemann-4-15-1-2-2-1">
+<div class="para">Suppose <span class="process-math">\(\int_{-\infty}^\infty \babs{f(x)}\,dx &lt; \infty\text{.}\)</span>  Prove that</div>
+<div class="displaymath process-math" id="sec_impropriemann-4-15-1-2-2-1-2">
+\begin{equation}
+\lim_{x \to -\infty} (g * f)(x) = 0, \qquad \text{and} \qquad
+\lim_{x \to \infty} (g * f)(x) = 0 .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_impropriemann-4-15-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 5.5.14.b"><a aria-label="Copy heading and permalink for Item 5.5.14.b" href="#sec_impropriemann-4-15-1-2-2" title="Copy heading and permalink for Item 5.5.14.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 5.5.14"><a aria-label="Copy heading and permalink for Exercise 5.5.14" href="#sec_impropriemann-4-15" title="Copy heading and permalink for Exercise 5.5.14">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 5.5.2"><a aria-label="Copy heading and permalink for Exercises 5.5.2" href="#sec_impropriemann-4" title="Copy heading and permalink for Exercises 5.5.2">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 5.5: Improper integrals"><a aria-label="Copy heading and permalink for Section 5.5: Improper integrals" href="#sec_impropriemann" title="Copy heading and permalink for Section 5.5: Improper integrals">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_logandexp.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="fs_chapter.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

@@ -1,0 +1,708 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>The logarithm and the exponential · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_logandexp">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">The logarithm and the exponential</span>
+</h2>
+<section class="introduction" id="sec_logandexp-2">
+<div class="para" id="sec_logandexp-2-1">
+<em class="emphasis">Note: 1 lecture (optional, requires the optional sections <a class="internal" href="sec_limitatinf.html" title="Section 3.5: Limits at infinity">Section 3.5</a>, <a class="internal" href="sec_monotonefunc.html" title="Section 3.6: Monotone functions and continuity">Section 3.6</a>, <a class="internal" href="sec_ift.html" title="Section 4.4: Inverse function theorem">Section 4.4</a>)</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_logandexp-2-2">
+<div class="para">We now have the tools required to properly define the exponential and the logarithm that you know from calculus so well.  We start with exponentiation. If <span class="process-math">\(n\)</span> is a positive integer, we define</div>
+<div class="displaymath process-math" id="sec_logandexp-2-2-2">
+\begin{equation}
+x^n \coloneqq \underbrace{x \cdot x \cdots x}_{n \text{ times}} .
+\end{equation}
+</div>
+<div class="para">It makes sense to define <span class="process-math">\(x^0 \coloneqq 1\text{.}\)</span> For negative integers, let <span class="process-math">\(x^{-n} \coloneqq \nicefrac{1}{x^n}\)</span> as long as <span class="process-math">\(x \neq 0\text{.}\)</span> Next suppose <span class="process-math">\(x &gt; 0\text{.}\)</span> Define <span class="process-math">\(x^{1/n}\)</span> as the unique positive <span class="process-math">\(n\)</span>th root.  Finally, for a rational number <span class="process-math">\(\nicefrac{n}{m}\)</span> (in lowest terms), define</div>
+<div class="displaymath process-math" id="sec_logandexp-2-2-10">
+\begin{equation}
+x^{n/m} \coloneqq {\bigl(x^{1/m}\bigr)}^n .
+\end{equation}
+</div>
+<div class="para">It is not difficult to show we get the same number no matter what representation of <span class="process-math">\(\nicefrac{n}{m}\)</span> we use, so we do not need to use lowest terms.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-2-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_logandexp-2-3">However, what do we mean by <span class="process-math">\(\sqrt{2}^{\sqrt{2}}\text{?}\)</span>  Or <span class="process-math">\(x^y\)</span> in general?  In particular, what is <span class="process-math">\(e^x\)</span> for all <span class="process-math">\(x\text{?}\)</span> And how do we solve <span class="process-math">\(y=e^x\)</span> for <span class="process-math">\(x\text{?}\)</span> This section answers these questions and more.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-2-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section>
+<section class="subsection" id="sec_logandexp-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.4.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">The logarithm</span>
+</h3>
+<div class="para" id="sec_logandexp-3-3">It is convenient to define the logarithm first. Let us show that a unique function with the right properties exists, and only then will we call it <em class="emphasis">the</em> logarithm.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-3-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_logandexp-3-4"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.4.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_logandexp-3-4-1-1">There exists a unique function <span class="process-math">\(L \colon (0,\infty) \to \R\)</span> such that<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-3-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="sec_logandexp-3-4-1-2">
+<li id="it_log_i">
+<div class="para" id="it_log_i-1">
+<span class="process-math">\(L(1) = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#it_log_i-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#it_log_i" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="it_log_ii">
+<div class="para" id="it_log_ii-1">
+<span class="process-math">\(L\)</span> is differentiable and <span class="process-math">\(L'(x) = \nicefrac{1}{x}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#it_log_ii-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#it_log_ii" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+<li id="it_log_iii">
+<div class="para logical" id="it_log_iii-1">
+<div class="para">
+<span class="process-math">\(L\)</span> is strictly increasing, bijective, and</div>
+<div class="displaymath process-math" id="it_log_iii-1-2">
+\begin{equation}
+\lim_{x\to 0} L(x) = -\infty , \qquad \text{and} \qquad
+\lim_{x\to \infty} L(x) = \infty .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#it_log_iii-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iii"><a aria-label="Copy heading and permalink for Item iii" href="#it_log_iii" title="Copy heading and permalink for Item iii">🔗</a></div>
+</li>
+<li id="it_log_iv">
+<div class="para" id="it_log_iv-1">
+<span class="process-math">\(L(xy) = L(x)+L(y)\)</span> for all <span class="process-math">\(x,y \in (0,\infty)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#it_log_iv-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iv"><a aria-label="Copy heading and permalink for Item iv" href="#it_log_iv" title="Copy heading and permalink for Item iv">🔗</a></div>
+</li>
+<li id="it_log_v">
+<div class="para" id="it_log_v-1">If <span class="process-math">\(q\)</span> is a rational number and <span class="process-math">\(x &gt; 0\text{,}\)</span> then <span class="process-math">\(L(x^q) = q L(x)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#it_log_v-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item v"><a aria-label="Copy heading and permalink for Item v" href="#it_log_v" title="Copy heading and permalink for Item v">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Proposition 5.4.1"><a aria-label="Copy heading and permalink for Proposition 5.4.1" href="#sec_logandexp-3-4" title="Copy heading and permalink for Proposition 5.4.1">🔗</a></div>
+</article>
+<article class="proof" id="sec_logandexp-3-5"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_logandexp-3-5-1">
+<div class="para">To prove existence, we define a candidate and show it satisfies all the properties.  Let</div>
+<div class="displaymath process-math" id="sec_logandexp-3-5-1-1">
+\begin{equation}
+L(x) \coloneqq \int_1^x \frac{1}{t}\,dt .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-3-5-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_logandexp-3-5-2">Obviously, <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_logandexp.html#it_log_i" title="Item i">i</a> holds.  Property <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_logandexp.html#it_log_ii" title="Item ii">ii</a> holds via the second form of the fundamental theorem of calculus (<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_ftc.html#thm_FTCv2" title="Theorem 5.3.3">Theorem 5.3.3</a>).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-3-5-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_logandexp-3-5-3">
+<div class="para">To prove property <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_logandexp.html#it_log_iv" title="Item iv">iv</a>, we change variables <span class="process-math">\(u=yt\)</span> to obtain</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/it_log_iv.html" id="sec_logandexp-3-5-3-3">
+\begin{equation}
+L(x) =
+\int_1^{x} \frac{1}{t}\,dt
+=
+\int_y^{xy} \frac{1}{u}\,du
+=
+\int_1^{xy} \frac{1}{u}\,du
+-
+\int_1^{y} \frac{1}{u}\,du
+=
+L(xy)-L(y) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-3-5-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_logandexp-3-5-4">
+<div class="para">Let us prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_logandexp.html#it_log_iii" title="Item iii">iii</a>. Property <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_logandexp.html#it_log_ii" title="Item ii">ii</a> together with the fact that <span class="process-math">\(L'(x) = \nicefrac{1}{x} &gt; 0\)</span> for <span class="process-math">\(x &gt; 0\text{,}\)</span> implies that <span class="process-math">\(L\)</span> is strictly increasing and hence one-to-one. Let us show <span class="process-math">\(L\)</span> is onto. As <span class="process-math">\(\nicefrac{1}{t} \geq \nicefrac{1}{2}\)</span> when <span class="process-math">\(t \in [1,2]\text{,}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/it_log_iii.html ./knowl/xref/it_log_ii.html ./knowl/xref/it_log_iv.html ./knowl/xref/thm_arch_i.html ./knowl/xref/IVT_thm.html" id="sec_logandexp-3-5-4-9">
+\begin{equation}
+L(2) = \int_1^2 \frac{1}{t} \,dt \geq \nicefrac{1}{2} .
+\end{equation}
+</div>
+<div class="para">By induction, <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_logandexp.html#it_log_iv" title="Item iv">iv</a> implies that for <span class="process-math">\(n \in \N\text{,}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/it_log_iii.html ./knowl/xref/it_log_ii.html ./knowl/xref/it_log_iv.html ./knowl/xref/thm_arch_i.html ./knowl/xref/IVT_thm.html" id="sec_logandexp-3-5-4-12">
+\begin{equation}
+L(2^n) = L(2) + L(2) + \cdots + L(2) = n L(2) .
+\end{equation}
+</div>
+<div class="para">Given <span class="process-math">\(y &gt; 0\text{,}\)</span> by the <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_setofreals.html#thm_arch_i" title="Item i">Archimedean property</a> of the real numbers (notice <span class="process-math">\(L(2) &gt; 0\)</span>), there is an <span class="process-math">\(n \in \N\)</span> such that <span class="process-math">\(L(2^n) &gt; y\text{.}\)</span>  The <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_minmaxint.html#IVT_thm" title="Theorem 3.3.8: Bolzano’s intermediate value theorem">intermediate value theorem</a> gives an <span class="process-math">\(x_1 \in (1,2^n)\)</span> such that <span class="process-math">\(L(x_1) = y\text{.}\)</span>  Thus <span class="process-math">\((0,\infty)\)</span> is in the image of <span class="process-math">\(L\text{.}\)</span> As <span class="process-math">\(L\)</span> is increasing, <span class="process-math">\(L(x) &gt; y\)</span> for all <span class="process-math">\(x &gt; 2^n\text{,}\)</span> and so</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/it_log_iii.html ./knowl/xref/it_log_ii.html ./knowl/xref/it_log_iv.html ./knowl/xref/thm_arch_i.html ./knowl/xref/IVT_thm.html" id="sec_logandexp-3-5-4-26">
+\begin{equation}
+\lim_{x\to\infty} L(x) = \infty .
+\end{equation}
+</div>
+<div class="para">Next <span class="process-math">\(0 = L(\nicefrac{x}{x}) = L(x) + L(\nicefrac{1}{x})\text{,}\)</span> and so <span class="process-math">\(L(x) = - L(\nicefrac{1}{x})\text{.}\)</span>  Using <span class="process-math">\(x=2^{-n}\text{,}\)</span> we obtain as above that <span class="process-math">\(L\)</span> achieves all negative numbers.  And</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/it_log_iii.html ./knowl/xref/it_log_ii.html ./knowl/xref/it_log_iv.html ./knowl/xref/thm_arch_i.html ./knowl/xref/IVT_thm.html" id="sec_logandexp-3-5-4-31">
+\begin{equation}
+\lim_{x \to 0} L(x) = 
+\lim_{x \to 0} -L(\nicefrac{1}{x})
+=
+\lim_{x \to \infty} -L(x)
+=  - \infty .
+\end{equation}
+</div>
+<div class="para">In the limits, note that only <span class="process-math">\(x &gt; 0\)</span> are in the domain of <span class="process-math">\(L\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-3-5-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_logandexp-3-5-5">
+<div class="para">Let us prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_logandexp.html#it_log_v" title="Item v">v</a>. Fix <span class="process-math">\(x &gt; 0\text{.}\)</span> As above, <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_logandexp.html#it_log_iv" title="Item iv">iv</a> implies <span class="process-math">\(L(x^n) = n L(x)\)</span> for all <span class="process-math">\(n \in \N\text{.}\)</span> We already found that <span class="process-math">\(L(x) = - L(\nicefrac{1}{x})\text{,}\)</span> so <span class="process-math">\(L(x^{-n}) = - L(x^n) = -n L(x)\text{.}\)</span>  Then for <span class="process-math">\(m \in \N\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/it_log_v.html ./knowl/xref/it_log_iv.html" id="sec_logandexp-3-5-5-9">
+\begin{equation}
+L(x) = L\Bigl({(x^{1/m})}^m\Bigr) = m L\bigl(x^{1/m}\bigr) .
+\end{equation}
+</div>
+<div class="para">Putting everything together for <span class="process-math">\(n \in \Z\)</span> and <span class="process-math">\(m \in \N\text{,}\)</span> we have <span class="process-math">\(L(x^{n/m}) = n L(x^{1/m}) = (\nicefrac{n}{m}) L(x)\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-3-5-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_logandexp-3-5-6">
+<div class="para">Uniqueness follows using properties <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_logandexp.html#it_log_i" title="Item i">i</a> and <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_logandexp.html#it_log_ii" title="Item ii">ii</a>.  Via the first form of the fundamental theorem of calculus (<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_ftc.html#thm_FTCv1" title="Theorem 5.3.1">Theorem 5.3.1</a>),</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/it_log_i.html ./knowl/xref/it_log_ii.html ./knowl/xref/thm_FTCv1.html" id="sec_logandexp-3-5-6-4">
+\begin{equation}
+L(x) = \int_1^x \frac{1}{t}\,dt
+\end{equation}
+</div>
+<div class="para">is the unique function such that <span class="process-math">\(L(1) = 0\)</span> and <span class="process-math">\(L'(x) = \nicefrac{1}{x}\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-3-5-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 5.4.1.1"><a aria-label="Copy heading and permalink for Proof 5.4.1.1" href="#sec_logandexp-3-5" title="Copy heading and permalink for Proof 5.4.1.1">🔗</a></div>
+</article>
+<div class="para logical" id="sec_logandexp-3-6">
+<div class="para">Having proved that there is a unique function with these properties, we simply define the <em class="emphasis">logarithm</em>, sometimes called the <em class="emphasis">natural logarithm</em>:</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_log.html ./knowl/xref/exercise_otherlogbases.html" id="sec_logandexp-3-6-3">
+\begin{equation}
+\ln(x) \coloneqq L(x) .
+\end{equation}
+</div>
+<div class="para">See <a class="internal" href="sec_logandexp.html#fig_log" title="Figure 5.6">Figure 5.6</a>. Mathematicians usually write <span class="process-math">\(\log(x)\)</span> instead of <span class="process-math">\(\ln(x)\text{,}\)</span> which is more familiar to calculus students.  For all practical purposes, there is only one logarithm: the natural logarithm.  See <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_logandexp.html#exercise_otherlogbases" title="Exercise 5.4.2">Exercise 5.4.2</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-3-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="fig_log"><img alt="A graph y equals ln of x in a bold line starting steeply on the left in the negative values and crossing the x-axis at 1, and getting less and less steep as we go further right. A plot of y equals 1 over x is in dashed line, it is a line that is always positive starting high on the left and getting less and less steep as we go to the right. The area between the dashed line and the x-axis for x between 1 and 4 is shaded and the height of the graph of ln at 4 is marked as ’shaded area equals ln of 4’." class="raimg" role="img" src="figures/logfig-mbx.svg" style="width:219pt; height:166pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Plot of <span class="process-math">\(\ln(x)\)</span> together with <span class="process-math">\(\nicefrac{1}{x}\text{,}\)</span> showing the value <span class="process-math">\(\ln(4)\text{.}\)</span><div class="autopermalink" data-description="Figure 5.6"><a aria-label="Copy heading and permalink for Figure 5.6" href="#fig_log" title="Copy heading and permalink for Figure 5.6">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="autopermalink" data-description="Subsection 5.4.1: The logarithm"><a aria-label="Copy heading and permalink for Subsection 5.4.1: The logarithm" href="#sec_logandexp-3" title="Copy heading and permalink for Subsection 5.4.1: The logarithm">🔗</a></div>
+</section>
+<section class="subsection" id="sec_logandexp-4">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.4.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">The exponential</span>
+</h3>
+<div class="para" id="sec_logandexp-4-3">Just as with the logarithm we define the exponential via a list of properties.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-4-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_logandexp-4-4"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.4.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_logandexp-4-4-1-1">There exists a unique function <span class="process-math">\(E \colon \R \to (0,\infty)\)</span> such that<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-4-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="sec_logandexp-4-4-1-2">
+<li id="it_exp_i">
+<div class="para" id="it_exp_i-1">
+<span class="process-math">\(E(0) = 1\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#it_exp_i-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#it_exp_i" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="it_exp_ii">
+<div class="para" id="it_exp_ii-1">
+<span class="process-math">\(E\)</span> is differentiable and <span class="process-math">\(E'(x) = E(x)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#it_exp_ii-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#it_exp_ii" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+<li id="it_exp_iii">
+<div class="para logical" id="it_exp_iii-1">
+<div class="para">
+<span class="process-math">\(E\)</span> is strictly increasing, bijective, and</div>
+<div class="displaymath process-math" id="it_exp_iii-1-2">
+\begin{equation}
+\lim_{x\to -\infty} E(x) = 0 \qquad \text{and} \qquad
+\lim_{x\to \infty} E(x) = \infty .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#it_exp_iii-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iii"><a aria-label="Copy heading and permalink for Item iii" href="#it_exp_iii" title="Copy heading and permalink for Item iii">🔗</a></div>
+</li>
+<li id="it_exp_iv">
+<div class="para" id="it_exp_iv-1">
+<span class="process-math">\(E(x+y) = E(x)E(y)\)</span> for all <span class="process-math">\(x,y \in \R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#it_exp_iv-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iv"><a aria-label="Copy heading and permalink for Item iv" href="#it_exp_iv" title="Copy heading and permalink for Item iv">🔗</a></div>
+</li>
+<li id="it_exp_v">
+<div class="para" id="it_exp_v-1">If <span class="process-math">\(q \in \Q\text{,}\)</span> then <span class="process-math">\(E(qx) = {E(x)}^q\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#it_exp_v-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item v"><a aria-label="Copy heading and permalink for Item v" href="#it_exp_v" title="Copy heading and permalink for Item v">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Proposition 5.4.2"><a aria-label="Copy heading and permalink for Proposition 5.4.2" href="#sec_logandexp-4-4" title="Copy heading and permalink for Proposition 5.4.2">🔗</a></div>
+</article>
+<article class="proof" id="sec_logandexp-4-5"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_logandexp-4-5-1">Again, we prove existence of such a function by defining a candidate and proving that it satisfies all the properties. The <span class="process-math">\(L = \ln\)</span> defined above is invertible.  Let <span class="process-math">\(E\)</span> be the inverse function of <span class="process-math">\(L\text{.}\)</span>  Property <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_logandexp.html#it_exp_i" title="Item i">i</a> is immediate.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-4-5-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_logandexp-4-5-2">
+<div class="para">Property <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_logandexp.html#it_exp_ii" title="Item ii">ii</a> follows via the inverse function theorem, in particular via <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_ift.html#lemma_ift" title="Lemma 4.4.1">Lemma 4.4.1</a>:  <span class="process-math">\(L\)</span> satisfies all the hypotheses of the lemma, and hence</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/it_exp_ii.html ./knowl/xref/lemma_ift.html" id="sec_logandexp-4-5-2-5">
+\begin{equation}
+E'(x) = \frac{1}{L'\bigl(E(x)\bigr)} = E(x) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-4-5-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_logandexp-4-5-3">
+<div class="para">Let us look at property <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_logandexp.html#it_exp_iii" title="Item iii">iii</a>. The function <span class="process-math">\(E\)</span> is strictly increasing since <span class="process-math">\(E'(x) = E(x) &gt; 0\text{.}\)</span>  As <span class="process-math">\(E\)</span> is the inverse of <span class="process-math">\(L\text{,}\)</span> it must also be bijective. To find the limits, we use that <span class="process-math">\(E\)</span> is strictly increasing and onto <span class="process-math">\((0,\infty)\text{.}\)</span> For every <span class="process-math">\(M &gt; 0\text{,}\)</span> there is an <span class="process-math">\(x_0\)</span> such that <span class="process-math">\(E(x_0) = M\)</span> and <span class="process-math">\(E(x) \geq M\)</span> for all <span class="process-math">\(x \geq x_0\text{.}\)</span> Similarly, for every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there is an <span class="process-math">\(x_0\)</span> such that <span class="process-math">\(E(x_0) = \epsilon\)</span> and <span class="process-math">\(E(x) &lt; \epsilon\)</span> for all <span class="process-math">\(x &lt; x_0\text{.}\)</span> Therefore,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/it_exp_iii.html" id="sec_logandexp-4-5-3-18">
+\begin{equation}
+\lim_{x\to -\infty} E(x) = 0 \qquad \text{and} \qquad
+\lim_{x\to \infty} E(x) = \infty .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-4-5-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_logandexp-4-5-4">
+<div class="para">To prove property <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_logandexp.html#it_exp_iv" title="Item iv">iv</a>, we use the corresponding property for the logarithm. Take <span class="process-math">\(x, y \in \R\text{.}\)</span> As <span class="process-math">\(L\)</span> is bijective, find <span class="process-math">\(a\)</span> and <span class="process-math">\(b\)</span> such that <span class="process-math">\(x = L(a)\)</span> and <span class="process-math">\(y = L(b)\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/it_exp_iv.html" id="sec_logandexp-4-5-4-8">
+\begin{equation}
+E(x+y) =
+E\bigl(L(a)+L(b)\bigr) = 
+E\bigl(L(ab)\bigr) = ab = E(x)E(y)  .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-4-5-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_logandexp-4-5-5">
+<div class="para">Property <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_logandexp.html#it_exp_v" title="Item v">v</a> also follows from the corresponding property of <span class="process-math">\(L\text{.}\)</span> Given <span class="process-math">\(x \in \R\text{,}\)</span> let <span class="process-math">\(a\)</span> be such that <span class="process-math">\(x = L(a)\)</span> and</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/it_exp_v.html" id="sec_logandexp-4-5-5-6">
+\begin{equation}
+E(qx) = E\bigl(qL(a)\bigr)
+=
+E\bigl(L(a^q)\bigr) = a^q = {E(x)}^q .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-4-5-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_logandexp-4-5-6">
+<div class="para">Uniqueness follows from <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_logandexp.html#it_exp_i" title="Item i">i</a> and <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_logandexp.html#it_exp_ii" title="Item ii">ii</a>. Let <span class="process-math">\(E\)</span> and <span class="process-math">\(F\)</span> be two functions satisfying <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_logandexp.html#it_exp_i" title="Item i">i</a> and <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_logandexp.html#it_exp_ii" title="Item ii">ii</a>.</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/it_exp_i.html ./knowl/xref/it_exp_ii.html ./knowl/xref/it_exp_i.html ./knowl/xref/it_exp_ii.html ./knowl/xref/prop_derzeroconst.html ./knowl/xref/it_exp_i.html ./knowl/xref/it_exp_ii.html" id="sec_logandexp-4-5-6-7">
+\begin{equation}
+\frac{d}{dx} \Bigl( F(x)E(-x) \Bigr)
+=
+F'(x)E(-x) - E'(-x)F(x)
+=
+F(x)E(-x) - E(-x)F(x) = 0 .
+\end{equation}
+</div>
+<div class="para">Therefore, by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvt.html#prop_derzeroconst" title="Proposition 4.2.6">Proposition 4.2.6</a>, <span class="process-math">\(F(x)E(-x) = F(0)E(-0) = 1\)</span> for all <span class="process-math">\(x \in \R\text{.}\)</span> Doing the computation with <span class="process-math">\(F = E\text{,}\)</span> we obtain <span class="process-math">\(E(x)E(-x) = 1\text{.}\)</span> Then</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/it_exp_i.html ./knowl/xref/it_exp_ii.html ./knowl/xref/it_exp_i.html ./knowl/xref/it_exp_ii.html ./knowl/xref/prop_derzeroconst.html ./knowl/xref/it_exp_i.html ./knowl/xref/it_exp_ii.html" id="sec_logandexp-4-5-6-13">
+\begin{equation}
+0 = 1-1 = F(x)E(-x) - E(x)E(-x) = \bigl(F(x)-E(x)\bigr) E(-x) .
+\end{equation}
+</div>
+<div class="para">Finally, <span class="process-math">\(E(-x) \neq 0\)</span><details aria-live="polite" class="ptx-footnote" id="sec_logandexp-4-5-6-15"><summary class="ptx-footnote__number" title="Footnote 5.4.1"><sup> 1 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_logandexp-4-5-6-15">
+<span class="process-math">\(E\)</span> is a function into <span class="process-math">\((0,\infty)\)</span> after all. However, <span class="process-math">\(E(-x) \neq 0\)</span> also follows from <span class="process-math">\(E(x)E(-x) = 1\text{.}\)</span>  Therefore, we can prove uniqueness of <span class="process-math">\(E\)</span> given <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_logandexp.html#it_exp_i" title="Item i">i</a> and <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_logandexp.html#it_exp_ii" title="Item ii">ii</a>, even for functions <span class="process-math">\(E \colon \R
+\to \R\text{.}\)</span>
+</div></details> for all <span class="process-math">\(x \in \R\text{.}\)</span> So <span class="process-math">\(F(x)-E(x) = 0\)</span> for all <span class="process-math">\(x\text{,}\)</span> and we are done.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-4-5-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 5.4.2.1"><a aria-label="Copy heading and permalink for Proof 5.4.2.1" href="#sec_logandexp-4-5" title="Copy heading and permalink for Proof 5.4.2.1">🔗</a></div>
+</article>
+<div class="para logical" id="sec_logandexp-4-6">
+<div class="para">Having proved <span class="process-math">\(E\)</span> is unique, we define the <em class="emphasis">exponential</em> function (see <a class="internal" href="sec_logandexp.html#fig_exp" title="Figure 5.7">Figure 5.7</a>) as</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_exp.html" id="sec_logandexp-4-6-4">
+\begin{equation}
+\exp(x) \coloneqq E(x) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-4-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="fig_exp"><img alt="A slope field graphed on the xy-plane for x between roughly minus 1 to 1 and y between 0 and 4. The slope field is a grid of short line segments of a given slope. In this case the slopes are the same in every row. They are all upwards (positive) and get progressively steeper as we move up. The graph of the exponential function is given. It is an increasing function coming from the left and it follows the slopes given: Starting above the x-axis, it passes through the point (0,1), and then gets steeper and steeper as it exits the picture on the right." class="raimg" role="img" src="figures/expfig-mbx.svg" style="width:218pt; height:164pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Plot of <span class="process-math">\(e^x\text{,}\)</span> together with a slope field giving slope <span class="process-math">\(y\)</span> at every point <span class="process-math">\((x,y)\text{.}\)</span> The equation <span class="process-math">\(\frac{d}{dx} e^x = e^x\)</span> means that <span class="process-math">\(y=e^x\)</span> follows these slopes.<div class="autopermalink" data-description="Figure 5.7"><a aria-label="Copy heading and permalink for Figure 5.7" href="#fig_exp" title="Copy heading and permalink for Figure 5.7">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para logical" id="sec_logandexp-4-10">
+<div class="para">If <span class="process-math">\(y \in \Q\)</span> and <span class="process-math">\(x &gt; 0\text{,}\)</span> then</div>
+<div class="displaymath process-math" id="sec_logandexp-4-10-3">
+\begin{equation}
+x^y = \exp\bigl(\ln(x^y)\bigr) = \exp\bigl(y\ln(x)\bigr) .
+\end{equation}
+</div>
+<div class="para">We can now make sense of exponentiation <span class="process-math">\(x^y\)</span> for arbitrary <span class="process-math">\(y \in \R\text{;}\)</span> if <span class="process-math">\(x &gt; 0\)</span> and <span class="process-math">\(y\)</span> is irrational, define</div>
+<div class="displaymath process-math" id="sec_logandexp-4-10-8">
+\begin{equation}
+x^y \coloneqq \exp\bigl(y\ln(x)\bigr) .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(\exp\)</span> is continuous, <span class="process-math">\(x^y\)</span> is a continuous function of <span class="process-math">\(y\text{.}\)</span> Therefore, we would obtain the same result had we taken a sequence of rational numbers <span class="process-math">\(\{ y_n \}_{n=1}^\infty\)</span> approaching <span class="process-math">\(y\)</span> and defined <span class="process-math">\(x^y = \lim_{n\to\infty} x^{y_n}\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-4-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_logandexp-4-11">
+<div class="para">Define the number <span class="process-math">\(e\text{,}\)</span> called <em class="emphasis">Euler’s number</em> or the <em class="emphasis">base of the natural logarithm</em>, as</div>
+<div class="displaymath process-math" id="sec_logandexp-4-11-4">
+\begin{equation}
+e \coloneqq \exp(1) .
+\end{equation}
+</div>
+<div class="para">Let us justify the notation <span class="process-math">\(e^x\)</span> for <span class="process-math">\(\exp(x)\text{:}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_logandexp-4-11-7">
+\begin{equation}
+e^x = \exp\bigl(x \ln(e) \bigr) = \exp(x) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-4-11" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_logandexp-4-12">The properties of the logarithm and the exponential extend to irrational powers.  The proof is immediate.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-4-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_logandexp-4-13"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.4.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_logandexp-4-13-1-1">Let <span class="process-math">\(x, y \in \R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-4-13-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="sec_logandexp-4-13-1-2">
+<li id="sec_logandexp-4-13-1-2-1">
+<div class="para" id="sec_logandexp-4-13-1-2-1-1">
+<span class="process-math">\(\exp(xy) = {\bigl(\exp(x)\bigr)}^y\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-4-13-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#sec_logandexp-4-13-1-2-1" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="sec_logandexp-4-13-1-2-2">
+<div class="para" id="sec_logandexp-4-13-1-2-2-1">If <span class="process-math">\(x &gt; 0\text{,}\)</span> then <span class="process-math">\(\ln(x^y) = y \ln (x)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-4-13-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#sec_logandexp-4-13-1-2-2" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Proposition 5.4.3"><a aria-label="Copy heading and permalink for Proposition 5.4.3" href="#sec_logandexp-4-13" title="Copy heading and permalink for Proposition 5.4.3">🔗</a></div>
+</article>
+<article class="remark remark-like" id="sec_logandexp-4-14"><h4 class="heading">
+<span class="type">Remark</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.4.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_logandexp-4-14-1-1">There are other equivalent ways to define the exponential and the logarithm. A common way is to define <span class="process-math">\(E\)</span> as the solution to the differential equation <span class="process-math">\(E'(x) = E(x)\text{,}\)</span> <span class="process-math">\(E(0) = 1\text{.}\)</span>  See <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_picard.html#example_picardexponential" title="Example 6.3.3">Example 6.3.3</a>, for a sketch of that approach.  Yet another approach is to define the exponential function by power series, see <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_liminter.html#example_exponentialbypowerseries" title="Example 6.2.14">Example 6.2.14</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-4-14-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Remark 5.4.4"><a aria-label="Copy heading and permalink for Remark 5.4.4" href="#sec_logandexp-4-14" title="Copy heading and permalink for Remark 5.4.4">🔗</a></div>
+</article>
+<article class="remark remark-like" id="sec_logandexp-4-15"><h4 class="heading">
+<span class="type">Remark</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.4.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_logandexp-4-15-1-1">We proved the uniqueness of the functions <span class="process-math">\(L\)</span> and <span class="process-math">\(E\)</span> from just the properties <span class="process-math">\(L(1)=0\text{,}\)</span> <span class="process-math">\(L'(x) = \nicefrac{1}{x}\)</span> and the equivalent condition for the exponential <span class="process-math">\(E'(x) = E(x)\text{,}\)</span> <span class="process-math">\(E(0) = 1\text{.}\)</span>  Existence also follows from just these properties. Alternatively, uniqueness also follows from the laws of exponents, see the exercises.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-4-15-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Remark 5.4.5"><a aria-label="Copy heading and permalink for Remark 5.4.5" href="#sec_logandexp-4-15" title="Copy heading and permalink for Remark 5.4.5">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 5.4.2: The exponential"><a aria-label="Copy heading and permalink for Subsection 5.4.2: The exponential" href="#sec_logandexp-4" title="Copy heading and permalink for Subsection 5.4.2: The exponential">🔗</a></div>
+</section>
+<section class="exercises" id="sec_logandexp-5">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.4.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_logandexp-5-1"><h4 class="heading"><span class="codenumber">5.4.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_logandexp-5-1-1-1">Given a real number <span class="process-math">\(y\)</span> and <span class="process-math">\(b &gt; 0\text{,}\)</span> define <span class="process-math">\(f \colon (0,\infty) \to \R\)</span> and <span class="process-math">\(g \colon \R \to \R\)</span> as <span class="process-math">\(f(x) \coloneqq x^y\)</span> and <span class="process-math">\(g(x) \coloneqq b^x\text{.}\)</span>  Show that <span class="process-math">\(f\)</span> and <span class="process-math">\(g\)</span> are differentiable and find their derivative.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-5-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.4.1"><a aria-label="Copy heading and permalink for Exercise 5.4.1" href="#sec_logandexp-5-1" title="Copy heading and permalink for Exercise 5.4.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_otherlogbases"><h4 class="heading"><span class="codenumber">5.4.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_otherlogbases-1-1">Let <span class="process-math">\(b &gt; 0\text{,}\)</span> <span class="process-math">\(b\neq 1\)</span> be given.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_otherlogbases-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="exercise_otherlogbases-1-2">
+<li id="exercise_otherlogbases-1-2-1">
+<div class="para" id="exercise_otherlogbases-1-2-1-1">Show that for every <span class="process-math">\(y &gt; 0\text{,}\)</span> there exists a unique number <span class="process-math">\(x\)</span> such that <span class="process-math">\(y = b^x\text{.}\)</span>  Define the <em class="emphasis">logarithm base <span class="process-math">\(b\)</span></em>, <span class="process-math">\(\log_b \colon (0,\infty) \to \R\text{,}\)</span> by <span class="process-math">\(\log_b(y) \coloneqq x\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_otherlogbases-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 5.4.2.a"><a aria-label="Copy heading and permalink for Item 5.4.2.a" href="#exercise_otherlogbases-1-2-1" title="Copy heading and permalink for Item 5.4.2.a">🔗</a></div>
+</li>
+<li id="exercise_otherlogbases-1-2-2">
+<div class="para" id="exercise_otherlogbases-1-2-2-1">Show that <span class="process-math">\(\log_b(x) = \frac{\ln(x)}{\ln(b)}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_otherlogbases-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 5.4.2.b"><a aria-label="Copy heading and permalink for Item 5.4.2.b" href="#exercise_otherlogbases-1-2-2" title="Copy heading and permalink for Item 5.4.2.b">🔗</a></div>
+</li>
+<li id="exercise_otherlogbases-1-2-3">
+<div class="para" id="exercise_otherlogbases-1-2-3-1">Prove that if <span class="process-math">\(c &gt; 0\text{,}\)</span> <span class="process-math">\(c \neq 1\text{,}\)</span> then <span class="process-math">\(\log_b(x) = \frac{\log_c(x)}{\log_c(b)}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_otherlogbases-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 5.4.2.c"><a aria-label="Copy heading and permalink for Item 5.4.2.c" href="#exercise_otherlogbases-1-2-3" title="Copy heading and permalink for Item 5.4.2.c">🔗</a></div>
+</li>
+<li id="exercise_otherlogbases-1-2-4">
+<div class="para" id="exercise_otherlogbases-1-2-4-1">Prove <span class="process-math">\(\log_b(xy) =
+\log_b(x)+\log_b(y)\text{,}\)</span> and <span class="process-math">\(\log_b(x^y) = y \log_b(x)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_otherlogbases-1-2-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 5.4.2.d"><a aria-label="Copy heading and permalink for Item 5.4.2.d" href="#exercise_otherlogbases-1-2-4" title="Copy heading and permalink for Item 5.4.2.d">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 5.4.2"><a aria-label="Copy heading and permalink for Exercise 5.4.2" href="#exercise_otherlogbases" title="Copy heading and permalink for Exercise 5.4.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_logandexp-5-3"><h4 class="heading"><span class="codenumber">5.4.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_logandexp-5-3-1-1">
+<div class="para">
+<em class="emphasis">(requires <a class="internal" href="sec_taylor.html" title="Section 4.3: Taylor’s theorem">Section 4.3</a>)</em>   Use <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_taylor.html#thm_taylor" title="Theorem 4.3.2: Taylor">Taylor’s theorem</a> to study the remainder term and show that for all <span class="process-math">\(x \in \R\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/sec_taylor.html ./knowl/xref/thm_taylor.html" id="sec_logandexp-5-3-1-1-6">
+\begin{equation}
+e^x = \sum_{n=0}^\infty \frac{x^n}{n!} .
+\end{equation}
+</div>
+<div class="para">Hint: Do not differentiate the series term by term (unless you prove that you can do that).</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-5-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.4.3"><a aria-label="Copy heading and permalink for Exercise 5.4.3" href="#sec_logandexp-5-3" title="Copy heading and permalink for Exercise 5.4.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_logandexp-5-4"><h4 class="heading"><span class="codenumber">5.4.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_logandexp-5-4-1-1">
+<div class="para">Use the geometric sum formula to show (for <span class="process-math">\(t \neq -1\)</span>)</div>
+<div class="displaymath process-math" id="sec_logandexp-5-4-1-1-2">
+\begin{equation}
+1-t+t^2-\cdots+{(-1)}^n t^n = \frac{1}{1+t} - \frac{{(-1)}^{n+1}t^{n+1}}{1+t}.
+\end{equation}
+</div>
+<div class="para">Using this fact, show</div>
+<div class="displaymath process-math" id="sec_logandexp-5-4-1-1-3">
+\begin{equation}
+\ln (1+x) = \sum_{n=1}^\infty \frac{{(-1)}^{n+1}x^n}{n} 
+\end{equation}
+</div>
+<div class="para">for all <span class="process-math">\(x \in (-1,1]\)</span> (note that <span class="process-math">\(x=1\)</span> is included).  Finally, find the limit of the alternating harmonic series</div>
+<div class="displaymath process-math" id="sec_logandexp-5-4-1-1-6">
+\begin{equation}
+\sum_{n=1}^\infty \frac{{(-1)}^{n+1}}{n} = 1 - \frac{1}{2} +
+\frac{1}{3} - \frac{1}{4} + \cdots
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-5-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.4.4"><a aria-label="Copy heading and permalink for Exercise 5.4.4" href="#sec_logandexp-5-4" title="Copy heading and permalink for Exercise 5.4.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_logandexp-5-5"><h4 class="heading"><span class="codenumber">5.4.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_logandexp-5-5-1-1">
+<div class="para">Show</div>
+<div class="displaymath process-math" id="sec_logandexp-5-5-1-1-1">
+\begin{equation}
+e^x = \lim_{n\to\infty} {\left( 1 + \frac{x}{n} \right)}^n .
+\end{equation}
+</div>
+<div class="para">Hint: Take the logarithm.<br/> Note: The expression <span class="process-math">\({\left( 1 + \frac{x}{n} \right)}^n\)</span> arises in compound interest calculations.  It is the amount of money in a bank account after 1 year if 1 dollar was deposited initially at interest rate <span class="process-math">\(x\)</span> (e.g., <span class="process-math">\(x=0.01\)</span> for <span class="process-math">\(1\%\)</span>) and the interest was compounded <span class="process-math">\(n\)</span> times during the year.  The exponential <span class="process-math">\(e^x\)</span> is the result of continuous compounding.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-5-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.4.5"><a aria-label="Copy heading and permalink for Exercise 5.4.5" href="#sec_logandexp-5-5" title="Copy heading and permalink for Exercise 5.4.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_logandexp-5-6"><h4 class="heading"><span class="codenumber">5.4.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_logandexp-5-6-1-1"><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-5-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div></div>
+<ol class="lower-alpha ol-marker-3" id="sec_logandexp-5-6-1-2">
+<li id="sec_logandexp-5-6-1-2-1">
+<div class="para logical" id="sec_logandexp-5-6-1-2-1-1">
+<div class="para">Prove that for all integers <span class="process-math">\(n \geq 2\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_logandexp-5-6-1-2-1-1-2">
+\begin{equation}
+\sum_{k=2}^{n}
+\frac{1}{k}
+\leq
+\ln (n)
+\leq
+\sum_{k=1}^{n-1}
+\frac{1}{k} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-5-6-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 5.4.6.a"><a aria-label="Copy heading and permalink for Item 5.4.6.a" href="#sec_logandexp-5-6-1-2-1" title="Copy heading and permalink for Item 5.4.6.a">🔗</a></div>
+</li>
+<li id="sec_logandexp-5-6-1-2-2">
+<div class="para logical" id="sec_logandexp-5-6-1-2-2-1">
+<div class="para">Prove that the limit</div>
+<div class="displaymath process-math" id="sec_logandexp-5-6-1-2-2-1-1">
+\begin{equation}
+\gamma \coloneqq \lim_{n\to\infty}
+\left( \left( \sum_{k=1}^{n} \frac{1}{k} \right) - \ln (n) \right)
+\end{equation}
+</div>
+<div class="para">exists.  This constant <span class="process-math">\(\gamma\)</span> is known as the <em class="emphasis">Euler–Mascheroni constant</em><details aria-live="polite" class="ptx-footnote" id="sec_logandexp-5-6-1-2-2-1-4"><summary class="ptx-footnote__number" title="Footnote 5.4.2"><sup> 2 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_logandexp-5-6-1-2-2-1-4">Named for the Swiss mathematician <a class="external" href="https://en.wikipedia.org/wiki/Leonhard_Euler" target="_blank">Leonhard Euler</a> (1707–1783) and the Italian mathematician <a class="external" href="https://en.wikipedia.org/wiki/Lorenzo_Mascheroni" target="_blank">Lorenzo Mascheroni</a> (1750–1800).
+</div></details>.  It is not known if <span class="process-math">\(\gamma\)</span> is rational or not. Approximately, <span class="process-math">\(\gamma \approx 0.5772\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-5-6-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 5.4.6.b"><a aria-label="Copy heading and permalink for Item 5.4.6.b" href="#sec_logandexp-5-6-1-2-2" title="Copy heading and permalink for Item 5.4.6.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 5.4.6"><a aria-label="Copy heading and permalink for Exercise 5.4.6" href="#sec_logandexp-5-6" title="Copy heading and permalink for Exercise 5.4.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_logandexp-5-7"><h4 class="heading"><span class="codenumber">5.4.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_logandexp-5-7-1-1">
+<div class="para">Show</div>
+<div class="displaymath process-math" id="sec_logandexp-5-7-1-1-1">
+\begin{equation}
+\lim_{x\to\infty} \frac{\ln(x)}{x} = 0 .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-5-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.4.7"><a aria-label="Copy heading and permalink for Exercise 5.4.7" href="#sec_logandexp-5-7" title="Copy heading and permalink for Exercise 5.4.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_logandexp-5-8"><h4 class="heading"><span class="codenumber">5.4.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_logandexp-5-8-1-1">Show that <span class="process-math">\(e^x\)</span> is <em class="emphasis">convex</em>, in other words, show that if <span class="process-math">\(a \leq x \leq b\text{,}\)</span> then <span class="process-math">\(e^x \leq e^a \frac{b-x}{b-a} + e^b \frac{x-a}{b-a}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-5-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.4.8"><a aria-label="Copy heading and permalink for Exercise 5.4.8" href="#sec_logandexp-5-8" title="Copy heading and permalink for Exercise 5.4.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_logandexp-5-9"><h4 class="heading"><span class="codenumber">5.4.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_logandexp-5-9-1-1">
+<div class="para">Using the logarithm find</div>
+<div class="displaymath process-math" id="sec_logandexp-5-9-1-1-1">
+\begin{equation}
+\lim_{n\to\infty} n^{1/n} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-5-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.4.9"><a aria-label="Copy heading and permalink for Exercise 5.4.9" href="#sec_logandexp-5-9" title="Copy heading and permalink for Exercise 5.4.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_logandexp-5-10"><h4 class="heading"><span class="codenumber">5.4.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_logandexp-5-10-1-1">Show that <span class="process-math">\(E(x) = e^x\)</span> is the unique continuous function such that <span class="process-math">\(E(x+y) = E(x)E(y)\)</span> and <span class="process-math">\(E(1) = e\text{.}\)</span>   Similarly, prove that <span class="process-math">\(L(x) = \ln(x)\)</span> is the unique continuous function defined on positive <span class="process-math">\(x\)</span> such that <span class="process-math">\(L(xy) = L(x)+L(y)\)</span> and <span class="process-math">\(L(e) = 1\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_logandexp-5-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5.4.10"><a aria-label="Copy heading and permalink for Exercise 5.4.10" href="#sec_logandexp-5-10" title="Copy heading and permalink for Exercise 5.4.10">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_nonanalytic"><h4 class="heading"><span class="codenumber">5.4.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="exercise_nonanalytic-1-1">
+<div class="para">
+<em class="emphasis">(requires <a class="internal" href="sec_taylor.html" title="Section 4.3: Taylor’s theorem">Section 4.3</a>)</em>   Since <span class="process-math">\((e^x)' = e^x\text{,}\)</span> it is easy to see that <span class="process-math">\(e^x\)</span> is infinitely differentiable (has derivatives of all orders).  Define the function <span class="process-math">\(f \colon \R \to \R\text{.}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/sec_taylor.html" id="exercise_nonanalytic-1-1-9">
+\begin{equation}
+f(x) \coloneqq \begin{cases}
+e^{-1/x} &amp; \text{if } x &gt; 0, \\
+0 &amp; \text{if } x \leq 0.
+\end{cases}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_nonanalytic-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="exercise_nonanalytic-1-2">
+<li id="exercise_nonanalytic-1-2-1">
+<div class="para logical" id="exercise_nonanalytic-1-2-1-1">
+<div class="para">Prove that for every <span class="process-math">\(m \in \N\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="exercise_nonanalytic-1-2-1-1-2">
+\begin{equation}
+\lim_{x \to 0^+} \frac{e^{-1/x}}{x^m} = 0 .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_nonanalytic-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 5.4.11.a"><a aria-label="Copy heading and permalink for Item 5.4.11.a" href="#exercise_nonanalytic-1-2-1" title="Copy heading and permalink for Item 5.4.11.a">🔗</a></div>
+</li>
+<li id="exercise_nonanalytic-1-2-2">
+<div class="para" id="exercise_nonanalytic-1-2-2-1">Prove that <span class="process-math">\(f\)</span> is infinitely differentiable.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_nonanalytic-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 5.4.11.b"><a aria-label="Copy heading and permalink for Item 5.4.11.b" href="#exercise_nonanalytic-1-2-2" title="Copy heading and permalink for Item 5.4.11.b">🔗</a></div>
+</li>
+<li id="exercise_nonanalytic-1-2-3">
+<div class="para logical" id="exercise_nonanalytic-1-2-3-1">
+<div class="para">Compute the Taylor series for <span class="process-math">\(f\)</span> at the origin, that is,</div>
+<div class="displaymath process-math" id="exercise_nonanalytic-1-2-3-1-2">
+\begin{equation}
+\sum_{k=0}^\infty
+\frac{f^{(k)}(0)}{k!}x^k .
+\end{equation}
+</div>
+<div class="para">Show that it converges, but show that it does not converge to <span class="process-math">\(f(x)\)</span> for any given <span class="process-math">\(x &gt; 0\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_nonanalytic-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 5.4.11.c"><a aria-label="Copy heading and permalink for Item 5.4.11.c" href="#exercise_nonanalytic-1-2-3" title="Copy heading and permalink for Item 5.4.11.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 5.4.11"><a aria-label="Copy heading and permalink for Exercise 5.4.11" href="#exercise_nonanalytic" title="Copy heading and permalink for Exercise 5.4.11">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 5.4.3"><a aria-label="Copy heading and permalink for Exercises 5.4.3" href="#sec_logandexp-5" title="Copy heading and permalink for Exercises 5.4.3">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 5.4: The logarithm and the exponential"><a aria-label="Copy heading and permalink for Section 5.4: The logarithm and the exponential" href="#sec_logandexp" title="Copy heading and permalink for Section 5.4: The logarithm and the exponential">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_ftc.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_impropriemann.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

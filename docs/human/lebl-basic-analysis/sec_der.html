@@ -1,0 +1,620 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>The derivative · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_der">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">The derivative</span>
+</h2>
+<section class="introduction" id="sec_der-2">
+<div class="para" id="sec_der-2-1">
+<em class="emphasis">Note: 1 lecture</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_der-2-2">The idea of a derivative is the following. If the graph of a function looks locally like a straight line, then we can talk about the slope of this line. The slope tells us the rate at which the value of the function is changing at that particular point. Of course, we are leaving out any function that has corners or discontinuities. Let us be precise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-2-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section>
+<section class="subsection" id="sec_der-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.1.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Definition and basic properties</span>
+</h3>
+<article class="definition definition-like" id="sec_der-3-2"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.1.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_der-3-2-1-1">
+<div class="para">Let <span class="process-math">\(I\)</span> be an interval, let <span class="process-math">\(f \colon I \to \R\)</span> be a function, and let <span class="process-math">\(c \in I\text{.}\)</span>  If the limit</div>
+<div class="displaymath process-math" id="sec_der-3-2-1-1-4">
+\begin{equation}
+L \coloneqq \lim_{x \to c} \frac{f(x)-f(c)}{x-c} 
+\end{equation}
+</div>
+<div class="para">exists, then we say <span class="process-math">\(f\)</span> is <em class="emphasis">differentiable</em> at <span class="process-math">\(c\text{,}\)</span> we call <span class="process-math">\(L\)</span> the <em class="emphasis">derivative</em> of <span class="process-math">\(f\)</span> at <span class="process-math">\(c\text{,}\)</span> and we write <span class="process-math">\(f'(c) \coloneqq L\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-3-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_der-3-2-1-2">If <span class="process-math">\(f\)</span> is differentiable at all <span class="process-math">\(c \in I\text{,}\)</span> then we simply say that <span class="process-math">\(f\)</span> is <em class="emphasis">differentiable</em>, and then we obtain a function <span class="process-math">\(f' \colon I \to \R\text{.}\)</span> The derivative is sometimes written as <span class="process-math">\(\frac{df}{dx}\)</span> or <span class="process-math">\(\frac{d}{dx}\bigl( f(x) \bigr)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-3-2-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_der-3-2-1-3">The expression <span class="process-math">\(\frac{f(x)-f(c)}{x-c}\)</span> is called the <em class="emphasis">difference quotient</em>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-3-2-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 4.1.1"><a aria-label="Copy heading and permalink for Definition 4.1.1" href="#sec_der-3-2" title="Copy heading and permalink for Definition 4.1.1">🔗</a></div>
+</article>
+<div class="para" id="sec_der-3-3">The graphical interpretation of the derivative is  depicted in <a class="internal" href="sec_der.html#derivfig" title="Figure 4.1">Figure 4.1</a>.  The left-hand plot gives the line through <span class="process-math">\(\bigl(c,f(c)\bigr)\)</span> and <span class="process-math">\(\bigl(x,f(x)\bigr)\)</span> with slope <span class="process-math">\(\frac{f(x)-f(c)}{x-c}\text{,}\)</span> that is, the <em class="emphasis">secant line</em>.  When we take the limit as <span class="process-math">\(x\)</span> goes to <span class="process-math">\(c\text{,}\)</span> we get the right-hand plot, where we see that the derivative of the function at the point <span class="process-math">\(c\)</span> is the slope of the line tangent to the graph of <span class="process-math">\(f\)</span> at the point <span class="process-math">\(\bigl(c,f(c)\bigr)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-3-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="derivfig"><img alt="Two diagrams of a plot of a function f. On the left, the points c and x are marked on the horizontal axis. The corresponding points on the graph of f are marked and through them is drawn a line (a secant line). It is labeled with slope equals f of x -f of c the entire thing divided by quantity x minus c. On the right, the same function is drawn but only the point c is marked. A line that is tangent to the graph of f through the corresponding point is drawn and labeled with slope equals f prime of c." class="raimg" role="img" src="figures/deriv_derivd-mbxpdft.svg" style="width:324pt; height:155pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Graphical interpretation of the derivative.<div class="autopermalink" data-description="Figure 4.1"><a aria-label="Copy heading and permalink for Figure 4.1" href="#derivfig" title="Copy heading and permalink for Figure 4.1">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para" id="sec_der-3-7">We allow <span class="process-math">\(I\)</span> to be a closed interval and we allow <span class="process-math">\(c\)</span> to be an endpoint of <span class="process-math">\(I\text{.}\)</span>  Some calculus books do not allow <span class="process-math">\(c\)</span> to be an endpoint of an interval, but all the theory still works by allowing it, and it makes our work easier.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-3-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_der-3-8"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.1.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_der-3-8-1-1">
+<div class="para">Let <span class="process-math">\(f(x) \coloneqq x^2\)</span> be defined on the whole real line.  Let <span class="process-math">\(c \in \R\)</span> be arbitrary.  We find that if <span class="process-math">\(x \neq c\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_der-3-8-1-1-4">
+\begin{equation}
+\frac{x^2-c^2}{x-c} =
+\frac{(x+c)(x-c)}{x-c} =
+(x+c) .
+\end{equation}
+</div>
+<div class="para">Therefore,</div>
+<div class="displaymath process-math" id="sec_der-3-8-1-1-5">
+\begin{equation}
+f'(c) = 
+\lim_{x\to c} \frac{x^2-c^2}{x-c} =
+\lim_{x\to c} (x+c) = 2c.
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-3-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 4.1.2"><a aria-label="Copy heading and permalink for Example 4.1.2" href="#sec_der-3-8" title="Copy heading and permalink for Example 4.1.2">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_der-3-9"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.1.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_der-3-9-1-1">
+<div class="para">Let <span class="process-math">\(f(x) \coloneqq ax + b\)</span> for numbers <span class="process-math">\(a, b \in \R\text{.}\)</span> Let <span class="process-math">\(c \in \R\)</span> be arbitrary. For <span class="process-math">\(x \neq c\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_der-3-9-1-1-5">
+\begin{equation}
+\frac{f(x)-f(c)}{x-c} =
+\frac{a(x-c)}{x-c} = a .
+\end{equation}
+</div>
+<div class="para">Therefore,</div>
+<div class="displaymath process-math" id="sec_der-3-9-1-1-6">
+\begin{equation}
+f'(c) =
+\lim_{x\to c} 
+\frac{f(x)-f(c)}{x-c} =
+\lim_{x\to c} 
+a = a.
+\end{equation}
+</div>
+<div class="para">In fact, every differentiable function “infinitesimally” behaves like the affine function <span class="process-math">\(ax + b\text{.}\)</span>  You can guess many results and formulas for derivatives if you work them out for affine functions first.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-3-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 4.1.3"><a aria-label="Copy heading and permalink for Example 4.1.3" href="#sec_der-3-9" title="Copy heading and permalink for Example 4.1.3">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_der-3-10"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.1.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_der-3-10-1-1">
+<div class="para">The function <span class="process-math">\(f(x) \coloneqq \sqrt{x}\)</span> is differentiable for <span class="process-math">\(x &gt; 0\text{.}\)</span>  To see this fact, fix <span class="process-math">\(c &gt; 0\text{,}\)</span> and suppose <span class="process-math">\(x \neq c\)</span> and <span class="process-math">\(x &gt; 0\text{.}\)</span>  Compute</div>
+<div class="displaymath process-math" id="sec_der-3-10-1-1-6">
+\begin{equation}
+\frac{\sqrt{x}-\sqrt{c}}{x-c}
+=
+\frac{\sqrt{x}-\sqrt{c}}{(\sqrt{x}-\sqrt{c})(\sqrt{x}+\sqrt{c})}
+=
+\frac{1}{\sqrt{x}+\sqrt{c}} .
+\end{equation}
+</div>
+<div class="para">Therefore,</div>
+<div class="displaymath process-math" id="sec_der-3-10-1-1-7">
+\begin{equation}
+f'(c) =
+\lim_{x\to c}
+\frac{\sqrt{x}-\sqrt{c}}{x-c}
+=
+\lim_{x\to c}
+\frac{1}{\sqrt{x}+\sqrt{c}}
+=
+\frac{1}{2\sqrt{c}} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-3-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 4.1.4"><a aria-label="Copy heading and permalink for Example 4.1.4" href="#sec_der-3-10" title="Copy heading and permalink for Example 4.1.4">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_der-3-11"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.1.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_der-3-11-1-1">
+<div class="para">The function <span class="process-math">\(f(x) \coloneqq \sabs{x}\)</span> is not differentiable at the origin.  When <span class="process-math">\(x &gt; 0\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_der-3-11-1-1-3">
+\begin{equation}
+\frac{\sabs{x}-\sabs{0}}{x-0} =
+\frac{x-0}{x-0} = 1 .
+\end{equation}
+</div>
+<div class="para">When <span class="process-math">\(x &lt; 0\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_der-3-11-1-1-5">
+\begin{equation}
+\frac{\sabs{x}-\sabs{0}}{x-0} =
+\frac{-x-0}{x-0} = -1 .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-3-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 4.1.5"><a aria-label="Copy heading and permalink for Example 4.1.5" href="#sec_der-3-11" title="Copy heading and permalink for Example 4.1.5">🔗</a></div>
+</article>
+<div class="para" id="sec_der-3-12">A famous example of Weierstrass shows that there exists a continuous function that is not differentiable at <em class="emphasis">any</em> point.  The construction of this function is beyond the scope of this chapter.  On the other hand, a differentiable function is always continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-3-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_der-3-13"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.1.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_der-3-13-1-1">If <span class="process-math">\(f \colon I \to \R\)</span> is differentiable at <span class="process-math">\(c \in I\text{,}\)</span> then it is continuous at <span class="process-math">\(c\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-3-13-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 4.1.6"><a aria-label="Copy heading and permalink for Proposition 4.1.6" href="#sec_der-3-13" title="Copy heading and permalink for Proposition 4.1.6">🔗</a></div>
+</article>
+<article class="proof" id="sec_der-3-14"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_der-3-14-1">
+<div class="para">We know the limits</div>
+<div class="displaymath process-math" id="sec_der-3-14-1-1">
+\begin{equation}
+\lim_{x\to c}\frac{f(x)-f(c)}{x-c} = f'(c)
+\qquad
+\text{and}
+\qquad
+\lim_{x\to c}(x-c) = 0
+\end{equation}
+</div>
+<div class="para">exist.  Furthermore,</div>
+<div class="displaymath process-math" id="sec_der-3-14-1-2">
+\begin{equation}
+f(x)-f(c) = 
+\left( \frac{f(x)-f(c)}{x-c} \right) (x-c) .
+\end{equation}
+</div>
+<div class="para">Therefore, the limit of <span class="process-math">\(f(x)-f(c)\)</span> exists and</div>
+<div class="displaymath process-math" id="sec_der-3-14-1-4">
+\begin{equation}
+\lim_{x\to c} \bigl( f(x)-f(c) \bigr) =
+\left(\lim_{x\to c} \frac{f(x)-f(c)}{x-c} \right)
+\left(\lim_{x\to c} (x-c) \right) =
+f'(c) \cdot 0  = 0.
+\end{equation}
+</div>
+<div class="para">Hence, <span class="process-math">\(\lim\limits_{x\to c} f(x) = f(c)\text{,}\)</span> and <span class="process-math">\(f\)</span> is continuous at <span class="process-math">\(c\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-3-14-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 4.1.1.1"><a aria-label="Copy heading and permalink for Proof 4.1.1.1" href="#sec_der-3-14" title="Copy heading and permalink for Proof 4.1.1.1">🔗</a></div>
+</article>
+<div class="para" id="sec_der-3-15">An important property of the derivative is linearity.  The derivative is the approximation of a function by a straight line. The slope of a line through two points changes linearly when the <span class="process-math">\(y\)</span>-coordinates are changed linearly.  Taking the limit, it makes sense that the derivative is linear.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-3-15" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_der-3-16"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.1.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Linearity.</span>
+</h4>
+<div class="para" id="sec_der-3-16-3-1">Let <span class="process-math">\(I\)</span> be an interval, let <span class="process-math">\(f \colon I \to \R\)</span> and <span class="process-math">\(g \colon I \to \R\)</span> be differentiable at <span class="process-math">\(c \in I\text{,}\)</span> and let <span class="process-math">\(\alpha \in \R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-3-16-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="sec_der-3-16-3-2">
+<li id="sec_der-3-16-3-2-1">
+<div class="para" id="sec_der-3-16-3-2-1-1">Define <span class="process-math">\(h \colon I \to \R\)</span> by <span class="process-math">\(h(x) \coloneqq \alpha f(x)\text{.}\)</span>  Then <span class="process-math">\(h\)</span> is differentiable at <span class="process-math">\(c\)</span> and <span class="process-math">\(h'(c) = \alpha f'(c)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-3-16-3-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#sec_der-3-16-3-2-1" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="sec_der-3-16-3-2-2">
+<div class="para" id="sec_der-3-16-3-2-2-1">Define <span class="process-math">\(h \colon I \to \R\)</span> by <span class="process-math">\(h(x) \coloneqq  f(x) + g(x)\text{.}\)</span>  Then <span class="process-math">\(h\)</span> is differentiable at <span class="process-math">\(c\)</span> and <span class="process-math">\(h'(c) =  f'(c) + g'(c)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-3-16-3-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#sec_der-3-16-3-2-2" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Proposition 4.1.7: Linearity"><a aria-label="Copy heading and permalink for Proposition 4.1.7: Linearity" href="#sec_der-3-16" title="Copy heading and permalink for Proposition 4.1.7: Linearity">🔗</a></div>
+</article>
+<article class="proof" id="sec_der-3-17"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_der-3-17-1">
+<div class="para">First, let <span class="process-math">\(h(x) \coloneqq \alpha f(x)\text{.}\)</span> For <span class="process-math">\(x \in I\text{,}\)</span> <span class="process-math">\(x \neq c\text{,}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/falg_cor.html" id="sec_der-3-17-1-4">
+\begin{equation}
+\frac{h(x)-h(c)}{x-c} =
+\frac{\alpha f(x) - \alpha f(c)}{x-c}
+=
+\alpha \frac{f(x) - f(c)}{x-c} .
+\end{equation}
+</div>
+<div class="para">The limit as <span class="process-math">\(x\)</span> goes to <span class="process-math">\(c\)</span> exists on the right-hand side by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_limoffunc.html#falg_cor" title="Corollary 3.1.12">Corollary 3.1.12</a>.  We get</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/falg_cor.html" id="sec_der-3-17-1-8">
+\begin{equation}
+\lim_{x\to c}\frac{h(x)-h(c)}{x-c} =
+\alpha \lim_{x\to c} \frac{f(x) - f(c)}{x-c} .
+\end{equation}
+</div>
+<div class="para">Therefore, <span class="process-math">\(h\)</span> is differentiable at <span class="process-math">\(c\text{,}\)</span> and the derivative is computed as given.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-3-17-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_der-3-17-2">
+<div class="para">Next, define <span class="process-math">\(h(x) \coloneqq f(x)+g(x)\text{.}\)</span> For <span class="process-math">\(x \in I\text{,}\)</span> <span class="process-math">\(x \neq c\text{,}\)</span> we have</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/falg_cor.html" id="sec_der-3-17-2-4">
+\begin{equation}
+\frac{h(x)-h(c)}{x-c} =
+\frac{\bigl(f(x) + g(x)\bigr) - \bigl(f(c) + g(c)\bigr)}{x-c}
+=
+\frac{f(x) - f(c)}{x-c}
++
+\frac{g(x) - g(c)}{x-c} .
+\end{equation}
+</div>
+<div class="para">The limit as <span class="process-math">\(x\)</span> goes to <span class="process-math">\(c\)</span> exists on the right-hand side by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_limoffunc.html#falg_cor" title="Corollary 3.1.12">Corollary 3.1.12</a>.  We get</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/falg_cor.html" id="sec_der-3-17-2-8">
+\begin{equation}
+\lim_{x\to c}\frac{h(x)-h(c)}{x-c} =
+\lim_{x\to c} \frac{f(x) - f(c)}{x-c}
++
+\lim_{x\to c}\frac{g(x) - g(c)}{x-c} .
+\end{equation}
+</div>
+<div class="para">Therefore, <span class="process-math">\(h\)</span> is differentiable at <span class="process-math">\(c\text{,}\)</span> and the derivative is computed as given.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-3-17-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 4.1.1.2"><a aria-label="Copy heading and permalink for Proof 4.1.1.2" href="#sec_der-3-17" title="Copy heading and permalink for Proof 4.1.1.2">🔗</a></div>
+</article>
+<div class="para" id="sec_der-3-18">It is not true that the derivative of a product of two functions is the product of the derivatives. Instead, we get what is called the <em class="emphasis">product rule</em> or the <em class="emphasis">Leibniz rule</em><details aria-live="polite" class="ptx-footnote" id="sec_der-3-18-3"><summary class="ptx-footnote__number" title="Footnote 4.1.1"><sup> 1 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_der-3-18-3">Named for the German mathematician <a class="external" href="https://en.wikipedia.org/wiki/Leibniz" target="_blank">Gottfried Wilhelm Leibniz</a> (1646–1716).
+</div></details>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-3-18" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_der-3-19"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.1.8</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Product rule.</span>
+</h4>
+<div class="para logical" id="sec_der-3-19-3-1">
+<div class="para">Let <span class="process-math">\(I\)</span> be an interval, let <span class="process-math">\(f \colon I \to \R\)</span> and <span class="process-math">\(g \colon I \to \R\)</span> be functions differentiable at <span class="process-math">\(c\text{.}\)</span>  If <span class="process-math">\(h \colon I \to \R\)</span> is defined by</div>
+<div class="displaymath process-math" id="sec_der-3-19-3-1-6">
+\begin{equation}
+h(x) \coloneqq f(x) g(x) ,
+\end{equation}
+</div>
+<div class="para">then <span class="process-math">\(h\)</span> is differentiable at <span class="process-math">\(c\)</span> and</div>
+<div class="displaymath process-math" id="sec_der-3-19-3-1-9">
+\begin{equation}
+h'(c) = f(c) g'(c) + f'(c) g(c) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-3-19-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 4.1.8: Product rule"><a aria-label="Copy heading and permalink for Proposition 4.1.8: Product rule" href="#sec_der-3-19" title="Copy heading and permalink for Proposition 4.1.8: Product rule">🔗</a></div>
+</article>
+<div class="para" id="sec_der-3-20">The proof of the product rule is left as an exercise.  The key to the proof is the identity <span class="process-math">\(f(x) g(x) - f(c) g(c) =
+f(x)\bigl( g(x) - g(c) \bigr)
++ \bigl( f(x) - f(c) \bigr) g(c)\text{,}\)</span> which is illustrated in <a class="internal" href="sec_der.html#figprodrule" title="Figure 4.2">Figure 4.2</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-3-20" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="figprodrule"><img alt="A diagram of a rectangular area in the plane, divided into 3 rectangles. The horizontal side runs from 0 to f of x, and the vertical side runs from 0 to g of x. The largest white area is a rectangle that runs horizontally from 0 to some f of c, which is slightly less than f of x, and vertically from 0 to some g of c, which is slightly less than g of x. This white area is labeled as f of c times g of c. On top, there is a thin lightly shaded rectangle running on the horizontal side from 0 to f of x, and on the vertical side from g of c to g of x. It is labeled as f of x times the quantity g of x minus g of c. Finally, there is a thin darkly shaded rectangle running horizontally from f of c to f of x and vertically from 0 to g of c. It is labeled as f of x minus f of c the entire thing times g of c." class="raimg" role="img" src="figures/figprodrule-mbxpdft.svg" style="width:212pt; height:139pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>The idea of product rule.  The area of the entire rectangle <span class="process-math">\(f(x)g(x)\)</span> differs from the area of the unshaded rectangle <span class="process-math">\(f(c)g(c)\)</span> by the area of the two shaded rectangles <span class="process-math">\(f(x)\bigl( g(x) - g(c) \bigr)\)</span> and <span class="process-math">\(\bigl( f(x) - f(c) \bigr) g(c)\text{.}\)</span> In other words, roughly,  <span class="process-math">\(\Delta (f \cdot g)
+= f \cdot \Delta g + \Delta f \cdot g\text{.}\)</span><div class="autopermalink" data-description="Figure 4.2"><a aria-label="Copy heading and permalink for Figure 4.2" href="#figprodrule" title="Copy heading and permalink for Figure 4.2">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<article class="proposition theorem-like" id="sec_der-3-24"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.1.9</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Quotient rule.</span>
+</h4>
+<div class="para logical" id="sec_der-3-24-3-1">
+<div class="para">Let <span class="process-math">\(I\)</span> be an interval, let <span class="process-math">\(f \colon I \to \R\)</span> and <span class="process-math">\(g \colon I \to \R\)</span> be differentiable at <span class="process-math">\(c\)</span> and <span class="process-math">\(g(x) \neq 0\)</span> for all <span class="process-math">\(x \in I\text{.}\)</span> If <span class="process-math">\(h \colon I \to \R\)</span> is defined by</div>
+<div class="displaymath process-math" id="sec_der-3-24-3-1-8">
+\begin{equation}
+h(x) \coloneqq \frac{f(x)}{g(x)},
+\end{equation}
+</div>
+<div class="para">then <span class="process-math">\(h\)</span> is differentiable at <span class="process-math">\(c\)</span> and</div>
+<div class="displaymath process-math" id="sec_der-3-24-3-1-11">
+\begin{equation}
+h'(c) = \frac{f'(c) g(c) - f(c) g'(c)}{{\bigl(g(c)\bigr)}^2} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-3-24-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 4.1.9: Quotient rule"><a aria-label="Copy heading and permalink for Proposition 4.1.9: Quotient rule" href="#sec_der-3-24" title="Copy heading and permalink for Proposition 4.1.9: Quotient rule">🔗</a></div>
+</article>
+<div class="para" id="sec_der-3-25">Again, the proof is left as an exercise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-3-25" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 4.1.1: Definition and basic properties"><a aria-label="Copy heading and permalink for Subsection 4.1.1: Definition and basic properties" href="#sec_der-3" title="Copy heading and permalink for Subsection 4.1.1: Definition and basic properties">🔗</a></div>
+</section>
+<section class="subsection" id="sec_der-4">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.1.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Chain rule</span>
+</h3>
+<div class="para" id="sec_der-4-2">More complicated functions are often obtained by composition, which is differentiated via the chain rule.  The rule also tells us how a derivative changes if we change variables.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_der-4-3"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.1.10</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Chain rule.</span>
+</h4>
+<div class="para logical" id="sec_der-4-3-3-1">
+<div class="para">Let <span class="process-math">\(I_1, I_2\)</span> be intervals, let <span class="process-math">\(g \colon I_1 \to I_2\)</span> be differentiable at <span class="process-math">\(c \in I_1\text{,}\)</span> and <span class="process-math">\(f \colon I_2 \to \R\)</span> be differentiable at <span class="process-math">\(g(c)\text{.}\)</span> If <span class="process-math">\(h \colon I_1 \to \R\)</span> is defined by</div>
+<div class="displaymath process-math" id="sec_der-4-3-3-1-7">
+\begin{equation}
+h(x) \coloneqq (f \circ g) (x) = f\bigl(g(x)\bigr) ,
+\end{equation}
+</div>
+<div class="para">then <span class="process-math">\(h\)</span> is differentiable at <span class="process-math">\(c\)</span> and</div>
+<div class="displaymath process-math" id="sec_der-4-3-3-1-10">
+\begin{equation}
+h'(c) = f'\bigl(g(c)\bigr)g'(c) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-4-3-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 4.1.10: Chain rule"><a aria-label="Copy heading and permalink for Proposition 4.1.10: Chain rule" href="#sec_der-4-3" title="Copy heading and permalink for Proposition 4.1.10: Chain rule">🔗</a></div>
+</article>
+<article class="proof" id="sec_der-4-4"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_der-4-4-1">
+<div class="para">Let <span class="process-math">\(d \coloneqq g(c)\text{.}\)</span>  Define <span class="process-math">\(u \colon I_2 \to \R\)</span> and <span class="process-math">\(v \colon I_1 \to \R\)</span> by</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/eq_chainruleeq.html" id="sec_der-4-4-1-4">
+\begin{equation}
+u(y) \coloneqq
+\begin{cases}
+\frac{f(y) - f(d)}{y-d}  &amp; \text{if } y \neq d, \\
+f'(d)                    &amp; \text{if } y = d,
+\end{cases}
+\qquad
+v(x) \coloneqq
+\begin{cases}
+\frac{g(x) - g(c)}{x-c} &amp; \text{if } x \neq c, \\
+g'(c)                   &amp; \text{if } x = c.
+\end{cases}
+\end{equation}
+</div>
+<div class="para">Because <span class="process-math">\(f\)</span> is differentiable at <span class="process-math">\(d = g(c)\text{,}\)</span> we find that <span class="process-math">\(u\)</span> is continuous at <span class="process-math">\(d\text{.}\)</span>  Similarly, <span class="process-math">\(v\)</span> is continuous at <span class="process-math">\(c\text{.}\)</span> For any <span class="process-math">\(x\)</span> and <span class="process-math">\(y\text{,}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/eq_chainruleeq.html" id="sec_der-4-4-1-13">
+\begin{equation}
+f(y)-f(d) = u(y) (y-d)
+\qquad \text{and} \qquad
+g(x)-g(c) = v(x) (x-c) .
+\end{equation}
+</div>
+<div class="para">Plug in to obtain</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/eq_chainruleeq.html" id="sec_der-4-4-1-14">
+\begin{equation}
+h(x)-h(c)
+=
+f\bigl(g(x)\bigr)-f\bigl(g(c)\bigr)
+=
+u\bigl( g(x) \bigr) \bigl(g(x)-g(c)\bigr)
+=
+u\bigl( g(x) \bigr) \bigl(v(x) (x-c)\bigr) .
+\end{equation}
+</div>
+<div class="para">Therefore, if <span class="process-math">\(x \neq c\text{,}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/eq_chainruleeq.html" id="eq_chainruleeq">
+\begin{equation}
+\frac{h(x)-h(c)}{x-c}
+=
+u\bigl( g(x) \bigr) v(x) .\tag{4.1}
+\end{equation}
+</div>
+<div class="para">By continuity of <span class="process-math">\(u\)</span> and <span class="process-math">\(v\)</span> at <span class="process-math">\(d\)</span> and <span class="process-math">\(c\)</span> respectively, we find <span class="process-math">\(\lim_{y \to d} u(y)
+= f'(d) = f'\bigl(g(c)\bigr)\)</span> and <span class="process-math">\(\lim_{x \to c} v(x) = g'(c)\text{.}\)</span> The function <span class="process-math">\(g\)</span> is continuous at <span class="process-math">\(c\text{,}\)</span> and so <span class="process-math">\(\lim_{x \to c} g(x) = g(c)\text{.}\)</span> Hence, the limit of the right-hand side of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_der.html#eq_chainruleeq" title="Equation 4.1">(4.1)</a> as <span class="process-math">\(x\)</span> goes to <span class="process-math">\(c\)</span> exists and is equal to <span class="process-math">\(f'\bigl(g(c)\bigr) g'(c)\text{.}\)</span>  Thus <span class="process-math">\(h\)</span> is differentiable at <span class="process-math">\(c\)</span> and <span class="process-math">\(h'(c) = f'\bigl(g(c)\bigr)g'(c)\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-4-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 4.1.2.1"><a aria-label="Copy heading and permalink for Proof 4.1.2.1" href="#sec_der-4-4" title="Copy heading and permalink for Proof 4.1.2.1">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 4.1.2: Chain rule"><a aria-label="Copy heading and permalink for Subsection 4.1.2: Chain rule" href="#sec_der-4" title="Copy heading and permalink for Subsection 4.1.2: Chain rule">🔗</a></div>
+</section>
+<section class="exercises" id="sec_der-5">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.1.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_der-5-1"><h4 class="heading"><span class="codenumber">4.1.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_der-5-1-1-1">Prove the product rule. Hint: Prove and use <span class="process-math">\(f(x) g(x) - f(c) g(c) = f(x)\bigl( g(x) - g(c) \bigr) + \bigl( f(x) -
+f(c) \bigr) g(c)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-5-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.1"><a aria-label="Copy heading and permalink for Exercise 4.1.1" href="#sec_der-5-1" title="Copy heading and permalink for Exercise 4.1.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_der-5-2"><h4 class="heading"><span class="codenumber">4.1.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_der-5-2-1-1">Prove the quotient rule.  Hint: You can do this directly, but it may be easier to find the derivative of <span class="process-math">\(\nicefrac{1}{x}\)</span> and then use the chain rule and the product rule.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-5-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.2"><a aria-label="Copy heading and permalink for Exercise 4.1.2" href="#sec_der-5-2" title="Copy heading and permalink for Exercise 4.1.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_diffofxn"><h4 class="heading"><span class="codenumber">4.1.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_diffofxn-1-1">For <span class="process-math">\(n \in \Z\text{,}\)</span> prove that <span class="process-math">\(x^n\)</span> is differentiable and find the derivative, unless, of course, <span class="process-math">\(n &lt; 0\)</span> and <span class="process-math">\(x=0\text{.}\)</span> Hint: Use the product rule.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_diffofxn-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.3"><a aria-label="Copy heading and permalink for Exercise 4.1.3" href="#exercise_diffofxn" title="Copy heading and permalink for Exercise 4.1.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_der-5-4"><h4 class="heading"><span class="codenumber">4.1.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_der-5-4-1-1">Prove that a polynomial is differentiable, and find the derivative. Hint: Use the previous exercise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-5-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.4"><a aria-label="Copy heading and permalink for Exercise 4.1.4" href="#sec_der-5-4" title="Copy heading and permalink for Exercise 4.1.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_der-5-5"><h4 class="heading"><span class="codenumber">4.1.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_der-5-5-1-1">
+<div class="para">Define <span class="process-math">\(f \colon \R \to \R\)</span> by</div>
+<div class="displaymath process-math" id="sec_der-5-5-1-1-2">
+\begin{equation}
+f(x) \coloneqq
+\begin{cases}
+x^2 &amp; \text{if } x \in \Q,\\
+0 &amp; \text{otherwise.}
+\end{cases}
+\end{equation}
+</div>
+<div class="para">Prove that <span class="process-math">\(f\)</span> is differentiable at <span class="process-math">\(0\text{,}\)</span> but discontinuous at all points except <span class="process-math">\(0\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-5-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.5"><a aria-label="Copy heading and permalink for Exercise 4.1.5" href="#sec_der-5-5" title="Copy heading and permalink for Exercise 4.1.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_der-5-6"><h4 class="heading"><span class="codenumber">4.1.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_der-5-6-1-1">Assume the inequality <span class="process-math">\(\babs{x-\sin(x)} \leq x^2\text{.}\)</span>  Prove that <span class="process-math">\(\sin\)</span> is differentiable at <span class="process-math">\(0\text{,}\)</span> and find the derivative at <span class="process-math">\(0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-5-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.6"><a aria-label="Copy heading and permalink for Exercise 4.1.6" href="#sec_der-5-6" title="Copy heading and permalink for Exercise 4.1.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_der-5-7"><h4 class="heading"><span class="codenumber">4.1.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_der-5-7-1-1">Using the previous exercise, prove that <span class="process-math">\(\sin\)</span> is differentiable at all <span class="process-math">\(x\)</span> and that the derivative is <span class="process-math">\(\cos(x)\text{.}\)</span>  Hint: Use the sum-to-product trigonometric identity as we did before.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-5-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.7"><a aria-label="Copy heading and permalink for Exercise 4.1.7" href="#sec_der-5-7" title="Copy heading and permalink for Exercise 4.1.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_der-5-8"><h4 class="heading"><span class="codenumber">4.1.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_der-5-8-1-1">Let <span class="process-math">\(f \colon I \to \R\)</span> be differentiable.  For <span class="process-math">\(n \in \Z\text{,}\)</span> let <span class="process-math">\(f^n\)</span> be the function defined by <span class="process-math">\(f^n(x) \coloneqq {\bigl( f(x) \bigr)}^n\text{.}\)</span>  If <span class="process-math">\(n &lt; 0\text{,}\)</span> assume <span class="process-math">\(f(x) \neq 0\)</span> for all <span class="process-math">\(x \in I\text{.}\)</span>  Prove that <span class="process-math">\((f^n)'(x) = n {\bigl(f(x) \bigr)}^{n-1} f'(x)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-5-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.8"><a aria-label="Copy heading and permalink for Exercise 4.1.8" href="#sec_der-5-8" title="Copy heading and permalink for Exercise 4.1.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_der-5-9"><h4 class="heading"><span class="codenumber">4.1.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_der-5-9-1-1">Suppose <span class="process-math">\(f \colon \R \to \R\)</span> is a differentiable Lipschitz continuous function. Prove that <span class="process-math">\(f'\)</span> is a bounded function.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-5-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.9"><a aria-label="Copy heading and permalink for Exercise 4.1.9" href="#sec_der-5-9" title="Copy heading and permalink for Exercise 4.1.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_inversederformula"><h4 class="heading"><span class="codenumber">4.1.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_inversederformula-1-1">Let <span class="process-math">\(I_1, I_2\)</span> be intervals. Let <span class="process-math">\(f \colon I_1 \to I_2\)</span> be a bijective function and <span class="process-math">\(g \colon I_2 \to I_1\)</span> be the inverse.  Suppose that both <span class="process-math">\(f\)</span> is differentiable at <span class="process-math">\(c \in I_1\)</span> and <span class="process-math">\(f'(c) \neq 0\)</span> and <span class="process-math">\(g\)</span> is differentiable at <span class="process-math">\(f(c)\text{.}\)</span>  Use the chain rule to find a formula for <span class="process-math">\(g'\bigl(f(c)\bigr)\)</span> (in terms of <span class="process-math">\(f'(c)\)</span>).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_inversederformula-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.10"><a aria-label="Copy heading and permalink for Exercise 4.1.10" href="#exercise_inversederformula" title="Copy heading and permalink for Exercise 4.1.10">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_bndmuldiff"><h4 class="heading"><span class="codenumber">4.1.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_bndmuldiff-1-1">Suppose <span class="process-math">\(f \colon I \to \R\)</span> is bounded, <span class="process-math">\(g \colon I \to
+\R\)</span> is differentiable at <span class="process-math">\(c \in I\text{,}\)</span> and <span class="process-math">\(g(c) = g'(c) = 0\text{.}\)</span>  Show that <span class="process-math">\(h(x) \coloneqq f(x) g(x)\)</span> is differentiable at <span class="process-math">\(c\text{.}\)</span>  Hint: You cannot apply the product rule.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_bndmuldiff-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.11"><a aria-label="Copy heading and permalink for Exercise 4.1.11" href="#exercise_bndmuldiff" title="Copy heading and permalink for Exercise 4.1.11">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_diffsqueeze"><h4 class="heading"><span class="codenumber">4.1.12<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_diffsqueeze-1-1">Suppose <span class="process-math">\(f \colon I \to \R\text{,}\)</span> <span class="process-math">\(g \colon I \to \R\text{,}\)</span> and <span class="process-math">\(h \colon I \to \R\text{,}\)</span> are functions.  Suppose <span class="process-math">\(c \in I\)</span> is such that <span class="process-math">\(f(c) = g(c) = h(c)\text{,}\)</span> <span class="process-math">\(g\)</span> and <span class="process-math">\(h\)</span> are differentiable at <span class="process-math">\(c\text{,}\)</span> and <span class="process-math">\(g'(c) = h'(c)\text{.}\)</span>  Furthermore, suppose <span class="process-math">\(h(x) \leq f(x) \leq g(x)\)</span> for all <span class="process-math">\(x \in I\text{.}\)</span>  Prove <span class="process-math">\(f\)</span> is differentiable at <span class="process-math">\(c\)</span> and <span class="process-math">\(f'(c) = g'(c) =
+h'(c)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_diffsqueeze-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.12"><a aria-label="Copy heading and permalink for Exercise 4.1.12" href="#exercise_diffsqueeze" title="Copy heading and permalink for Exercise 4.1.12">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_der-5-13"><h4 class="heading"><span class="codenumber">4.1.13<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_der-5-13-1-1"><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-5-13-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div></div>
+<ol class="lower-alpha ol-marker-3" id="sec_der-5-13-1-2">
+<li id="sec_der-5-13-1-2-1">
+<div class="para" id="sec_der-5-13-1-2-1-1">Suppose <span class="process-math">\(f \colon (-1,1) \to \R\)</span> is a function such that <span class="process-math">\(f(x) = x h(x)\)</span> for a bounded function <span class="process-math">\(h \colon (-1,1) \to \R\text{.}\)</span> Show that <span class="process-math">\(g(x) \coloneqq {\bigl( f(x) \bigr)}^2\)</span> is differentiable at the origin and <span class="process-math">\(g'(0) = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-5-13-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 4.1.13.a"><a aria-label="Copy heading and permalink for Item 4.1.13.a" href="#sec_der-5-13-1-2-1" title="Copy heading and permalink for Item 4.1.13.a">🔗</a></div>
+</li>
+<li id="sec_der-5-13-1-2-2">
+<div class="para" id="sec_der-5-13-1-2-2-1">Find an example of a continuous function <span class="process-math">\(f \colon (-1,1) \to \R\)</span> with <span class="process-math">\(f(0) = 0\text{,}\)</span> but such that <span class="process-math">\(g(x) \coloneqq {\bigl( f(x) \bigr)}^2\)</span> is not differentiable at the origin.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-5-13-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 4.1.13.b"><a aria-label="Copy heading and permalink for Item 4.1.13.b" href="#sec_der-5-13-1-2-2" title="Copy heading and permalink for Item 4.1.13.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 4.1.13"><a aria-label="Copy heading and permalink for Exercise 4.1.13" href="#sec_der-5-13" title="Copy heading and permalink for Exercise 4.1.13">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_der-5-14"><h4 class="heading"><span class="codenumber">4.1.14<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_der-5-14-1-1">Suppose <span class="process-math">\(f \colon I \to \R\)</span> is differentiable at <span class="process-math">\(c \in I\text{.}\)</span> Prove that there exist numbers <span class="process-math">\(a\)</span> and <span class="process-math">\(b\)</span> with the property that for every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there is a <span class="process-math">\(\delta &gt; 0\text{,}\)</span> such that <span class="process-math">\(\babs{a+b(x-c) - f(x)} \leq \epsilon \sabs{x-c}\text{,}\)</span> whenever <span class="process-math">\(x \in I\)</span> and <span class="process-math">\(\sabs{x-c} &lt; \delta\text{.}\)</span> In other words, show that there exists a function <span class="process-math">\(g \colon I \to \R\)</span> such that <span class="process-math">\(\lim_{x\to c} g(x) = 0\)</span> and <span class="process-math">\(\babs{a+b(x-c) - f(x)} = g(x) \sabs{x-c}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-5-14-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.14"><a aria-label="Copy heading and permalink for Exercise 4.1.14" href="#sec_der-5-14" title="Copy heading and permalink for Exercise 4.1.14">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_simpleLHopital"><h4 class="heading"><span class="codenumber">4.1.15<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="exercise_simpleLHopital-1-1">
+<div class="para">Prove the following simple version of L’Hôpital’s rule. Suppose <span class="process-math">\(f \colon (a,b) \to \R\)</span> and <span class="process-math">\(g \colon (a,b) \to \R\)</span> are differentiable functions whose derivatives <span class="process-math">\(f'\)</span> and <span class="process-math">\(g'\)</span> are continuous functions. Suppose that at <span class="process-math">\(c \in (a,b)\text{,}\)</span> <span class="process-math">\(f(c) = 0\text{,}\)</span> <span class="process-math">\(g(c)=0\text{,}\)</span> <span class="process-math">\(g'(x) \neq 0\)</span> for all <span class="process-math">\(x \in (a,b)\text{,}\)</span> and <span class="process-math">\(g(x) \neq 0\)</span> whenever <span class="process-math">\(x \neq c\text{.}\)</span>   Note that the limit of <span class="process-math">\(\nicefrac{f'(x)}{g'(x)}\)</span> as <span class="process-math">\(x\)</span> goes to <span class="process-math">\(c\)</span> exists.  Show that</div>
+<div class="displaymath process-math" id="exercise_simpleLHopital-1-1-17">
+\begin{equation}
+\lim_{x \to c} \frac{f(x)}{g(x)} = 
+\lim_{x \to c} \frac{f'(x)}{g'(x)} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_simpleLHopital-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.15"><a aria-label="Copy heading and permalink for Exercise 4.1.15" href="#exercise_simpleLHopital" title="Copy heading and permalink for Exercise 4.1.15">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_der-5-16"><h4 class="heading"><span class="codenumber">4.1.16<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_der-5-16-1-1">Suppose <span class="process-math">\(f \colon (a,b) \to \R\)</span> is differentiable at <span class="process-math">\(c \in (a,b)\text{,}\)</span> <span class="process-math">\(f(c)=0\text{,}\)</span> and <span class="process-math">\(f'(c) &gt; 0\text{.}\)</span> Prove that there is a <span class="process-math">\(\delta &gt; 0\)</span> such that <span class="process-math">\(f(x) &lt; 0\)</span> whenever <span class="process-math">\(c-\delta &lt; x &lt; c\)</span> and <span class="process-math">\(f(x) &gt; 0\)</span> whenever <span class="process-math">\(c &lt; x &lt; c+\delta\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_der-5-16-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.16"><a aria-label="Copy heading and permalink for Exercise 4.1.16" href="#sec_der-5-16" title="Copy heading and permalink for Exercise 4.1.16">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 4.1.3"><a aria-label="Copy heading and permalink for Exercises 4.1.3" href="#sec_der-5" title="Copy heading and permalink for Exercises 4.1.3">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 4.1: The derivative"><a aria-label="Copy heading and permalink for Section 4.1: The derivative" href="#sec_der" title="Copy heading and permalink for Section 4.1: The derivative">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="der_chapter.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_mvt.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

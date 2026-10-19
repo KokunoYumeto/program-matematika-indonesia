@@ -1,0 +1,565 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Absolute value and bounded functions · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_absval">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Absolute value and bounded functions</span>
+</h2>
+<div class="para" id="sec_absval-2">
+<em class="emphasis">Note: 0.5–1 lecture</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_absval-3">
+<div class="para">A concept we will encounter over and over is the <em class="emphasis">absolute value</em>. You want to think of the absolute value as the “size” of a real number. Here is the formal definition:</div>
+<div class="displaymath process-math" id="sec_absval-3-3">
+\begin{equation}
+\sabs{x} \coloneqq
+\begin{cases}
+x &amp; \text{if } x \geq 0, \\
+-x &amp; \text{if } x &lt; 0 .
+\end{cases}
+\end{equation}
+</div>
+<div class="para">The following proposition gives the main features of the absolute value.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_absbas"><h3 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.3.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="prop_absbas-1-1"><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_absbas-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div></div>
+<ol class="lower-roman ol-marker-2" id="prop_absbas-1-2">
+<li id="prop_absbas_i">
+<div class="para" id="prop_absbas_i-1">
+<span class="process-math">\(\sabs{x} \geq 0\text{,}\)</span> moreover, <span class="process-math">\(\sabs{x}=0\)</span> if and only if <span class="process-math">\(x = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_absbas_i-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#prop_absbas_i" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="prop_absbas_ii">
+<div class="para" id="prop_absbas_ii-1">
+<span class="process-math">\(\sabs{-x} = \sabs{x}\)</span> for all <span class="process-math">\(x \in \R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_absbas_ii-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#prop_absbas_ii" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+<li id="prop_absbas_iii">
+<div class="para" id="prop_absbas_iii-1">
+<span class="process-math">\(\sabs{xy} = \sabs{x}\sabs{y}\)</span> for all <span class="process-math">\(x,y \in \R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_absbas_iii-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iii"><a aria-label="Copy heading and permalink for Item iii" href="#prop_absbas_iii" title="Copy heading and permalink for Item iii">🔗</a></div>
+</li>
+<li id="prop_absbas_iv">
+<div class="para" id="prop_absbas_iv-1">
+<span class="process-math">\(\sabs{x}^2 = x^2\)</span> for all <span class="process-math">\(x \in \R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_absbas_iv-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iv"><a aria-label="Copy heading and permalink for Item iv" href="#prop_absbas_iv" title="Copy heading and permalink for Item iv">🔗</a></div>
+</li>
+<li id="prop_absbas_v">
+<div class="para" id="prop_absbas_v-1">
+<span class="process-math">\(\sabs{x} \leq y\)</span> if and only if <span class="process-math">\(-y \leq x \leq y\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_absbas_v-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item v"><a aria-label="Copy heading and permalink for Item v" href="#prop_absbas_v" title="Copy heading and permalink for Item v">🔗</a></div>
+</li>
+<li id="prop_absbas_vi">
+<div class="para" id="prop_absbas_vi-1">
+<span class="process-math">\(-\sabs{x} \leq x \leq \sabs{x}\)</span> for all <span class="process-math">\(x \in \R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_absbas_vi-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item vi"><a aria-label="Copy heading and permalink for Item vi" href="#prop_absbas_vi" title="Copy heading and permalink for Item vi">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Proposition 1.3.1"><a aria-label="Copy heading and permalink for Proposition 1.3.1" href="#prop_absbas" title="Copy heading and permalink for Proposition 1.3.1">🔗</a></div>
+</article>
+<article class="proof" id="sec_absval-5"><h3 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h3>
+<div class="para" id="sec_absval-5-1">
+<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_absval.html#prop_absbas_i" title="Item i">i</a>: First suppose <span class="process-math">\(x \geq 0\text{.}\)</span> Then <span class="process-math">\(\sabs{x} = x \geq 0\text{.}\)</span>  Also, <span class="process-math">\(\sabs{x} = x = 0\)</span> if and only if <span class="process-math">\(x=0\text{.}\)</span> On the other hand, if <span class="process-math">\(x &lt; 0\text{,}\)</span> then <span class="process-math">\(\sabs{x} = -x &gt; 0\text{,}\)</span> and <span class="process-math">\(\sabs{x}\)</span> is never zero.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-5-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_absval-5-2">
+<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_absval.html#prop_absbas_ii" title="Item ii">ii</a>: If <span class="process-math">\(x &gt; 0\text{,}\)</span> then <span class="process-math">\(-x &lt; 0\)</span> and so <span class="process-math">\(\sabs{-x} = -(-x) = x =
+\sabs{x}\text{.}\)</span>  Similarly when <span class="process-math">\(x &lt; 0\text{,}\)</span> or <span class="process-math">\(x = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-5-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_absval-5-3">
+<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_absval.html#prop_absbas_iii" title="Item iii">iii</a>: If <span class="process-math">\(x\)</span> or <span class="process-math">\(y\)</span> is zero, then the result is immediate.  When <span class="process-math">\(x\)</span> and <span class="process-math">\(y\)</span> are both positive, then <span class="process-math">\(\sabs{x}\sabs{y} = xy\text{.}\)</span>  The product of positive numbers is positive, so <span class="process-math">\(xy\)</span> is positive and <span class="process-math">\(xy = \sabs{xy}\text{.}\)</span> If <span class="process-math">\(x\)</span> and <span class="process-math">\(y\)</span> are both negative, then <span class="process-math">\(xy=(-x)(-y)\)</span> is positive for the same reason and again <span class="process-math">\(\sabs{xy}=xy\text{.}\)</span>  Also, <span class="process-math">\(\sabs{x}\sabs{y} = (-x)(-y) = xy\text{.}\)</span> So the result holds if <span class="process-math">\(x\)</span> and <span class="process-math">\(y\)</span> have the same sign. If <span class="process-math">\(x &gt; 0\)</span> and <span class="process-math">\(y &lt; 0\text{,}\)</span> then <span class="process-math">\(\sabs{x}\sabs{y} = x(-y) = -(xy)\text{.}\)</span>  Now <span class="process-math">\(xy\)</span> is negative and <span class="process-math">\(\sabs{xy} = -(xy)\text{,}\)</span> and the result holds.  Similarly when <span class="process-math">\(x &lt; 0\)</span> and <span class="process-math">\(y &gt; 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-5-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_absval-5-4">
+<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_absval.html#prop_absbas_iv" title="Item iv">iv</a>: Immediate if <span class="process-math">\(x \geq 0\text{.}\)</span>  If <span class="process-math">\(x &lt; 0\text{,}\)</span> then <span class="process-math">\(\sabs{x}^2 = {(-x)}^2 =
+x^2\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-5-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_absval-5-5">
+<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_absval.html#prop_absbas_v" title="Item v">v</a>: Suppose <span class="process-math">\(\sabs{x} \leq y\text{.}\)</span> If <span class="process-math">\(x \geq 0\text{,}\)</span> then <span class="process-math">\(x \leq y\text{.}\)</span> It follows that <span class="process-math">\(y \geq 0\text{,}\)</span> leading to <span class="process-math">\(-y \leq 0 \leq x\text{.}\)</span> So <span class="process-math">\(-y \leq x \leq y\)</span> holds. If <span class="process-math">\(x &lt; 0\text{,}\)</span> then <span class="process-math">\(\sabs{x} \leq y\)</span> means <span class="process-math">\(-x \leq y\text{.}\)</span> Multiplying both sides by <span class="process-math">\(-1\text{,}\)</span> we get <span class="process-math">\(x \geq -y\text{.}\)</span> Again <span class="process-math">\(y \geq 0\)</span> and so <span class="process-math">\(y \geq 0 &gt; x\text{.}\)</span> Hence, <span class="process-math">\(-y \leq x \leq y\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-5-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_absval-5-6">On the other hand, suppose <span class="process-math">\(-y \leq x \leq y\)</span> is true. If <span class="process-math">\(x \geq 0\text{,}\)</span> then <span class="process-math">\(x \leq y\)</span> is equivalent to <span class="process-math">\(\sabs{x} \leq y\text{.}\)</span> If <span class="process-math">\(x &lt; 0\text{,}\)</span> then <span class="process-math">\(-y \leq x\)</span> implies <span class="process-math">\((-x) \leq y\text{,}\)</span> which is equivalent to <span class="process-math">\(\sabs{x} \leq y\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-5-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_absval-5-7">
+<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_absval.html#prop_absbas_vi" title="Item vi">vi</a>: Apply <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_absval.html#prop_absbas_v" title="Item v">v</a> with <span class="process-math">\(y = \sabs{x}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-5-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 1.3.1"><a aria-label="Copy heading and permalink for Proof 1.3.1" href="#sec_absval-5" title="Copy heading and permalink for Proof 1.3.1">🔗</a></div>
+</article>
+<div class="para" id="sec_absval-6">A property used frequently enough to give it a name is the <em class="emphasis">triangle inequality</em>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_absval-7"><h3 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.3.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Triangle Inequality.</span>
+</h3>
+<div class="para" id="sec_absval-7-2-1">
+<span class="process-math">\(\sabs{x+y} \leq \sabs{x}+\sabs{y}\)</span> for all <span class="process-math">\(x, y \in \R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-7-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 1.3.2: Triangle Inequality"><a aria-label="Copy heading and permalink for Proposition 1.3.2: Triangle Inequality" href="#sec_absval-7" title="Copy heading and permalink for Proposition 1.3.2: Triangle Inequality">🔗</a></div>
+</article>
+<article class="proof" id="sec_absval-8"><h3 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h3>
+<div class="para logical" id="sec_absval-8-1">
+<div class="para">
+<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_absval.html#prop_absbas" title="Proposition 1.3.1">Proposition 1.3.1</a> gives <span class="process-math">\(- \sabs{x} \leq x \leq \sabs{x}\)</span> and <span class="process-math">\(- \sabs{y} \leq y \leq \sabs{y}\text{.}\)</span>  Add these two inequalities to obtain</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_absbas.html ./knowl/xref/prop_absbas.html" id="sec_absval-8-1-4">
+\begin{equation}
+- \bigl(\sabs{x}+\sabs{y}\bigr) \leq x+y \leq \sabs{x}+ \sabs{y} .
+\end{equation}
+</div>
+<div class="para">Apply <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_absval.html#prop_absbas" title="Proposition 1.3.1">Proposition 1.3.1</a> again to find <span class="process-math">\(\sabs{x+y} \leq \sabs{x}+\sabs{y}\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-8-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 1.3.2"><a aria-label="Copy heading and permalink for Proof 1.3.2" href="#sec_absval-8" title="Copy heading and permalink for Proof 1.3.2">🔗</a></div>
+</article>
+<div class="para" id="sec_absval-9">There are other often applied versions of the triangle inequality.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-9" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="corollary theorem-like" id="sec_absval-10"><h3 class="heading">
+<span class="type">Corollary</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.3.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="sec_absval-10-1-1">Let <span class="process-math">\(x,y \in \R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="sec_absval-10-1-2">
+<li id="sec_absval-10-1-2-1">
+<div class="para" id="sec_absval-10-1-2-1-1">
+<em class="emphasis">(reverse triangle inequality)</em>   <span class="process-math">\(\babs{ \, \sabs{x}-\sabs{y} \, } \leq \sabs{x-y}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-10-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#sec_absval-10-1-2-1" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="sec_absval-10-1-2-2">
+<div class="para" id="sec_absval-10-1-2-2-1">
+<span class="process-math">\(\sabs{x-y} \leq \sabs{x}+\sabs{y}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-10-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#sec_absval-10-1-2-2" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Corollary 1.3.3"><a aria-label="Copy heading and permalink for Corollary 1.3.3" href="#sec_absval-10" title="Copy heading and permalink for Corollary 1.3.3">🔗</a></div>
+</article>
+<article class="proof" id="sec_absval-11"><h3 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h3>
+<div class="para logical" id="sec_absval-11-1">
+<div class="para">Let us plug in <span class="process-math">\(x=a-b\)</span> and <span class="process-math">\(y=b\)</span> into the standard triangle inequality to obtain</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_absbas.html" id="sec_absval-11-1-3">
+\begin{equation}
+\sabs{a} = \sabs{a-b+b} \leq \sabs{a-b} + \sabs{b} ,
+\end{equation}
+</div>
+<div class="para">or <span class="process-math">\(\sabs{a}-\sabs{b} \leq \sabs{a-b}\text{.}\)</span>  Switching the roles of <span class="process-math">\(a\)</span> and <span class="process-math">\(b\)</span> we find <span class="process-math">\(\sabs{b}-\sabs{a} \leq \sabs{b-a} = \sabs{a-b}\text{.}\)</span>  Applying <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_absval.html#prop_absbas" title="Proposition 1.3.1">Proposition 1.3.1</a>, we obtain the reverse triangle inequality.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-11-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_absval-11-2">The second item in the corollary is obtained from the standard triangle inequality by just replacing <span class="process-math">\(y\)</span> with <span class="process-math">\(-y\text{,}\)</span> and noting <span class="process-math">\(\sabs{-y} =
+\sabs{y}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-11-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 1.3.3"><a aria-label="Copy heading and permalink for Proof 1.3.3" href="#sec_absval-11" title="Copy heading and permalink for Proof 1.3.3">🔗</a></div>
+</article>
+<article class="corollary theorem-like" id="sec_absval-12"><h3 class="heading">
+<span class="type">Corollary</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.3.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para logical" id="sec_absval-12-1-1">
+<div class="para">Let <span class="process-math">\(x_1, x_2, \ldots, x_n \in \R\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" id="sec_absval-12-1-1-2">
+\begin{equation}
+\sabs{x_1 + x_2 + \cdots + x_n} \leq
+\sabs{x_1} + \sabs{x_2} + \cdots + \sabs{x_n} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-12-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Corollary 1.3.4"><a aria-label="Copy heading and permalink for Corollary 1.3.4" href="#sec_absval-12" title="Copy heading and permalink for Corollary 1.3.4">🔗</a></div>
+</article>
+<article class="proof" id="sec_absval-13"><h3 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h3>
+<div class="para logical" id="sec_absval-13-1">
+<div class="para">We proceed by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicset.html#induction_thm" title="Theorem 0.3.6: Principle of induction">induction</a>. The conclusion holds trivially for <span class="process-math">\(n=1\text{,}\)</span> and for <span class="process-math">\(n=2\)</span> it is the standard triangle inequality.  Suppose the corollary holds for <span class="process-math">\(n\text{.}\)</span>  Consider <span class="process-math">\(n+1\)</span> numbers <span class="process-math">\(x_1,x_2,\ldots,x_{n+1}\text{,}\)</span> First use the standard triangle inequality, then the induction hypothesis</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/induction_thm.html" id="sec_absval-13-1-7">
+\begin{equation}
+\begin{split}
+\sabs{x_1 + x_2 + \cdots + x_n + x_{n+1}} &amp; \leq
+\sabs{x_1 + x_2 + \cdots + x_n} + \sabs{x_{n+1}} \\
+&amp; \leq
+\sabs{x_1} + \sabs{x_2} + \cdots + \sabs{x_n} + \sabs{x_{n+1}} .  \qedhere
+\end{split}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-13-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 1.3.4"><a aria-label="Copy heading and permalink for Proof 1.3.4" href="#sec_absval-13" title="Copy heading and permalink for Proof 1.3.4">🔗</a></div>
+</article>
+<div class="para" id="sec_absval-14">Let us see an example of the use of the triangle inequality.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-14" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_absval-15"><h3 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.3.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="sec_absval-15-1-1">Find a number <span class="process-math">\(M\)</span> such that <span class="process-math">\(\sabs{x^2-9x+1} \leq M\)</span> for all <span class="process-math">\(-1 \leq x \leq
+5\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-15-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_absval-15-1-2">
+<div class="para">Using the triangle inequality, write</div>
+<div class="displaymath process-math" id="sec_absval-15-1-2-1">
+\begin{equation}
+\sabs{x^2-9x+1} \leq \sabs{x^2}+\sabs{-9x}+\sabs{1}
+=
+\sabs{x}^2+9\sabs{x}+1 .
+\end{equation}
+</div>
+<div class="para">The expression <span class="process-math">\(\sabs{x}^2+9\sabs{x}+1\)</span> is largest when <span class="process-math">\(\sabs{x}\)</span> is largest (why?).  In the interval provided, <span class="process-math">\(\sabs{x}\)</span> is largest when <span class="process-math">\(x=5\)</span> and so <span class="process-math">\(\sabs{x}=5\text{.}\)</span>  One possibility for <span class="process-math">\(M\)</span> is</div>
+<div class="displaymath process-math" id="sec_absval-15-1-2-8">
+\begin{equation}
+M = 5^2+9(5)+1 = 71 .
+\end{equation}
+</div>
+<div class="para">There are, of course, other values of <span class="process-math">\(M\)</span> that work.  The bound of 71 is much higher than it need be, but we didn’t ask for the best possible <span class="process-math">\(M\text{,}\)</span> just one that works.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-15-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 1.3.5"><a aria-label="Copy heading and permalink for Example 1.3.5" href="#sec_absval-15" title="Copy heading and permalink for Example 1.3.5">🔗</a></div>
+</article>
+<div class="para" id="sec_absval-16">The last example leads us to the concept of bounded functions.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-16" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_absval-17"><h3 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.3.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="sec_absval-17-1-1">Suppose <span class="process-math">\(f \colon D \to \R\)</span> is a function.  We say <span class="process-math">\(f\)</span> is <em class="emphasis">bounded</em> if there exists a number <span class="process-math">\(M\)</span> such that <span class="process-math">\(\babs{f(x)} \leq M\)</span> for all <span class="process-math">\(x \in D\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-17-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 1.3.6"><a aria-label="Copy heading and permalink for Definition 1.3.6" href="#sec_absval-17" title="Copy heading and permalink for Definition 1.3.6">🔗</a></div>
+</article>
+<div class="para" id="sec_absval-18">In the example, we proved <span class="process-math">\(x^2-9x+1\)</span> is bounded when considered as a function on <span class="process-math">\(D = \{ x : -1 \leq x \leq 5 \}\text{.}\)</span>  On the other hand, if we consider the same polynomial as a function on the whole real line <span class="process-math">\(\R\text{,}\)</span> then it is not bounded.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-18" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="boundedfuncfig"><img alt="A diagram of the graph of a function. A domain D is marked on the horizontal axis, and a sinusoidal line representing a graph of a function on this domain is drawn. The maximal value of the function is drawn as a horizontal dashed line that is touching the graph of the function and is marked as sup f of D. Similarly, the minimum is marked inf f of D. Two other dash-dotted lines are marked with M and minus M. The line marked M is above the graph and the line marked minus M is below the graph. On the vertical axis, the set of values that function attains is marked f of D." class="raimg" role="img" src="figures/boundedfunc-mbx.svg" style="width:196pt; height:107pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Example of a bounded function, a bound <span class="process-math">\(M\text{,}\)</span> and its supremum and infimum.<div class="autopermalink" data-description="Figure 1.4"><a aria-label="Copy heading and permalink for Figure 1.4" href="#boundedfuncfig" title="Copy heading and permalink for Figure 1.4">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para logical" id="sec_absval-22">
+<div class="para">For a function <span class="process-math">\(f \colon D \to \R\text{,}\)</span> we write (see <a class="internal" href="sec_absval.html#boundedfuncfig" title="Figure 1.4">Figure 1.4</a> for an example)</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/boundedfuncfig.html" id="sec_absval-22-3">
+\begin{equation}
+\sup_{x \in D} f(x) \coloneqq \sup\, f(D) \qquad \text{and} \qquad
+\inf_{x \in D} f(x) \coloneqq \inf\, f(D) .
+\end{equation}
+</div>
+<div class="para">We also sometimes replace the “<span class="process-math">\(x \in D\)</span>” with an expression. For example if, as before, <span class="process-math">\(f(x) = x^2-9x+1\text{,}\)</span> for <span class="process-math">\(-1 \leq x \leq 5\text{,}\)</span> a little bit of calculus shows</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/boundedfuncfig.html" id="sec_absval-22-7">
+\begin{equation}
+\sup_{x \in D} f(x) =
+\sup_{-1 \leq x \leq 5} ( x^2 -9x+1 ) = 11,
+\qquad
+\inf_{x \in D} f(x) =
+\inf_{-1 \leq x \leq 5} ( x^2 -9x+1 ) = \nicefrac{-77}{4} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-22" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_funcsupinf"><h3 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.3.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para logical" id="prop_funcsupinf-1-1">
+<div class="para">If <span class="process-math">\(f \colon D \to \R\)</span> and <span class="process-math">\(g \colon D \to \R\)</span> (<span class="process-math">\(D\)</span> nonempty) are bounded<details aria-live="polite" class="ptx-footnote" id="prop_funcsupinf-1-1-4"><summary class="ptx-footnote__number" title="Footnote 1.3.1"><sup> 1 </sup></summary>
+<div class="ptx-footnote__contents" id="prop_funcsupinf-1-1-4">The boundedness hypothesis is for simplicity; it can be dropped if we use the extended real numbers.
+</div></details> functions and</div>
+<div class="displaymath process-math" id="prop_funcsupinf-1-1-5">
+\begin{equation}
+f(x) \leq g(x) \qquad \text{for all } x \in D,
+\end{equation}
+</div>
+<div class="para">then</div>
+<div class="displaymath process-math" id="prop_funcsupinf_eq">
+\begin{equation}
+\sup_{x \in D} f(x) \leq \sup_{x \in D} g(x)
+\qquad \text{and} \qquad
+\inf_{x \in D} f(x) \leq \inf_{x \in D} g(x) .\tag{1.1}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_funcsupinf-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 1.3.7"><a aria-label="Copy heading and permalink for Proposition 1.3.7" href="#prop_funcsupinf" title="Copy heading and permalink for Proposition 1.3.7">🔗</a></div>
+</article>
+<div class="para logical" id="sec_absval-24">
+<div class="para">Be careful with the variables.  The <span class="process-math">\(x\)</span> on the left side of the inequality in <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_absval.html#prop_funcsupinf_eq" title="Equation 1.1">(1.1)</a> is different from the <span class="process-math">\(x\)</span> on the right.  You should really think of, say, the first inequality as</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_funcsupinf_eq.html ./knowl/xref/exercise_finishfuncsupinf.html" id="sec_absval-24-4">
+\begin{equation}
+\sup_{x \in D} f(x) \leq \sup_{y \in D} g(y) .
+\end{equation}
+</div>
+<div class="para">Let us prove this inequality.  If <span class="process-math">\(b\)</span> is an upper bound for <span class="process-math">\(g(D)\text{,}\)</span> then <span class="process-math">\(f(x) \leq g(x) \leq b\)</span> for all <span class="process-math">\(x \in D\text{,}\)</span> and hence <span class="process-math">\(b\)</span> is also an upper bound for <span class="process-math">\(f(D)\text{,}\)</span> or <span class="process-math">\(f(x) \leq b\)</span> for all <span class="process-math">\(x \in D\text{.}\)</span> Take the least upper bound of <span class="process-math">\(g(D)\)</span> to get that for all <span class="process-math">\(x \in D\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_funcsupinf_eq.html ./knowl/xref/exercise_finishfuncsupinf.html" id="sec_absval-24-15">
+\begin{equation}
+f(x) \leq \sup_{y \in D} g(y) .
+\end{equation}
+</div>
+<div class="para">Therefore, <span class="process-math">\(\sup_{y \in D} g(y)\)</span> is an upper bound for <span class="process-math">\(f(D)\)</span> and thus greater than or equal to the least upper bound of <span class="process-math">\(f(D)\text{.}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_funcsupinf_eq.html ./knowl/xref/exercise_finishfuncsupinf.html" id="sec_absval-24-19">
+\begin{equation}
+\sup_{x \in D} f(x) \leq \sup_{y \in D} g(y) .
+\end{equation}
+</div>
+<div class="para">The second inequality (the statement about the inf) is left as an exercise (<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_absval.html#exercise_finishfuncsupinf" title="Exercise 1.3.4">Exercise 1.3.4</a>).</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-24" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_absval-25">
+<div class="para">A common mistake is to conclude</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/rn_av_ltnottrue.html ./knowl/xref/exercise_supinffuncineq.html" id="rn_av_ltnottrue">
+\begin{equation}
+\sup_{x \in D} f(x) \leq \inf_{y \in D} g(y) .\tag{1.2}
+\end{equation}
+</div>
+<div class="para">The inequality <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_absval.html#rn_av_ltnottrue" title="Equation 1.2">(1.2)</a> is not true given the hypothesis of the proposition above.  For this stronger inequality we need the stronger hypothesis</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/rn_av_ltnottrue.html ./knowl/xref/exercise_supinffuncineq.html" id="sec_absval-25-3">
+\begin{equation}
+f(x) \leq g(y) \qquad \text{for all } x \in D \text{ and } y \in D.
+\end{equation}
+</div>
+<div class="para">The proof, as well as a counterexample, is left as an exercise (<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_absval.html#exercise_supinffuncineq" title="Exercise 1.3.5">Exercise 1.3.5</a>).</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-25" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<section class="exercises" id="sec_absval-26">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber"></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_absval-26-1"><h4 class="heading"><span class="codenumber">1.3.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_absval-26-1-1-1">Show that <span class="process-math">\(\sabs{x-y} &lt; \epsilon\)</span> if and only if <span class="process-math">\(x-\epsilon &lt; y &lt; x+\epsilon\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-26-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.3.1"><a aria-label="Copy heading and permalink for Exercise 1.3.1" href="#sec_absval-26-1" title="Copy heading and permalink for Exercise 1.3.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_absval-26-2"><h4 class="heading"><span class="codenumber">1.3.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_absval-26-2-1-1">Show:        a) <span class="process-math">\(\max \{x,y\} = \dfrac{x+y+\sabs{x-y}}{2}\)</span>        b) <span class="process-math">\(\min \{x,y\} = \dfrac{x+y-\sabs{x-y}}{2}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-26-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.3.2"><a aria-label="Copy heading and permalink for Exercise 1.3.2" href="#sec_absval-26-2" title="Copy heading and permalink for Exercise 1.3.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_absval-26-3"><h4 class="heading"><span class="codenumber">1.3.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_absval-26-3-1-1">Find a number <span class="process-math">\(M\)</span> such that <span class="process-math">\(\sabs{x^3-x^2+8x} \leq M\)</span> for all <span class="process-math">\(-2 \leq x \leq
+10\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-26-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.3.3"><a aria-label="Copy heading and permalink for Exercise 1.3.3" href="#sec_absval-26-3" title="Copy heading and permalink for Exercise 1.3.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_finishfuncsupinf"><h4 class="heading"><span class="codenumber">1.3.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="exercise_finishfuncsupinf-1-1">
+<div class="para">Finish the proof of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_absval.html#prop_funcsupinf" title="Proposition 1.3.7">Proposition 1.3.7</a>. That is, given a set <span class="process-math">\(D\text{,}\)</span> and two bounded functions <span class="process-math">\(f \colon D \to \R\)</span> and <span class="process-math">\(g \colon D \to \R\)</span> such that <span class="process-math">\(f(x) \leq g(x)\)</span> for all <span class="process-math">\(x \in D\text{,}\)</span> prove that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_funcsupinf.html" id="exercise_finishfuncsupinf-1-1-7">
+\begin{equation}
+\inf_{x\in D} f(x) \leq \inf_{x\in D} g(x) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_finishfuncsupinf-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.3.4"><a aria-label="Copy heading and permalink for Exercise 1.3.4" href="#exercise_finishfuncsupinf" title="Copy heading and permalink for Exercise 1.3.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_supinffuncineq"><h4 class="heading"><span class="codenumber">1.3.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_supinffuncineq-1-1">Let <span class="process-math">\(f \colon D \to \R\)</span> and <span class="process-math">\(g \colon D \to \R\)</span> be functions (<span class="process-math">\(D\)</span> nonempty).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_supinffuncineq-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="exercise_supinffuncineq-1-2">
+<li id="exercise_supinffuncineq-1-2-1">
+<div class="para logical" id="exercise_supinffuncineq-1-2-1-1">
+<div class="para">Suppose <span class="process-math">\(f(x) \leq g(y)\)</span> for all <span class="process-math">\(x \in D\)</span> and <span class="process-math">\(y \in D\text{.}\)</span>  Show that</div>
+<div class="displaymath process-math" id="exercise_supinffuncineq-1-2-1-1-4">
+\begin{equation}
+\sup_{x\in D} f(x) \leq \inf_{x\in D} g(x) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_supinffuncineq-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1.3.5.a"><a aria-label="Copy heading and permalink for Item 1.3.5.a" href="#exercise_supinffuncineq-1-2-1" title="Copy heading and permalink for Item 1.3.5.a">🔗</a></div>
+</li>
+<li id="exercise_supinffuncineq-1-2-2">
+<div class="para logical" id="exercise_supinffuncineq-1-2-2-1">
+<div class="para">Find a specific <span class="process-math">\(D\text{,}\)</span> <span class="process-math">\(f\text{,}\)</span> and <span class="process-math">\(g\text{,}\)</span> such that <span class="process-math">\(f(x) \leq g(x)\)</span> for all <span class="process-math">\(x \in D\text{,}\)</span> but</div>
+<div class="displaymath process-math" id="exercise_supinffuncineq-1-2-2-1-6">
+\begin{equation}
+\sup_{x\in D} f(x) &gt; \inf_{x\in D} g(x) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_supinffuncineq-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1.3.5.b"><a aria-label="Copy heading and permalink for Item 1.3.5.b" href="#exercise_supinffuncineq-1-2-2" title="Copy heading and permalink for Item 1.3.5.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 1.3.5"><a aria-label="Copy heading and permalink for Exercise 1.3.5" href="#exercise_supinffuncineq" title="Copy heading and permalink for Exercise 1.3.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_absval-26-6"><h4 class="heading"><span class="codenumber">1.3.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_absval-26-6-1-1">Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_absval.html#prop_funcsupinf" title="Proposition 1.3.7">Proposition 1.3.7</a> without the assumption that the functions are bounded.  Hint: You need to use the extended real numbers.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-26-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.3.6"><a aria-label="Copy heading and permalink for Exercise 1.3.6" href="#sec_absval-26-6" title="Copy heading and permalink for Exercise 1.3.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_sumofsup"><h4 class="heading"><span class="codenumber">1.3.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_sumofsup-1-1">Let <span class="process-math">\(D\)</span> be a nonempty set. Suppose <span class="process-math">\(f \colon D \to \R\)</span> and <span class="process-math">\(g \colon D \to \R\)</span> are bounded functions.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_sumofsup-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="exercise_sumofsup-1-2">
+<li id="exercise_sumofsup-1-2-1">
+<div class="para logical" id="exercise_sumofsup-1-2-1-1">
+<div class="para">Show</div>
+<div class="displaymath process-math" id="exercise_sumofsup-1-2-1-1-1">
+\begin{equation}
+\begin{aligned}
+&amp;
+\sup_{x\in D} \bigl(f(x) + g(x) \bigr) \leq
+\sup_{x\in D} f(x)
++
+\sup_{x\in D} g(x)
+\qquad \text{and}
+\\
+&amp;
+\inf_{x\in D} \bigl(f(x) + g(x) \bigr) \geq
+\inf_{x\in D} f(x)
++
+\inf_{x\in D} g(x) .
+\end{aligned}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_sumofsup-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1.3.7.a"><a aria-label="Copy heading and permalink for Item 1.3.7.a" href="#exercise_sumofsup-1-2-1" title="Copy heading and permalink for Item 1.3.7.a">🔗</a></div>
+</li>
+<li id="exercise_sumofsup-1-2-2">
+<div class="para" id="exercise_sumofsup-1-2-2-1">Find an example (or examples) where we obtain strict inequalities.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_sumofsup-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1.3.7.b"><a aria-label="Copy heading and permalink for Item 1.3.7.b" href="#exercise_sumofsup-1-2-2" title="Copy heading and permalink for Item 1.3.7.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 1.3.7"><a aria-label="Copy heading and permalink for Exercise 1.3.7" href="#exercise_sumofsup" title="Copy heading and permalink for Exercise 1.3.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_absval-26-8"><h4 class="heading"><span class="codenumber">1.3.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_absval-26-8-1-1">Suppose <span class="process-math">\(D\)</span> is nonempty, <span class="process-math">\(f \colon D \to \R\)</span> and <span class="process-math">\(g \colon D \to \R\)</span> are bounded functions, and <span class="process-math">\(\alpha \in \R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-26-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_absval-26-8-1-2">
+<li id="sec_absval-26-8-1-2-1">
+<div class="para" id="sec_absval-26-8-1-2-1-1">Show that <span class="process-math">\(\alpha f \colon D \to \R\)</span> defined by <span class="process-math">\((\alpha f) (x) \coloneqq \alpha
+f(x)\)</span> is a bounded function.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-26-8-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1.3.8.a"><a aria-label="Copy heading and permalink for Item 1.3.8.a" href="#sec_absval-26-8-1-2-1" title="Copy heading and permalink for Item 1.3.8.a">🔗</a></div>
+</li>
+<li id="sec_absval-26-8-1-2-2">
+<div class="para" id="sec_absval-26-8-1-2-2-1">Show that <span class="process-math">\(f+g \colon D \to \R\)</span> defined by <span class="process-math">\((f+g) (x) \coloneqq f(x) + g(x)\)</span> is a bounded function.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-26-8-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1.3.8.b"><a aria-label="Copy heading and permalink for Item 1.3.8.b" href="#sec_absval-26-8-1-2-2" title="Copy heading and permalink for Item 1.3.8.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 1.3.8"><a aria-label="Copy heading and permalink for Exercise 1.3.8" href="#sec_absval-26-8" title="Copy heading and permalink for Exercise 1.3.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_absval-26-9"><h4 class="heading"><span class="codenumber">1.3.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_absval-26-9-1-1">Let <span class="process-math">\(f \colon D \to \R\)</span> and <span class="process-math">\(g \colon D \to \R\)</span> be functions with <span class="process-math">\(D\)</span> nonempty, <span class="process-math">\(\alpha \in \R\text{,}\)</span> and recall what <span class="process-math">\(f+g\)</span> and <span class="process-math">\(\alpha f\)</span> means from the previous exercise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-26-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_absval-26-9-1-2">
+<li id="sec_absval-26-9-1-2-1">
+<div class="para" id="sec_absval-26-9-1-2-1-1">Prove that if <span class="process-math">\(f+g\)</span> and <span class="process-math">\(g\)</span> are bounded, then <span class="process-math">\(f\)</span> is bounded.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-26-9-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1.3.9.a"><a aria-label="Copy heading and permalink for Item 1.3.9.a" href="#sec_absval-26-9-1-2-1" title="Copy heading and permalink for Item 1.3.9.a">🔗</a></div>
+</li>
+<li id="sec_absval-26-9-1-2-2">
+<div class="para" id="sec_absval-26-9-1-2-2-1">Find an example where <span class="process-math">\(f\)</span> and <span class="process-math">\(g\)</span> are both unbounded, but <span class="process-math">\(f+g\)</span> is bounded.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-26-9-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1.3.9.b"><a aria-label="Copy heading and permalink for Item 1.3.9.b" href="#sec_absval-26-9-1-2-2" title="Copy heading and permalink for Item 1.3.9.b">🔗</a></div>
+</li>
+<li id="sec_absval-26-9-1-2-3">
+<div class="para" id="sec_absval-26-9-1-2-3-1">Prove that if <span class="process-math">\(f\)</span> is bounded but <span class="process-math">\(g\)</span> is unbounded, then <span class="process-math">\(f+g\)</span> is unbounded.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-26-9-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1.3.9.c"><a aria-label="Copy heading and permalink for Item 1.3.9.c" href="#sec_absval-26-9-1-2-3" title="Copy heading and permalink for Item 1.3.9.c">🔗</a></div>
+</li>
+<li id="sec_absval-26-9-1-2-4">
+<div class="para" id="sec_absval-26-9-1-2-4-1">Find an example where <span class="process-math">\(f\)</span> is unbounded but <span class="process-math">\(\alpha f\)</span> is bounded.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_absval-26-9-1-2-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1.3.9.d"><a aria-label="Copy heading and permalink for Item 1.3.9.d" href="#sec_absval-26-9-1-2-4" title="Copy heading and permalink for Item 1.3.9.d">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 1.3.9"><a aria-label="Copy heading and permalink for Exercise 1.3.9" href="#sec_absval-26-9" title="Copy heading and permalink for Exercise 1.3.9">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 1.3.1"><a aria-label="Copy heading and permalink for Exercises 1.3.1" href="#sec_absval-26" title="Copy heading and permalink for Exercises 1.3.1">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 1.3: Absolute value and bounded functions"><a aria-label="Copy heading and permalink for Section 1.3: Absolute value and bounded functions" href="#sec_absval" title="Copy heading and permalink for Section 1.3: Absolute value and bounded functions">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_setofreals.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_intandsizeR.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

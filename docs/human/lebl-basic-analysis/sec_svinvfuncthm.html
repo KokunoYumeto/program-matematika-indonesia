@@ -1,0 +1,746 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Inverse and implicit function theorems · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_svinvfuncthm">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.5</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Inverse and implicit function theorems</span>
+</h2>
+<section class="introduction" id="sec_svinvfuncthm-2">
+<div class="para" id="sec_svinvfuncthm-2-1">
+<em class="emphasis">Note: 2–3 lectures</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_svinvfuncthm-2-2">Intuitively, if a function is continuously differentiable, then it locally “behaves like” the derivative (which is a linear function). The idea of the inverse function theorem is that if a function is continuously differentiable and the derivative is invertible, the function is (locally) invertible.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-2-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="thm_inverse"><h3 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.5.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Inverse function theorem.</span>
+</h3>
+<div class="para logical" id="thm_inverse-3-1">
+<div class="para">Let <span class="process-math">\(U \subset \R^n\)</span> be an open set and let <span class="process-math">\(f \colon U \to \R^n\)</span> be a continuously differentiable function. Suppose <span class="process-math">\(p \in U\)</span> and <span class="process-math">\(f'(p)\)</span> is invertible (that is, <span class="process-math">\(J_f(p) \neq 0\)</span>). Then there exist open sets <span class="process-math">\(V, W \subset \R^n\)</span> such that <span class="process-math">\(p \in V \subset U\text{,}\)</span> <span class="process-math">\(f(V) = W\text{,}\)</span> and <span class="process-math">\(f|_V\)</span> is one-to-one. Hence a function <span class="process-math">\(g \colon W \to V\)</span> exists such that <span class="process-math">\(g(y) \coloneqq (f|_V)^{-1}(y)\text{.}\)</span> Furthermore, <span class="process-math">\(g\)</span> is continuously differentiable and</div>
+<div class="displaymath process-math" id="thm_inverse-3-1-13">
+\begin{equation}
+g'(y) = {\bigl(f'(x)\bigr)}^{-1}, \qquad \text{for all } x \in V, y = f(x).
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#thm_inverse-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 8.5.1: Inverse function theorem"><a aria-label="Copy heading and permalink for Theorem 8.5.1: Inverse function theorem" href="#thm_inverse" title="Copy heading and permalink for Theorem 8.5.1: Inverse function theorem">🔗</a></div>
+</article>
+<div class="para" id="sec_svinvfuncthm-2-4">See <a class="internal" href="sec_svinvfuncthm.html#fig_inversefuncRn" title="Figure 8.11">Figure 8.11</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-2-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="fig_inversefuncRn"><img alt="A diagram of two sets and mappings between them. On the left is the shaded set U with dotted boundary and a smaller subset V shaded lightly with a dotted boundary. Points p and x are marked in V. On the right is a lightly shaded set labeled W equals f of V with two points one marked f of p and one marked y. Two arrows labeled f go from left to right one going from the point p to the point f of p and one going from the point x to the point y. Two arrows labeled g go the opposite way between the same points." class="raimg" role="img" src="figures/inversefuncRn-mbxpdft.svg" style="width:287pt; height:112pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Setup of the inverse function theorem in <span class="process-math">\(\R^n\text{.}\)</span><div class="autopermalink" data-description="Figure 8.11"><a aria-label="Copy heading and permalink for Figure 8.11" href="#fig_inversefuncRn" title="Copy heading and permalink for Figure 8.11">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para logical" id="sec_svinvfuncthm-2-8">
+<div class="para">To prove the theorem, we use the contraction mapping principle from <a class="internal" href="ms_chapter.html" title="Chapter 7: Metric Spaces">Chapter 7</a>, where we used it to prove Picard’s theorem. Recall that a mapping <span class="process-math">\(f \colon X \to Y\)</span> between metric spaces <span class="process-math">\((X,d_X)\)</span> and <span class="process-math">\((Y,d_Y)\)</span> is a contraction if there exists a <span class="process-math">\(k &lt; 1\)</span> such that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/ms_chapter.html" id="sec_svinvfuncthm-2-8-6">
+\begin{equation}
+d_Y\bigl(f(p),f(q)\bigr) \leq k \, d_X(p,q)
+\qquad \text{for all } p,q \in X.
+\end{equation}
+</div>
+<div class="para">The contraction mapping principle says that if <span class="process-math">\(f \colon X \to X\)</span> is a contraction and <span class="process-math">\(X\)</span> is a complete metric space, then there exists a unique fixed point, that is, there exists a unique <span class="process-math">\(x \in X\)</span> such that <span class="process-math">\(f(x) = x\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-2-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_svinvfuncthm-2-9"><h3 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h3>
+<div class="para logical" id="sec_svinvfuncthm-2-9-1">
+<div class="para">Write <span class="process-math">\(A = f'(p)\text{.}\)</span>  As <span class="process-math">\(f'\)</span> is continuous, there is an open ball <span class="process-math">\(V\)</span> centered at <span class="process-math">\(p\)</span> such that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_finitedimpropinv.html" id="sec_svinvfuncthm-2-9-1-5">
+\begin{equation}
+\bnorm{A-f'(x)} &lt; \frac{1}{2\snorm{A^{-1}}}
+\qquad \text{for all } x \in V.
+\end{equation}
+</div>
+<div class="para">Consequently, the derivative <span class="process-math">\(f'(x)\)</span> is invertible for all <span class="process-math">\(x \in V\)</span> by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_normsmatsdets.html#prop_finitedimpropinv" title="Proposition 8.2.6">Proposition 8.2.6</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-2-9-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_svinvfuncthm-2-9-2">
+<div class="para">Given <span class="process-math">\(y \in \R^n\text{,}\)</span> define <span class="process-math">\(\varphi_y \colon V \to \R^n\)</span> by</div>
+<div class="displaymath process-math" id="sec_svinvfuncthm-2-9-2-3">
+\begin{equation}
+\varphi_y (x) \coloneqq x + A^{-1}\bigl(y-f(x)\bigr) .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(A^{-1}\)</span> is one-to-one, <span class="process-math">\(\varphi_y(x) = x\)</span> (<span class="process-math">\(x\)</span> is a fixed point) if and only if <span class="process-math">\(y-f(x) = 0\text{,}\)</span> or in other words <span class="process-math">\(f(x)=y\text{.}\)</span>  Using the chain rule, we obtain</div>
+<div class="displaymath process-math" id="sec_svinvfuncthm-2-9-2-9">
+\begin{equation}
+\varphi_y'(x) = I - A^{-1} f'(x) = A^{-1} \bigl( A-f'(x) \bigr) .
+\end{equation}
+</div>
+<div class="para">So for <span class="process-math">\(x \in V\text{,}\)</span> we have</div>
+<div class="displaymath process-math" id="sec_svinvfuncthm-2-9-2-11">
+\begin{equation}
+\bnorm{\varphi_y'(x)} \leq \snorm{A^{-1}} \, \bnorm{A-f'(x)} &lt; \nicefrac{1}{2} .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(V\)</span> is a ball, it is convex.  Hence,</div>
+<div class="displaymath process-math" id="sec_svinvfuncthm-2-9-2-13">
+\begin{equation}
+\bnorm{\varphi_y(x_1)-\varphi_y(x_2)} \leq \frac{1}{2} \snorm{x_1-x_2} 
+\qquad
+\text{for all } x_1,x_2 \in V.
+\end{equation}
+</div>
+<div class="para">In other words, <span class="process-math">\(\varphi_y\)</span> is a contraction defined on <span class="process-math">\(V\text{,}\)</span> though we so far do not know what is the range of <span class="process-math">\(\varphi_y\text{.}\)</span>  We cannot yet apply the fixed point theorem, but we can say that <span class="process-math">\(\varphi_y\)</span> has at most one fixed point in <span class="process-math">\(V\text{:}\)</span> If <span class="process-math">\(\varphi_y(x_1) = x_1\)</span> and <span class="process-math">\(\varphi_y(x_2) = x_2\text{,}\)</span> then <span class="process-math">\(\snorm{x_1-x_2} = \bnorm{\varphi_y(x_1)-\varphi_y(x_2)} \leq
+\frac{1}{2} \snorm{x_1-x_2}\text{,}\)</span> so <span class="process-math">\(x_1 = x_2\text{.}\)</span> That is, there exists at most one <span class="process-math">\(x \in V\)</span> such that <span class="process-math">\(f(x) = y\text{,}\)</span> and so <span class="process-math">\(f|_V\)</span> is one-to-one.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-2-9-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_svinvfuncthm-2-9-3">Let <span class="process-math">\(W \coloneqq f(V)\)</span> and let <span class="process-math">\(g \colon W \to V\)</span> be the inverse of <span class="process-math">\(f|_V\text{.}\)</span> We need to show that <span class="process-math">\(W\)</span> is open.  Take a <span class="process-math">\(y_0 \in W\text{.}\)</span> There is a unique <span class="process-math">\(x_0 \in V\)</span> such that <span class="process-math">\(f(x_0) = y_0\text{.}\)</span> Let <span class="process-math">\(r &gt; 0\)</span> be small enough such that the closed ball <span class="process-math">\(C(x_0,r) \subset V\)</span> (such <span class="process-math">\(r &gt; 0\)</span> exists as <span class="process-math">\(V\)</span> is open).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-2-9-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_svinvfuncthm-2-9-4">
+<div class="para">Suppose <span class="process-math">\(y\)</span> is such that</div>
+<div class="displaymath process-math" id="sec_svinvfuncthm-2-9-4-2">
+\begin{equation}
+\snorm{y-y_0} &lt;
+\frac{r}{2\snorm{A^{-1}}} .
+\end{equation}
+</div>
+<div class="para">If we show that <span class="process-math">\(y \in W\text{,}\)</span> then we have shown that <span class="process-math">\(W\)</span> is open. If <span class="process-math">\(x_1 \in
+C(x_0,r)\text{,}\)</span> then</div>
+<div class="displaymath process-math" id="sec_svinvfuncthm-2-9-4-6">
+\begin{equation}
+\begin{split}
+\bnorm{\varphi_y(x_1)-x_0}
+&amp; \leq
+\bnorm{\varphi_y(x_1)-\varphi_y(x_0)} +
+\bnorm{\varphi_y(x_0)-x_0} \\
+&amp; \leq
+\frac{1}{2}\snorm{x_1-x_0} +
+\bnorm{A^{-1}(y-y_0)} \\
+&amp; \leq
+\frac{1}{2}r +
+\snorm{A^{-1}} \, \snorm{y-y_0} \\
+&amp; &lt;
+\frac{1}{2}r +
+\snorm{A^{-1}}
+\frac{r}{2\snorm{A^{-1}}} = r .
+\end{split}
+\end{equation}
+</div>
+<div class="para">So <span class="process-math">\(\varphi_y\)</span> takes <span class="process-math">\(C(x_0,r)\)</span> into <span class="process-math">\(B(x_0,r) \subset C(x_0,r)\text{.}\)</span>  It is a contraction on <span class="process-math">\(C(x_0,r)\)</span> and <span class="process-math">\(C(x_0,r)\)</span> is complete (closed subset of <span class="process-math">\(\R^n\)</span> is complete). Apply the contraction mapping principle to obtain a fixed point <span class="process-math">\(x\text{,}\)</span> i.e. <span class="process-math">\(\varphi_y(x) = x\text{.}\)</span>  That is, <span class="process-math">\(f(x) = y\text{,}\)</span> and <span class="process-math">\(y \in
+f\bigl(C(x_0,r)\bigr) \subset f(V) = W\text{.}\)</span>  Therefore, <span class="process-math">\(W\)</span> is open.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-2-9-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_svinvfuncthm-2-9-5">Next we need to show that <span class="process-math">\(g\)</span> is continuously differentiable and compute its derivative.  First, let us show that it is differentiable. Let <span class="process-math">\(y \in W\)</span> and <span class="process-math">\(k \in \R^n\text{,}\)</span> <span class="process-math">\(k \neq 0\text{,}\)</span> such that <span class="process-math">\(y+k \in W\text{.}\)</span> Because <span class="process-math">\(f|_V\)</span> is a one-to-one and onto mapping of <span class="process-math">\(V\)</span> onto <span class="process-math">\(W\text{,}\)</span> there are unique <span class="process-math">\(x \in V\)</span> and <span class="process-math">\(h \in \R^n\text{,}\)</span> <span class="process-math">\(h \neq 0\)</span> and <span class="process-math">\(x+h \in V\text{,}\)</span> such that <span class="process-math">\(f(x) = y\)</span> and <span class="process-math">\(f(x+h) = y+k\text{.}\)</span> In other words, <span class="process-math">\(g(y) = x\)</span> and <span class="process-math">\(g(y+k) = x+h\text{.}\)</span>  See <a class="internal" href="sec_svinvfuncthm.html#fig_inversefuncRn2" title="Figure 8.12">Figure 8.12</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-2-9-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="fig_inversefuncRn2"><img alt="A diagram of two sets and mappings between them. On the left is a shaded set V with dotted boundary and the points x plus h and x marked. On the right is a shaded set W with the points y plus k and y marked. Two arrows labeled f go from left to right one going from the point x plus h to the point y plus k and one going from the point x to the point y. Two arrows labeled g go the opposite way between the same points." class="raimg" role="img" src="figures/inversefuncRn2-mbxpdft.svg" style="width:307pt; height:101pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.12<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Proving that <span class="process-math">\(g\)</span> is differentiable.<div class="autopermalink" data-description="Figure 8.12"><a aria-label="Copy heading and permalink for Figure 8.12" href="#fig_inversefuncRn2" title="Copy heading and permalink for Figure 8.12">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para logical" id="sec_svinvfuncthm-2-9-9">
+<div class="para">We can still squeeze some information from the fact that <span class="process-math">\(\varphi_y\)</span> is a contraction.</div>
+<div class="displaymath process-math" id="sec_svinvfuncthm-2-9-9-2">
+\begin{equation}
+\varphi_y(x+h)-\varphi_y(x) = h + A^{-1} \bigl( f(x)-f(x+h) \bigr) = h - A^{-1} k .
+\end{equation}
+</div>
+<div class="para">So</div>
+<div class="displaymath process-math" id="sec_svinvfuncthm-2-9-9-3">
+\begin{equation}
+\snorm{h-A^{-1}k} = \bnorm{\varphi_y(x+h)-\varphi_y(x)} \leq
+\frac{1}{2}\snorm{x+h-x} = \frac{\snorm{h}}{2}.
+\end{equation}
+</div>
+<div class="para">By the inverse triangle inequality, <span class="process-math">\(\snorm{h} - \snorm{A^{-1}k} \leq
+\frac{1}{2}\snorm{h}\text{.}\)</span> So</div>
+<div class="displaymath process-math" id="sec_svinvfuncthm-2-9-9-5">
+\begin{equation}
+\snorm{h} \leq 2 \snorm{A^{-1}k} \leq 2 \snorm{A^{-1}} \, \snorm{k}.
+\end{equation}
+</div>
+<div class="para">In particular, as <span class="process-math">\(k\)</span> goes to 0, so does <span class="process-math">\(h\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-2-9-9" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_svinvfuncthm-2-9-10">
+<div class="para">As <span class="process-math">\(x \in V\text{,}\)</span> we find that <span class="process-math">\(f'(x)\)</span> is invertible. Let <span class="process-math">\(B \coloneqq \bigl(f'(x)\bigr)^{-1}\text{,}\)</span> which is what we think the derivative of <span class="process-math">\(g\)</span> at <span class="process-math">\(y\)</span> is.  Then</div>
+<div class="displaymath process-math" id="sec_svinvfuncthm-2-9-10-6">
+\begin{equation}
+\begin{split}
+\frac{\bnorm{g(y+k)-g(y)-Bk}}{\snorm{k}}
+&amp; =
+\frac{\snorm{h-Bk}}{\snorm{k}}
+\\
+&amp; =
+\frac{\bnorm{h-B\bigl(f(x+h)-f(x)\bigr)}}{\snorm{k}}
+\\
+&amp; =
+\frac{\bnorm{B\bigl(f(x+h)-f(x)-f'(x)h\bigr)}}{\snorm{k}}
+\\
+&amp; \leq
+\snorm{B}
+\frac{\snorm{h}}{\snorm{k}}\,
+\frac{\bnorm{f(x+h)-f(x)-f'(x)h}}{\snorm{h}}
+\\
+&amp; \leq
+2\snorm{B} \, \snorm{A^{-1}}
+\frac{\bnorm{f(x+h)-f(x)-f'(x)h}}{\snorm{h}} .
+\end{split}
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(k\)</span> goes to 0, so does <span class="process-math">\(h\text{.}\)</span>  So the right-hand side goes to 0 as <span class="process-math">\(f\)</span> is differentiable, and hence the left-hand side also goes to 0.  And <span class="process-math">\(B\)</span> is precisely what we wanted <span class="process-math">\(g'(y)\)</span> to be.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-2-9-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_svinvfuncthm-2-9-11">We have <span class="process-math">\(g\)</span> is differentiable, let us show it is <span class="process-math">\(C^1(W)\text{.}\)</span> The function <span class="process-math">\(g \colon W \to V\)</span> is continuous (it is differentiable), <span class="process-math">\(f'\)</span> is a continuous function from <span class="process-math">\(V\)</span> to <span class="process-math">\(L(\R^n)\text{,}\)</span> and <span class="process-math">\(X \mapsto X^{-1}\)</span> is a continuous function on the set of invertible operators. As <span class="process-math">\(g'(y) = {\bigl( f'\bigl(g(y)\bigr)\bigr)}^{-1}\)</span> is the composition of these three continuous functions, it is continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-2-9-11" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 1"><a aria-label="Copy heading and permalink for Proof 1" href="#sec_svinvfuncthm-2-9" title="Copy heading and permalink for Proof 1">🔗</a></div>
+</article>
+<article class="corollary theorem-like" id="cor_IVTopenmap"><h3 class="heading">
+<span class="type">Corollary</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.5.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="cor_IVTopenmap-1-1">Suppose <span class="process-math">\(U \subset \R^n\)</span> is open and <span class="process-math">\(f \colon U \to \R^n\)</span> is a continuously differentiable mapping such that <span class="process-math">\(f'(x)\)</span> is invertible for all <span class="process-math">\(x \in U\text{.}\)</span>  Then for every open set <span class="process-math">\(V \subset U\text{,}\)</span> the set <span class="process-math">\(f(V)\)</span> is open (<span class="process-math">\(f\)</span> is said to be an <em class="emphasis">open mapping</em>).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#cor_IVTopenmap-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Corollary 8.5.2"><a aria-label="Copy heading and permalink for Corollary 8.5.2" href="#cor_IVTopenmap" title="Copy heading and permalink for Corollary 8.5.2">🔗</a></div>
+</article>
+<article class="proof" id="sec_svinvfuncthm-2-11"><h3 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h3>
+<div class="para" id="sec_svinvfuncthm-2-11-1">Without loss of generality, suppose <span class="process-math">\(U=V\text{.}\)</span> For each <span class="process-math">\(y \in f(V)\text{,}\)</span> pick <span class="process-math">\(x \in f^{-1}(y)\)</span> (there could be more than one such point), then by the inverse function theorem there is a neighborhood of <span class="process-math">\(x\)</span> in <span class="process-math">\(V\)</span> that maps onto a neighborhood of <span class="process-math">\(y\text{.}\)</span>  Hence <span class="process-math">\(f(V)\)</span> is open.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-2-11-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 2"><a aria-label="Copy heading and permalink for Proof 2" href="#sec_svinvfuncthm-2-11" title="Copy heading and permalink for Proof 2">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_svinvfuncthm-2-12"><h3 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.5.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="sec_svinvfuncthm-2-12-1-1">The theorem, along with the corollary, is not true if <span class="process-math">\(f'(x)\)</span> is not invertible for some <span class="process-math">\(x\text{.}\)</span> The map <span class="process-math">\(f(x,y) \coloneqq (x,xy)\text{,}\)</span> maps <span class="process-math">\(\R^2\)</span> onto the set <span class="process-math">\(\R^2 \setminus \bigl\{ (0,y) : y \neq 0 \bigr\}\text{,}\)</span> which is neither open nor closed. In fact, <span class="process-math">\(f^{-1}(0,0) = \bigl\{ (0,y) : y \in \R \bigr\}\text{.}\)</span>  This bad behavior only occurs on the <span class="process-math">\(y\)</span>-axis, everywhere else the function is locally invertible.  If we avoid the <span class="process-math">\(y\)</span>-axis, <span class="process-math">\(f\)</span> is even one-to-one.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-2-12-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 8.5.3"><a aria-label="Copy heading and permalink for Example 8.5.3" href="#sec_svinvfuncthm-2-12" title="Copy heading and permalink for Example 8.5.3">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_svinvfuncthm-2-13"><h3 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.5.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="sec_svinvfuncthm-2-13-1-1">Just because <span class="process-math">\(f'(x)\)</span> is invertible everywhere does not mean that <span class="process-math">\(f\)</span> is one-to-one.  It is “locally” one-to-one, but perhaps not “globally.” Consider <span class="process-math">\(f \colon \R^2 \setminus \bigl\{ (0,0) \bigr\} \to
+\R^2 \setminus \bigl\{ (0,0) \bigr\}\)</span> defined by <span class="process-math">\(f(x,y) \coloneqq (x^2-y^2,2xy)\text{.}\)</span> It is left to the reader to verify the following statements. The map <span class="process-math">\(f\)</span> is differentiable and the derivative is invertible. On the other hand, <span class="process-math">\(f\)</span> is 2-to-1 globally: For every <span class="process-math">\((a,b)\)</span> that is not the origin, there are exactly two solutions to <span class="process-math">\(x^2-y^2=a\)</span> and <span class="process-math">\(2xy=b\)</span> (<span class="process-math">\(f\)</span> is also onto).  Notice that once you show that there is at least one solution, replacing <span class="process-math">\(x\)</span> and <span class="process-math">\(y\)</span> with <span class="process-math">\(-x\)</span> and <span class="process-math">\(-y\)</span> we obtain another solution.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-2-13-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 8.5.4"><a aria-label="Copy heading and permalink for Example 8.5.4" href="#sec_svinvfuncthm-2-13" title="Copy heading and permalink for Example 8.5.4">🔗</a></div>
+</article>
+<div class="para" id="sec_svinvfuncthm-2-14">The invertibility of the derivative is not a necessary condition, just sufficient, for having a continuous inverse and for being an open mapping.  The function <span class="process-math">\(f(x) \coloneqq x^3\)</span> is an open mapping from <span class="process-math">\(\R\)</span> to <span class="process-math">\(\R\)</span> and is globally one-to-one with a continuous inverse, although the inverse is not differentiable at <span class="process-math">\(x=0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-2-14" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_svinvfuncthm-2-15">As a side note, there is a famous related, and as yet unsolved, problem called the <em class="emphasis">Jacobian conjecture</em>.  If <span class="process-math">\(F \colon \R^n \to
+\R^n\)</span> is polynomial (each component is a polynomial) and <span class="process-math">\(J_F\)</span> (the Jacobian determinant) is a nonzero constant, does <span class="process-math">\(F\)</span> have a polynomial inverse? The inverse function theorem gives a local <span class="process-math">\(C^1\)</span> inverse, but whether one can always find a global polynomial inverse is the question.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-2-15" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section>
+<section class="subsection" id="sec_svinvfuncthm-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.5.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Implicit function theorem</span>
+</h3>
+<div class="para" id="sec_svinvfuncthm-3-2">The inverse function theorem is a special case of the implicit function theorem, which we prove next.  Somewhat ironically we prove the implicit function theorem using the inverse function theorem. One way to state the inverse function theorem is that the equation <span class="process-math">\(x-f(y) = 0\)</span> is solvable for <span class="process-math">\(y\)</span> in terms of <span class="process-math">\(x\)</span> if the derivative with respect to <span class="process-math">\(y\)</span> is invertible, that is, if <span class="process-math">\(f'(y)\)</span> is invertible. Then there is (locally) a function <span class="process-math">\(g\)</span> such that <span class="process-math">\(x-f\bigl(g(x)\bigr) = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-3-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_svinvfuncthm-3-3">In general, the equation <span class="process-math">\(f(x,y) = 0\)</span> is not solvable for <span class="process-math">\(y\)</span> in terms of <span class="process-math">\(x\)</span> in every case. For instance, there is generally no solution when <span class="process-math">\(f(x,y)\)</span> does not actually depend on <span class="process-math">\(y\text{.}\)</span> For a more interesting example, notice that <span class="process-math">\(x^2+y^2-1 = 0\)</span> defines the unit circle, and we can locally solve for <span class="process-math">\(y\)</span> in terms of <span class="process-math">\(x\)</span> when 1) we are near a point on the unit circle and 2) we are not at a point where the circle has a vertical tangency, that is, where <span class="process-math">\(\frac{\partial f}{\partial y} = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-3-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_svinvfuncthm-3-4">We fix some notation.  Let <span class="process-math">\((x,y) \in
+\R^{n+m}\)</span> denote the coordinates <span class="process-math">\((x_1,\ldots,x_n,y_1,\ldots,y_m)\text{.}\)</span> We can then write a linear map <span class="process-math">\(A \in L(\R^{n+m},\R^m)\)</span> as <span class="process-math">\(A = [ A_x ~ A_y ]\)</span> so that <span class="process-math">\(A(x,y) = A_x x + A_y y\text{,}\)</span> where <span class="process-math">\(A_x \in L(\R^n,\R^m)\)</span> and <span class="process-math">\(A_y \in L(\R^m)\text{.}\)</span> First, the linear version of the theorem.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-3-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_svinvfuncthm-3-5"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.5.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_svinvfuncthm-3-5-1-1">
+<div class="para">Let <span class="process-math">\(A = [A_x~A_y] \in L(\R^{n+m},\R^m)\)</span> and suppose <span class="process-math">\(A_y\)</span> is invertible.  If <span class="process-math">\(B = - {(A_y)}^{-1} A_x\text{,}\)</span> then</div>
+<div class="displaymath process-math" id="sec_svinvfuncthm-3-5-1-1-4">
+\begin{equation}
+0 = A ( x, Bx) = A_x x + A_y Bx .
+\end{equation}
+</div>
+<div class="para">Furthermore, <span class="process-math">\(y=Bx\)</span> is the unique <span class="process-math">\(y \in \R^m\)</span> such that <span class="process-math">\(A(x,y) = 0\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-3-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 8.5.5"><a aria-label="Copy heading and permalink for Proposition 8.5.5" href="#sec_svinvfuncthm-3-5" title="Copy heading and permalink for Proposition 8.5.5">🔗</a></div>
+</article>
+<div class="para" id="sec_svinvfuncthm-3-6">The proof is immediate: We solve <span class="process-math">\(A_x x +A_y y = 0\)</span> and obtain <span class="process-math">\(y = Bx\text{.}\)</span> Another approach is to “complete the basis,” that is, add rows to the matrix until we have an invertible matrix: The operator in <span class="process-math">\(L(\R^{n+m})\)</span> given by <span class="process-math">\((x,y) \mapsto (x,A_x x + A_y y)\)</span> is invertible, and the map <span class="process-math">\(B\)</span> can be read off from the inverse. Let us show that the same can be done for <span class="process-math">\(C^1\)</span> functions.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-3-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="thm_implicit"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.5.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Implicit function theorem.</span>
+</h4>
+<div class="para logical" id="thm_implicit-3-1">
+<div class="para">Let <span class="process-math">\(U \subset \R^{n+m}\)</span> be an open set and let <span class="process-math">\(f \colon U \to \R^m\)</span> be a <span class="process-math">\(C^1(U)\)</span> mapping.  Let <span class="process-math">\((p,q) \in U\)</span> be a point such that <span class="process-math">\(f(p,q) = 0\)</span> and such that</div>
+<div class="displaymath process-math" id="thm_implicit-3-1-6">
+\begin{equation}
+\frac{\partial(f_1,\ldots,f_m)}{\partial(y_1,\ldots,y_m)} (p,q)  \neq 0 .
+\end{equation}
+</div>
+<div class="para">Then there exists an open set <span class="process-math">\(W \subset \R^n\)</span> with <span class="process-math">\(p \in W\text{,}\)</span> an open set <span class="process-math">\(W' \subset \R^m\)</span> with <span class="process-math">\(q \in W'\text{,}\)</span> where <span class="process-math">\(W \times W' \subset U\text{,}\)</span> and a <span class="process-math">\(C^1(W)\)</span> map <span class="process-math">\(g \colon W \to W'\text{,}\)</span> with <span class="process-math">\(g(p) = q\text{,}\)</span> and for all <span class="process-math">\(x \in W\text{,}\)</span> the point <span class="process-math">\(g(x)\)</span> is the unique point in <span class="process-math">\(W'\)</span> such that</div>
+<div class="displaymath process-math" id="thm_implicit-3-1-18">
+\begin{equation}
+f\bigl(x,g(x)\bigr) = 0 .
+\end{equation}
+</div>
+<div class="para">Furthermore, if <span class="process-math">\(A = [ A_x ~ A_y ] = f'(p,q)\text{,}\)</span> then</div>
+<div class="displaymath process-math" id="thm_implicit-3-1-20">
+\begin{equation}
+g'(p) = -{(A_y)}^{-1}A_x .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#thm_implicit-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 8.5.6: Implicit function theorem"><a aria-label="Copy heading and permalink for Theorem 8.5.6: Implicit function theorem" href="#thm_implicit" title="Copy heading and permalink for Theorem 8.5.6: Implicit function theorem">🔗</a></div>
+</article>
+<div class="para" id="sec_svinvfuncthm-3-8">The condition <span class="process-math">\(\frac{\partial(f_1,\ldots,f_m)}{\partial(y_1,\ldots,y_m)} (p,q) =
+\det(A_y)  \neq 0\)</span> simply means that <span class="process-math">\(A_y\)</span> is invertible.  If <span class="process-math">\(n=m=1\text{,}\)</span> the condition is <span class="process-math">\(\frac{\partial f}{\partial y}(p,q) \neq 0\text{,}\)</span> and <span class="process-math">\(W\)</span> and <span class="process-math">\(W'\)</span> are open intervals.  See <a class="internal" href="sec_svinvfuncthm.html#fig_implicitfunc" title="Figure 8.13">Figure 8.13</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-3-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="fig_implicitfunc"><img alt="A diagram of a circle in the xy-plane labeled f of x,y equals 0. A point labeled (p,q) is marked on the circle in the first quadrant. It is contained in a small shaded rectangle labeled W cross W prime. The projection of the shaded rectangle onto the x and y axes are labeled W and W prime respectively and both fit between the origin and where the circle hits the corresponding axis." class="raimg" role="img" src="figures/implicitfunc-mbxpdft.svg" style="width:179pt; height:108pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.13<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Implicit function theorem for <span class="process-math">\(f(x,y) = x^2+y^2-1\)</span> in <span class="process-math">\(U=\R^2\)</span> and <span class="process-math">\((p,q)\)</span> in the first quadrant.<div class="autopermalink" data-description="Figure 8.13"><a aria-label="Copy heading and permalink for Figure 8.13" href="#fig_implicitfunc" title="Copy heading and permalink for Figure 8.13">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<article class="proof" id="sec_svinvfuncthm-3-12"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_svinvfuncthm-3-12-1">
+<div class="para">Define <span class="process-math">\(F \colon U \to \R^{n+m}\)</span> by <span class="process-math">\(F(x,y) \coloneqq \bigl(x,f(x,y)\bigr)\text{.}\)</span> It is clear that <span class="process-math">\(F\)</span> is <span class="process-math">\(C^1\text{,}\)</span> and we want to show that its derivative at <span class="process-math">\((p,q)\)</span> is invertible. Let us compute the derivative.  The quotient</div>
+<div class="displaymath process-math" id="sec_svinvfuncthm-3-12-1-6">
+\begin{equation}
+\frac{\bnorm{f(p+h,q+k) - f(p,q) - A_x h - A_y k}}{\bnorm{(h,k)}}
+\end{equation}
+</div>
+<div class="para">goes to zero as <span class="process-math">\(\bnorm{(h,k)} = \sqrt{\snorm{h}^2+\snorm{k}^2}\)</span> goes to zero. But then so does</div>
+<div class="displaymath process-math" id="sec_svinvfuncthm-3-12-1-8">
+\begin{multline*}
+\frac{\bnorm{F(p+h,q+k)-F(p,q) - (h,A_x h+A_y k)}}{\bnorm{(h,k)}}
+\\
+\begin{aligned}
+&amp; =
+\frac{\bnorm{\bigl(h,f(p+h,q+k)-f(p,q)\bigr) - (h,A_x h+A_y
+k)}}{\bnorm{(h,k)}}
+\\
+&amp; =
+\frac{\bnorm{f(p+h,q+k) - f(p,q) - A_x h - A_y k}}{\bnorm{(h,k)}} .
+\end{aligned}
+\end{multline*}
+</div>
+<div class="para">So the derivative of <span class="process-math">\(F\)</span> at <span class="process-math">\((p,q)\)</span> takes <span class="process-math">\((h,k)\)</span> to <span class="process-math">\((h,A_x h+A_y k)\text{.}\)</span> In block matrix form, it is <span class="process-math">\(\left[\begin{smallmatrix}I &amp; 0\\A_x &amp; A_y\end{smallmatrix}\right]\text{.}\)</span>  If <span class="process-math">\((h,A_x h+A_y k) = (0,0)\text{,}\)</span> then <span class="process-math">\(h=0\text{,}\)</span> and so <span class="process-math">\(A_y k = 0\text{.}\)</span>  As <span class="process-math">\(A_y\)</span> is one-to-one, <span class="process-math">\(k=0\text{.}\)</span>  Thus <span class="process-math">\(F'(p,q)\)</span> is one-to-one, and hence invertible. We apply the inverse function theorem.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-3-12-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_svinvfuncthm-3-12-2">
+<div class="para">That is, there exists an open set <span class="process-math">\(V \subset \R^{n+m}\)</span> with <span class="process-math">\(F(p,q) = (p,0) \in V\text{,}\)</span> and a  <span class="process-math">\(C^1\)</span> mapping <span class="process-math">\(G \colon V \to \R^{n+m}\text{,}\)</span> such that <span class="process-math">\(F\bigl(G(x,s)\bigr) = (x,s)\)</span> for all <span class="process-math">\((x,s) \in V\text{,}\)</span> <span class="process-math">\(G\)</span> is one-to-one, and <span class="process-math">\(G(V)\)</span> is open. Write <span class="process-math">\(G = (G_1,G_2)\)</span> (the first <span class="process-math">\(n\)</span> and the next <span class="process-math">\(m\)</span> components of <span class="process-math">\(G\)</span>). Then</div>
+<div class="displaymath process-math" id="sec_svinvfuncthm-3-12-2-13">
+\begin{equation}
+F\bigl(G_1(x,s),G_2(x,s)\bigr) = \Bigl(G_1(x,s),f\bigl(G_1(x,s),G_2(x,s) \bigr)\Bigr)
+= (x,s) .
+\end{equation}
+</div>
+<div class="para">So <span class="process-math">\(x = G_1(x,s)\)</span> and <span class="process-math">\(f\bigl(G_1(x,s),G_2(x,s)\bigr) = f\bigl(x,G_2(x,s)\bigr) = s\text{.}\)</span> Plugging in <span class="process-math">\(s=0\text{,}\)</span> we obtain</div>
+<div class="displaymath process-math" id="sec_svinvfuncthm-3-12-2-17">
+\begin{equation}
+f\bigl(x,G_2(x,0)\bigr) = 0 .
+\end{equation}
+</div>
+<div class="para">As the set <span class="process-math">\(G(V)\)</span> is open and <span class="process-math">\((p,q) \in G(V)\text{,}\)</span> there exist some open sets <span class="process-math">\(\widetilde{W}\)</span> and <span class="process-math">\(W'\)</span> such that <span class="process-math">\(\widetilde{W} \times W' \subset G(V)\)</span> with <span class="process-math">\(p
+\in \widetilde{W}\)</span> and <span class="process-math">\(q \in W'\text{.}\)</span> Take <span class="process-math">\(W \coloneqq \bigl\{ x \in \widetilde{W} : G_2(x,0) \in W' \bigr\}\text{.}\)</span> The function that takes <span class="process-math">\(x\)</span> to <span class="process-math">\(G_2(x,0)\)</span> is continuous and therefore <span class="process-math">\(W\)</span> is open. Define <span class="process-math">\(g \colon W \to \R^m\)</span> by <span class="process-math">\(g(x) \coloneqq G_2(x,0)\text{,}\)</span> which is the <span class="process-math">\(g\)</span> in the theorem. The fact that <span class="process-math">\(g(x)\)</span> is the unique point in <span class="process-math">\(W'\)</span> follows because <span class="process-math">\(W \times
+W' \subset G(V)\)</span> and <span class="process-math">\(G\)</span> is one-to-one.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-3-12-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_svinvfuncthm-3-12-3">
+<div class="para">Next, differentiate</div>
+<div class="displaymath process-math" id="sec_svinvfuncthm-3-12-3-1">
+\begin{equation}
+x\mapsto f\bigl(x,g(x)\bigr)
+\end{equation}
+</div>
+<div class="para">at <span class="process-math">\(p\text{,}\)</span> which is the zero map, so its derivative is zero. Using the chain rule,</div>
+<div class="displaymath process-math" id="sec_svinvfuncthm-3-12-3-3">
+\begin{equation}
+0 = A\bigl(h,g'(p)h\bigr) = A_xh + A_yg'(p)h
+\end{equation}
+</div>
+<div class="para">for all <span class="process-math">\(h \in \R^{n}\text{,}\)</span> and we obtain the desired derivative for <span class="process-math">\(g\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-3-12-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 8.5.1.1"><a aria-label="Copy heading and permalink for Proof 8.5.1.1" href="#sec_svinvfuncthm-3-12" title="Copy heading and permalink for Proof 8.5.1.1">🔗</a></div>
+</article>
+<div class="para logical" id="sec_svinvfuncthm-3-13">
+<div class="para">In other words, in the context of the theorem, we have <span class="process-math">\(m\)</span> equations in <span class="process-math">\(n+m\)</span> unknowns:</div>
+<div class="displaymath process-math" id="sec_svinvfuncthm-3-13-3">
+\begin{equation}
+\begin{aligned}
+&amp; f_1 (x_1,\ldots,x_n,y_1,\ldots,y_m) = 0 , \\
+&amp; f_2 (x_1,\ldots,x_n,y_1,\ldots,y_m) = 0 , \\
+&amp; \qquad \qquad \qquad  \vdots \\
+&amp; f_m (x_1,\ldots,x_n,y_1,\ldots,y_m) = 0 .
+\end{aligned}
+\end{equation}
+</div>
+<div class="para">The theorem guarantees a solution if <span class="process-math">\(f=(f_1,f_2,\ldots,f_m)\)</span> is a <span class="process-math">\(C^1\)</span> map (the components are <span class="process-math">\(C^1\text{:}\)</span> partial derivatives in all variables exist and are continuous) and the matrix</div>
+<div class="displaymath process-math" id="sec_svinvfuncthm-3-13-7">
+\begin{equation}
+\begin{bmatrix}
+\frac{\partial f_1}{\partial y_1}
+&amp;
+\frac{\partial f_1}{\partial y_2}
+&amp; \ldots &amp;
+\frac{\partial f_1}{\partial y_m}
+\\[6pt]
+\frac{\partial f_2}{\partial y_1}
+&amp;
+\frac{\partial f_2}{\partial y_2}
+&amp; \ldots &amp;
+\frac{\partial f_2}{\partial y_m}
+\\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots
+\\
+\frac{\partial f_m}{\partial y_1}
+&amp;
+\frac{\partial f_m}{\partial y_2}
+&amp; \ldots &amp;
+\frac{\partial f_m}{\partial y_m}
+\end{bmatrix}
+\end{equation}
+</div>
+<div class="para">is invertible at <span class="process-math">\((p,q)\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-3-13" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_svinvfuncthm-3-14"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.5.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_svinvfuncthm-3-14-1-1">
+<div class="para">Consider the set given by <span class="process-math">\(x^2+y^2-{(z+1)}^3 = -1\)</span> and <span class="process-math">\(e^x+e^y+e^z = 3\)</span> near the point <span class="process-math">\((0,0,0)\text{.}\)</span> It is the zero set of the mapping</div>
+<div class="displaymath process-math" id="sec_svinvfuncthm-3-14-1-1-4">
+\begin{equation}
+f(x,y,z) = \bigl(x^2+y^2-{(z+1)}^3+1,e^x+e^y+e^z-3\bigr) ,
+\end{equation}
+</div>
+<div class="para">whose derivative is</div>
+<div class="displaymath process-math" id="sec_svinvfuncthm-3-14-1-1-5">
+\begin{equation}
+f' =
+\begin{bmatrix}
+2x &amp; 2y &amp; -3{(z+1)}^2 \\
+e^x &amp; e^y &amp; e^z
+\end{bmatrix} .
+\end{equation}
+</div>
+<div class="para">The matrix</div>
+<div class="displaymath process-math" id="sec_svinvfuncthm-3-14-1-1-6">
+\begin{equation}
+\begin{bmatrix}
+2(0) &amp; -3{(0+1)}^2 \\
+e^0 &amp; e^0
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 &amp; -3 \\
+1 &amp; 1
+\end{bmatrix}
+\end{equation}
+</div>
+<div class="para">is invertible.  Hence near <span class="process-math">\((0,0,0)\text{,}\)</span> we can solve for <span class="process-math">\(y\)</span> and <span class="process-math">\(z\)</span> as <span class="process-math">\(C^1\)</span> functions of <span class="process-math">\(x\)</span> such that for <span class="process-math">\(x\)</span> near <span class="process-math">\(0\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_svinvfuncthm-3-14-1-1-14">
+\begin{equation}
+x^2+y(x)^2-{\bigl(z(x)+1\bigr)}^3 = -1,
+\qquad
+e^x+e^{y(x)}+e^{z(x)} = 3 .
+\end{equation}
+</div>
+<div class="para">In other words, near the origin the set of solutions is a smooth curve in <span class="process-math">\(\R^3\)</span> that goes through the origin. The theorem does not tell us how to find <span class="process-math">\(y(x)\)</span> and <span class="process-math">\(z(x)\)</span> explicitly, it just tells us they exist.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-3-14-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 8.5.7"><a aria-label="Copy heading and permalink for Example 8.5.7" href="#sec_svinvfuncthm-3-14" title="Copy heading and permalink for Example 8.5.7">🔗</a></div>
+</article>
+<div class="para" id="sec_svinvfuncthm-3-15">An interesting, and sometimes useful, observation from the proof is that we solved the equation <span class="process-math">\(f\bigl(x,g(x)\bigr) = s\)</span> for all <span class="process-math">\(s\)</span> in some neighborhood of <span class="process-math">\(0\text{,}\)</span> not just <span class="process-math">\(s=0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-3-15" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="remark remark-like" id="sec_svinvfuncthm-3-16"><h4 class="heading">
+<span class="type">Remark</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.5.8</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_svinvfuncthm-3-16-1-1">There are versions of the theorem for arbitrarily many derivatives: If <span class="process-math">\(f\)</span> has <span class="process-math">\(k\)</span> continuous derivatives (see the next section), then the solution has <span class="process-math">\(k\)</span> continuous derivatives as well.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-3-16-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Remark 8.5.8"><a aria-label="Copy heading and permalink for Remark 8.5.8" href="#sec_svinvfuncthm-3-16" title="Copy heading and permalink for Remark 8.5.8">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 8.5.1: Implicit function theorem"><a aria-label="Copy heading and permalink for Subsection 8.5.1: Implicit function theorem" href="#sec_svinvfuncthm-3" title="Copy heading and permalink for Subsection 8.5.1: Implicit function theorem">🔗</a></div>
+</section>
+<section class="exercises" id="sec_svinvfuncthm-4">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.5.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_svinvfuncthm-4-1"><h4 class="heading"><span class="codenumber">8.5.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_svinvfuncthm-4-1-1-1">Let <span class="process-math">\(C \coloneqq \bigl\{ (x,y) \in \R^2 : x^2+y^2 = 1 \bigr\}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-4-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_svinvfuncthm-4-1-1-2">
+<li id="sec_svinvfuncthm-4-1-1-2-1">
+<div class="para" id="sec_svinvfuncthm-4-1-1-2-1-1">Solve for <span class="process-math">\(y\)</span> in terms of <span class="process-math">\(x\)</span> near <span class="process-math">\((0,1)\)</span> (that is, find the function <span class="process-math">\(g\)</span> from the implicit function theorem for a neighborhood of the point <span class="process-math">\((p,q) = (0,1)\)</span>).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-4-1-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.5.1.a"><a aria-label="Copy heading and permalink for Item 8.5.1.a" href="#sec_svinvfuncthm-4-1-1-2-1" title="Copy heading and permalink for Item 8.5.1.a">🔗</a></div>
+</li>
+<li id="sec_svinvfuncthm-4-1-1-2-2">
+<div class="para" id="sec_svinvfuncthm-4-1-1-2-2-1">Solve for <span class="process-math">\(y\)</span> in terms of <span class="process-math">\(x\)</span> near <span class="process-math">\((0,-1)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-4-1-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.5.1.b"><a aria-label="Copy heading and permalink for Item 8.5.1.b" href="#sec_svinvfuncthm-4-1-1-2-2" title="Copy heading and permalink for Item 8.5.1.b">🔗</a></div>
+</li>
+<li id="sec_svinvfuncthm-4-1-1-2-3">
+<div class="para" id="sec_svinvfuncthm-4-1-1-2-3-1">Solve for <span class="process-math">\(x\)</span> in terms of <span class="process-math">\(y\)</span> near <span class="process-math">\((-1,0)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-4-1-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.5.1.c"><a aria-label="Copy heading and permalink for Item 8.5.1.c" href="#sec_svinvfuncthm-4-1-1-2-3" title="Copy heading and permalink for Item 8.5.1.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 8.5.1"><a aria-label="Copy heading and permalink for Exercise 8.5.1" href="#sec_svinvfuncthm-4-1" title="Copy heading and permalink for Exercise 8.5.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_svinvfuncthm-4-2"><h4 class="heading"><span class="codenumber">8.5.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_svinvfuncthm-4-2-1-1">Define <span class="process-math">\(f \colon \R^2 \to \R^2\)</span> by <span class="process-math">\(f(x,y) \coloneqq
+\bigl(x,y+h(x)\bigr)\)</span> for some continuously differentiable function <span class="process-math">\(h\)</span> of one variable.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-4-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_svinvfuncthm-4-2-1-2">
+<li id="sec_svinvfuncthm-4-2-1-2-1">
+<div class="para" id="sec_svinvfuncthm-4-2-1-2-1-1">Show that <span class="process-math">\(f\)</span> is one-to-one and onto.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-4-2-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.5.2.a"><a aria-label="Copy heading and permalink for Item 8.5.2.a" href="#sec_svinvfuncthm-4-2-1-2-1" title="Copy heading and permalink for Item 8.5.2.a">🔗</a></div>
+</li>
+<li id="sec_svinvfuncthm-4-2-1-2-2">
+<div class="para" id="sec_svinvfuncthm-4-2-1-2-2-1">Compute <span class="process-math">\(f'\text{.}\)</span>  (Make sure to argue why <span class="process-math">\(f'\)</span> exists.)<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-4-2-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.5.2.b"><a aria-label="Copy heading and permalink for Item 8.5.2.b" href="#sec_svinvfuncthm-4-2-1-2-2" title="Copy heading and permalink for Item 8.5.2.b">🔗</a></div>
+</li>
+<li id="sec_svinvfuncthm-4-2-1-2-3">
+<div class="para" id="sec_svinvfuncthm-4-2-1-2-3-1">Show that <span class="process-math">\(f'\)</span> is invertible at all points and compute its inverse.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-4-2-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.5.2.c"><a aria-label="Copy heading and permalink for Item 8.5.2.c" href="#sec_svinvfuncthm-4-2-1-2-3" title="Copy heading and permalink for Item 8.5.2.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 8.5.2"><a aria-label="Copy heading and permalink for Exercise 8.5.2" href="#sec_svinvfuncthm-4-2" title="Copy heading and permalink for Exercise 8.5.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_svinvfuncthm-4-3"><h4 class="heading"><span class="codenumber">8.5.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_svinvfuncthm-4-3-1-1">Define <span class="process-math">\(f \colon \R^2 \to \R^2 \setminus \bigl\{ (0,0) \bigr\}\)</span> by <span class="process-math">\(f(x,y) \coloneqq \bigl(e^x\cos(y),e^x\sin(y)\bigr)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-4-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_svinvfuncthm-4-3-1-2">
+<li id="sec_svinvfuncthm-4-3-1-2-1">
+<div class="para" id="sec_svinvfuncthm-4-3-1-2-1-1">Show that <span class="process-math">\(f\)</span> is onto.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-4-3-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.5.3.a"><a aria-label="Copy heading and permalink for Item 8.5.3.a" href="#sec_svinvfuncthm-4-3-1-2-1" title="Copy heading and permalink for Item 8.5.3.a">🔗</a></div>
+</li>
+<li id="sec_svinvfuncthm-4-3-1-2-2">
+<div class="para" id="sec_svinvfuncthm-4-3-1-2-2-1">Show that <span class="process-math">\(f'\)</span> is invertible at all points.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-4-3-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.5.3.b"><a aria-label="Copy heading and permalink for Item 8.5.3.b" href="#sec_svinvfuncthm-4-3-1-2-2" title="Copy heading and permalink for Item 8.5.3.b">🔗</a></div>
+</li>
+<li id="sec_svinvfuncthm-4-3-1-2-3">
+<div class="para" id="sec_svinvfuncthm-4-3-1-2-3-1">Show that <span class="process-math">\(f\)</span> is not one-to-one, in fact for every <span class="process-math">\((a,b) \in \R^2
+\setminus \bigl\{ (0,0) \bigr\}\text{,}\)</span> there exist infinitely many different points <span class="process-math">\((x,y) \in \R^2\)</span> such that <span class="process-math">\(f(x,y) = (a,b)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-4-3-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.5.3.c"><a aria-label="Copy heading and permalink for Item 8.5.3.c" href="#sec_svinvfuncthm-4-3-1-2-3" title="Copy heading and permalink for Item 8.5.3.c">🔗</a></div>
+</li>
+</ol>
+<div class="para" id="sec_svinvfuncthm-4-3-1-3">Therefore, invertible derivative at every point does not mean that <span class="process-math">\(f\)</span> is invertible globally.<br/> Note: Feel free to use what you know about sine and cosine from calculus.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-4-3-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.5.3"><a aria-label="Copy heading and permalink for Exercise 8.5.3" href="#sec_svinvfuncthm-4-3" title="Copy heading and permalink for Exercise 8.5.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_svinvfuncthm-4-4"><h4 class="heading"><span class="codenumber">8.5.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_svinvfuncthm-4-4-1-1">Find a map <span class="process-math">\(f \colon \R^n \to \R^n\)</span> that is one-to-one, onto, continuously differentiable, but <span class="process-math">\(f'(0) = 0\text{.}\)</span>  Hint: Generalize <span class="process-math">\(f(x) = x^3\)</span> from one to <span class="process-math">\(n\)</span> dimensions.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-4-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.5.4"><a aria-label="Copy heading and permalink for Exercise 8.5.4" href="#sec_svinvfuncthm-4-4" title="Copy heading and permalink for Exercise 8.5.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_svinvfuncthm-4-5"><h4 class="heading"><span class="codenumber">8.5.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_svinvfuncthm-4-5-1-1">Consider <span class="process-math">\(z^2 + xz + y =0\)</span> in <span class="process-math">\(\R^3\text{.}\)</span>  Find an equation <span class="process-math">\(D(x,y)=0\text{,}\)</span> such that if <span class="process-math">\(D(x_0,y_0) \neq 0\)</span> and <span class="process-math">\(z^2+x_0z+y_0 = 0\)</span> for some <span class="process-math">\(z \in \R\text{,}\)</span> then for points near <span class="process-math">\((x_0,y_0)\)</span> there exist exactly two distinct continuously differentiable functions <span class="process-math">\(r_1(x,y)\)</span> and <span class="process-math">\(r_2(x,y)\)</span> such that <span class="process-math">\(z=r_1(x,y)\)</span> and <span class="process-math">\(z=r_2(x,y)\)</span> solve <span class="process-math">\(z^2 + xz + y =0\text{.}\)</span>  Do you recognize the expression <span class="process-math">\(D\)</span> from algebra?<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-4-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.5.5"><a aria-label="Copy heading and permalink for Exercise 8.5.5" href="#sec_svinvfuncthm-4-5" title="Copy heading and permalink for Exercise 8.5.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_svinvfuncthm-4-6"><h4 class="heading"><span class="codenumber">8.5.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_svinvfuncthm-4-6-1-1">Suppose <span class="process-math">\(f \colon (a,b) \to \R^2\)</span> is continuously differentiable and the first component (the <span class="process-math">\(x\)</span> component) of <span class="process-math">\(\nabla f(t)\)</span> is not equal to 0 for all <span class="process-math">\(t \in (a,b)\text{.}\)</span> Prove that there exists an open interval <span class="process-math">\(I \subset \R\)</span> and a continuously differentiable function <span class="process-math">\(g \colon I \to \R\)</span> such that <span class="process-math">\((x,y) \in f\bigl((a,b)\bigr)\)</span> if and only if <span class="process-math">\(x \in I\)</span> and <span class="process-math">\(y=g(x)\text{.}\)</span> In other words, the set <span class="process-math">\(f\bigl((a,b)\bigr)\)</span> is a graph of <span class="process-math">\(g\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-4-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.5.6"><a aria-label="Copy heading and permalink for Exercise 8.5.6" href="#sec_svinvfuncthm-4-6" title="Copy heading and permalink for Exercise 8.5.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_svinvfuncthm-4-7"><h4 class="heading"><span class="codenumber">8.5.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_svinvfuncthm-4-7-1-1">
+<div class="para">Define <span class="process-math">\(f \colon \R^2 \to \R^2\)</span>
+</div>
+<div class="displaymath process-math" id="sec_svinvfuncthm-4-7-1-1-2">
+\begin{equation}
+f(x,y) \coloneqq
+\begin{cases}
+\bigl(x^2 \sin (\nicefrac{1}{x}) + \nicefrac{x}{2} , y \bigr) &amp;
+\text{if } x \neq 0, \\
+(0,y) &amp;
+\text{if } x=0.
+\end{cases}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-4-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_svinvfuncthm-4-7-1-2">
+<li id="sec_svinvfuncthm-4-7-1-2-1">
+<div class="para" id="sec_svinvfuncthm-4-7-1-2-1-1">Show that <span class="process-math">\(f\)</span> is differentiable everywhere.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-4-7-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.5.7.a"><a aria-label="Copy heading and permalink for Item 8.5.7.a" href="#sec_svinvfuncthm-4-7-1-2-1" title="Copy heading and permalink for Item 8.5.7.a">🔗</a></div>
+</li>
+<li id="sec_svinvfuncthm-4-7-1-2-2">
+<div class="para" id="sec_svinvfuncthm-4-7-1-2-2-1">Show that <span class="process-math">\(f'(0,0)\)</span> is invertible.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-4-7-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.5.7.b"><a aria-label="Copy heading and permalink for Item 8.5.7.b" href="#sec_svinvfuncthm-4-7-1-2-2" title="Copy heading and permalink for Item 8.5.7.b">🔗</a></div>
+</li>
+<li id="sec_svinvfuncthm-4-7-1-2-3">
+<div class="para" id="sec_svinvfuncthm-4-7-1-2-3-1">Show that <span class="process-math">\(f\)</span> is not one-to-one in every neighborhood of the origin (it is not locally invertible, that is, the inverse function theorem does not work).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-4-7-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.5.7.c"><a aria-label="Copy heading and permalink for Item 8.5.7.c" href="#sec_svinvfuncthm-4-7-1-2-3" title="Copy heading and permalink for Item 8.5.7.c">🔗</a></div>
+</li>
+<li id="sec_svinvfuncthm-4-7-1-2-4">
+<div class="para" id="sec_svinvfuncthm-4-7-1-2-4-1">Show that <span class="process-math">\(f\)</span> is not continuously differentiable.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-4-7-1-2-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.5.7.d"><a aria-label="Copy heading and permalink for Item 8.5.7.d" href="#sec_svinvfuncthm-4-7-1-2-4" title="Copy heading and permalink for Item 8.5.7.d">🔗</a></div>
+</li>
+</ol>
+<div class="para" id="sec_svinvfuncthm-4-7-1-3">Note: Feel free to use what you know about sine and cosine from calculus.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-4-7-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.5.7"><a aria-label="Copy heading and permalink for Exercise 8.5.7" href="#sec_svinvfuncthm-4-7" title="Copy heading and permalink for Exercise 8.5.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="mv_exercise_polarcoordinates"><h4 class="heading"><span class="codenumber">8.5.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="mv_exercise_polarcoordinates-1-1">
+<em class="emphasis">(Polar coordinates)</em>    Define a mapping <span class="process-math">\(F(r,\theta) \coloneqq \bigl(r \cos(\theta), r \sin(\theta) \bigr)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_exercise_polarcoordinates-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="mv_exercise_polarcoordinates-1-2">
+<li id="mv_exercise_polarcoordinates-1-2-1">
+<div class="para" id="mv_exercise_polarcoordinates-1-2-1-1">Show that <span class="process-math">\(F\)</span> is continuously differentiable (for all <span class="process-math">\((r,\theta) \in
+\R^2\)</span>).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_exercise_polarcoordinates-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.5.8.a"><a aria-label="Copy heading and permalink for Item 8.5.8.a" href="#mv_exercise_polarcoordinates-1-2-1" title="Copy heading and permalink for Item 8.5.8.a">🔗</a></div>
+</li>
+<li id="mv_exercise_polarcoordinates-1-2-2">
+<div class="para" id="mv_exercise_polarcoordinates-1-2-2-1">Compute <span class="process-math">\(F'(0,\theta)\)</span> for all <span class="process-math">\(\theta\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_exercise_polarcoordinates-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.5.8.b"><a aria-label="Copy heading and permalink for Item 8.5.8.b" href="#mv_exercise_polarcoordinates-1-2-2" title="Copy heading and permalink for Item 8.5.8.b">🔗</a></div>
+</li>
+<li id="mv_exercise_polarcoordinates-1-2-3">
+<div class="para" id="mv_exercise_polarcoordinates-1-2-3-1">Show that if <span class="process-math">\(r \neq 0\text{,}\)</span> then <span class="process-math">\(F'(r,\theta)\)</span> is invertible, therefore an inverse of <span class="process-math">\(F\)</span> exists locally as long as <span class="process-math">\(r \neq 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_exercise_polarcoordinates-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.5.8.c"><a aria-label="Copy heading and permalink for Item 8.5.8.c" href="#mv_exercise_polarcoordinates-1-2-3" title="Copy heading and permalink for Item 8.5.8.c">🔗</a></div>
+</li>
+<li id="mv_exercise_polarcoordinates-1-2-4">
+<div class="para" id="mv_exercise_polarcoordinates-1-2-4-1">Show that <span class="process-math">\(F \colon \R^2 \to \R^2\)</span> is onto, and for each point <span class="process-math">\((x,y) \in
+\R^2\text{,}\)</span> the set <span class="process-math">\(F^{-1}(x,y)\)</span> is infinite.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_exercise_polarcoordinates-1-2-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.5.8.d"><a aria-label="Copy heading and permalink for Item 8.5.8.d" href="#mv_exercise_polarcoordinates-1-2-4" title="Copy heading and permalink for Item 8.5.8.d">🔗</a></div>
+</li>
+<li id="mv_exercise_polarcoordinates-1-2-5">
+<div class="para" id="mv_exercise_polarcoordinates-1-2-5-1">Show that <span class="process-math">\(F \colon \R^2 \to \R^2\)</span> is not an open mapping. Note that <span class="process-math">\(F|_{(0,\infty) \times \R}\)</span> is an open mapping via <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_svinvfuncthm.html#cor_IVTopenmap" title="Corollary 8.5.2">Corollary 8.5.2</a>. Hint: Where does a small open rectangle such as <span class="process-math">\((-\epsilon,\epsilon) \times
+(-\epsilon,\epsilon)\)</span> go?<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_exercise_polarcoordinates-1-2-5-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.5.8.e"><a aria-label="Copy heading and permalink for Item 8.5.8.e" href="#mv_exercise_polarcoordinates-1-2-5" title="Copy heading and permalink for Item 8.5.8.e">🔗</a></div>
+</li>
+<li id="mv_exercise_polarcoordinates-1-2-6">
+<div class="para" id="mv_exercise_polarcoordinates-1-2-6-1">Show that <span class="process-math">\(F|_{(0,\infty) \times [0,2\pi)}\)</span> is one-to-one and onto <span class="process-math">\(\R^2 \setminus \bigl\{ (0,0) \bigr\}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_exercise_polarcoordinates-1-2-6-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.5.8.f"><a aria-label="Copy heading and permalink for Item 8.5.8.f" href="#mv_exercise_polarcoordinates-1-2-6" title="Copy heading and permalink for Item 8.5.8.f">🔗</a></div>
+</li>
+</ol>
+<div class="para" id="mv_exercise_polarcoordinates-1-3">Note: Feel free to use what you know about sine and cosine from calculus.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_exercise_polarcoordinates-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.5.8"><a aria-label="Copy heading and permalink for Exercise 8.5.8" href="#mv_exercise_polarcoordinates" title="Copy heading and permalink for Exercise 8.5.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_svinvfuncthm-4-9"><h4 class="heading"><span class="codenumber">8.5.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_svinvfuncthm-4-9-1-1">
+<div class="para">Let <span class="process-math">\(H \coloneqq \bigl\{ (x,y) \in \R^2 : y &gt; 0 \}\text{,}\)</span> and for <span class="process-math">\((x,y) \in H\)</span> define</div>
+<div class="displaymath process-math" id="sec_svinvfuncthm-4-9-1-1-3">
+\begin{equation}
+F(x,y) \coloneqq \left(
+\frac{x^2+y^2-1}{x^2+2y+y^2+1}
+,~
+\frac{-2x}{x^2+2y+y^2+1}
+\right) .
+\end{equation}
+</div>
+<div class="para">Prove that <span class="process-math">\(F\)</span> is a bijective mapping from <span class="process-math">\(H\)</span> to <span class="process-math">\(B(0,1)\text{,}\)</span> it is continuously differentiable on <span class="process-math">\(H\text{,}\)</span> and its inverse is also continuously differentiable.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-4-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.5.9"><a aria-label="Copy heading and permalink for Exercise 8.5.9" href="#sec_svinvfuncthm-4-9" title="Copy heading and permalink for Exercise 8.5.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_svinvfuncthm-4-10"><h4 class="heading"><span class="codenumber">8.5.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_svinvfuncthm-4-10-1-1">Suppose <span class="process-math">\(U \subset \R^2\)</span> is open and <span class="process-math">\(f \colon U \to \R\)</span> is a <span class="process-math">\(C^1\)</span> function such that <span class="process-math">\(\nabla f(x,y) \neq 0\)</span> for all <span class="process-math">\((x,y) \in U\text{.}\)</span>  Show that every level set is a <span class="process-math">\(C^1\)</span> smooth curve.  That is, for every <span class="process-math">\((x,y) \in U\text{,}\)</span> there exists a <span class="process-math">\(C^1\)</span> function <span class="process-math">\(\gamma \colon (-\delta,\delta)
+\to \R^2\)</span> with <span class="process-math">\(\gamma'(0) \neq 0\)</span> such that <span class="process-math">\(f\bigl(\gamma(t)\bigr)\)</span> is constant for all <span class="process-math">\(t \in (-\delta,\delta)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-4-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.5.10"><a aria-label="Copy heading and permalink for Exercise 8.5.10" href="#sec_svinvfuncthm-4-10" title="Copy heading and permalink for Exercise 8.5.10">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_svinvfuncthm-4-11"><h4 class="heading"><span class="codenumber">8.5.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_svinvfuncthm-4-11-1-1">Suppose <span class="process-math">\(U \subset \R^2\)</span> is open and <span class="process-math">\(f \colon U \to \R\)</span> is a <span class="process-math">\(C^1\)</span> function such that <span class="process-math">\(\nabla f(x,y) \neq 0\)</span> for all <span class="process-math">\((x,y) \in U\text{.}\)</span> Show that for every <span class="process-math">\((x,y)\)</span> there exists a neighborhood <span class="process-math">\(V\)</span> of <span class="process-math">\((x,y)\)</span> an open set <span class="process-math">\(W \subset \R^2\text{,}\)</span> a bijective <span class="process-math">\(C^1\)</span> function with a <span class="process-math">\(C^1\)</span> inverse <span class="process-math">\(g \colon W \to V\)</span> such that the level sets of <span class="process-math">\(f \circ g\)</span> are horizontal lines in <span class="process-math">\(W\text{,}\)</span> that is, the set given by <span class="process-math">\((f \circ g) (s,t) = c\)</span> for a constant <span class="process-math">\(c\)</span> is a set of the form <span class="process-math">\(\bigl\{ (s,t_0) \in \R^2 : s \in \R, (s,t_0) \in W \bigr\}\text{,}\)</span> where <span class="process-math">\(t_0\)</span> is fixed. That is, the level curves can be locally “straightened.”<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svinvfuncthm-4-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.5.11"><a aria-label="Copy heading and permalink for Exercise 8.5.11" href="#sec_svinvfuncthm-4-11" title="Copy heading and permalink for Exercise 8.5.11">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 8.5.2"><a aria-label="Copy heading and permalink for Exercises 8.5.2" href="#sec_svinvfuncthm-4" title="Copy heading and permalink for Exercises 8.5.2">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 8.5: Inverse and implicit function theorems"><a aria-label="Copy heading and permalink for Section 8.5: Inverse and implicit function theorems" href="#sec_svinvfuncthm" title="Copy heading and permalink for Section 8.5: Inverse and implicit function theorems">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_svthedercont.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_mvhighordders.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

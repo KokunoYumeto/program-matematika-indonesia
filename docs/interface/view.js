@@ -99,9 +99,11 @@ export function resourceBindings(course, locale) {
   }
   const idPrefix = locale === 'id' ? '' : contentLanguageName('id', locale) + ' — ';
   for (const row of centralHostedReaders.filter(item => item.courseId === course.id)) {
-    add(idPrefix + localizedValue(row.labels, locale), row.href, row.contentLanguage, 'reader', {
+    const prefix = row.contentLanguage.toLowerCase() === localeMetadata[locale].languageTag.toLowerCase()
+      ? '' : contentLanguageName(row.contentLanguage, locale) + ' — ';
+    add(prefix + localizedValue(row.labels, locale), row.href, row.contentLanguage, 'reader', {
       format: row.format, bytes: row.bytes, sha256: row.sha256,
-      primary: locale === 'id', accessRole: 'hosted-reader',
+      primary: row.contentLanguage.toLowerCase() === localeMetadata[locale].languageTag.toLowerCase(), accessRole: 'hosted-reader',
       authorityRole: 'program-edition', relationToSource: 'mirrors',
     });
   }

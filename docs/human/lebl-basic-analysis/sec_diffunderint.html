@@ -1,0 +1,512 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Differentiation under the integral · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_diffunderint">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Differentiation under the integral</span>
+</h2>
+<div class="para" id="sec_diffunderint-2">
+<em class="emphasis">Note: less than 1 lecture</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_diffunderint-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_diffunderint-3">
+<div class="para">Let <span class="process-math">\(f(x,y)\)</span> be a function of two variables, and define</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_integralcontcont.html" id="sec_diffunderint-3-2">
+\begin{equation}
+g(y) \coloneqq \int_a^b f(x,y) \,dx .
+\end{equation}
+</div>
+<div class="para">If <span class="process-math">\(f\)</span> is continuous on the compact rectangle <span class="process-math">\([a,b] \times [c,d]\text{,}\)</span> then <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metcont.html#prop_integralcontcont" title="Proposition 7.5.12">Proposition 7.5.12</a> says that <span class="process-math">\(g\)</span> is continuous on <span class="process-math">\([c,d]\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_diffunderint-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_diffunderint-4">
+<div class="para">Suppose <span class="process-math">\(f\)</span> is differentiable in <span class="process-math">\(y\text{.}\)</span> When can we “differentiate under the integral”? That is, when is it true that <span class="process-math">\(g\)</span> is differentiable and its derivative is</div>
+<div class="displaymath process-math" id="sec_diffunderint-4-5">
+\begin{equation}
+g'(y) \overset{?}{=} \int_a^b \frac{\partial f}{\partial y}(x,y) \,dx .
+\end{equation}
+</div>
+<div class="para">Differentiation is a limit and therefore we are really asking when the two limiting operations of integration and differentiation commute. It is not always possible to commute them and some extra hypothesis is necessary.  The first question we would face is the integrability of <span class="process-math">\(\frac{\partial f}{\partial y}\text{,}\)</span> but the formula above can fail even if <span class="process-math">\(\frac{\partial f}{\partial y}\)</span> is integrable as a function of <span class="process-math">\(x\)</span> for every fixed <span class="process-math">\(y\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_diffunderint-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_diffunderint-5">We prove a simple, but perhaps the most useful, version of this kind of result.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_diffunderint-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="sec_diffunderint-6"><h3 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.1.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Leibniz integral rule.</span>
+</h3>
+<div class="para logical" id="sec_diffunderint-6-2-1">
+<div class="para">Suppose <span class="process-math">\(f \colon [a,b] \times [c,d] \to \R\)</span> is a continuous function, such that <span class="process-math">\(\frac{\partial f}{\partial y}\)</span> exists for all <span class="process-math">\((x,y) \in [a,b]
+\times [c,d]\)</span> and is continuous.  Define <span class="process-math">\(g \colon [c,d] \to \R\)</span> by</div>
+<div class="displaymath process-math" id="sec_diffunderint-6-2-1-5">
+\begin{equation}
+g(y) \coloneqq \int_a^b f(x,y) \,dx .
+\end{equation}
+</div>
+<div class="para">Then <span class="process-math">\(g\)</span> is continuously differentiable and</div>
+<div class="displaymath process-math" id="sec_diffunderint-6-2-1-7">
+\begin{equation}
+g'(y) = \int_a^b \frac{\partial f}{\partial y}(x,y) \,dx .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_diffunderint-6-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 9.1.1: Leibniz integral rule"><a aria-label="Copy heading and permalink for Theorem 9.1.1: Leibniz integral rule" href="#sec_diffunderint-6" title="Copy heading and permalink for Theorem 9.1.1: Leibniz integral rule">🔗</a></div>
+</article>
+<div class="para" id="sec_diffunderint-7">The hypotheses on <span class="process-math">\(f\)</span> and <span class="process-math">\(\frac{\partial f}{\partial y}\)</span> can be weakened, see e.g. <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_diffunderint.html#exercise_strongerleibniz" title="Exercise 9.1.8">Exercise 9.1.8</a>, but not dropped outright. The main point in the proof requires that <span class="process-math">\(\frac{\partial f}{\partial y}\)</span> exists and is continuous for all <span class="process-math">\(x\)</span> up to the endpoints, but we only need a small interval in the <span class="process-math">\(y\)</span> direction.  In applications, we often make <span class="process-math">\([c,d]\)</span> a small interval around the point where we need to differentiate.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_diffunderint-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_diffunderint-8"><h3 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h3>
+<div class="para logical" id="sec_diffunderint-8-1">
+<div class="para">Fix <span class="process-math">\(y \in [c,d]\)</span> and let <span class="process-math">\(\epsilon &gt; 0\)</span> be given. As <span class="process-math">\(\frac{\partial f}{\partial y}\)</span> is continuous on <span class="process-math">\([a,b] \times [c,d]\)</span> it is uniformly continuous.  In particular, there exists <span class="process-math">\(\delta &gt; 0\)</span> such that whenever <span class="process-math">\(y_1 \in [c,d]\)</span> with <span class="process-math">\(\sabs{y_1-y} &lt; \delta\)</span> and all <span class="process-math">\(x \in [a,b]\text{,}\)</span> we have</div>
+<div class="displaymath process-math" id="sec_diffunderint-8-1-9">
+\begin{equation}
+\abs{\frac{\partial f}{\partial y}(x,y_1)-\frac{\partial f}{\partial y}(x,y)} &lt; \epsilon .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_diffunderint-8-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_diffunderint-8-2">
+<div class="para">Suppose <span class="process-math">\(h\)</span> is such that <span class="process-math">\(y+h \in [c,d]\)</span> and <span class="process-math">\(\sabs{h} &lt; \delta\text{.}\)</span> Fix <span class="process-math">\(x\)</span> for a moment and apply the mean value theorem to find a <span class="process-math">\(y_1\)</span> between <span class="process-math">\(y\)</span> and <span class="process-math">\(y+h\)</span> such that</div>
+<div class="displaymath process-math" id="sec_diffunderint-8-2-8">
+\begin{equation}
+\frac{f(x,y+h)-f(x,y)}{h}
+=
+\frac{\partial f}{\partial y}(x,y_1) .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(\sabs{y_1-y} \leq \sabs{h} &lt; \delta\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_diffunderint-8-2-10">
+\begin{equation}
+\abs{
+\frac{f(x,y+h)-f(x,y)}{h}
+-
+\frac{\partial f}{\partial y}(x,y) 
+}
+=
+\abs{
+\frac{\partial f}{\partial y}(x,y_1) 
+-
+\frac{\partial f}{\partial y}(x,y) 
+}
+&lt; \epsilon .
+\end{equation}
+</div>
+<div class="para">The argument worked for every <span class="process-math">\(x \in [a,b]\)</span> (different <span class="process-math">\(y_1\)</span> may have been used).  Thus, as a function of <span class="process-math">\(x\)</span>
+</div>
+<div class="displaymath process-math" id="sec_diffunderint-8-2-14">
+\begin{equation}
+x \mapsto \frac{f(x,y+h)-f(x,y)}{h}
+\qquad
+\text{converges uniformly to}
+\qquad
+x \mapsto \frac{\partial f}{\partial y}(x,y)
+\qquad
+\text{as } h \to 0 .
+\end{equation}
+</div>
+<div class="para">We defined uniform convergence for sequences although the idea is the same.  You may replace <span class="process-math">\(h\)</span> with a sequence of nonzero numbers <span class="process-math">\(\{ h_n \}_{n=1}^\infty\)</span> converging to <span class="process-math">\(0\)</span> such that <span class="process-math">\(y+h_n \in [c,d]\)</span> and let <span class="process-math">\(n \to \infty\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_diffunderint-8-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_diffunderint-8-3">
+<div class="para">Consider the difference quotient of <span class="process-math">\(g\text{,}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_integralcontcont.html" id="sec_diffunderint-8-3-2">
+\begin{equation}
+\frac{g(y+h)-g(y)}{h}
+=
+\frac{\int_a^b f(x,y+h) \,dx -
+\int_a^b f(x,y) \,dx }{h}
+=
+\int_a^b \frac{f(x,y+h)-f(x,y)}{h} \,dx .
+\end{equation}
+</div>
+<div class="para">Uniform convergence implies the limit can be taken underneath the integral. So</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_integralcontcont.html" id="sec_diffunderint-8-3-3">
+\begin{equation}
+\lim_{h\to 0}
+\frac{g(y+h)-g(y)}{h}
+= 
+\int_a^b 
+\lim_{h\to 0}
+\frac{f(x,y+h)-f(x,y)}{h} \,dx 
+=
+\int_a^b 
+\frac{\partial f}{\partial y}(x,y) \,dx .
+\end{equation}
+</div>
+<div class="para">Then <span class="process-math">\(g'\)</span> is continuous on <span class="process-math">\([c,d]\)</span> by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metcont.html#prop_integralcontcont" title="Proposition 7.5.12">Proposition 7.5.12</a> mentioned above.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_diffunderint-8-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 9.1.1"><a aria-label="Copy heading and permalink for Proof 9.1.1" href="#sec_diffunderint-8" title="Copy heading and permalink for Proof 9.1.1">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_diffunderint-9"><h3 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.1.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para logical" id="sec_diffunderint-9-1-1">
+<div class="para">Let</div>
+<div class="displaymath process-math" id="sec_diffunderint-9-1-1-1">
+\begin{equation}
+f(y) = \int_0^1 \sin(x^2-y^2) \,dx .
+\end{equation}
+</div>
+<div class="para">Then</div>
+<div class="displaymath process-math" id="sec_diffunderint-9-1-1-2">
+\begin{equation}
+f'(y) = \int_0^1 -2y\cos(x^2-y^2) \,dx .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_diffunderint-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 9.1.2"><a aria-label="Copy heading and permalink for Example 9.1.2" href="#sec_diffunderint-9" title="Copy heading and permalink for Example 9.1.2">🔗</a></div>
+</article>
+<article class="example example-like" id="example_counterexamplediffunder"><h3 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.1.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para logical" id="example_counterexamplediffunder-1-1">
+<div class="para">Consider</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_counterexamplediffunder.html ./knowl/xref/fig_diffunderexample.html" id="example_counterexamplediffunder-1-1-1">
+\begin{equation}
+\int_0^{1} \frac{x-1}{\ln(x)} \,dx .
+\end{equation}
+</div>
+<div class="para">The function under the integral extends to be continuous on <span class="process-math">\([0,1]\text{,}\)</span> and hence the integral exists, see <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_diffunderint.html#exercise_counterexamplediffunder" title="Exercise 9.1.1">Exercise 9.1.1</a>.  Trouble is finding it. We introduce a parameter <span class="process-math">\(y\)</span> and define a function:</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_counterexamplediffunder.html ./knowl/xref/fig_diffunderexample.html" id="example_counterexamplediffunder-1-1-5">
+\begin{equation}
+g(y) \coloneqq \int_0^{1} \frac{x^y-1}{\ln(x)} \,dx .
+\end{equation}
+</div>
+<div class="para">The function <span class="process-math">\(\frac{x^y-1}{\ln(x)}\)</span> also extends to a continuous function of <span class="process-math">\(x\)</span> and <span class="process-math">\(y\)</span> for <span class="process-math">\((x,y) \in [0,1] \times [0,1]\)</span> (also part of the exercise). See <a class="internal" href="sec_diffunderint.html#fig_diffunderexample" title="Figure 9.1">Figure 9.1</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_counterexamplediffunder-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <hr class="rahr"/>
+<figure class="figure figure-like" id="fig_diffunderexample"><img alt="Surface plot of a function in the first quadrant on the xy-plane. The function is zero on both the x and the y axes, however it rises very steeply from the y-axis." class="raimg" role="img" src="figures/diffunderexample-mbx.svg" style="width:181pt; height:136pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>The graph <span class="process-math">\(z= \frac{x^y-1}{\ln(x)}\)</span> on <span class="process-math">\([0,1] \times [0,1]\text{.}\)</span><div class="autopermalink" data-description="Figure 9.1"><a aria-label="Copy heading and permalink for Figure 9.1" href="#fig_diffunderexample" title="Copy heading and permalink for Figure 9.1">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para logical" id="example_counterexamplediffunder-1-5">
+<div class="para">Hence, <span class="process-math">\(g\)</span> is a continuous function on <span class="process-math">\([0,1]\)</span> and <span class="process-math">\(g(0) = 0\text{.}\)</span> For every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> the <span class="process-math">\(y\)</span> derivative of the integrand, <span class="process-math">\(x^y\text{,}\)</span> is continuous on <span class="process-math">\([0,1] \times [\epsilon,1]\text{.}\)</span>  Therefore, for <span class="process-math">\(y &gt;0\text{,}\)</span> we may differentiate under the integral sign,</div>
+<div class="displaymath process-math" id="example_counterexamplediffunder-1-5-9">
+\begin{equation}
+g'(y) =
+\int_0^{1} \frac{\ln(x) x^y}{\ln(x)} \,dx 
+=
+\int_0^{1} x^y \,dx =
+\frac{1}{y+1} .
+\end{equation}
+</div>
+<div class="para">We need to figure out <span class="process-math">\(g(1)\)</span> given that <span class="process-math">\(g'(y) = \frac{1}{y+1}\)</span> and <span class="process-math">\(g(0) =
+0\text{.}\)</span>  Elementary calculus says that <span class="process-math">\(g(1) = \int_0^1 g'(y)\,dy = \ln(2)\text{.}\)</span> Thus,</div>
+<div class="displaymath process-math" id="example_counterexamplediffunder-1-5-14">
+\begin{equation}
+\int_0^{1} \frac{x-1}{\ln(x)} \,dx  = \ln(2).
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_counterexamplediffunder-1-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 9.1.3"><a aria-label="Copy heading and permalink for Example 9.1.3" href="#example_counterexamplediffunder" title="Copy heading and permalink for Example 9.1.3">🔗</a></div>
+</article>
+<section class="exercises" id="sec_diffunderint-11">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber"></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="exercise_counterexamplediffunder"><h4 class="heading"><span class="codenumber">9.1.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_counterexamplediffunder-1-1">Prove the two statements that were asserted in <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_diffunderint.html#example_counterexamplediffunder" title="Example 9.1.3">Example 9.1.3</a>:<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_counterexamplediffunder-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="exercise_counterexamplediffunder-1-2">
+<li id="exercise_counterexamplediffunder-1-2-1">
+<div class="para" id="exercise_counterexamplediffunder-1-2-1-1">Prove <span class="process-math">\(\frac{x-1}{\ln(x)}\)</span> extends to a continuous function of <span class="process-math">\([0,1]\text{.}\)</span>  That is, there exists a continuous function on <span class="process-math">\([0,1]\)</span> that equals <span class="process-math">\(\frac{x-1}{\ln(x)}\)</span> on <span class="process-math">\((0,1)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_counterexamplediffunder-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 9.1.1.a"><a aria-label="Copy heading and permalink for Item 9.1.1.a" href="#exercise_counterexamplediffunder-1-2-1" title="Copy heading and permalink for Item 9.1.1.a">🔗</a></div>
+</li>
+<li id="exercise_counterexamplediffunder-1-2-2">
+<div class="para" id="exercise_counterexamplediffunder-1-2-2-1">Prove <span class="process-math">\(\frac{x^y-1}{\ln(x)}\)</span> extends to a continuous function on <span class="process-math">\([0,1] \times [0,1]\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_counterexamplediffunder-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 9.1.1.b"><a aria-label="Copy heading and permalink for Item 9.1.1.b" href="#exercise_counterexamplediffunder-1-2-2" title="Copy heading and permalink for Item 9.1.1.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 9.1.1"><a aria-label="Copy heading and permalink for Exercise 9.1.1" href="#exercise_counterexamplediffunder" title="Copy heading and permalink for Exercise 9.1.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_diffunderint-11-2"><h4 class="heading"><span class="codenumber">9.1.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_diffunderint-11-2-1-1">
+<div class="para">Suppose <span class="process-math">\(h \colon \R \to \R\)</span> is continuous and <span class="process-math">\(g
+\colon \R \to \R\)</span> is continuously differentiable and compactly supported.  That is, there exists some <span class="process-math">\(M &gt; 0\text{,}\)</span> such that <span class="process-math">\(g(x) = 0\)</span> whenever <span class="process-math">\(\sabs{x} \geq M\text{.}\)</span>  Define</div>
+<div class="displaymath process-math" id="sec_diffunderint-11-2-1-1-6">
+\begin{equation}
+f(x) \coloneqq \int_{-\infty}^\infty h(y)g(x-y)\,dy  .
+\end{equation}
+</div>
+<div class="para">Show that <span class="process-math">\(f\)</span> is differentiable.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_diffunderint-11-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 9.1.2"><a aria-label="Copy heading and permalink for Exercise 9.1.2" href="#sec_diffunderint-11-2" title="Copy heading and permalink for Exercise 9.1.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_diffunderint-11-3"><h4 class="heading"><span class="codenumber">9.1.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_diffunderint-11-3-1-1">Suppose <span class="process-math">\(f \colon \R \to \R\)</span> is infinitely differentiable (derivatives of all orders exist) and <span class="process-math">\(f(0) = 0\text{.}\)</span>  Show that there exists an infinitely differentiable function <span class="process-math">\(g \colon \R \to \R\)</span> such that <span class="process-math">\(f(x) = x\,g(x)\text{.}\)</span> Show also that if <span class="process-math">\(f'(0) \neq 0\text{,}\)</span> then <span class="process-math">\(g(0) \neq 0\text{.}\)</span><br/> Hint: Write <span class="process-math">\(f(x) = \int_0^x f'(s) \,ds\)</span> and then rewrite the integral to go from <span class="process-math">\(0\)</span> to <span class="process-math">\(1\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_diffunderint-11-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 9.1.3"><a aria-label="Copy heading and permalink for Exercise 9.1.3" href="#sec_diffunderint-11-3" title="Copy heading and permalink for Exercise 9.1.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_diffunderint-11-4"><h4 class="heading"><span class="codenumber">9.1.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_diffunderint-11-4-1-1">Compute <span class="process-math">\(\int_0^1 e^{tx} \,dx\text{.}\)</span>  Derive the formula for <span class="process-math">\(\int_0^1 x^n e^{x} \,dx\)</span> not using integration by parts, but by differentiation underneath the integral.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_diffunderint-11-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 9.1.4"><a aria-label="Copy heading and permalink for Exercise 9.1.4" href="#sec_diffunderint-11-4" title="Copy heading and permalink for Exercise 9.1.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_diffunderint-11-5"><h4 class="heading"><span class="codenumber">9.1.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_diffunderint-11-5-1-1">
+<div class="para">Let <span class="process-math">\(U \subset \R^n\)</span> be open and suppose <span class="process-math">\(f(x,y_1,y_2,\ldots,y_n)\)</span> is a continuous function defined on <span class="process-math">\([0,1] \times U \subset \R^{n+1}\text{.}\)</span> Suppose <span class="process-math">\(\frac{\partial f}{\partial y_1},
+\frac{\partial f}{\partial y_2},\ldots,
+\frac{\partial f}{\partial y_n}\)</span> exist and are continuous on <span class="process-math">\([0,1] \times U\text{.}\)</span> Prove that <span class="process-math">\(F \colon U \to \R\)</span> defined by</div>
+<div class="displaymath process-math" id="sec_diffunderint-11-5-1-1-7">
+\begin{equation}
+F(y_1,y_2,\ldots,y_n) \coloneqq
+\int_0^1
+f(x,y_1,y_2,\ldots,y_n)
+\, dx
+\end{equation}
+</div>
+<div class="para">is continuously differentiable.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_diffunderint-11-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 9.1.5"><a aria-label="Copy heading and permalink for Exercise 9.1.5" href="#sec_diffunderint-11-5" title="Copy heading and permalink for Exercise 9.1.5">🔗</a></div>
+</article><hr class="rahr"/>
+<figure class="figure figure-like" id="fig_diffunderex916"><img alt="Surface plot of a function on the unit square. On the axes the function is zero and is otherwise positive, except at the origin, where there seems to be a discontinuity and it appears that as we move from the inside of the square towards the origin we would attain a positive value rather than zero." class="raimg" role="img" src="figures/diffunderex916-mbx.svg" style="width:180pt; height:87pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">9.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>The graph <span class="process-math">\(z= \frac{xy^3}{{(x^2+y^2)}^2}\)</span> on <span class="process-math">\([0,1] \times [0,1]\text{.}\)</span><div class="autopermalink" data-description="Figure 9.2"><a aria-label="Copy heading and permalink for Figure 9.2" href="#fig_diffunderex916" title="Copy heading and permalink for Figure 9.2">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<article class="exercise exercise-like" id="sec_diffunderint-11-9"><h4 class="heading"><span class="codenumber">9.1.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_diffunderint-11-9-1-1">
+<div class="para">Work out the following counterexample:  Let</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_diffunderex916.html" id="sec_diffunderint-11-9-1-1-1">
+\begin{equation}
+f(x,y) \coloneqq
+\begin{cases}
+\frac{xy^3}{{(x^2+y^2)}^2} &amp; \text{if } x \neq 0 \text{ or } y \neq 0, \\
+0                          &amp; \text{if } x = 0 \text{ and } y = 0.
+\end{cases}
+\end{equation}
+</div>
+<div class="para">See <a class="internal" href="sec_diffunderint.html#fig_diffunderex916" title="Figure 9.2">Figure 9.2</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_diffunderint-11-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_diffunderint-11-9-1-2">
+<li id="sec_diffunderint-11-9-1-2-1">
+<div class="para logical" id="sec_diffunderint-11-9-1-2-1-1">
+<div class="para">Prove that for every fixed <span class="process-math">\(y\text{,}\)</span> the function <span class="process-math">\(x \mapsto f(x,y)\)</span> is Riemann integrable on <span class="process-math">\([0,1]\text{,}\)</span> and</div>
+<div class="displaymath process-math" id="sec_diffunderint-11-9-1-2-1-1-4">
+\begin{equation}
+g(y) \coloneqq \int_0^1 f(x,y) \, dx = \frac{y}{2(y^2+1)} .
+\end{equation}
+</div>
+<div class="para">Therefore, <span class="process-math">\(g'(y)\)</span> exists and is the continuous function</div>
+<div class="displaymath process-math" id="sec_diffunderint-11-9-1-2-1-1-6">
+\begin{equation}
+g'(y) =
+\frac{d}{dy} \int_0^1 f(x,y) \, dx
+=
+\frac{1-y^2}{2{(y^2+1)}^2} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_diffunderint-11-9-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 9.1.6.a"><a aria-label="Copy heading and permalink for Item 9.1.6.a" href="#sec_diffunderint-11-9-1-2-1" title="Copy heading and permalink for Item 9.1.6.a">🔗</a></div>
+</li>
+<li id="sec_diffunderint-11-9-1-2-2">
+<div class="para" id="sec_diffunderint-11-9-1-2-2-1">Prove <span class="process-math">\(\frac{\partial f}{\partial y}\)</span> exists at all <span class="process-math">\(x\)</span> and <span class="process-math">\(y\)</span> and compute it.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_diffunderint-11-9-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 9.1.6.b"><a aria-label="Copy heading and permalink for Item 9.1.6.b" href="#sec_diffunderint-11-9-1-2-2" title="Copy heading and permalink for Item 9.1.6.b">🔗</a></div>
+</li>
+<li id="sec_diffunderint-11-9-1-2-3">
+<div class="para logical" id="sec_diffunderint-11-9-1-2-3-1">
+<div class="para">Show that for all <span class="process-math">\(y\)</span>
+</div>
+<div class="displaymath process-math" id="sec_diffunderint-11-9-1-2-3-1-2">
+\begin{equation}
+\int_0^1 \frac{\partial f}{\partial y} (x,y) \, dx
+\end{equation}
+</div>
+<div class="para">exists, but</div>
+<div class="displaymath process-math" id="sec_diffunderint-11-9-1-2-3-1-3">
+\begin{equation}
+g'(0) \neq \int_0^1 \frac{\partial f}{\partial y} (x,0) \, dx .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_diffunderint-11-9-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 9.1.6.c"><a aria-label="Copy heading and permalink for Item 9.1.6.c" href="#sec_diffunderint-11-9-1-2-3" title="Copy heading and permalink for Item 9.1.6.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 9.1.6"><a aria-label="Copy heading and permalink for Exercise 9.1.6" href="#sec_diffunderint-11-9" title="Copy heading and permalink for Exercise 9.1.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_diffunderint-11-10"><h4 class="heading"><span class="codenumber">9.1.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_diffunderint-11-10-1-1">
+<div class="para">Work out the following counterexample:  Let</div>
+<div class="displaymath process-math" id="sec_diffunderint-11-10-1-1-1">
+\begin{equation}
+f(x,y) \coloneqq
+\begin{cases}
+x \,\sin \left(\frac{y}{x^2+y^2}\right) &amp; \text{if } (x,y) \neq (0,0),\\
+0                                       &amp; \text{if } (x,y)=(0,0).
+\end{cases}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_diffunderint-11-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_diffunderint-11-10-1-2">
+<li id="sec_diffunderint-11-10-1-2-1">
+<div class="para logical" id="sec_diffunderint-11-10-1-2-1-1">
+<div class="para">Prove <span class="process-math">\(f\)</span> is continuous on all of <span class="process-math">\(\R^2\text{.}\)</span> Therefore the following function is well-defined for every <span class="process-math">\(y \in \R\text{:}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_diffunderint-11-10-1-2-1-1-4">
+\begin{equation}
+g(y) \coloneqq \int_0^1 f(x,y) \, dx .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_diffunderint-11-10-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 9.1.7.a"><a aria-label="Copy heading and permalink for Item 9.1.7.a" href="#sec_diffunderint-11-10-1-2-1" title="Copy heading and permalink for Item 9.1.7.a">🔗</a></div>
+</li>
+<li id="sec_diffunderint-11-10-1-2-2">
+<div class="para" id="sec_diffunderint-11-10-1-2-2-1">Prove <span class="process-math">\(\frac{\partial f}{\partial y}\)</span> exists for all <span class="process-math">\((x,y)\text{,}\)</span> but is not continuous at <span class="process-math">\((0,0)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_diffunderint-11-10-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 9.1.7.b"><a aria-label="Copy heading and permalink for Item 9.1.7.b" href="#sec_diffunderint-11-10-1-2-2" title="Copy heading and permalink for Item 9.1.7.b">🔗</a></div>
+</li>
+<li id="sec_diffunderint-11-10-1-2-3">
+<div class="para" id="sec_diffunderint-11-10-1-2-3-1">Show that <span class="process-math">\(\int_0^1 \frac{\partial f}{\partial y}(x,0) \, dx\)</span> does not exist even if we take improper integrals, that is, that the limit <span class="process-math">\(\lim\limits_{h \to 0^+} \int_h^1 \frac{\partial f}{\partial y}(x,0) \, dx\)</span> does not exist.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_diffunderint-11-10-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 9.1.7.c"><a aria-label="Copy heading and permalink for Item 9.1.7.c" href="#sec_diffunderint-11-10-1-2-3" title="Copy heading and permalink for Item 9.1.7.c">🔗</a></div>
+</li>
+</ol>
+<div class="para" id="sec_diffunderint-11-10-1-3">Note: Feel free to use what you know about sine and cosine from calculus.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_diffunderint-11-10-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 9.1.7"><a aria-label="Copy heading and permalink for Exercise 9.1.7" href="#sec_diffunderint-11-10" title="Copy heading and permalink for Exercise 9.1.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_strongerleibniz"><h4 class="heading"><span class="codenumber">9.1.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="exercise_strongerleibniz-1-1">
+<div class="para">Strengthen the Leibniz integral rule in the following way. Suppose <span class="process-math">\(f \colon (a,b) \times (c,d) \to \R\)</span> is a bounded continuous function, such that <span class="process-math">\(\frac{\partial f}{\partial y}\)</span> exists for all <span class="process-math">\((x,y) \in (a,b)
+\times (c,d)\)</span> and is continuous and bounded.  Define <span class="process-math">\(g \colon (c,d) \to \R\)</span> by</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_integralcontcontextra.html ./knowl/xref/thm_dersconverge.html" id="exercise_strongerleibniz-1-1-5">
+\begin{equation}
+g(y) \coloneqq \int_a^b f(x,y) \,dx .
+\end{equation}
+</div>
+<div class="para">Then <span class="process-math">\(g\)</span> is continuously differentiable and</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_integralcontcontextra.html ./knowl/xref/thm_dersconverge.html" id="exercise_strongerleibniz-1-1-7">
+\begin{equation}
+g'(y) = \int_a^b \frac{\partial f}{\partial y}(x,y) \,dx .
+\end{equation}
+</div>
+<div class="para">Hint: See also <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metcont.html#exercise_integralcontcontextra" title="Exercise 7.5.18">Exercise 7.5.18</a> and <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_liminter.html#thm_dersconverge" title="Theorem 6.2.10">Theorem 6.2.10</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_strongerleibniz-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 9.1.8"><a aria-label="Copy heading and permalink for Exercise 9.1.8" href="#exercise_strongerleibniz" title="Copy heading and permalink for Exercise 9.1.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_diffunderint-11-12"><h4 class="heading"><span class="codenumber">9.1.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_diffunderint-11-12-1-1">
+<div class="para">Suppose <span class="process-math">\(g \colon \R \to \R\)</span> is continuously differentiable, <span class="process-math">\(h \colon \R^2 \to \R\)</span> is continuous, <span class="process-math">\(\frac{\partial h}{\partial x}\)</span> exists and is continuous at all points.  Show that</div>
+<div class="displaymath process-math" id="sec_diffunderint-11-12-1-1-4">
+\begin{equation}
+F(x,y) \coloneqq g(x) + \int_0^y h(x,s) \,ds
+\end{equation}
+</div>
+<div class="para">is continuously differentiable, and that it is the solution of the partial differential equation <span class="process-math">\(\frac{\partial F}{\partial y} = h\text{,}\)</span> with the initial condition <span class="process-math">\(F(x,0) = g(x)\)</span> for all <span class="process-math">\(x \in \R\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_diffunderint-11-12-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 9.1.9"><a aria-label="Copy heading and permalink for Exercise 9.1.9" href="#sec_diffunderint-11-12" title="Copy heading and permalink for Exercise 9.1.9">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 9.1.1"><a aria-label="Copy heading and permalink for Exercises 9.1.1" href="#sec_diffunderint-11" title="Copy heading and permalink for Exercises 9.1.1">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 9.1: Differentiation under the integral"><a aria-label="Copy heading and permalink for Section 9.1: Differentiation under the integral" href="#sec_diffunderint" title="Copy heading and permalink for Section 9.1: Differentiation under the integral">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="path_chapter.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_pathintegral.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

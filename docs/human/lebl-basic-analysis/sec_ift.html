@@ -1,0 +1,330 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Inverse function theorem · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_ift">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Inverse function theorem</span>
+</h2>
+<section class="introduction" id="sec_ift-2">
+<div class="para" id="sec_ift-2-1">
+<em class="emphasis">Note: less than 1 lecture (optional section, needed for <a class="internal" href="sec_logandexp.html" title="Section 5.4: The logarithm and the exponential">Section 5.4</a>, requires <a class="internal" href="sec_monotonefunc.html" title="Section 3.6: Monotone functions and continuity">Section 3.6</a>)</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_ift-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section>
+<section class="subsection" id="sec_ift-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.4.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Inverse function theorem</span>
+</h3>
+<div class="para" id="sec_ift-3-2">We start with a simple example.  Consider the function <span class="process-math">\(f(x) \coloneqq a x\)</span> for a number <span class="process-math">\(a \neq 0\text{.}\)</span>  Then <span class="process-math">\(f \colon \R \to \R\)</span> is bijective, and the inverse is <span class="process-math">\(f^{-1}(y) = \frac{1}{a} y\text{.}\)</span>  In particular, <span class="process-math">\(f'(x) = a\)</span> and <span class="process-math">\((f^{-1})'(y) = \frac{1}{a}\text{.}\)</span>  As differentiable functions are “infinitesimally like” linear functions, we expect the same sort of behavior from the inverse of a differentiable function. The main idea of differentiating inverse functions is the following lemma.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_ift-3-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="lemma theorem-like" id="lemma_ift"><h4 class="heading">
+<span class="type">Lemma</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.4.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="lemma_ift-1-1">
+<div class="para">Let <span class="process-math">\(I,J \subset \R\)</span> be intervals. If <span class="process-math">\(f \colon I \to J\)</span> is strictly monotone (hence one-to-one), onto (<span class="process-math">\(f(I) = J\)</span>), differentiable at <span class="process-math">\(x_0 \in I\text{,}\)</span> and <span class="process-math">\(f'(x_0) \neq 0\text{,}\)</span> then the inverse <span class="process-math">\(f^{-1}\)</span> is differentiable at <span class="process-math">\(y_0 = f(x_0)\)</span> and</div>
+<div class="displaymath process-math" id="lemma_ift-1-1-8">
+\begin{equation}
+(f^{-1})'(y_0) = \frac{1}{f'\bigl( f^{-1}(y_0) \bigr)} = \frac{1}{f'(x_0)} .
+\end{equation}
+</div>
+<div class="para">If <span class="process-math">\(f\)</span> is continuously differentiable and <span class="process-math">\(f'\)</span> is never zero, then <span class="process-math">\(f^{-1}\)</span> is continuously differentiable.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#lemma_ift-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Lemma 4.4.1"><a aria-label="Copy heading and permalink for Lemma 4.4.1" href="#lemma_ift" title="Copy heading and permalink for Lemma 4.4.1">🔗</a></div>
+</article>
+<article class="proof" id="sec_ift-3-4"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_ift-3-4-1">
+<div class="para">By <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_monotonefunc.html#prop_invcont" title="Proposition 3.6.6">Proposition 3.6.6</a>, <span class="process-math">\(f\)</span> has a continuous inverse.  For convenience, call the inverse <span class="process-math">\(g \colon J \to I\text{.}\)</span> Let <span class="process-math">\(x_0,y_0\)</span> be as in the statement.  For <span class="process-math">\(x \in I\text{,}\)</span> write <span class="process-math">\(y \coloneqq f(x)\text{.}\)</span> If <span class="process-math">\(x \neq x_0\text{,}\)</span> and so <span class="process-math">\(y \neq y_0\text{,}\)</span> we find</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_invcont.html ./knowl/xref/inversefig.html" id="sec_ift-3-4-1-9">
+\begin{equation}
+\frac{g(y)-g(y_0)}{y-y_0} =
+\frac{g\bigl(f(x)\bigr)-g\bigl(f(x_0)\bigr)}{f(x)-f(x_0)} =
+\frac{x-x_0}{f(x)-f(x_0)} .
+\end{equation}
+</div>
+<div class="para">See <a class="internal" href="sec_ift.html#inversefig" title="Figure 4.10">Figure 4.10</a> for the geometric idea.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_ift-3-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="inversefig"><img alt="Two diagrams. On the left, a function f that looks like the square root is shown in the first quadrant. On the horizontal axis there is a point labeled x equals g of y. A dashed line goes vertically up from this point until it hits the corresponding point on the graph of f. Another dashed line, now horizontal goes left until it hits the y axis and a point marked f of x equals y. Another point x sub 0 equals g of y sub 0 is also marked a bit to the right of the first. The same setup with the dashed lines is repeated except instead of x it is x sub 0 and instead of y it is y sub 0. A secant line is drawn through the two points on the graph and it is labeled as having slope f of x minus f of x sub 0, the whole thing over quantity x minus x sub 0 and that equals y minus y sub 0, the whole thing over quantity g of y minus g of y sub 0. The right hand diagram is the same thing but the picture is simply reflected across the x equals y line, so the x-axis becomes the y-axis and vice-versa, and the graph now looks more like x squared. The two expressions of the tangent line are the reciprocals." class="raimg" role="img" src="figures/inversefigAB-mbxpdft.svg" style="width:422pt; height:163pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Interpretation of the derivative of the inverse function.<div class="autopermalink" data-description="Figure 4.10"><a aria-label="Copy heading and permalink for Figure 4.10" href="#inversefig" title="Copy heading and permalink for Figure 4.10">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para logical" id="sec_ift-3-4-5">
+<div class="para">Let</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_compositioncont.html" id="sec_ift-3-4-5-1">
+\begin{equation}
+Q(x) \coloneqq
+\begin{cases}
+\frac{x-x_0}{f(x)-f(x_0)} &amp; \text{if } x \neq x_0, \\
+\frac{1}{f'(x_0)}         &amp; \text{if } x = x_0 \quad \text{(notice that }
+f'(x_0) \neq 0 \text{)}.
+\end{cases}
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(f\)</span> is differentiable at <span class="process-math">\(x_0\text{,}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_compositioncont.html" id="sec_ift-3-4-5-4">
+\begin{equation}
+\lim_{x \to x_0} Q(x) =
+\lim_{x \to x_0} 
+\frac{x-x_0}{f(x)-f(x_0)} 
+=
+\frac{1}{f'(x_0)}
+=
+Q(x_0) ,
+\end{equation}
+</div>
+<div class="para">that is, <span class="process-math">\(Q\)</span> is continuous at <span class="process-math">\(x_0\text{.}\)</span> As <span class="process-math">\(g(y)\)</span> is continuous at <span class="process-math">\(y_0\text{,}\)</span> the composition <span class="process-math">\(Q\bigl(g(y)\bigr) = \frac{g(y)-g(y_0)}{y-y_0}\)</span> is continuous at <span class="process-math">\(y_0\)</span> by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_cont.html#prop_compositioncont" title="Proposition 3.2.7">Proposition 3.2.7</a>. Therefore,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_compositioncont.html" id="sec_ift-3-4-5-12">
+\begin{equation}
+\frac{1}{f'\bigl(g(y_0)\bigr)}
+= Q\bigl(g(y_0)\bigr)
+= \lim_{y \to y_0} Q\bigl(g(y)\bigr)
+= \lim_{y \to y_0} \frac{g(y)-g(y_0)}{y-y_0} .
+\end{equation}
+</div>
+<div class="para">So <span class="process-math">\(g\)</span> is differentiable at <span class="process-math">\(y_0\text{,}\)</span> and <span class="process-math">\(g'(y_0) =
+\frac{1}{f'\left(\vphantom{1^1_1}g(y_0)\right)}\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_ift-3-4-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_ift-3-4-6">If <span class="process-math">\(f'\)</span> is continuous and nonzero at all <span class="process-math">\(x \in I\text{,}\)</span> then the lemma applies at all <span class="process-math">\(x \in I\text{.}\)</span>  As <span class="process-math">\(g\)</span> is also continuous (it is differentiable), the derivative <span class="process-math">\(g'(y) =
+\frac{1}{f'\left(\vphantom{1^1_1}g(y)\right)}\)</span> must be continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_ift-3-4-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 4.4.1.1"><a aria-label="Copy heading and permalink for Proof 4.4.1.1" href="#sec_ift-3-4" title="Copy heading and permalink for Proof 4.4.1.1">🔗</a></div>
+</article>
+<div class="para" id="sec_ift-3-5">What is usually called the inverse function theorem is the following result.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_ift-3-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="sec_ift-3-6"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.4.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Inverse function theorem.</span>
+</h4>
+<div class="para logical" id="sec_ift-3-6-3-1">
+<div class="para">Let <span class="process-math">\(f \colon (a,b) \to \R\)</span> be a continuously differentiable function, <span class="process-math">\(x_0 \in (a,b)\)</span> a point where <span class="process-math">\(f'(x_0) \neq 0\text{.}\)</span>  Then there exists an open interval <span class="process-math">\(I \subset (a,b)\)</span> with <span class="process-math">\(x_0 \in I\text{,}\)</span> the restriction <span class="process-math">\(f|_{I}\)</span> is injective with a continuously differentiable inverse <span class="process-math">\(g \colon J \to I\)</span> defined on an interval <span class="process-math">\(J \coloneqq f(I)\text{,}\)</span> and</div>
+<div class="displaymath process-math" id="sec_ift-3-6-3-1-9">
+\begin{equation}
+g'(y) = \frac{1}{f'\bigl( g(y) \bigr)} \qquad \text{for all } y \in J.
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_ift-3-6-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 4.4.2: Inverse function theorem"><a aria-label="Copy heading and permalink for Theorem 4.4.2: Inverse function theorem" href="#sec_ift-3-6" title="Copy heading and permalink for Theorem 4.4.2: Inverse function theorem">🔗</a></div>
+</article>
+<article class="proof" id="sec_ift-3-7"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_ift-3-7-1">Without loss of generality, suppose <span class="process-math">\(f'(x_0) &gt; 0\text{.}\)</span>  As <span class="process-math">\(f'\)</span> is continuous, there must exist an open interval <span class="process-math">\(I = (x_0-\delta,x_0+\delta)\)</span> such that <span class="process-math">\(f'(x) &gt; 0\)</span> for all <span class="process-math">\(x \in I\text{.}\)</span>  See <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_cont.html#exercise_positivecontneigh" title="Exercise 3.2.11">Exercise 3.2.11</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_ift-3-7-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_ift-3-7-2">By <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvt.html#incdecdiffstrictprop" title="Proposition 4.2.8">Proposition 4.2.8</a>, <span class="process-math">\(f\)</span> is strictly increasing on <span class="process-math">\(I\text{,}\)</span> and hence the restriction <span class="process-math">\(f|_{I}\)</span> is bijective onto <span class="process-math">\(J \coloneqq f(I)\text{.}\)</span> As <span class="process-math">\(f\)</span> is continuous, <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_monotonefunc.html#cor_continterval" title="Corollary 3.6.3">Corollary 3.6.3</a> (or directly via the <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_minmaxint.html#IVT_thm" title="Theorem 3.3.8: Bolzano’s intermediate value theorem">intermediate value theorem</a>) implies that <span class="process-math">\(f(I)\)</span> is an interval. Now apply <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_ift.html#lemma_ift" title="Lemma 4.4.1">Lemma 4.4.1</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_ift-3-7-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 4.4.1.2"><a aria-label="Copy heading and permalink for Proof 4.4.1.2" href="#sec_ift-3-7" title="Copy heading and permalink for Proof 4.4.1.2">🔗</a></div>
+</article>
+<div class="para" id="sec_ift-3-8">In <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_setofreals.html#example_sqrt2" title="Example 1.2.3">Example 1.2.3</a>, we saw how difficult an endeavor was proving the existence of <span class="process-math">\(\sqrt{2}\)</span> without any tools. With the <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_minmaxint.html#IVT_thm" title="Theorem 3.3.8: Bolzano’s intermediate value theorem">intermediate value theorem</a>, the existence of roots is almost trivial, and with the machinery of this section, we will prove far more than mere existence.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_ift-3-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="corollary theorem-like" id="sec_ift-3-9"><h4 class="heading">
+<span class="type">Corollary</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.4.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_ift-3-9-1-1">
+<div class="para">Given <span class="process-math">\(n \in \N\)</span> and <span class="process-math">\(x \geq 0\text{,}\)</span> there exists a unique number <span class="process-math">\(y \geq 0\)</span> (denoted <span class="process-math">\(x^{1/n} \coloneqq y\)</span>), such that <span class="process-math">\(y^n = x\text{.}\)</span>  Furthermore, the function <span class="process-math">\(g \colon (0,\infty) \to (0,\infty)\)</span> defined by <span class="process-math">\(g(x) \coloneqq x^{1/n}\)</span> is continuously differentiable and</div>
+<div class="displaymath process-math" id="sec_ift-3-9-1-1-8">
+\begin{equation}
+g'(x) = \frac{1}{nx^{(n-1)/n}} = \frac{1}{n} \, x^{(1-n)/n} ,
+\end{equation}
+</div>
+<div class="para">using the convention <span class="process-math">\(x^{m/n} \coloneqq {(x^{1/n})}^{m}\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_ift-3-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Corollary 4.4.3"><a aria-label="Copy heading and permalink for Corollary 4.4.3" href="#sec_ift-3-9" title="Copy heading and permalink for Corollary 4.4.3">🔗</a></div>
+</article>
+<article class="proof" id="sec_ift-3-10"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_ift-3-10-1">For <span class="process-math">\(x=0\text{,}\)</span> the existence of a unique root is trivial.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_ift-3-10-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_ift-3-10-2">Let <span class="process-math">\(f \colon (0,\infty) \to (0,\infty)\)</span> be defined by <span class="process-math">\(f(y) \coloneqq y^n\text{.}\)</span> The function <span class="process-math">\(f\)</span> is continuously differentiable, and <span class="process-math">\(f'(y) = ny^{n-1}\text{,}\)</span> see <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_der.html#exercise_diffofxn" title="Exercise 4.1.3">Exercise 4.1.3</a>. For <span class="process-math">\(y &gt; 0\text{,}\)</span> the derivative <span class="process-math">\(f'\)</span> is strictly positive, and so again by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mvt.html#incdecdiffstrictprop" title="Proposition 4.2.8">Proposition 4.2.8</a>, <span class="process-math">\(f\)</span> is strictly increasing (this can also be proved directly) and hence injective. Suppose <span class="process-math">\(M\)</span> and <span class="process-math">\(\epsilon\)</span> are such that <span class="process-math">\(M &gt; 1\)</span> and <span class="process-math">\(1 &gt; \epsilon &gt; 0\text{.}\)</span> Then <span class="process-math">\(f(M) = M^n \geq M\)</span> and <span class="process-math">\(f(\epsilon) = \epsilon^n \leq \epsilon\text{.}\)</span> For every <span class="process-math">\(x\)</span> with <span class="process-math">\(\epsilon &lt; x &lt; M\text{,}\)</span> we have, by the <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_minmaxint.html#IVT_thm" title="Theorem 3.3.8: Bolzano’s intermediate value theorem">intermediate value theorem</a>, that <span class="process-math">\(x \in
+f\bigl( [\epsilon,M] \bigr) \subset
+f\bigl( (0,\infty) \bigr)\text{.}\)</span>  As <span class="process-math">\(M\)</span> and <span class="process-math">\(\epsilon\)</span> were arbitrary, <span class="process-math">\(f\)</span> is onto <span class="process-math">\((0,\infty)\text{,}\)</span> and hence <span class="process-math">\(f\)</span> is bijective. Let <span class="process-math">\(g\)</span> be the inverse of <span class="process-math">\(f\text{,}\)</span> and we obtain the existence and uniqueness of positive <span class="process-math">\(n\)</span>th roots.  <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_ift.html#lemma_ift" title="Lemma 4.4.1">Lemma 4.4.1</a> says that <span class="process-math">\(g\)</span> has a continuous derivative and <span class="process-math">\(g'(x) =
+\frac{1}{f'\left(\vphantom{1^1_1}g(x)\right)} = \frac{1}{n {(x^{1/n})}^{n-1}}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_ift-3-10-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 4.4.1.3"><a aria-label="Copy heading and permalink for Proof 4.4.1.3" href="#sec_ift-3-10" title="Copy heading and permalink for Proof 4.4.1.3">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_ift-3-11"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.4.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_ift-3-11-1-1">The corollary provides a good example of where the inverse function theorem gives us an interval smaller than <span class="process-math">\((a,b)\text{.}\)</span>  Take <span class="process-math">\(f \colon \R \to \R\)</span> defined by <span class="process-math">\(f(x) \coloneqq x^2\text{.}\)</span>  Then <span class="process-math">\(f'(x_0) \neq 0\)</span> as long as <span class="process-math">\(x_0 \neq 0\text{.}\)</span>  If <span class="process-math">\(x_0 &gt; 0\text{,}\)</span> we can take <span class="process-math">\(I=(0,\infty)\text{,}\)</span> but no larger.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_ift-3-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 4.4.4"><a aria-label="Copy heading and permalink for Example 4.4.4" href="#sec_ift-3-11" title="Copy heading and permalink for Example 4.4.4">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_ift-3-12"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.4.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_ift-3-12-1-1">Another useful example is <span class="process-math">\(f(x) \coloneqq x^3\text{.}\)</span>  The function <span class="process-math">\(f \colon \R \to \R\)</span> is one-to-one and onto, so <span class="process-math">\(f^{-1}(y) = y^{1/3}\)</span> exists on the entire real line, including zero and negative <span class="process-math">\(y\text{.}\)</span>  The function <span class="process-math">\(f\)</span> has a continuous derivative, but <span class="process-math">\(f^{-1}\)</span> has no derivative at the origin.  The point is that <span class="process-math">\(f'(0) = 0\text{.}\)</span>  See <a class="internal" href="sec_ift.html#cubecuberootfig" title="Figure 4.11">Figure 4.11</a> for a graph. Notice the vertical tangent on the cube root at the origin. See also <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_ift.html#exercise_oddroot" title="Exercise 4.4.4">Exercise 4.4.4</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_ift-3-12-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <hr class="rahr"/>
+<figure class="figure figure-like" id="cubecuberootfig"><img alt="The graph y equals the cube root of x in bold line and the graph of y equals x cubed in dashed line. We note that while the graph of x cubed is tangent to the x-axis at the origin, the cube root is a reflection across the x equals y line and is therefore tangent to the vertical y-axis at the origin." class="raimg" role="img" src="figures/cubecuberoot-mbx.svg" style="width:197pt; height:150pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Graphs of <span class="process-math">\(x^3\)</span> and <span class="process-math">\(x^{1/3}\text{.}\)</span><div class="autopermalink" data-description="Figure 4.11"><a aria-label="Copy heading and permalink for Figure 4.11" href="#cubecuberootfig" title="Copy heading and permalink for Figure 4.11">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="autopermalink" data-description="Example 4.4.5"><a aria-label="Copy heading and permalink for Example 4.4.5" href="#sec_ift-3-12" title="Copy heading and permalink for Example 4.4.5">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 4.4.1: Inverse function theorem"><a aria-label="Copy heading and permalink for Subsection 4.4.1: Inverse function theorem" href="#sec_ift-3" title="Copy heading and permalink for Subsection 4.4.1: Inverse function theorem">🔗</a></div>
+</section>
+<section class="exercises" id="sec_ift-4">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.4.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_ift-4-1"><h4 class="heading"><span class="codenumber">4.4.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_ift-4-1-1-1">Suppose <span class="process-math">\(f \colon \R \to \R\)</span> is continuously differentiable and <span class="process-math">\(f'(x) &gt; 0\)</span> for all <span class="process-math">\(x\text{.}\)</span>  Show that <span class="process-math">\(f\)</span> is invertible on the interval <span class="process-math">\(J =
+f(\R)\text{,}\)</span> the inverse is continuously differentiable, and <span class="process-math">\({(f^{-1})}'(y) &gt;
+0\)</span> for all <span class="process-math">\(y \in f(\R)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_ift-4-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.4.1"><a aria-label="Copy heading and permalink for Exercise 4.4.1" href="#sec_ift-4-1" title="Copy heading and permalink for Exercise 4.4.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_ift-4-2"><h4 class="heading"><span class="codenumber">4.4.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_ift-4-2-1-1">Suppose <span class="process-math">\(I,J\)</span> are intervals and a monotone onto <span class="process-math">\(f \colon I \to J\)</span> has an inverse <span class="process-math">\(g \colon J \to I\text{.}\)</span> Suppose you already know that both <span class="process-math">\(f\)</span> and <span class="process-math">\(g\)</span> are differentiable everywhere and <span class="process-math">\(f'\)</span> is never zero.  Using the chain rule but not <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_ift.html#lemma_ift" title="Lemma 4.4.1">Lemma 4.4.1</a>, prove the formula <span class="process-math">\(g'(y) = \frac{1}{f'\left(\vphantom{1_1^1}g(y)\right)}\text{.}\)</span> Remark: This exercise is the same as <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_der.html#exercise_inversederformula" title="Exercise 4.1.10">Exercise 4.1.10</a>, no need to do it again if you have solved it already.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_ift-4-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.4.2"><a aria-label="Copy heading and permalink for Exercise 4.4.2" href="#sec_ift-4-2" title="Copy heading and permalink for Exercise 4.4.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_ift-4-3"><h4 class="heading"><span class="codenumber">4.4.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_ift-4-3-1-1">Let <span class="process-math">\(n\in \N\)</span> be even. Prove that every <span class="process-math">\(x &gt; 0\)</span> has a unique negative <span class="process-math">\(n\)</span>th root. That is, there exists a negative number <span class="process-math">\(y\)</span> such that <span class="process-math">\(y^n = x\text{.}\)</span> Compute the derivative of the function <span class="process-math">\(g(x) \coloneqq y\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_ift-4-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.4.3"><a aria-label="Copy heading and permalink for Exercise 4.4.3" href="#sec_ift-4-3" title="Copy heading and permalink for Exercise 4.4.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_oddroot"><h4 class="heading"><span class="codenumber">4.4.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_oddroot-1-1">Let <span class="process-math">\(n \in \N\)</span> be odd and <span class="process-math">\(n \geq 3\text{.}\)</span> Prove that every <span class="process-math">\(x\)</span> has a unique <span class="process-math">\(n\)</span>th root. That is, there exists a number <span class="process-math">\(y\)</span> such that <span class="process-math">\(y^n = x\text{.}\)</span>  Prove that the function defined by <span class="process-math">\(g(x) \coloneqq y\)</span> is differentiable except at <span class="process-math">\(x=0\)</span> and compute the derivative.  Prove that <span class="process-math">\(g\)</span> is not differentiable at <span class="process-math">\(x=0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_oddroot-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.4.4"><a aria-label="Copy heading and permalink for Exercise 4.4.4" href="#exercise_oddroot" title="Copy heading and permalink for Exercise 4.4.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_ift-4-5"><h4 class="heading"><span class="codenumber">4.4.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_ift-4-5-1-1">
+<em class="emphasis">(requires <a class="internal" href="sec_taylor.html" title="Section 4.3: Taylor’s theorem">Section 4.3</a>)</em>   Show that if in the inverse function theorem <span class="process-math">\(f\)</span> has <span class="process-math">\(k\)</span> continuous derivatives, then the inverse function <span class="process-math">\(g\)</span> also has <span class="process-math">\(k\)</span> continuous derivatives.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_ift-4-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.4.5"><a aria-label="Copy heading and permalink for Exercise 4.4.5" href="#sec_ift-4-5" title="Copy heading and permalink for Exercise 4.4.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_ift-4-6"><h4 class="heading"><span class="codenumber">4.4.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_ift-4-6-1-1">Let <span class="process-math">\(f(x) \coloneqq x + 2 x^2 \sin(\nicefrac{1}{x})\)</span> for <span class="process-math">\(x \neq 0\)</span> and <span class="process-math">\(f(0) \coloneqq 0\text{.}\)</span>  Show that <span class="process-math">\(f\)</span> is differentiable at all <span class="process-math">\(x\text{,}\)</span> that <span class="process-math">\(f'(0) &gt; 0\text{,}\)</span> but that <span class="process-math">\(f\)</span> is not invertible on any open interval containing the origin.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_ift-4-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.4.6"><a aria-label="Copy heading and permalink for Exercise 4.4.6" href="#sec_ift-4-6" title="Copy heading and permalink for Exercise 4.4.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_ift-4-7"><h4 class="heading"><span class="codenumber">4.4.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_ift-4-7-1-1"><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_ift-4-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div></div>
+<ol class="lower-alpha ol-marker-3" id="sec_ift-4-7-1-2">
+<li id="sec_ift-4-7-1-2-1">
+<div class="para" id="sec_ift-4-7-1-2-1-1">Let <span class="process-math">\(f \colon \R \to \R\)</span> be a continuously differentiable function and <span class="process-math">\(k &gt; 0\)</span> be a number such that <span class="process-math">\(f'(x) \geq k\)</span> for all <span class="process-math">\(x \in \R\text{.}\)</span> Show <span class="process-math">\(f\)</span> is one-to-one and onto, and has a continuously differentiable inverse <span class="process-math">\(f^{-1} \colon \R \to \R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_ift-4-7-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 4.4.7.a"><a aria-label="Copy heading and permalink for Item 4.4.7.a" href="#sec_ift-4-7-1-2-1" title="Copy heading and permalink for Item 4.4.7.a">🔗</a></div>
+</li>
+<li id="sec_ift-4-7-1-2-2">
+<div class="para" id="sec_ift-4-7-1-2-2-1">Find an example <span class="process-math">\(f \colon \R \to \R\)</span> where <span class="process-math">\(f'(x) &gt; 0\)</span> for all <span class="process-math">\(x\text{,}\)</span> but <span class="process-math">\(f\)</span> is not onto.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_ift-4-7-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 4.4.7.b"><a aria-label="Copy heading and permalink for Item 4.4.7.b" href="#sec_ift-4-7-1-2-2" title="Copy heading and permalink for Item 4.4.7.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 4.4.7"><a aria-label="Copy heading and permalink for Exercise 4.4.7" href="#sec_ift-4-7" title="Copy heading and permalink for Exercise 4.4.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_ift-4-8"><h4 class="heading"><span class="codenumber">4.4.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_ift-4-8-1-1">Suppose <span class="process-math">\(I,J\)</span> are intervals and a monotone onto <span class="process-math">\(f \colon I \to J\)</span> has an inverse <span class="process-math">\(g \colon J \to I\text{.}\)</span> Suppose <span class="process-math">\(x \in I\)</span> and <span class="process-math">\(y \coloneqq f(x) \in J\text{,}\)</span> and that <span class="process-math">\(g\)</span> is differentiable at <span class="process-math">\(y\text{.}\)</span>  Prove:<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_ift-4-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_ift-4-8-1-2">
+<li id="sec_ift-4-8-1-2-1">
+<div class="para" id="sec_ift-4-8-1-2-1-1">If <span class="process-math">\(g'(y) \neq 0\text{,}\)</span> then <span class="process-math">\(f\)</span> is differentiable at <span class="process-math">\(x\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_ift-4-8-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 4.4.8.a"><a aria-label="Copy heading and permalink for Item 4.4.8.a" href="#sec_ift-4-8-1-2-1" title="Copy heading and permalink for Item 4.4.8.a">🔗</a></div>
+</li>
+<li id="sec_ift-4-8-1-2-2">
+<div class="para" id="sec_ift-4-8-1-2-2-1">If <span class="process-math">\(g'(y) = 0\text{,}\)</span> then <span class="process-math">\(f\)</span> is not differentiable at <span class="process-math">\(x\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_ift-4-8-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 4.4.8.b"><a aria-label="Copy heading and permalink for Item 4.4.8.b" href="#sec_ift-4-8-1-2-2" title="Copy heading and permalink for Item 4.4.8.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 4.4.8"><a aria-label="Copy heading and permalink for Exercise 4.4.8" href="#sec_ift-4-8" title="Copy heading and permalink for Exercise 4.4.8">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 4.4.2"><a aria-label="Copy heading and permalink for Exercises 4.4.2" href="#sec_ift-4" title="Copy heading and permalink for Exercises 4.4.2">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 4.4: Inverse function theorem"><a aria-label="Copy heading and permalink for Section 4.4: Inverse function theorem" href="#sec_ift" title="Copy heading and permalink for Section 4.4: Inverse function theorem">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_taylor.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="int_chapter.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

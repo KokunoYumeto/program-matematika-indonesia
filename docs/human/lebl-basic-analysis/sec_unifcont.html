@@ -1,0 +1,635 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Uniform continuity · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_unifcont">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Uniform continuity</span>
+</h2>
+<section class="introduction" id="sec_unifcont-2">
+<div class="para" id="sec_unifcont-2-1">
+<em class="emphasis">Note: 1.5–2 lectures (continuous extension can be optional)</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section>
+<section class="subsection" id="sec_unifcont-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.4.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Uniform continuity</span>
+</h3>
+<div class="para" id="sec_unifcont-3-2">We made a fuss of saying that the <span class="process-math">\(\delta\)</span> in the definition of continuity depended on the point <span class="process-math">\(c\text{.}\)</span>  There are situations when it is advantageous to be able to pick a <span class="process-math">\(\delta\)</span> independent of any point, and so we give a name to this concept.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-3-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_unifcont-3-3"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.4.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_unifcont-3-3-1-1">Let <span class="process-math">\(S \subset \R\text{,}\)</span> and let <span class="process-math">\(f \colon S \to \R\)</span> be a function. Suppose for every <span class="process-math">\(\epsilon &gt; 0\)</span> there exists a <span class="process-math">\(\delta &gt; 0\)</span> such that whenever <span class="process-math">\(x, c \in S\)</span> and <span class="process-math">\(\sabs{x-c} &lt; \delta\text{,}\)</span> then <span class="process-math">\(\babs{f(x)-f(c)} &lt; \epsilon\text{.}\)</span> Then we say <span class="process-math">\(f\)</span> is <em class="emphasis">uniformly continuous</em>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-3-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 3.4.1"><a aria-label="Copy heading and permalink for Definition 3.4.1" href="#sec_unifcont-3-3" title="Copy heading and permalink for Definition 3.4.1">🔗</a></div>
+</article>
+<div class="para" id="sec_unifcont-3-4">A uniformly continuous function must be continuous. The only difference in the definitions is that in uniform continuity, for a given <span class="process-math">\(\epsilon &gt; 0\)</span> we pick a <span class="process-math">\(\delta &gt; 0\)</span> that works for all <span class="process-math">\(c \in S\text{.}\)</span>  That is, <span class="process-math">\(\delta\)</span> can no longer depend on <span class="process-math">\(c\text{;}\)</span> it only depends on <span class="process-math">\(\epsilon\text{.}\)</span>  The domain of definition of the function makes a difference now.  A function that is not uniformly continuous on a larger set may be uniformly continuous when restricted to a smaller set. Note that <span class="process-math">\(x\)</span> and <span class="process-math">\(c\)</span> are not treated any differently in this definition.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-3-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_unifcont-3-5"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.4.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_unifcont-3-5-1-1">
+<span class="process-math">\(f \colon [0,1] \to \R\)</span> defined by <span class="process-math">\(f(x) \coloneqq x^2\)</span> is uniformly continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-3-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_unifcont-3-5-1-2">
+<div class="para">Proof: Note that <span class="process-math">\(0 \leq x,c \leq 1\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" id="sec_unifcont-3-5-1-2-2">
+\begin{equation}
+\sabs{x^2-c^2} = \sabs{x+c}\sabs{x-c}
+\leq \bigl(\sabs{x}+\sabs{c}\bigr) \sabs{x-c}
+\leq (1+1)\sabs{x-c} .
+\end{equation}
+</div>
+<div class="para">Therefore, given <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> let <span class="process-math">\(\delta \coloneqq \nicefrac{\epsilon}{2}\text{.}\)</span> If <span class="process-math">\(\sabs{x-c} &lt; \delta\text{,}\)</span> then <span class="process-math">\(\sabs{x^2-c^2} \leq 2 \sabs{x-c} &lt; \epsilon\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-3-5-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_unifcont-3-5-1-3">On the other hand, <span class="process-math">\(g \colon \R \to \R\)</span> defined by <span class="process-math">\(g(x) \coloneqq x^2\)</span> is not uniformly continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-3-5-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_unifcont-3-5-1-4">
+<div class="para">Proof: Suppose it is uniformly continuous. Then for every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there would exist a <span class="process-math">\(\delta &gt; 0\)</span> such that if <span class="process-math">\(\sabs{x-c} &lt; \delta\text{,}\)</span> then <span class="process-math">\(\sabs{x^2 -c^2} &lt; \epsilon\text{.}\)</span> Take <span class="process-math">\(x &gt; 0\)</span> and let <span class="process-math">\(c \coloneqq x+\nicefrac{\delta}{2}\text{.}\)</span>  Write</div>
+<div class="displaymath process-math" id="sec_unifcont-3-5-1-4-7">
+\begin{equation}
+\epsilon &gt;
+\sabs{x^2-c^2} = \sabs{x+c}\sabs{x-c}
+=
+(2x+\nicefrac{\delta}{2})\nicefrac{\delta}{2} 
+\geq 
+\delta x .
+\end{equation}
+</div>
+<div class="para">Therefore, <span class="process-math">\(x &lt; \nicefrac{\epsilon}{\delta}\)</span> for all <span class="process-math">\(x &gt; 0\text{,}\)</span> which is a contradiction.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-3-5-1-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 3.4.2"><a aria-label="Copy heading and permalink for Example 3.4.2" href="#sec_unifcont-3-5" title="Copy heading and permalink for Example 3.4.2">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_unifcont-3-6"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.4.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_unifcont-3-6-1-1">The function <span class="process-math">\(f \colon (0,1) \to \R\)</span> defined by <span class="process-math">\(f(x) \coloneqq \nicefrac{1}{x}\)</span> is not uniformly continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-3-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_unifcont-3-6-1-2">
+<div class="para">Proof: Given <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> the inequality <span class="process-math">\(\epsilon &gt;
+\abs{\nicefrac{1}{x}-\nicefrac{1}{y}}\)</span> holds if and only if</div>
+<div class="displaymath process-math" id="sec_unifcont-3-6-1-2-3">
+\begin{equation}
+\epsilon &gt;
+\abs{\nicefrac{1}{x}-\nicefrac{1}{y}}
+=
+\frac{\sabs{y-x}}{\sabs{xy}} 
+=
+\frac{\sabs{y-x}}{xy} ,
+\end{equation}
+</div>
+<div class="para">or</div>
+<div class="displaymath process-math" id="sec_unifcont-3-6-1-2-4">
+\begin{equation}
+\sabs{x-y} &lt; xy \epsilon .
+\end{equation}
+</div>
+<div class="para">Suppose <span class="process-math">\(\epsilon &lt; 1\text{.}\)</span> We wish to see if a small <span class="process-math">\(\delta &gt; 0\)</span> would work. If <span class="process-math">\(x \in (0,1)\)</span> and <span class="process-math">\(y = x+\nicefrac{\delta}{2} \in (0,1)\text{,}\)</span> then <span class="process-math">\(\sabs{x-y} = \nicefrac{\delta}{2} &lt; \delta\text{.}\)</span> We plug <span class="process-math">\(y\)</span> into the inequality above to get <span class="process-math">\(\nicefrac{\delta}{2} &lt;
+x \bigl( x+\nicefrac{\delta}{2} \bigr) \epsilon &lt; x\text{.}\)</span> If the definition of uniform continuity is satisfied, then the inequality <span class="process-math">\(\nicefrac{\delta}{2} &lt; x\)</span> would hold for all small <span class="process-math">\(x &gt; 0\text{.}\)</span> But that implies <span class="process-math">\(\delta \leq 0\text{.}\)</span> Therefore, no single <span class="process-math">\(\delta &gt; 0\)</span> works for all points.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-3-6-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 3.4.3"><a aria-label="Copy heading and permalink for Example 3.4.3" href="#sec_unifcont-3-6" title="Copy heading and permalink for Example 3.4.3">🔗</a></div>
+</article>
+<div class="para" id="sec_unifcont-3-7">The examples show that if <span class="process-math">\(f\)</span> is defined on an interval that is either not closed or not bounded, then <span class="process-math">\(f\)</span> can be continuous, but not uniformly continuous. For a closed and bounded interval <span class="process-math">\([a,b]\text{,}\)</span> we can, however, make the following statement.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-3-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="unifcont_thm"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.4.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="unifcont_thm-1-1">Let <span class="process-math">\(f \colon [a,b] \to \R\)</span> be a continuous function.  Then <span class="process-math">\(f\)</span> is uniformly continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#unifcont_thm-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 3.4.4"><a aria-label="Copy heading and permalink for Theorem 3.4.4" href="#unifcont_thm" title="Copy heading and permalink for Theorem 3.4.4">🔗</a></div>
+</article>
+<article class="proof" id="sec_unifcont-3-9"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_unifcont-3-9-1">We prove the statement by contrapositive. Suppose <span class="process-math">\(f\)</span> is not uniformly continuous.  We will prove that there is some <span class="process-math">\(c \in [a,b]\)</span> where <span class="process-math">\(f\)</span> is not continuous.  Let us negate the definition of uniform continuouity: There exists an <span class="process-math">\(\epsilon &gt; 0\)</span> such that for every <span class="process-math">\(\delta &gt; 0\text{,}\)</span> there exist points <span class="process-math">\(x, y\)</span> in <span class="process-math">\([a,b]\)</span> with <span class="process-math">\(\sabs{x-y} &lt; \delta\)</span> and <span class="process-math">\(\babs{f(x)-f(y)} \geq \epsilon\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-3-9-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_unifcont-3-9-2">
+<div class="para">So for the <span class="process-math">\(\epsilon &gt; 0\)</span> above, we find sequences <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> and <span class="process-math">\(\{ y_n \}_{n=1}^\infty\)</span> such that <span class="process-math">\(\sabs{x_n-y_n} &lt; \nicefrac{1}{n}\)</span> and such that <span class="process-math">\(\babs{f(x_n)-f(y_n)} \geq
+\epsilon\text{.}\)</span>  By <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_bw.html#thm_bwseq" title="Theorem 2.3.8: Bolzano–Weierstrass">Bolzano–Weierstrass</a>, there exists a convergent subsequence <span class="process-math">\(\{ x_{n_k} \}_{k=1}^\infty\text{.}\)</span>  Let <span class="process-math">\(c \coloneqq \lim_{k\to\infty} x_{n_k}\text{.}\)</span> As <span class="process-math">\(a \leq x_{n_k} \leq b\)</span> for all <span class="process-math">\(k\text{,}\)</span> we have <span class="process-math">\(a \leq c \leq b\text{.}\)</span>  Estimate</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_bwseq.html" id="sec_unifcont-3-9-2-12">
+\begin{equation}
+\sabs{y_{n_k} - c} =
+\sabs{y_{n_k} - x_{n_k} + x_{n_k} - c} \leq
+\sabs{y_{n_k} - x_{n_k}}
++
+\sabs{x_{n_k}-c}
+&lt;
+\nicefrac{1}{n_k} 
++
+\sabs{x_{n_k}-c} .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(\nicefrac{1}{n_k}\)</span> and <span class="process-math">\(\sabs{x_{n_k}-c}\)</span> both go to zero when <span class="process-math">\(k\)</span> goes to infinity, <span class="process-math">\(\{ y_{n_k} \}_{k=1}^\infty\)</span> converges and the limit is <span class="process-math">\(c\text{.}\)</span>  We now show that <span class="process-math">\(f\)</span> is not continuous at <span class="process-math">\(c\text{.}\)</span> Estimate</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_bwseq.html" id="sec_unifcont-3-9-2-20">
+\begin{equation}
+\begin{split}
+\babs{f(x_{n_k}) - f(c)} &amp; =
+\babs{f(x_{n_k}) - f(y_{n_k}) + f(y_{n_k}) - f(c)} \\
+&amp; \geq
+\babs{f(x_{n_k}) - f(y_{n_k})} - \babs{f(y_{n_k}) - f(c)} \\
+&amp; \geq
+\epsilon - \babs{f(y_{n_k})-f(c)} .
+\end{split}
+\end{equation}
+</div>
+<div class="para">Or in other words,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_bwseq.html" id="sec_unifcont-3-9-2-21">
+\begin{equation}
+\babs{f(x_{n_k})-f(c)} 
++
+\babs{f(y_{n_k})-f(c)}  \geq
+\epsilon .
+\end{equation}
+</div>
+<div class="para">At least one of the sequences <span class="process-math">\(\bigl\{ f(x_{n_k}) \bigr\}_{k=1}^\infty\)</span>  or <span class="process-math">\(\bigl\{ f(y_{n_k}) \bigr\}_{k=1}^\infty\)</span> cannot converge to <span class="process-math">\(f(c)\text{.}\)</span> Otherwise the left-hand side of the inequality would go to zero while the right-hand side is positive. Thus <span class="process-math">\(f\)</span> cannot be continuous at <span class="process-math">\(c\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-3-9-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 3.4.1.1"><a aria-label="Copy heading and permalink for Proof 3.4.1.1" href="#sec_unifcont-3-9" title="Copy heading and permalink for Proof 3.4.1.1">🔗</a></div>
+</article>
+<div class="para" id="sec_unifcont-3-10">As before, note what is key in the proof: We can apply Bolzano–Weierstrass because the interval <span class="process-math">\([a,b]\)</span> is bounded, and the limit of the subsequence is back in <span class="process-math">\([a,b]\)</span> because the interval is closed.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-3-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 3.4.1: Uniform continuity"><a aria-label="Copy heading and permalink for Subsection 3.4.1: Uniform continuity" href="#sec_unifcont-3" title="Copy heading and permalink for Subsection 3.4.1: Uniform continuity">🔗</a></div>
+</section>
+<section class="subsection" id="sec_unifcont-4">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.4.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Continuous extension</span>
+</h3>
+<div class="para" id="sec_unifcont-4-2">Uniformly continuous functions on open intervals extend continuously to the endpoints. The key is the following lemma, which also has many other uses. It says that uniformly continuous functions preserve Cauchy sequences. The new issue here is that for a Cauchy sequence, the limit may not end up in the domain of the function.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="lemma theorem-like" id="unifcauchycauchy_lemma"><h4 class="heading">
+<span class="type">Lemma</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.4.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="unifcauchycauchy_lemma-1-1">Let <span class="process-math">\(S \subset \R\)</span> and let <span class="process-math">\(f \colon S \to \R\)</span> be a uniformly continuous function.  Let <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> be a Cauchy sequence in <span class="process-math">\(S\text{.}\)</span> Then <span class="process-math">\(\bigl\{ f(x_n) \bigr\}_{n=1}^\infty\)</span> is Cauchy.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#unifcauchycauchy_lemma-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Lemma 3.4.5"><a aria-label="Copy heading and permalink for Lemma 3.4.5" href="#unifcauchycauchy_lemma" title="Copy heading and permalink for Lemma 3.4.5">🔗</a></div>
+</article>
+<article class="proof" id="sec_unifcont-4-4"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_unifcont-4-4-1">Let <span class="process-math">\(\epsilon &gt; 0\)</span> be given.  There is a <span class="process-math">\(\delta &gt; 0\)</span> such that <span class="process-math">\(\babs{f(x)-f(y)} &lt; \epsilon\)</span> whenever <span class="process-math">\(x,y \in S\)</span> and <span class="process-math">\(\sabs{x-y} &lt; \delta\text{.}\)</span>  Find an <span class="process-math">\(M
+\in \N\)</span> such that for all <span class="process-math">\(n, k \geq M\text{,}\)</span> we have <span class="process-math">\(\sabs{x_n-x_k} &lt; \delta\text{.}\)</span> Then for all <span class="process-math">\(n, k \geq M\text{,}\)</span> we have <span class="process-math">\(\babs{f(x_n)-f(x_k)} &lt; \epsilon\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-4-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 3.4.2.1"><a aria-label="Copy heading and permalink for Proof 3.4.2.1" href="#sec_unifcont-4-4" title="Copy heading and permalink for Proof 3.4.2.1">🔗</a></div>
+</article>
+<div class="para" id="sec_unifcont-4-5">An application of the lemma above is the following extension result.  It says that a function on an open interval is uniformly continuous if and only if it can be extended to a continuous function on the closed interval.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-4-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="context_prop"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.4.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="context_prop-1-1">
+<div class="para">A function <span class="process-math">\(f \colon (a,b) \to \R\)</span> is uniformly continuous if and only if the limits</div>
+<div class="displaymath process-math" id="context_prop-1-1-2">
+\begin{equation}
+L_a \coloneqq \lim_{x \to a} f(x) \qquad \text{and} \qquad
+L_b \coloneqq \lim_{x \to b} f(x)
+\end{equation}
+</div>
+<div class="para">exist and the function <span class="process-math">\(\widetilde{f} \colon [a,b] \to \R\)</span> defined by</div>
+<div class="displaymath process-math" id="context_prop-1-1-4">
+\begin{equation}
+\widetilde{f}(x) \coloneqq
+\begin{cases}
+f(x) &amp; \text{if } x \in (a,b), \\
+L_a &amp; \text{if } x = a, \\
+L_b &amp; \text{if } x = b
+\end{cases}
+\end{equation}
+</div>
+<div class="para">is continuous.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#context_prop-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 3.4.6"><a aria-label="Copy heading and permalink for Proposition 3.4.6" href="#context_prop" title="Copy heading and permalink for Proposition 3.4.6">🔗</a></div>
+</article>
+<article class="proof" id="sec_unifcont-4-7"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_unifcont-4-7-1">One direction is quick.  If <span class="process-math">\(\widetilde{f}\)</span> is continuous, then it is uniformly continuous by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_unifcont.html#unifcont_thm" title="Theorem 3.4.4">Theorem 3.4.4</a>.  As <span class="process-math">\(f\)</span> is the restriction of <span class="process-math">\(\widetilde{f}\)</span> to <span class="process-math">\((a,b)\text{,}\)</span> <span class="process-math">\(f\)</span> is also uniformly continuous (exercise).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-4-7-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_unifcont-4-7-2">
+<div class="para">Now suppose <span class="process-math">\(f\)</span> is uniformly continuous.  We must first show that the limits <span class="process-math">\(L_a\)</span> and <span class="process-math">\(L_b\)</span> exist.  Let us concentrate on <span class="process-math">\(L_a\text{.}\)</span> Take <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> in <span class="process-math">\((a,b)\)</span> such that <span class="process-math">\(\lim_{n\to\infty} x_n = a\text{.}\)</span> The sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is Cauchy, so by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_unifcont.html#unifcauchycauchy_lemma" title="Lemma 3.4.5">Lemma 3.4.5</a> the sequence <span class="process-math">\(\bigl\{ f(x_n) \bigr\}_{n=1}^\infty\)</span> is Cauchy and thus convergent. Let <span class="process-math">\(L_1 \coloneqq \lim_{n\to\infty} f(x_n)\text{.}\)</span>  Take another sequence <span class="process-math">\(\{ y_n \}_{n=1}^\infty\)</span> in <span class="process-math">\((a,b)\)</span> such that <span class="process-math">\(\lim_{n\to\infty} y_n = a\text{.}\)</span> By the same reasoning, we get <span class="process-math">\(L_2 \coloneqq \lim_{n\to\infty} f(y_n)\text{.}\)</span>  If we show that <span class="process-math">\(L_1 = L_2\text{,}\)</span> then the limit <span class="process-math">\(L_a = \lim_{x\to a} f(x)\)</span> exists.  Let <span class="process-math">\(\epsilon &gt; 0\)</span> be given. Find <span class="process-math">\(\delta &gt; 0\)</span> such that <span class="process-math">\(\sabs{x-y} &lt; \delta\)</span> implies <span class="process-math">\(\babs{f(x)-f(y)} &lt;
+\nicefrac{\epsilon}{3}\text{.}\)</span>  Find <span class="process-math">\(M \in \N\)</span> such that for <span class="process-math">\(n \geq M\text{,}\)</span> we have <span class="process-math">\(\sabs{a-x_n} &lt; \nicefrac{\delta}{2}\text{,}\)</span> <span class="process-math">\(\sabs{a-y_n} &lt; \nicefrac{\delta}{2}\text{,}\)</span> <span class="process-math">\(\babs{f(x_n)-L_1} &lt; \nicefrac{\epsilon}{3}\text{,}\)</span> and <span class="process-math">\(\babs{f(y_n)-L_2} &lt; \nicefrac{\epsilon}{3}\text{.}\)</span>  Then for <span class="process-math">\(n \geq M\text{,}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/unifcauchycauchy_lemma.html" id="sec_unifcont-4-7-2-29">
+\begin{equation}
+\sabs{x_n-y_n} = 
+\sabs{x_n-a+a-y_n} \leq
+\sabs{x_n-a}+\sabs{a-y_n} &lt; \nicefrac{\delta}{2} + \nicefrac{\delta}{2} =
+\delta.
+\end{equation}
+</div>
+<div class="para">So</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/unifcauchycauchy_lemma.html" id="sec_unifcont-4-7-2-30">
+\begin{equation}
+\begin{split}
+\sabs{L_1-L_2} &amp;=
+\babs{L_1-f(x_n)+f(x_n)-f(y_n)+f(y_n)-L_2} \\
+&amp; \leq 
+\babs{L_1-f(x_n)}+\babs{f(x_n)-f(y_n)}+\babs{f(y_n)-L_2} \\
+&amp; &lt;
+\nicefrac{\epsilon}{3} + \nicefrac{\epsilon}{3} + \nicefrac{\epsilon}{3}
+=
+\epsilon .
+\end{split}
+\end{equation}
+</div>
+<div class="para">Therefore, <span class="process-math">\(L_1 = L_2\text{.}\)</span> Thus <span class="process-math">\(L_a\)</span> exists.  To show that <span class="process-math">\(L_b\)</span> exists is left as an exercise.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-4-7-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_unifcont-4-7-3">If <span class="process-math">\(L_a = \lim_{x\to a} f(x)\)</span> exists, then <span class="process-math">\(\lim_{x\to a} \widetilde{f}(x)\)</span> exists and equals <span class="process-math">\(L_a\)</span> (see <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_limoffunc.html#prop_limrest" title="Proposition 3.1.15">Proposition 3.1.15</a>).  Similarly for <span class="process-math">\(L_b\text{.}\)</span> Hence, <span class="process-math">\(\widetilde{f}\)</span> is continuous at <span class="process-math">\(a\)</span> and <span class="process-math">\(b\text{.}\)</span> And since <span class="process-math">\(f\)</span> is continuous at <span class="process-math">\(c \in (a,b)\text{,}\)</span> we find that <span class="process-math">\(\widetilde{f}\)</span> is continuous at <span class="process-math">\(c \in (a,b)\)</span> (<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_limoffunc.html#prop_limrest" title="Proposition 3.1.15">Proposition 3.1.15</a> again).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-4-7-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 3.4.2.2"><a aria-label="Copy heading and permalink for Proof 3.4.2.2" href="#sec_unifcont-4-7" title="Copy heading and permalink for Proof 3.4.2.2">🔗</a></div>
+</article>
+<div class="para" id="sec_unifcont-4-8">A typical application of this proposition (together with <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_limoffunc.html#prop_onesidedlimits" title="Proposition 3.1.17">Proposition 3.1.17</a>) is the following. If <span class="process-math">\(f \colon (-1,0) \cup (0,1) \to \R\)</span> is uniformly continuous, then <span class="process-math">\(\lim_{x\to 0} f(x)\)</span> exists and the function has a <em class="emphasis">removable singularity</em>. That is, we can extend the function to a continuous function on <span class="process-math">\((-1,1)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-4-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 3.4.2: Continuous extension"><a aria-label="Copy heading and permalink for Subsection 3.4.2: Continuous extension" href="#sec_unifcont-4" title="Copy heading and permalink for Subsection 3.4.2: Continuous extension">🔗</a></div>
+</section>
+<section class="subsection" id="sec_unifcont-5">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.4.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Lipschitz continuous functions</span>
+</h3>
+<article class="definition definition-like" id="sec_unifcont-5-2"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.4.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_unifcont-5-2-1-1">
+<div class="para">A function <span class="process-math">\(f \colon S \to \R\)</span> is <em class="emphasis">Lipschitz continuous</em><details aria-live="polite" class="ptx-footnote" id="sec_unifcont-5-2-1-1-4"><summary class="ptx-footnote__number" title="Footnote 3.4.1"><sup> 1 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_unifcont-5-2-1-1-4">Named after the German mathematician <a class="external" href="https://en.wikipedia.org/wiki/Rudolf_Lipschitz" target="_blank">Rudolf Otto Sigismund Lipschitz</a> (1832–1903).
+</div></details> if there exists a <span class="process-math">\(K \in \R\)</span> such that</div>
+<div class="displaymath process-math" id="sec_unifcont-5-2-1-1-6">
+\begin{equation}
+\babs{f(x)-f(y)} \leq K \sabs{x-y} 
+\qquad \text{for all } x \text{ and } y \text{ in } S.
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-5-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 3.4.7"><a aria-label="Copy heading and permalink for Definition 3.4.7" href="#sec_unifcont-5-2" title="Copy heading and permalink for Definition 3.4.7">🔗</a></div>
+</article>
+<div class="para" id="sec_unifcont-5-3">A large class of functions is Lipschitz continuous.  Be careful. Just as for uniformly continuous functions, the domain of definition of the function is important.  See the examples below and the exercises.  First, we justify the use of the word <em class="emphasis">continuous</em>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-5-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_unifcont-5-4"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.4.8</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_unifcont-5-4-1-1">A Lipschitz continuous function is uniformly continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-5-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 3.4.8"><a aria-label="Copy heading and permalink for Proposition 3.4.8" href="#sec_unifcont-5-4" title="Copy heading and permalink for Proposition 3.4.8">🔗</a></div>
+</article>
+<article class="proof" id="sec_unifcont-5-5"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_unifcont-5-5-1">
+<div class="para">Let <span class="process-math">\(f \colon S \to \R\)</span> be a function and let <span class="process-math">\(K\)</span> be a constant such that <span class="process-math">\(\babs{f(x)-f(y)} \leq K \sabs{x-y}\)</span> for all <span class="process-math">\(x, y\)</span> in <span class="process-math">\(S\text{.}\)</span> Let <span class="process-math">\(\epsilon &gt; 0\)</span> be given.  Take <span class="process-math">\(\delta \coloneqq
+\nicefrac{\epsilon}{K}\text{.}\)</span> For all <span class="process-math">\(x\)</span> and <span class="process-math">\(y\)</span> in <span class="process-math">\(S\)</span> such that <span class="process-math">\(\sabs{x-y} &lt; \delta\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_unifcont-5-5-1-12">
+\begin{equation}
+\babs{f(x)-f(y)} \leq K \sabs{x-y} &lt; K \delta = K \frac{\epsilon}{K} =
+\epsilon .
+\end{equation}
+</div>
+<div class="para">Therefore, <span class="process-math">\(f\)</span> is uniformly continuous.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-5-5-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 3.4.3.1"><a aria-label="Copy heading and permalink for Proof 3.4.3.1" href="#sec_unifcont-5-5" title="Copy heading and permalink for Proof 3.4.3.1">🔗</a></div>
+</article>
+<div class="para logical" id="sec_unifcont-5-6">
+<div class="para">We interpret Lipschitz continuity geometrically.  Let <span class="process-math">\(f\)</span> be a Lipschitz continuous function with some constant <span class="process-math">\(K\text{.}\)</span>  We rewrite the inequality to say that for <span class="process-math">\(x \neq y\text{,}\)</span> we have</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_lipschitz.html" id="sec_unifcont-5-6-4">
+\begin{equation}
+\abs{\frac{f(x)-f(y)}{x-y}} \leq K .
+\end{equation}
+</div>
+<div class="para">The quantity <span class="process-math">\(\frac{f(x)-f(y)}{x-y}\)</span> is the slope of the line between the points <span class="process-math">\(\bigl(x,f(x)\bigr)\)</span> and <span class="process-math">\(\bigl(y,f(y)\bigr)\text{,}\)</span> that is, a <em class="emphasis">secant line</em>.  Therefore, <span class="process-math">\(f\)</span> is Lipschitz continuous if and only if every line that intersects the graph of <span class="process-math">\(f\)</span> in at least two distinct points has slope in absolute value less than or equal to <span class="process-math">\(K\text{.}\)</span>  See <a class="internal" href="sec_unifcont.html#fig_lipschitz" title="Figure 3.9">Figure 3.9</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-5-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="fig_lipschitz"><img alt="A graph of a function with some corners. Two points on the horizontal axis are marked with x and y. A line through the corresponding points on the graph is drawn and its slope is labeled as f of x minus f of y all divided by x minus y." class="raimg" role="img" src="figures/lipschitzfig-mbx.svg" style="width:149pt; height:108pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>The slope of a secant line. A function is Lipschitz if <span class="process-math">\(\abs{\frac{f(x)-f(y)}{x-y}} \leq K\)</span> for all <span class="process-math">\(x\)</span> and <span class="process-math">\(y\text{.}\)</span><div class="autopermalink" data-description="Figure 3.9"><a aria-label="Copy heading and permalink for Figure 3.9" href="#fig_lipschitz" title="Copy heading and permalink for Figure 3.9">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<article class="example example-like" id="sec_unifcont-5-10"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.4.9</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_unifcont-5-10-1-1">
+<div class="para">The functions <span class="process-math">\(\sin(x)\)</span> and <span class="process-math">\(\cos(x)\)</span> are Lipschitz continuous. In <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_cont.html#sincos_example" title="Example 3.2.6">Example 3.2.6</a> we have seen the following two inequalities.</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/sincos_example.html" id="sec_unifcont-5-10-1-1-4">
+\begin{equation}
+\babs{\sin(x)-\sin(y)} 
+\leq \sabs{x-y}
+\qquad \text{and} \qquad
+\babs{\cos(x)-\cos(y)}
+\leq \sabs{x-y} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-5-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_unifcont-5-10-1-2">Hence, sine and cosine are Lipschitz continuous with <span class="process-math">\(K=1\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-5-10-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 3.4.9"><a aria-label="Copy heading and permalink for Example 3.4.9" href="#sec_unifcont-5-10" title="Copy heading and permalink for Example 3.4.9">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_unifcont-5-11"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.4.10</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_unifcont-5-11-1-1">
+<div class="para">The function <span class="process-math">\(f \colon [1,\infty) \to \R\)</span> defined by <span class="process-math">\(f(x) \coloneqq \sqrt{x}\)</span> is Lipschitz continuous. Proof:</div>
+<div class="displaymath process-math" id="sec_unifcont-5-11-1-1-3">
+\begin{equation}
+\abs{\sqrt{x}-\sqrt{y}} = 
+\abs{\frac{x-y}{\sqrt{x}+\sqrt{y}}}
+=
+\frac{\sabs{x-y}}{\sqrt{x}+\sqrt{y}} .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(x \geq 1\)</span> and <span class="process-math">\(y \geq 1\text{,}\)</span> we see that <span class="process-math">\(\frac{1}{\sqrt{x}+\sqrt{y}}
+\leq \frac{1}{2}\text{.}\)</span>  Therefore,</div>
+<div class="displaymath process-math" id="sec_unifcont-5-11-1-1-7">
+\begin{equation}
+\abs{\sqrt{x}-\sqrt{y}} = 
+\abs{\frac{x-y}{\sqrt{x}+\sqrt{y}}}
+\leq
+\frac{1}{2}
+\sabs{x-y}.
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-5-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_unifcont-5-11-1-2">
+<div class="para">On the other hand, <span class="process-math">\(g \colon [0,\infty) \to \R\)</span> defined by <span class="process-math">\(g(x) \coloneqq \sqrt{x}\)</span> is not Lipschitz continuous.  Proof: Suppose there is a <span class="process-math">\(K\)</span> so that for all <span class="process-math">\(x,y \in [0,\infty)\text{,}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_sqrtgraph.html" id="sec_unifcont-5-11-1-2-5">
+\begin{equation}
+\abs{\sqrt{x}-\sqrt{y}} 
+\leq
+K \sabs{x-y} ,
+\end{equation}
+</div>
+<div class="para">We find that <span class="process-math">\(K &gt; 0\text{,}\)</span> as <span class="process-math">\(K &lt; 0\)</span> is impossible, and <span class="process-math">\(K=0\)</span> would mean that <span class="process-math">\(f\)</span> is constant. Set <span class="process-math">\(y=0\)</span> to obtain <span class="process-math">\(\sqrt{x} \leq K x\text{.}\)</span> For <span class="process-math">\(x &gt; 0\text{,}\)</span> we get <span class="process-math">\(\nicefrac{1}{K} \leq \sqrt{x}\)</span> or <span class="process-math">\(\nicefrac{1}{K^2} \leq x\text{.}\)</span> This cannot possibly be true for all <span class="process-math">\(x &gt; 0\text{.}\)</span>  Thus no <span class="process-math">\(K\)</span> exists and <span class="process-math">\(g\)</span> is not Lipschitz continuous.  See <a class="internal" href="sec_unifcont.html#fig_sqrtgraph" title="Figure 3.10">Figure 3.10</a> and note how secant lines would be more and more vertical as we get closer to <span class="process-math">\(x=0\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-5-11-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <hr class="rahr"/>
+<figure class="figure figure-like" id="fig_sqrtgraph"><img alt="A graph of a function that starts rising vertically at the left endpoint and quickly curves to become much more horizontal at the right endpoint. Secant lines through the left endpoint and a sequence of points on the graph getting closer and closer to the left endpoint are drawn. We notice that the secant lines are more and more vertical as the second point on the secant line is closer to the left endpoint." class="raimg" role="img" src="figures/sqrtgraph-mbx.svg" style="width:221pt; height:112pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Graph of <span class="process-math">\(\sqrt{x}\)</span> and some secant lines through <span class="process-math">\((0,0)\)</span> and <span class="process-math">\((x,\sqrt{x})\text{.}\)</span><div class="autopermalink" data-description="Figure 3.10"><a aria-label="Copy heading and permalink for Figure 3.10" href="#fig_sqrtgraph" title="Copy heading and permalink for Figure 3.10">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para" id="sec_unifcont-5-11-1-6">The last example <span class="process-math">\(g\)</span> is a function that is uniformly continuous but not Lipschitz continuous. To see that <span class="process-math">\(\sqrt{x}\)</span> is uniformly continuous as a function on <span class="process-math">\([0,\infty)\text{,}\)</span> note that it is uniformly continuous when restricted to <span class="process-math">\([0,1]\)</span> by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_unifcont.html#unifcont_thm" title="Theorem 3.4.4">Theorem 3.4.4</a>. It is also Lipschitz (and so uniformly continuous) when restricted to <span class="process-math">\([1,\infty)\text{.}\)</span> It is not hard (exercise) to show that this means that <span class="process-math">\(\sqrt{x}\)</span> is a uniformly continuous function on <span class="process-math">\([0,\infty)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-5-11-1-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 3.4.10"><a aria-label="Copy heading and permalink for Example 3.4.10" href="#sec_unifcont-5-11" title="Copy heading and permalink for Example 3.4.10">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 3.4.3: Lipschitz continuous functions"><a aria-label="Copy heading and permalink for Subsection 3.4.3: Lipschitz continuous functions" href="#sec_unifcont-5" title="Copy heading and permalink for Subsection 3.4.3: Lipschitz continuous functions">🔗</a></div>
+</section>
+<section class="exercises" id="sec_unifcont-6">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.4.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_unifcont-6-1"><h4 class="heading"><span class="codenumber">3.4.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_unifcont-6-1-1-1">Let <span class="process-math">\(f \colon S \to \R\)</span> be uniformly continuous.  Let <span class="process-math">\(A \subset S\text{.}\)</span> Then the restriction <span class="process-math">\(f|_A\)</span> is uniformly continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-6-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.4.1"><a aria-label="Copy heading and permalink for Exercise 3.4.1" href="#sec_unifcont-6-1" title="Copy heading and permalink for Exercise 3.4.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_unifcont-6-2"><h4 class="heading"><span class="codenumber">3.4.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_unifcont-6-2-1-1">Let <span class="process-math">\(f \colon (a,b) \to \R\)</span> be a uniformly continuous function. Finish the proof of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_unifcont.html#context_prop" title="Proposition 3.4.6">Proposition 3.4.6</a> by showing that the limit <span class="process-math">\(\lim\limits_{x \to b} f(x)\)</span> exists.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-6-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.4.2"><a aria-label="Copy heading and permalink for Exercise 3.4.2" href="#sec_unifcont-6-2" title="Copy heading and permalink for Exercise 3.4.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_unifcont-6-3"><h4 class="heading"><span class="codenumber">3.4.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_unifcont-6-3-1-1">Show that <span class="process-math">\(f \colon (c,\infty) \to \R\)</span> for some <span class="process-math">\(c &gt; 0\)</span> and defined by <span class="process-math">\(f(x) \coloneqq \nicefrac{1}{x}\)</span> is Lipschitz continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-6-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.4.3"><a aria-label="Copy heading and permalink for Exercise 3.4.3" href="#sec_unifcont-6-3" title="Copy heading and permalink for Exercise 3.4.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_unifcont-6-4"><h4 class="heading"><span class="codenumber">3.4.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_unifcont-6-4-1-1">Show that <span class="process-math">\(f \colon (0,\infty) \to \R\)</span> defined by <span class="process-math">\(f(x) \coloneqq \nicefrac{1}{x}\)</span> is not Lipschitz continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-6-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.4.4"><a aria-label="Copy heading and permalink for Exercise 3.4.4" href="#sec_unifcont-6-4" title="Copy heading and permalink for Exercise 3.4.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_unifcont-6-5"><h4 class="heading"><span class="codenumber">3.4.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_unifcont-6-5-1-1">Let <span class="process-math">\(A, B\)</span> be intervals. Let <span class="process-math">\(f \colon A \to \R\)</span> and <span class="process-math">\(g \colon B \to \R\)</span> be uniformly continuous functions such that <span class="process-math">\(f(x) = g(x)\)</span> for <span class="process-math">\(x \in A \cap B\text{.}\)</span>  Define the function <span class="process-math">\(h \colon A \cup B \to \R\)</span> by <span class="process-math">\(h(x) \coloneqq f(x)\)</span> if <span class="process-math">\(x \in A\)</span> and <span class="process-math">\(h(x) \coloneqq g(x)\)</span> if <span class="process-math">\(x \in B \setminus A\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-6-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_unifcont-6-5-1-2">
+<li id="sec_unifcont-6-5-1-2-1">
+<div class="para" id="sec_unifcont-6-5-1-2-1-1">Prove that if <span class="process-math">\(A \cap B \neq \emptyset\text{,}\)</span> then <span class="process-math">\(h\)</span> is uniformly continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-6-5-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 3.4.5.a"><a aria-label="Copy heading and permalink for Item 3.4.5.a" href="#sec_unifcont-6-5-1-2-1" title="Copy heading and permalink for Item 3.4.5.a">🔗</a></div>
+</li>
+<li id="sec_unifcont-6-5-1-2-2">
+<div class="para" id="sec_unifcont-6-5-1-2-2-1">Find an example where <span class="process-math">\(A \cap B = \emptyset\)</span> and <span class="process-math">\(h\)</span> is not even continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-6-5-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 3.4.5.b"><a aria-label="Copy heading and permalink for Item 3.4.5.b" href="#sec_unifcont-6-5-1-2-2" title="Copy heading and permalink for Item 3.4.5.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 3.4.5"><a aria-label="Copy heading and permalink for Exercise 3.4.5" href="#sec_unifcont-6-5" title="Copy heading and permalink for Exercise 3.4.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_unifcont-6-6"><h4 class="heading"><span class="codenumber">3.4.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_unifcont-6-6-1-1">
+<em class="emphasis">(Challenging)</em>   Let <span class="process-math">\(f \colon \R \to \R\)</span> be a polynomial of degree <span class="process-math">\(d \geq 2\text{.}\)</span>  Show that <span class="process-math">\(f\)</span> is not Lipschitz continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-6-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.4.6"><a aria-label="Copy heading and permalink for Exercise 3.4.6" href="#sec_unifcont-6-6" title="Copy heading and permalink for Exercise 3.4.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_unifcont-6-7"><h4 class="heading"><span class="codenumber">3.4.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_unifcont-6-7-1-1">Let <span class="process-math">\(f \colon (0,1) \to \R\)</span> be a bounded continuous function.  Show that the function <span class="process-math">\(g(x) \coloneqq x(1-x)f(x)\)</span> is uniformly continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-6-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.4.7"><a aria-label="Copy heading and permalink for Exercise 3.4.7" href="#sec_unifcont-6-7" title="Copy heading and permalink for Exercise 3.4.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_unifcont-6-8"><h4 class="heading"><span class="codenumber">3.4.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_unifcont-6-8-1-1">Show that <span class="process-math">\(f \colon (0,\infty) \to \R\)</span> defined by <span class="process-math">\(f(x) \coloneqq \sin
+(\nicefrac{1}{x})\)</span> is not uniformly continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-6-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.4.8"><a aria-label="Copy heading and permalink for Exercise 3.4.8" href="#sec_unifcont-6-8" title="Copy heading and permalink for Exercise 3.4.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_unifcont-6-9"><h4 class="heading"><span class="codenumber">3.4.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_unifcont-6-9-1-1">
+<em class="emphasis">(Challenging)</em>   Let <span class="process-math">\(f \colon \Q \to \R\)</span> be a uniformly continuous function.  Show that there exists a uniformly continuous function <span class="process-math">\(\widetilde{f} \colon \R \to \R\)</span> such that <span class="process-math">\(f(x) = \widetilde{f}(x)\)</span> for all <span class="process-math">\(x \in \Q\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-6-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.4.9"><a aria-label="Copy heading and permalink for Exercise 3.4.9" href="#sec_unifcont-6-9" title="Copy heading and permalink for Exercise 3.4.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_unifcont-6-10"><h4 class="heading"><span class="codenumber">3.4.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_unifcont-6-10-1-1"><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-6-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div></div>
+<ol class="lower-alpha ol-marker-3" id="sec_unifcont-6-10-1-2">
+<li id="sec_unifcont-6-10-1-2-1">
+<div class="para" id="sec_unifcont-6-10-1-2-1-1">Find a continuous <span class="process-math">\(f \colon (0,1) \to \R\)</span> and a sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> in <span class="process-math">\((0,1)\)</span> that is Cauchy, but such that <span class="process-math">\(\bigl\{ f(x_n) \bigr\}_{n=1}^\infty\)</span> is not Cauchy.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-6-10-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 3.4.10.a"><a aria-label="Copy heading and permalink for Item 3.4.10.a" href="#sec_unifcont-6-10-1-2-1" title="Copy heading and permalink for Item 3.4.10.a">🔗</a></div>
+</li>
+<li id="sec_unifcont-6-10-1-2-2">
+<div class="para" id="sec_unifcont-6-10-1-2-2-1">Prove that if <span class="process-math">\(f \colon \R \to \R\)</span> is continuous, and <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is Cauchy, then <span class="process-math">\(\bigl\{ f(x_n) \bigr\}_{n=1}^\infty\)</span> is Cauchy.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-6-10-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 3.4.10.b"><a aria-label="Copy heading and permalink for Item 3.4.10.b" href="#sec_unifcont-6-10-1-2-2" title="Copy heading and permalink for Item 3.4.10.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 3.4.10"><a aria-label="Copy heading and permalink for Exercise 3.4.10" href="#sec_unifcont-6-10" title="Copy heading and permalink for Exercise 3.4.10">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_unifcont-6-11"><h4 class="heading"><span class="codenumber">3.4.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_unifcont-6-11-1-1">Prove:<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-6-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_unifcont-6-11-1-2">
+<li id="sec_unifcont-6-11-1-2-1">
+<div class="para" id="sec_unifcont-6-11-1-2-1-1">If <span class="process-math">\(f \colon S \to \R\)</span> and <span class="process-math">\(g \colon S \to \R\)</span> are uniformly continuous, then <span class="process-math">\(h \colon S \to \R\)</span> given by <span class="process-math">\(h(x) \coloneqq f(x) + g(x)\)</span> is uniformly continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-6-11-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 3.4.11.a"><a aria-label="Copy heading and permalink for Item 3.4.11.a" href="#sec_unifcont-6-11-1-2-1" title="Copy heading and permalink for Item 3.4.11.a">🔗</a></div>
+</li>
+<li id="sec_unifcont-6-11-1-2-2">
+<div class="para" id="sec_unifcont-6-11-1-2-2-1">If <span class="process-math">\(f \colon S \to \R\)</span> is uniformly continuous and <span class="process-math">\(a \in \R\text{,}\)</span> then <span class="process-math">\(h \colon S \to \R\)</span> given by <span class="process-math">\(h(x) \coloneqq a f(x)\)</span> is uniformly continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-6-11-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 3.4.11.b"><a aria-label="Copy heading and permalink for Item 3.4.11.b" href="#sec_unifcont-6-11-1-2-2" title="Copy heading and permalink for Item 3.4.11.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 3.4.11"><a aria-label="Copy heading and permalink for Exercise 3.4.11" href="#sec_unifcont-6-11" title="Copy heading and permalink for Exercise 3.4.11">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_unifcont-6-12"><h4 class="heading"><span class="codenumber">3.4.12<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_unifcont-6-12-1-1">Prove:<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-6-12-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_unifcont-6-12-1-2">
+<li id="sec_unifcont-6-12-1-2-1">
+<div class="para" id="sec_unifcont-6-12-1-2-1-1">If <span class="process-math">\(f \colon S \to \R\)</span> and <span class="process-math">\(g \colon S \to \R\)</span> are Lipschitz, then <span class="process-math">\(h \colon S \to \R\)</span> given by <span class="process-math">\(h(x) \coloneqq f(x) + g(x)\)</span> is Lipschitz.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-6-12-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 3.4.12.a"><a aria-label="Copy heading and permalink for Item 3.4.12.a" href="#sec_unifcont-6-12-1-2-1" title="Copy heading and permalink for Item 3.4.12.a">🔗</a></div>
+</li>
+<li id="sec_unifcont-6-12-1-2-2">
+<div class="para" id="sec_unifcont-6-12-1-2-2-1">If <span class="process-math">\(f \colon S \to \R\)</span> is Lipschitz and <span class="process-math">\(a \in \R\text{,}\)</span> then <span class="process-math">\(h \colon S \to \R\)</span> given by <span class="process-math">\(h(x) \coloneqq a f(x)\)</span> is Lipschitz.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-6-12-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 3.4.12.b"><a aria-label="Copy heading and permalink for Item 3.4.12.b" href="#sec_unifcont-6-12-1-2-2" title="Copy heading and permalink for Item 3.4.12.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 3.4.12"><a aria-label="Copy heading and permalink for Exercise 3.4.12" href="#sec_unifcont-6-12" title="Copy heading and permalink for Exercise 3.4.12">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_unifcont-6-13"><h4 class="heading"><span class="codenumber">3.4.13<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_unifcont-6-13-1-1"><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-6-13-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div></div>
+<ol class="lower-alpha ol-marker-3" id="sec_unifcont-6-13-1-2">
+<li id="sec_unifcont-6-13-1-2-1">
+<div class="para" id="sec_unifcont-6-13-1-2-1-1">If <span class="process-math">\(f \colon [0,1] \to \R\)</span> is given by <span class="process-math">\(f(x) \coloneqq x^m\)</span> for an integer <span class="process-math">\(m \geq 0\text{,}\)</span> show <span class="process-math">\(f\)</span> is Lipschitz and find the best (the smallest) Lipschitz constant <span class="process-math">\(K\)</span> (depending on <span class="process-math">\(m\)</span> of course). Hint: <span class="process-math">\((x-y)(x^{m-1} + x^{m-2}y + x^{m-3}y^2 + \cdots + x y^{m-2} + y^{m-1}) = x^m
+- y^m\)</span> for positive <span class="process-math">\(m\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-6-13-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 3.4.13.a"><a aria-label="Copy heading and permalink for Item 3.4.13.a" href="#sec_unifcont-6-13-1-2-1" title="Copy heading and permalink for Item 3.4.13.a">🔗</a></div>
+</li>
+<li id="sec_unifcont-6-13-1-2-2">
+<div class="para" id="sec_unifcont-6-13-1-2-2-1">Using the previous exercise, show that if <span class="process-math">\(f \colon [0,1] \to \R\)</span> is a polynomial, that is, <span class="process-math">\(f(x) \coloneqq a_m x^m + a_{m-1} x^{m-1} + \cdots + a_0\text{,}\)</span> then <span class="process-math">\(f\)</span> is Lipschitz.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-6-13-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 3.4.13.b"><a aria-label="Copy heading and permalink for Item 3.4.13.b" href="#sec_unifcont-6-13-1-2-2" title="Copy heading and permalink for Item 3.4.13.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 3.4.13"><a aria-label="Copy heading and permalink for Exercise 3.4.13" href="#sec_unifcont-6-13" title="Copy heading and permalink for Exercise 3.4.13">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_unifcont-6-14"><h4 class="heading"><span class="codenumber">3.4.14<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_unifcont-6-14-1-1">Suppose for <span class="process-math">\(f \colon [0,1] \to \R\text{,}\)</span> we have <span class="process-math">\(\babs{f(x)-f(y)} \leq K
+\sabs{x-y}\)</span> for all <span class="process-math">\(x,y\)</span> in <span class="process-math">\([0,1]\text{,}\)</span> and <span class="process-math">\(f(0) = f(1) = 0\text{.}\)</span> Prove that <span class="process-math">\(\babs{f(x)} \leq \nicefrac{K}{2}\)</span> for all <span class="process-math">\(x \in [0,1]\text{.}\)</span>  Further show by example that <span class="process-math">\(\nicefrac{K}{2}\)</span> is the best possible. That is, fund such a continuous function for which <span class="process-math">\(\babs{f(x)} = \nicefrac{K}{2}\)</span> for some <span class="process-math">\(x \in [0,1]\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-6-14-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.4.14"><a aria-label="Copy heading and permalink for Exercise 3.4.14" href="#sec_unifcont-6-14" title="Copy heading and permalink for Exercise 3.4.14">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_unifcont-6-15"><h4 class="heading"><span class="codenumber">3.4.15<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_unifcont-6-15-1-1">Suppose <span class="process-math">\(f \colon \R \to \R\)</span> is continuous and periodic with period <span class="process-math">\(P &gt; 0\text{.}\)</span>  That is, <span class="process-math">\(f(x+P) = f(x)\)</span> for all <span class="process-math">\(x \in \R\text{.}\)</span>  Show that <span class="process-math">\(f\)</span> is uniformly continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-6-15-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.4.15"><a aria-label="Copy heading and permalink for Exercise 3.4.15" href="#sec_unifcont-6-15" title="Copy heading and permalink for Exercise 3.4.15">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_unifcont-6-16"><h4 class="heading"><span class="codenumber">3.4.16<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_unifcont-6-16-1-1">Suppose <span class="process-math">\(f \colon S \to \R\)</span> and <span class="process-math">\(g \colon [0,\infty) \to [0,\infty)\)</span> are functions, <span class="process-math">\(g\)</span> is continuous at <span class="process-math">\(0\text{,}\)</span> <span class="process-math">\(g(0) = 0\text{,}\)</span> and whenever <span class="process-math">\(x\)</span> and <span class="process-math">\(y\)</span> are in <span class="process-math">\(S\text{,}\)</span> we have <span class="process-math">\(\babs{f(x)-f(y)} \leq
+g\bigl(\sabs{x-y}\bigr)\text{.}\)</span> Prove that <span class="process-math">\(f\)</span> is uniformly continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-6-16-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.4.16"><a aria-label="Copy heading and permalink for Exercise 3.4.16" href="#sec_unifcont-6-16" title="Copy heading and permalink for Exercise 3.4.16">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_unifcont-6-17"><h4 class="heading"><span class="codenumber">3.4.17<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_unifcont-6-17-1-1">Suppose <span class="process-math">\(f \colon [a,b] \to \R\)</span> is a function such that for every <span class="process-math">\(c \in
+[a,b]\)</span> there is a <span class="process-math">\(K_c &gt; 0\)</span> and an <span class="process-math">\(\epsilon_c &gt; 0\)</span> for which <span class="process-math">\(\babs{f(x)-f(y)} \leq K_c \sabs{x-y}\)</span> for all <span class="process-math">\(x\)</span> and <span class="process-math">\(y\)</span> in <span class="process-math">\((c-\epsilon_c,c+\epsilon_c) \cap [a,b]\text{.}\)</span>  In other words, <span class="process-math">\(f\)</span> is “locally Lipschitz.”<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-6-17-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_unifcont-6-17-1-2">
+<li id="sec_unifcont-6-17-1-2-1">
+<div class="para" id="sec_unifcont-6-17-1-2-1-1">Prove that there exists a single <span class="process-math">\(K &gt; 0\)</span> such that <span class="process-math">\(\babs{f(x)-f(y)} \leq K \sabs{x-y}\)</span> for all <span class="process-math">\(x,y\)</span> in <span class="process-math">\([a,b]\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-6-17-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 3.4.17.a"><a aria-label="Copy heading and permalink for Item 3.4.17.a" href="#sec_unifcont-6-17-1-2-1" title="Copy heading and permalink for Item 3.4.17.a">🔗</a></div>
+</li>
+<li id="sec_unifcont-6-17-1-2-2">
+<div class="para" id="sec_unifcont-6-17-1-2-2-1">Find a counterexample to the above if the interval is open, that is, find an <span class="process-math">\(f \colon (a,b) \to \R\)</span> that is locally Lipschitz, but not Lipschitz.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_unifcont-6-17-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 3.4.17.b"><a aria-label="Copy heading and permalink for Item 3.4.17.b" href="#sec_unifcont-6-17-1-2-2" title="Copy heading and permalink for Item 3.4.17.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 3.4.17"><a aria-label="Copy heading and permalink for Exercise 3.4.17" href="#sec_unifcont-6-17" title="Copy heading and permalink for Exercise 3.4.17">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 3.4.4"><a aria-label="Copy heading and permalink for Exercises 3.4.4" href="#sec_unifcont-6" title="Copy heading and permalink for Exercises 3.4.4">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 3.4: Uniform continuity"><a aria-label="Copy heading and permalink for Section 3.4: Uniform continuity" href="#sec_unifcont" title="Copy heading and permalink for Section 3.4: Uniform continuity">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_minmaxint.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_limitatinf.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

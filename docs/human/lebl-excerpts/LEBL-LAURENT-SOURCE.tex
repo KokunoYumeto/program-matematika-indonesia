@@ -1,0 +1,294 @@
+\section{Laurent series}
+
+One can also define a series for a holomorphic function around a hole, or a singularity.
+
+\begin{defn}
+Given $0 \leq r_1 < r_2 \leq \infty$ and $p \in \C$, define
+\glsadd{not:annulus}%
+\begin{equation*}
+\ann(p;r_1,r_2)
+\overset{\text{def}}{=}
+\{ z \in \C : r_1 < \sabs{z - p} < r_2 \} .
+\end{equation*}
+When $0 < r_1 < r_2 < \infty$, we call this set an
+\emph{\myindex{annulus}}\footnote{%
+Q\@: What do you call a banana with a hole?
+A\@: A banannulus.}.
+\end{defn}
+
+A common case is when $r_1 = 0$, that is,
+the punctured disc
+\begin{equation*}
+\ann(p;0,r) = \Delta_r(p) \setminus \{ p \} .
+\end{equation*}
+When $r_2 = \infty$, on the other hand,
+$\ann(p;r,\infty) = \C \setminus \overline{\Delta_{r}(p)}$ (if $r > 0$).  We will,
+however, avoid the temptation of calling $\ann(p;r,\infty)$ an \myquote{annulus.}%
+\footnote{\myquote{Holey plane} perhaps?  A punctured disc also ought not to be
+called an \myquote{annulus,} and calling $\ann(0;0,\infty) = \C \setminus
+\{ 0 \}$ an \myquote{annulus} is right out!}
+
+\begin{thm}[Existence of Laurent series]
+\index{existence of Laurent series}%
+\index{Laurent series}%
+\label{thm:laurent}%
+Suppose that $0 \leq r_1 < r_2 \leq \infty$ and
+$f \colon \ann(p;r_1,r_2) \to \C$ is holomorphic.
+Then there exist unique numbers $c_n \in \C$ for $n \in \Z$ such that
+\glsadd{not:laurentser}%
+\begin{equation*}
+f(z) = \sum_{n=-\infty}^{\infty} c_n {(z-p)}^n ,
+\end{equation*}
+converging uniformly absolutely on compact subsets of
+$\ann(p;r_1,r_2)$.  The numbers $c_n$ are given by
+\begin{equation*}
+c_n = 
+\frac{1}{2\pi i}
+\int_{\gamma}
+\frac{f(z)}{{(z-p)}^{n+1}}
+\,
+dz  ,
+\end{equation*}
+where $\gamma$ is any circle of radius $s$, $r_1 < s < r_2$, centered at
+$p$, oriented counterclockwise.
+\end{thm}
+
+Recall that convergence of a double series such as
+\begin{equation*}
+\sum_{n=-\infty}^{\infty} a_n
+\end{equation*}
+means
+\begin{equation*}
+\sum_{n=-\infty}^{\infty} a_n
+=
+\lim_{N\to -\infty}
+\sum_{n=N}^{-1} a_n
++
+\lim_{M\to \infty}
+\sum_{n=0}^{M} a_n .
+\end{equation*}
+That is, the limits are taken independently.
+For the Laurent series,
+we will generally have absolute convergence,
+so the limit may be taken in any way
+and in any order.
+However, it is still useful to split the Laurent series into two
+parts like that.
+Write a Laurent series as 
+\begin{multline*}
+\sum_{n=-\infty}^{\infty} c_n {(z-p)}^n
+=
+\sum_{n=0}^{\infty} c_n {(z-p)}^n
++
+\sum_{n=-\infty}^{-1} c_n {(z-p)}^n
+\\
+=
+\sum_{n=0}^{\infty} c_n {(z-p)}^n
++
+\sum_{n=1}^{\infty} c_{-n} {\left(\frac{1}{z-p}\right)}^n .
+\end{multline*}
+So the Laurent series behaves like two power series: one in $z-p$ and one
+in $\frac{1}{z-p}$.  You can therefore apply what you know about power
+series.  For example, the first one converges (uniformly absolutely on compact subsets) in $\Delta_{r_2}(p)$
+for some $r_2$,
+and the second one converges in $\C \setminus \overline{\Delta_{r_1}(p)}$
+for some $r_1$.
+If $r_1 < r_2$, then the full series converges
+(uniformly absolutely on compact subsets)
+in $\ann(p;r_1,r_2)$.
+
+\begin{proof}[Proof of the theorem]
+Choose two numbers $s_1$ and $s_2$ such that $r_1 < s_1 < s_2 < r_2$.
+Define the cycle
+\begin{equation*}
+\Gamma = \partial \Delta_{s_2}(p) - \partial \Delta_{s_1}(p) .
+\end{equation*}
+That is, $\Gamma$ goes around the larger ($s_2$) circle counterclockwise and
+around the smaller ($s_1$) circle clockwise.
+See \figureref{fig:twoannuli}.
+
+\begin{myfig}
+\subimport*{figures/}{twoannuli.pdf_t}
+\caption{The two annuli, the smaller annulus is shaded darker.  The two
+pieces of $\Gamma$ are noted with the circular arrows.\label{fig:twoannuli}}
+\end{myfig}
+
+If $q \in \C \setminus \ann(p;r_1,r_2)$, then $n(\Gamma;q) = 0$:
+If $q$ is in the \myquote{hole} of the annulus $\ann(p;r_1,r_2)$, then
+$n\bigl(\partial \Delta_{s_j}(p);q\bigr) = 1$ for both $j=1,2$, and 
+if $q$ is outside the annulus altogether, then
+$n\bigl(\partial \Delta_{s_j}(p);q\bigr) = 0$ for both $j=1,2$ 
+(see \exerciseref{exercise:windingcircle} or
+\exerciseref{exercise:windingcircles}).
+So $\Gamma$ is homologous to zero in the annulus $\ann(p;r_1,r_2)$.
+On the other hand, if $z$ is in the (smaller) annulus $\ann(p;s_1,s_2)$,
+then for similar reasons, $n(\Gamma;z) = 1$.
+
+Via Cauchy's integral formula (\thmref{thm:CIFhomology}), for every $z \in \ann(p;s_1,s_2)$,
+\begin{equation*}
+f(z) = 
+\frac{1}{2\pi i}
+\int_{\Gamma} \frac{f(\zeta)}{\zeta-z} \, d\zeta 
+=
+\frac{1}{2\pi i}
+\int_{\partial \Delta_{s_2}(p)} \frac{f(\zeta)}{\zeta-z} \, d\zeta 
+-
+\frac{1}{2\pi i}
+\int_{\partial \Delta_{s_1}(p)} \frac{f(\zeta)}{\zeta-z} \, d\zeta  .
+\end{equation*}
+
+We expand the two bits separately.  First,
+if $\zeta \in \partial \Delta_{s_2}$, then
+$\babs{\frac{z-p}{\zeta-p}} = \frac{\sabs{z-p}}{s_2} < 1$ and so
+we follow the logic of \thmref{thm:holpower}.  The reason that we can
+swap the integral and the series limit is the same as in that theorem.
+\begin{equation*}
+\begin{split}
+\frac{1}{2\pi i}
+\int_{\partial \Delta_{s_2}(p)} \frac{f(\zeta)}{\zeta-z} \, d\zeta 
+& =
+\frac{1}{2\pi i}
+\int_{\partial \Delta_{s_2}(p)} \frac{f(\zeta)}{\zeta-p}
+\frac{1}{1-\frac{z-p}{\zeta-p}} \, d\zeta
+\\
+& =
+\frac{1}{2\pi i}
+\int_{\partial \Delta_{s_2}(p)} \frac{f(\zeta)}{\zeta-p}
+\sum_{n=0}^\infty
+{\left(\frac{z-p}{\zeta-p}\right)}^n \, d\zeta
+\\
+& =
+\sum_{n=0}^\infty
+\underbrace{
+\left(
+\frac{1}{2\pi i}
+\int_{\partial \Delta_{s_2}(p)} \frac{f(\zeta)}{{(\zeta-p)}^{n+1}}
+ \, d\zeta
+\right)
+}_{c_n}
+{(z-p)}^n .
+\end{split}
+\end{equation*}
+
+Similarly, 
+if $\zeta \in \partial \Delta_{s_1}$, then
+$\babs{\frac{\zeta-p}{z-p}} = \frac{s_1}{\sabs{z-p}} < 1$, and so
+\begin{equation*}
+\begin{split}
+-\frac{1}{2\pi i}
+\int_{\partial \Delta_{s_1}(p)} \frac{f(\zeta)}{\zeta-z} \, d\zeta 
+& = 
+\frac{1}{2\pi i}
+\int_{\partial \Delta_{s_1}(p)} \frac{f(\zeta)}{z-p}
+\frac{1}{1-\frac{\zeta-p}{z-p}} \, d\zeta
+\\
+& =
+\frac{1}{2\pi i}
+\int_{\partial \Delta_{s_1}(p)} \frac{f(\zeta)}{z-p}
+\sum_{m=0}^\infty
+{\left(\frac{\zeta-p}{z-p}\right)}^m \, d\zeta
+\\
+& =
+\sum_{m=0}^\infty
+\left(
+\frac{1}{2\pi i}
+\int_{\partial \Delta_{s_1}(p)} f(\zeta){(\zeta-p)}^{m}
+ \, d\zeta
+\right)
+{(z-p)}^{-m-1}
+\\
+& =
+\sum_{n=-\infty}^{-1}
+\underbrace{
+\left(
+\frac{1}{2\pi i}
+\int_{\partial \Delta_{s_1}(p)} \frac{f(\zeta)}{{(\zeta-p)}^{n+1}}
+ \, d\zeta
+\right)
+}_{c_n}
+{(z-p)}^{n} .
+\end{split}
+\end{equation*}
+Adding these together we have the right thing, except that the formula for $c_n$
+is not quite right.  Given any $s$ such that
+$r_1 < s < r_2$,
+the cycle
+$\partial \Delta_{s}(p) - \partial \Delta_{s_1}(p)$ is homologous to zero in
+$\ann(p;r_1,r_2)$, and 
+$z \mapsto \frac{f(z)}{{(z-p)}^{n+1}}$ is holomorphic in 
+$\ann(p;r_1,r_2)$.  Cauchy's theorem (\thmref{thm:CThomology}) thus says
+\begin{equation*}
+0 = \int_{\partial \Delta_{s}(p) - \partial \Delta_{s_1}(p)}
+\frac{f(\zeta)}{{(\zeta-p)}^{n+1}} \, d\zeta
+=
+\int_{\partial \Delta_{s}(p)}
+\frac{f(\zeta)}{{(\zeta-p)}^{n+1}} \, d\zeta
+-
+\int_{\partial \Delta_{s_1}(p)}
+\frac{f(\zeta)}{{(\zeta-p)}^{n+1}} \, d\zeta .
+\end{equation*}
+Similarly for $s_2$, and hence
+\begin{equation*}
+c_n = \frac{1}{2\pi i}
+\int_{\partial \Delta_{s}(p)} \frac{f(\zeta)}{{(\zeta-p)}^{n+1}}
+ \, d\zeta .
+\end{equation*}
+So we get the same $c_n$ no matter which $s$ we pick.
+
+Next, convergence.
+For any $\epsilon > 0$,
+the geometric series used for the first part converges uniformly
+absolutely when $\babs{\frac{z-p}{\zeta-p}} = \frac{\sabs{z-p}}{s_2} \leq
+1-\epsilon$.  In other words, the series converges uniformly absolutely
+on compact subsets of $\Delta_{s_2}(p)$ (when $\sabs{z-p} < s_2$).
+%
+The geometric series used for the second part converges uniformly
+absolutely when $\babs{\frac{\zeta-p}{z-p}} = \frac{s_1}{\sabs{z-p}} \leq
+1-\epsilon$.  In other words, the series converges uniformly absolutely
+on compact subsets of $\C \setminus \overline{\Delta_{s_1}(p)}$
+(when $\sabs{z-p} > s_1$).
+Hence both parts (and so the entire series) 
+converge uniformly absolutely on compact
+subsets of $\ann(p;s_1,s_2)$.  As $s_1$ and $s_2$ were arbitrary such that
+$r_1 < s_1 < s_2 < r_2$, we get that the series
+converges uniformly absolutely on compact subsets of $\ann(p;r_1,r_2)$.
+
+Finally, uniqueness of $c_n$.  Suppose $\{ d_n \}$ is another sequence such
+that
+\begin{equation*}
+f(z)
+=
+\sum_{n=-\infty}^{\infty} d_n {(z-p)}^{n} ,
+\end{equation*}
+converging uniformly absolutely on compact subsets of $\ann(p;r_1,r_2)$.
+Then
+\begin{equation*}
+\begin{split}
+c_m = \frac{1}{2\pi i}
+\int_{\partial \Delta_{s}(p)} \frac{f(\zeta)}{{(\zeta-p)}^{m+1}}
+ \, d\zeta 
+& =
+\frac{1}{2\pi i}
+\int_{\partial \Delta_{s}(p)}
+\left(\sum_{n=-\infty}^{\infty} d_n {(\zeta-p)}^{n} \right)
+\frac{1}{{(\zeta-p)}^{m+1}}
+ \, d\zeta 
+\\
+& =
+\frac{1}{2\pi i}
+\sum_{n=-\infty}^{\infty}
+d_n
+\int_{\partial \Delta_{s}(p)}
+{(\zeta-p)}^{n-m-1}
+ \, d\zeta 
+\\
+& =
+d_m ,
+\end{split}
+\end{equation*}
+as the only $n$ for which
+$\int_{\partial \Delta_{s}(p)}
+{(\zeta-p)}^{n-m-1}
+ \, d\zeta$ is nonzero is when $n=m$, that is, when we are integrating
+${(\zeta-p)}^{-1}$, in which case we get $2 \pi i$.
+\end{proof}

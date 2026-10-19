@@ -1,0 +1,1069 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Riemann integral over rectangles · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_rirect">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Riemann integral over rectangles</span>
+</h2>
+<section class="introduction" id="sec_rirect-2">
+<div class="para" id="sec_rirect-2-1">
+<em class="emphasis">Note: 2–3 lectures</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_rirect-2-2">As in <a class="internal" href="int_chapter.html" title="Chapter 5: The Riemann Integral">Chapter 5</a>, we define the Riemann integral using the Darboux upper and lower integrals.  The ideas in this section are very similar to integration in one dimension.  The complication is mostly notational. The differences between one and several dimensions will grow more pronounced in the following sections.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-2-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section>
+<section class="subsection" id="sec_rirect-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.1.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Rectangles and partitions</span>
+</h3>
+<article class="definition definition-like" id="sec_rirect-3-2"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.1.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_rirect-3-2-1-1">Let <span class="process-math">\((a_1,a_2,\ldots,a_n)\)</span> and <span class="process-math">\((b_1,b_2,\ldots,b_n)\)</span> be such that <span class="process-math">\(a_k \leq b_k\)</span> for all <span class="process-math">\(k\text{.}\)</span> The set <span class="process-math">\([a_1,b_1] \times
+[a_2,b_2] \times \cdots \times
+[a_n,b_n]\)</span> is called a <em class="emphasis">closed rectangle</em>. It can be useful to allow <span class="process-math">\(a_k = b_k\text{,}\)</span> where <span class="process-math">\([a_k,b_k] = \{ a_k \}\text{.}\)</span> If <span class="process-math">\(a_k &lt; b_k\)</span> for all <span class="process-math">\(k\text{,}\)</span> then the set <span class="process-math">\((a_1,b_1) \times
+(a_2,b_2) \times \cdots \times
+(a_n,b_n)\)</span> is called an <em class="emphasis">open rectangle</em>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-3-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_rirect-3-2-1-2">
+<div class="para">For an open or closed rectangle <span class="process-math">\(R \coloneqq [a_1,b_1] \times
+[a_2,b_2] \times \cdots \times
+[a_n,b_n] \subset \R^n\)</span> or <span class="process-math">\(R \coloneqq (a_1,b_1) \times
+(a_2,b_2) \times \cdots \times
+(a_n,b_n) \subset \R^n\text{,}\)</span> we define the <em class="emphasis"><span class="process-math">\(n\)</span>-dimensional volume</em> by</div>
+<div class="displaymath process-math" id="sec_rirect-3-2-1-2-6">
+\begin{equation}
+V(R) \coloneqq
+(b_1-a_1)
+(b_2-a_2)
+\cdots
+(b_n-a_n) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-3-2-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_rirect-3-2-1-3">
+<div class="para">A <em class="emphasis">partition</em> <span class="process-math">\(P\)</span> of the closed rectangle <span class="process-math">\(R = [a_1,b_1] \times
+[a_2,b_2] \times \cdots \times
+[a_n,b_n]\)</span> is given by partitions <span class="process-math">\(P_1,P_2,\ldots,P_n\)</span> of the intervals <span class="process-math">\([a_1,b_1], [a_2,b_2],\ldots, [a_n,b_n]\text{.}\)</span> We write <span class="process-math">\(P=(P_1,P_2,\ldots,P_n)\text{.}\)</span> That is, for every <span class="process-math">\(k=1,2,\ldots,n\)</span> there is an integer <span class="process-math">\(\ell_k\)</span> and a finite set of numbers <span class="process-math">\(P_k = \{ x_{k,0},x_{k,1},x_{k,2},\ldots,x_{k,\ell_k} \}\)</span> such that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/mv_figrect.html" id="sec_rirect-3-2-1-3-10">
+\begin{equation}
+a_k = x_{k,0} &lt; x_{k,1} &lt; x_{k,2} &lt; \cdots &lt; x_{k,{\ell_k}-1} &lt; x_{k,\ell_k} = b_k .
+\end{equation}
+</div>
+<div class="para">Picking a set of <span class="process-math">\(n\)</span> integers <span class="process-math">\(j_1,j_2,\ldots,j_n\)</span> where <span class="process-math">\(j_k \in \{ 1,2,\ldots,\ell_k \}\)</span> we get the <em class="emphasis">subrectangle</em>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/mv_figrect.html" id="sec_rirect-3-2-1-3-15">
+\begin{equation}
+[x_{1,j_1-1}~,~ x_{1,j_1}]
+\times
+[x_{2,j_2-1}~,~ x_{2,j_2}]
+\times
+\cdots
+\times
+[x_{n,j_n-1}~,~ x_{n,j_n}] .
+\end{equation}
+</div>
+<div class="para">We order the subrectangles in any way and we say <span class="process-math">\(\{R_1,R_2,\ldots,R_N\}\)</span> are the subrectangles corresponding to the partition <span class="process-math">\(P\)</span> of <span class="process-math">\(R\text{,}\)</span> or more simply, subrectangles of <span class="process-math">\(P\text{.}\)</span> In other words, we subdivided the original rectangle into many smaller subrectangles.  See <a class="internal" href="sec_rirect.html#mv_figrect" title="Figure 10.1">Figure 10.1</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-3-2-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <hr class="rahr"/>
+<figure class="figure figure-like" id="mv_figrect"><img alt="A diagram of a rectangle divided by two horizontal and two vertical lines into 9 smaller rectangles. The four vertices on the horizontal axis from left to right are labeled x sub 1,0, x sub 1,1, x sub 1,2, and x sub 1,3. On the vertical axis from bottom to top the vertices are labeled x sub 2,0, x sub 2,1, x sub 2,2, and x sub 2,3. The smaller rectangles are labeled in a snaking pattern from top left to bottom right R sub 1, R sub 2, and so on until R sub 9." class="raimg" role="img" src="figures/figrect-mbxpdft.svg" style="width:256pt; height:135pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Example partition of a rectangle in <span class="process-math">\(\R^2\text{.}\)</span>  The order of the subrectangles is not important.<div class="autopermalink" data-description="Figure 10.1"><a aria-label="Copy heading and permalink for Figure 10.1" href="#mv_figrect" title="Copy heading and permalink for Figure 10.1">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para logical" id="sec_rirect-3-2-1-7">
+<div class="para">Let <span class="process-math">\(R \subset \R^n\)</span> be a closed rectangle and let <span class="process-math">\(f \colon R \to \R\)</span> be a bounded function.  Let <span class="process-math">\(P\)</span> be a partition of <span class="process-math">\(R\)</span> with <span class="process-math">\(N\)</span> subrectangles <span class="process-math">\(R_1,R_2,\ldots,R_N\text{.}\)</span> Define</div>
+<div class="displaymath process-math" id="sec_rirect-3-2-1-7-7">
+\begin{equation}
+\begin{aligned}
+&amp; m_i \coloneqq \inf \bigl\{ f(x) : x \in R_i \bigr\} , &amp; 
+&amp; M_i \coloneqq \sup \bigl\{ f(x) : x \in R_i \bigr\} , \\
+&amp; L(P,f) \coloneqq
+\sum_{i=1}^N m_i V(R_i) , &amp;
+&amp; U(P,f) \coloneqq
+\sum_{i=1}^N M_i V(R_i) .
+\end{aligned}
+\end{equation}
+</div>
+<div class="para">We call <span class="process-math">\(L(P,f)\)</span> the <em class="emphasis">lower Darboux sum</em> and <span class="process-math">\(U(P,f)\)</span> the <em class="emphasis">upper Darboux sum</em>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-3-2-1-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 10.1.1"><a aria-label="Copy heading and permalink for Definition 10.1.1" href="#sec_rirect-3-2" title="Copy heading and permalink for Definition 10.1.1">🔗</a></div>
+</article>
+<div class="para logical" id="sec_rirect-3-3">
+<div class="para">To see the relationship to the <span class="process-math">\(\Delta\)</span> notation from the one-variable definition, note that when</div>
+<div class="displaymath process-math" id="sec_rirect-3-3-2">
+\begin{equation}
+R_i = [x_{1,j_1-1}~,~ x_{1,j_1}]
+\times
+[x_{2,j_2-1}~,~ x_{2,j_2}]
+\times
+\cdots
+\times
+[x_{n,j_n-1}~,~ x_{n,j_n}] ,
+\end{equation}
+</div>
+<div class="para">then</div>
+<div class="displaymath process-math" id="sec_rirect-3-3-3">
+\begin{equation}
+V(R_i)
+=
+(x_{1,j_1}-x_{1,j_1-1})
+(x_{2,j_2}-x_{2,j_2-1})
+\cdots
+(x_{n,j_n}-x_{n,j_n-1})
+= 
+\Delta x_{1,j_1}
+\Delta x_{2,j_2}
+\cdots
+\Delta x_{n,j_n} .
+\end{equation}
+</div>
+<div class="para">It is not difficult to see (left to reader) that the subrectangles of <span class="process-math">\(P\)</span> cover our original <span class="process-math">\(R\text{,}\)</span> and their volumes sum to that of <span class="process-math">\(R\text{.}\)</span>  That is,</div>
+<div class="displaymath process-math" id="sec_rirect-3-3-7">
+\begin{equation}
+R= \bigcup_{k=1}^N R_k , \qquad \text{and} \qquad
+V(R) = \sum_{k=1}^N V(R_k).
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-3-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_rirect-3-4">The indexing in the definition may be complicated, but fortunately we do not need to go back directly to the definition often.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-3-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="mv_sumulbound_prop"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.1.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="mv_sumulbound_prop-1-1">
+<div class="para">Suppose <span class="process-math">\(R \subset \R^n\)</span> is a closed rectangle and <span class="process-math">\(f \colon R \to \R\)</span> is a bounded function.  Let <span class="process-math">\(m, M \in \R\)</span> be such that for all <span class="process-math">\(x \in R\text{,}\)</span> we have <span class="process-math">\(m \leq f(x) \leq M\text{.}\)</span>  Then for every partition <span class="process-math">\(P\)</span> of <span class="process-math">\(R\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="mv_sumulbound_prop-1-1-9">
+\begin{equation}
+m \, V(R) \leq
+L(P,f) \leq U(P,f)
+\leq M\, V(R) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_sumulbound_prop-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 10.1.2"><a aria-label="Copy heading and permalink for Proposition 10.1.2" href="#mv_sumulbound_prop" title="Copy heading and permalink for Proposition 10.1.2">🔗</a></div>
+</article>
+<article class="proof" id="sec_rirect-3-6"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_rirect-3-6-1">
+<div class="para">Let <span class="process-math">\(P\)</span> be a partition of <span class="process-math">\(R\text{.}\)</span>  For all <span class="process-math">\(i\text{,}\)</span> we have <span class="process-math">\(m \leq m_i \leq M_i \leq M\text{.}\)</span>  Also <span class="process-math">\(\sum_{i=1}^N V(R_i) = V(R)\text{.}\)</span>  Therefore,</div>
+<div class="displaymath process-math" id="sec_rirect-3-6-1-6">
+\begin{multline*}
+m \, V(R) =
+m \left( \sum_{i=1}^N V(R_i) \right)
+=
+\sum_{i=1}^N m \, V(R_i)
+\leq
+\sum_{i=1}^N m_i \, V(R_i)
+\leq
+\\
+\leq
+\sum_{i=1}^N M_i \, V(R_i)
+\leq
+\sum_{i=1}^N M \,V(R_i)
+=
+M \left( \sum_{i=1}^N V(R_i) \right)
+=
+M \,V(R) .  \qedhere
+\end{multline*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-3-6-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 10.1.1.1"><a aria-label="Copy heading and permalink for Proof 10.1.1.1" href="#sec_rirect-3-6" title="Copy heading and permalink for Proof 10.1.1.1">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 10.1.1: Rectangles and partitions"><a aria-label="Copy heading and permalink for Subsection 10.1.1: Rectangles and partitions" href="#sec_rirect-3" title="Copy heading and permalink for Subsection 10.1.1: Rectangles and partitions">🔗</a></div>
+</section>
+<section class="subsection" id="sec_rirect-4">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.1.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Upper and lower integrals</span>
+</h3>
+<div class="para" id="sec_rirect-4-2">By <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rirect.html#mv_sumulbound_prop" title="Proposition 10.1.2">Proposition 10.1.2</a>, the sets of upper and lower Darboux sums are bounded sets, and we can take their infima and suprema.  As in one variable, we define the lower and upper integrals.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_rirect-4-3"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.1.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_rirect-4-3-1-1">
+<div class="para">Let <span class="process-math">\(f \colon R \to \R\)</span> be a bounded function on a closed rectangle <span class="process-math">\(R \subset
+\R^n\text{.}\)</span> Define</div>
+<div class="displaymath process-math" id="sec_rirect-4-3-1-1-3">
+\begin{equation}
+\begin{aligned}
+&amp;
+\underline{\int_R} f
+\coloneqq \sup \, \bigl\{ L(P,f) : P \text{ a partition of } R \bigr\} , 
+\\
+&amp;
+\overline{\int_R} f
+\coloneqq \inf \, \bigl\{ U(P,f) : P \text{ a partition of } R \bigr\} .
+\end{aligned}
+\end{equation}
+</div>
+<div class="para">We call <span class="process-math">\(\underline{\int}\)</span> the <em class="emphasis">lower Darboux integral</em> and <span class="process-math">\(\overline{\int}\)</span> the <em class="emphasis">upper Darboux integral</em>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-4-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 10.1.3"><a aria-label="Copy heading and permalink for Definition 10.1.3" href="#sec_rirect-4-3" title="Copy heading and permalink for Definition 10.1.3">🔗</a></div>
+</article>
+<div class="para" id="sec_rirect-4-4">To refine a partition of a rectangle, we refine the underlying partitions of intervals.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-4-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_rirect-4-5"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.1.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_rirect-4-5-1-1">Let <span class="process-math">\(R \subset \R^n\)</span> be a closed rectangle. Let <span class="process-math">\(P = ( P_1, P_2, \ldots, P_n )\)</span> and <span class="process-math">\(\widetilde{P} = ( \widetilde{P}_1, \widetilde{P}_2, \ldots, \widetilde{P}_n )\)</span> be partitions of <span class="process-math">\(R\text{.}\)</span>  We say <span class="process-math">\(\widetilde{P}\)</span> a <em class="emphasis">refinement</em> of <span class="process-math">\(P\)</span> if, as sets, <span class="process-math">\(P_k \subset \widetilde{P}_k\)</span> for all <span class="process-math">\(k = 1,2,\ldots,n\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-4-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 10.1.4"><a aria-label="Copy heading and permalink for Definition 10.1.4" href="#sec_rirect-4-5" title="Copy heading and permalink for Definition 10.1.4">🔗</a></div>
+</article>
+<div class="para" id="sec_rirect-4-6">If <span class="process-math">\(\widetilde{P}\)</span> is a refinement of <span class="process-math">\(P\text{,}\)</span> then subrectangles of <span class="process-math">\(P\)</span> are unions of subrectangles of <span class="process-math">\(\widetilde{P}\text{.}\)</span> Simply put, in a refinement, we take the subrectangles of <span class="process-math">\(P\text{,}\)</span> and we cut them into smaller subrectangles and call that <span class="process-math">\(\widetilde{P}\text{.}\)</span> See <a class="internal" href="sec_rirect.html#mv_figrectpart" title="Figure 10.2">Figure 10.2</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-4-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="mv_figrectpart"><img alt="A diagram of a divided rectangle as the previous one with extra marks. There are two more vertical cuts and one horizontal one marked in dashed line, now dividing the rectangle into 20 smaller rectangles labeled R tilde sub 1 through R tilde sub 20 in no particular order. The vertices on the horizontal and the vertical axis are marked similarly to before but now with x tilde sub 1,0 through x tilde sub 1,5 and x tilde sub 2,0 through x tilde sub 2,4 in order. On the old cuts both the old and new markings are shown, so for example x sub 1,2 has also the mark x tilde sub 1,3." class="raimg" role="img" src="figures/figrectpart-mbxpdft.svg" style="width:278pt; height:151pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Example refinement of the partition from <a class="internal" href="sec_rirect.html#mv_figrect" title="Figure 10.1">Figure 10.1</a>. New “cuts” are marked in dashed lines.  The exact order of the new subrectangles does not matter.<div class="autopermalink" data-description="Figure 10.2"><a aria-label="Copy heading and permalink for Figure 10.2" href="#mv_figrectpart" title="Copy heading and permalink for Figure 10.2">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<article class="proposition theorem-like" id="mv_prop_refinement"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.1.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="mv_prop_refinement-1-1">
+<div class="para">Suppose <span class="process-math">\(R \subset \R^n\)</span> is a closed rectangle, <span class="process-math">\(P\)</span> is a partition of <span class="process-math">\(R\text{,}\)</span> and <span class="process-math">\(\widetilde{P}\)</span> is a refinement of <span class="process-math">\(P\text{.}\)</span> If <span class="process-math">\(f \colon R \to \R\)</span> is bounded, then</div>
+<div class="displaymath process-math" id="mv_prop_refinement-1-1-7">
+\begin{equation}
+L(P,f) \leq L(\widetilde{P},f) 
+\qquad \text{and} \qquad
+U(\widetilde{P},f) \leq U(P,f) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_prop_refinement-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 10.1.5"><a aria-label="Copy heading and permalink for Proposition 10.1.5" href="#mv_prop_refinement" title="Copy heading and permalink for Proposition 10.1.5">🔗</a></div>
+</article>
+<article class="proof" id="sec_rirect-4-11"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_rirect-4-11-1">
+<div class="para">We prove the first inequality, and the second follows similarly. Let <span class="process-math">\(R_1,R_2,\ldots,R_N\)</span> be the subrectangles of <span class="process-math">\(P\)</span> and <span class="process-math">\(\widetilde{R}_1,\widetilde{R}_2,\ldots,\widetilde{R}_{\widetilde{N}}\)</span> be the subrectangles of <span class="process-math">\(\widetilde{P}\text{.}\)</span> Let <span class="process-math">\(I_k\)</span> be the set of all indices <span class="process-math">\(j\)</span> such that <span class="process-math">\(\widetilde{R}_j \subset R_k\text{.}\)</span> For example, in figures <a class="internal" href="sec_rirect.html#mv_figrect" title="Figure 10.1">10.1</a> and <a class="internal" href="sec_rirect.html#mv_figrectpart" title="Figure 10.2">10.2</a>, <span class="process-math">\(I_4 = \{ 6, 7, 8, 9 \}\)</span> as <span class="process-math">\(R_4 =
+\widetilde{R}_6 \cup \widetilde{R}_7 \cup
+\widetilde{R}_8 \cup \widetilde{R}_9\text{.}\)</span> Then,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/mv_figrect.html ./knowl/xref/mv_figrectpart.html" id="sec_rirect-4-11-1-12">
+\begin{equation}
+R_k = \bigcup_{j \in I_k} \widetilde{R}_j,
+\qquad
+V(R_k) = \sum_{j \in I_k} V(\widetilde{R}_j).
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-4-11-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_rirect-4-11-2">
+<div class="para">Let <span class="process-math">\(m_k \coloneqq \inf \bigl\{ f(x) : x \in R_k \bigr\}\text{,}\)</span> and <span class="process-math">\(\widetilde{m}_j \coloneqq \inf \bigl\{ f(x) : x \in \widetilde{R}_j \bigr\}\)</span> as usual. If <span class="process-math">\(j \in I_k\text{,}\)</span> then <span class="process-math">\(m_k \leq \widetilde{m}_j\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" id="sec_rirect-4-11-2-5">
+\begin{equation}
+\begin{aligned}
+L(P,f)
+=
+\sum_{k=1}^N m_k V(R_k)
+&amp; 
+=
+\sum_{k=1}^N \sum_{j\in I_k} m_k V(\widetilde{R}_j)
+\\
+&amp; 
+\leq
+\sum_{k=1}^N \sum_{j\in I_k} \widetilde{m}_j V(\widetilde{R}_j)
+=
+\sum_{j=1}^{\widetilde{N}} \widetilde{m}_j V(\widetilde{R}_j) = L(\widetilde{P},f) .
+\qedhere
+\end{aligned}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-4-11-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 10.1.2.1"><a aria-label="Copy heading and permalink for Proof 10.1.2.1" href="#sec_rirect-4-11" title="Copy heading and permalink for Proof 10.1.2.1">🔗</a></div>
+</article>
+<div class="para" id="sec_rirect-4-12">The key point of this next proposition is that the lower Darboux integral is less than or equal to the upper Darboux integral.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-4-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="mv_intulbound_prop"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.1.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="mv_intulbound_prop-1-1">
+<div class="para">Let <span class="process-math">\(R \subset \R^n\)</span> be a closed rectangle and <span class="process-math">\(f \colon R \to \R\)</span> a bounded function.  Let <span class="process-math">\(m, M \in \R\)</span> be such that for all <span class="process-math">\(x \in R\text{,}\)</span> we have <span class="process-math">\(m \leq f(x) \leq M\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" id="mv_intulbound_eq">
+\begin{equation}
+m \, V(R) \leq
+\underline{\int_R} f \leq \overline{\int_R} f
+\leq M \, V(R).\tag{10.1}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_intulbound_prop-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 10.1.6"><a aria-label="Copy heading and permalink for Proposition 10.1.6" href="#mv_intulbound_prop" title="Copy heading and permalink for Proposition 10.1.6">🔗</a></div>
+</article>
+<article class="proof" id="sec_rirect-4-14"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_rirect-4-14-1">
+<div class="para">For every partition <span class="process-math">\(P\text{,}\)</span> via <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rirect.html#mv_sumulbound_prop" title="Proposition 10.1.2">Proposition 10.1.2</a>,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/mv_sumulbound_prop.html ./knowl/xref/mv_intulbound_eq.html" id="sec_rirect-4-14-1-3">
+\begin{equation}
+m\,V(R) \leq L(P,f) \leq U(P,f) \leq M\,V(R).
+\end{equation}
+</div>
+<div class="para">Taking the supremum of <span class="process-math">\(L(P,f)\)</span> and the infimum of <span class="process-math">\(U(P,f)\)</span> over all partitions <span class="process-math">\(P\text{,}\)</span> we obtain the first and the last inequality in <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rirect.html#mv_intulbound_eq" title="Equation 10.1">(10.1)</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-4-14-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_rirect-4-14-2">
+<div class="para">The key inequality in <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rirect.html#mv_intulbound_eq" title="Equation 10.1">(10.1)</a> is the middle one. Let <span class="process-math">\(P=(P_1,P_2,\ldots,P_n)\)</span> and <span class="process-math">\(Q=(Q_1,Q_2,\ldots,Q_n)\)</span> be partitions of <span class="process-math">\(R\text{.}\)</span>  Define <span class="process-math">\(\widetilde{P} = ( \widetilde{P}_1,\widetilde{P}_2,\ldots,\widetilde{P}_n )\)</span> by letting <span class="process-math">\(\widetilde{P}_k \coloneqq P_k \cup Q_k\)</span> for every <span class="process-math">\(k\text{.}\)</span> Then <span class="process-math">\(\widetilde{P}\)</span> is a partition of <span class="process-math">\(R\text{,}\)</span> and <span class="process-math">\(\widetilde{P}\)</span> is a refinement of <span class="process-math">\(P\)</span> and also a refinement of <span class="process-math">\(Q\text{.}\)</span> By <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rirect.html#mv_prop_refinement" title="Proposition 10.1.5">Proposition 10.1.5</a>, <span class="process-math">\(L(P,f) \leq L(\widetilde{P},f)\)</span> and <span class="process-math">\(U(\widetilde{P},f) \leq U(Q,f)\text{.}\)</span>  Therefore,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/mv_intulbound_eq.html ./knowl/xref/mv_prop_refinement.html ./knowl/xref/infsupineq_prop.html" id="sec_rirect-4-14-2-16">
+\begin{equation}
+L(P,f) \leq L(\widetilde{P},f) \leq U(\widetilde{P},f) \leq U(Q,f) .
+\end{equation}
+</div>
+<div class="para">In other words, for two arbitrary partitions <span class="process-math">\(P\)</span> and <span class="process-math">\(Q\text{,}\)</span> we have <span class="process-math">\(L(P,f) \leq U(Q,f)\text{.}\)</span> Via <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_setofreals.html#infsupineq_prop" title="Proposition 1.2.7">Proposition 1.2.7</a>, we obtain</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/mv_intulbound_eq.html ./knowl/xref/mv_prop_refinement.html ./knowl/xref/infsupineq_prop.html" id="sec_rirect-4-14-2-21">
+\begin{equation}
+\sup \, \bigl\{ L(P,f) : P \text{ a partition of } R \bigr\}
+\leq
+\inf \, \bigl\{ U(P,f) : P \text{ a partition of } R \bigr\} .
+\end{equation}
+</div>
+<div class="para">In other words, <span class="process-math">\(\underline{\int_R} f \leq \overline{\int_R} f\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-4-14-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 10.1.2.2"><a aria-label="Copy heading and permalink for Proof 10.1.2.2" href="#sec_rirect-4-14" title="Copy heading and permalink for Proof 10.1.2.2">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 10.1.2: Upper and lower integrals"><a aria-label="Copy heading and permalink for Subsection 10.1.2: Upper and lower integrals" href="#sec_rirect-4" title="Copy heading and permalink for Subsection 10.1.2: Upper and lower integrals">🔗</a></div>
+</section>
+<section class="subsection" id="sec_rirect-5">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.1.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">The Riemann integral</span>
+</h3>
+<div class="para" id="sec_rirect-5-2">We have all we need to define the Riemann integral in <span class="process-math">\(n\)</span>-dimensions over rectangles. As in one dimension, the Riemann integral is only defined on a certain class of functions, called the Riemann integrable functions.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-5-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_rirect-5-3"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.1.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_rirect-5-3-1-1">
+<div class="para">Let <span class="process-math">\(R \subset \R^n\)</span> be a closed rectangle and <span class="process-math">\(f \colon R \to \R\)</span> a bounded function such that</div>
+<div class="displaymath process-math" id="sec_rirect-5-3-1-1-3">
+\begin{equation}
+\underline{\int_R} f(x)\,dx = \overline{\int_R} f(x)\,dx .
+\end{equation}
+</div>
+<div class="para">Then <span class="process-math">\(f\)</span> is said to be <em class="emphasis">Riemann integrable</em>, and we sometimes say simply <em class="emphasis">integrable</em>. We denote the set of Riemann integrable functions on <span class="process-math">\(R\)</span> by <span class="process-math">\(\sR(R)\text{.}\)</span> For <span class="process-math">\(f \in \sR(R)\)</span> define the <em class="emphasis">Riemann integral</em>
+</div>
+<div class="displaymath process-math" id="sec_rirect-5-3-1-1-11">
+\begin{equation}
+\int_R f \coloneqq 
+\underline{\int_R} f = \overline{\int_R} f .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-5-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 10.1.7"><a aria-label="Copy heading and permalink for Definition 10.1.7" href="#sec_rirect-5-3" title="Copy heading and permalink for Definition 10.1.7">🔗</a></div>
+</article>
+<div class="para logical" id="sec_rirect-5-4">
+<div class="para">When the variable <span class="process-math">\(x \in \R^n\)</span> needs to be emphasized, we write</div>
+<div class="displaymath process-math" id="sec_rirect-5-4-2">
+\begin{equation}
+\int_R f(x)\,dx,
+\qquad
+\int_R f(x_1,\ldots,x_n)\,dx_1 \cdots dx_n,
+\qquad
+\text{or}
+\qquad
+\int_R f(x)\,dV .
+\end{equation}
+</div>
+<div class="para">If <span class="process-math">\(R \subset \R^2\text{,}\)</span> then we usually say area instead of volume, and we write</div>
+<div class="displaymath process-math" id="sec_rirect-5-4-4">
+\begin{equation}
+\int_R f(x)\,dA .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-5-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_rirect-5-5">
+<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rirect.html#mv_intulbound_prop" title="Proposition 10.1.6">Proposition 10.1.6</a> immediately implies the following proposition.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-5-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="mv_intbound_prop"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.1.8</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="mv_intbound_prop-1-1">
+<div class="para">Let <span class="process-math">\(f \colon R \to \R\)</span> be a Riemann integrable function on a closed rectangle <span class="process-math">\(R \subset \R^n\text{.}\)</span> Let <span class="process-math">\(m, M \in \R\)</span> be such that <span class="process-math">\(m \leq f(x) \leq M\)</span> for all <span class="process-math">\(x \in R\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" id="mv_intbound_prop-1-1-6">
+\begin{equation}
+m \, V(R) \leq
+\int_{R} f
+\leq M \, V(R) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_intbound_prop-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 10.1.8"><a aria-label="Copy heading and permalink for Proposition 10.1.8" href="#mv_intbound_prop" title="Copy heading and permalink for Proposition 10.1.8">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_rirect-5-7"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.1.9</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_rirect-5-7-1-1">
+<div class="para">A constant function is Riemann integrable.  Proof: Suppose <span class="process-math">\(f(x) = c\)</span> for all <span class="process-math">\(x \in R\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" id="sec_rirect-5-7-1-1-3">
+\begin{equation}
+c \, V(R) \leq \underline{\int_R} f \leq \overline{\int_R} f \leq c\, V(R) .
+\end{equation}
+</div>
+<div class="para">So <span class="process-math">\(f\)</span> is integrable, and furthermore <span class="process-math">\(\int_R f = c\,V(R)\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-5-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 10.1.9"><a aria-label="Copy heading and permalink for Example 10.1.9" href="#sec_rirect-5-7" title="Copy heading and permalink for Example 10.1.9">🔗</a></div>
+</article>
+<div class="para" id="sec_rirect-5-8">The proofs of linearity and monotonicity are almost completely identical to the proofs from one variable. We leave the next two propositions as exercises.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-5-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="mv_intlinearity_prop"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.1.10</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Linearity.</span>
+</h4>
+<div class="para" id="mv_intlinearity_prop-3-1">Let <span class="process-math">\(R \subset \R^n\)</span> be a closed rectangle and let <span class="process-math">\(f\)</span> and <span class="process-math">\(g\)</span> be in <span class="process-math">\(\sR(R)\)</span> and <span class="process-math">\(\alpha \in \R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_intlinearity_prop-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="mv_intlinearity_prop-3-2">
+<li id="mv_intlinearity_prop-3-2-1">
+<div class="para logical" id="mv_intlinearity_prop-3-2-1-1">
+<div class="para">
+<span class="process-math">\(\alpha f\)</span> is in <span class="process-math">\(\sR(R)\)</span> and</div>
+<div class="displaymath process-math" id="mv_intlinearity_prop-3-2-1-1-3">
+\begin{equation}
+\int_R \alpha f = \alpha \int_R f .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_intlinearity_prop-3-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#mv_intlinearity_prop-3-2-1" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="mv_intlinearity_prop-3-2-2">
+<div class="para logical" id="mv_intlinearity_prop-3-2-2-1">
+<div class="para">
+<span class="process-math">\(f+g\)</span> is in <span class="process-math">\(\sR(R)\)</span> and</div>
+<div class="displaymath process-math" id="mv_intlinearity_prop-3-2-2-1-3">
+\begin{equation}
+\int_R (f+g) = 
+\int_R f
++
+\int_R g .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_intlinearity_prop-3-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#mv_intlinearity_prop-3-2-2" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Proposition 10.1.10: Linearity"><a aria-label="Copy heading and permalink for Proposition 10.1.10: Linearity" href="#mv_intlinearity_prop" title="Copy heading and permalink for Proposition 10.1.10: Linearity">🔗</a></div>
+</article>
+<article class="proposition theorem-like" id="sec_rirect-5-10"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.1.11</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Monotonicity.</span>
+</h4>
+<div class="para logical" id="sec_rirect-5-10-3-1">
+<div class="para">Let <span class="process-math">\(R \subset \R^n\)</span> be a closed rectangle, let <span class="process-math">\(f\)</span> and <span class="process-math">\(g\)</span> be in <span class="process-math">\(\sR(R)\text{,}\)</span> and suppose <span class="process-math">\(f(x) \leq g(x)\)</span> for all <span class="process-math">\(x \in R\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" id="sec_rirect-5-10-3-1-7">
+\begin{equation}
+\int_R f 
+\leq
+\int_R g .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-5-10-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 10.1.11: Monotonicity"><a aria-label="Copy heading and permalink for Proposition 10.1.11: Monotonicity" href="#sec_rirect-5-10" title="Copy heading and permalink for Proposition 10.1.11: Monotonicity">🔗</a></div>
+</article>
+<div class="para" id="sec_rirect-5-11">Checking for integrability using the definition often involves the following technique, as in the single variable case.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-5-11" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="mv_prop_upperlowerepsilon"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.1.12</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="mv_prop_upperlowerepsilon-1-1">
+<div class="para">Let <span class="process-math">\(R \subset \R^n\)</span> be a closed rectangle and <span class="process-math">\(f \colon R \to \R\)</span> a bounded function. Then <span class="process-math">\(f \in \sR(R)\)</span> if and only if for every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there exists a partition <span class="process-math">\(P\)</span> of <span class="process-math">\(R\)</span> such that</div>
+<div class="displaymath process-math" id="mv_prop_upperlowerepsilon-1-1-7">
+\begin{equation}
+U(P,f) - L(P,f) &lt; \epsilon .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_prop_upperlowerepsilon-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 10.1.12"><a aria-label="Copy heading and permalink for Proposition 10.1.12" href="#mv_prop_upperlowerepsilon" title="Copy heading and permalink for Proposition 10.1.12">🔗</a></div>
+</article>
+<article class="proof" id="sec_rirect-5-13"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_rirect-5-13-1">First, if <span class="process-math">\(f\)</span> is integrable, then the supremum of <span class="process-math">\(L(P,f)\)</span> and infimum of <span class="process-math">\(U(Q,f)\)</span> over all partitions <span class="process-math">\(P\)</span> and <span class="process-math">\(Q\)</span> are equal and hence the infimum of <span class="process-math">\(U(P,f)-L(Q,f)\)</span> is zero.  Taking a common refinement <span class="process-math">\(\widetilde{P}\)</span> of <span class="process-math">\(P\)</span> and <span class="process-math">\(Q\)</span> we find <span class="process-math">\(U(\widetilde{P},f)-L(\widetilde{P},f) \leq U(P,f)-L(Q,f)\text{.}\)</span> Hence the infimum of <span class="process-math">\(U(P,f)-L(P,f)\)</span> over all partitions <span class="process-math">\(P\)</span> is zero, and so for every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there must be some partition <span class="process-math">\(P\)</span> such that <span class="process-math">\(U(P,f) - L(P,f) &lt; \epsilon\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-5-13-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_rirect-5-13-2">
+<div class="para">For the other direction, given an <span class="process-math">\(\epsilon &gt; 0\)</span> find <span class="process-math">\(P\)</span> such that <span class="process-math">\(U(P,f) - L(P,f) &lt; \epsilon\text{.}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_rirect-5-13-2-4">
+\begin{equation}
+\overline{\int_R} f - 
+\underline{\int_R} f 
+\leq
+U(P,f) - L(P,f)
+&lt; \epsilon .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(\overline{\int_R} f \geq \underline{\int_R} f\)</span> and the above holds for every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> we conclude <span class="process-math">\(\overline{\int_R} f = \underline{\int_R} f\)</span> and <span class="process-math">\(f \in \sR(R)\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-5-13-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 10.1.3.1"><a aria-label="Copy heading and permalink for Proof 10.1.3.1" href="#sec_rirect-5-13" title="Copy heading and permalink for Proof 10.1.3.1">🔗</a></div>
+</article>
+<div class="para logical" id="sec_rirect-5-14">
+<div class="para">Suppose <span class="process-math">\(f \colon S \to \R\)</span> is a function and <span class="process-math">\(R \subset S\)</span> is a closed rectangle.  If the restriction <span class="process-math">\(f|_R\)</span> is integrable, then for simplicity we say <span class="process-math">\(f\)</span> is <em class="emphasis">integrable on <span class="process-math">\(R\)</span></em>, or <span class="process-math">\(f \in \sR(R)\text{,}\)</span> and we write</div>
+<div class="displaymath process-math" id="sec_rirect-5-14-7">
+\begin{equation}
+\int_R f \coloneqq \int_R f|_R .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-5-14" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="mv_prop_integralsmallerset"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.1.13</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="mv_prop_integralsmallerset-1-1">Let <span class="process-math">\(S \subset \R^n\)</span> be a closed rectangle. If <span class="process-math">\(f \colon S \to \R\)</span> is integrable and <span class="process-math">\(R \subset S\)</span> is a closed rectangle, then <span class="process-math">\(f\)</span> is integrable on <span class="process-math">\(R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_prop_integralsmallerset-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 10.1.13"><a aria-label="Copy heading and permalink for Proposition 10.1.13" href="#mv_prop_integralsmallerset" title="Copy heading and permalink for Proposition 10.1.13">🔗</a></div>
+</article>
+<article class="proof" id="sec_rirect-5-16"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_rirect-5-16-1">
+<div class="para">Given <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> find a partition <span class="process-math">\(P=(P_1,\ldots,P_n)\)</span> of <span class="process-math">\(S\)</span> such that <span class="process-math">\(U(P,f)-L(P,f) &lt; \epsilon\text{.}\)</span>  By making a refinement of <span class="process-math">\(P\)</span> if necessary, assume that the endpoints of <span class="process-math">\(R\)</span> are in <span class="process-math">\(P\text{.}\)</span>  That is, if <span class="process-math">\(R = [a_1,b_1] \times [a_2,b_2] \times \cdots \times [a_n,b_n]\text{,}\)</span> then <span class="process-math">\(a_i,b_i \in P_i\text{.}\)</span> Let <span class="process-math">\(\widetilde{P} = (\widetilde{P}_1,\ldots,\widetilde{P}_n)\)</span> be the partition of <span class="process-math">\(R\)</span> given by <span class="process-math">\(\widetilde{P}_i = P_i \cap [a_i,b_i]\text{.}\)</span> Subrectangles of <span class="process-math">\(\widetilde{P}\)</span> are subrectangles of <span class="process-math">\(P\text{,}\)</span> that is, <span class="process-math">\(R\)</span> is a union of subrectangles of <span class="process-math">\(P\text{.}\)</span> Divide the subrectangles of <span class="process-math">\(P\)</span> into two collections: Let <span class="process-math">\(R_1,R_2\ldots,R_K\)</span> be the subrectangles of <span class="process-math">\(P\)</span> that are also subrectangles of <span class="process-math">\(\widetilde{P}\)</span> and let <span class="process-math">\(R_{K+1},\ldots, R_N\)</span> be the rest. See <a class="internal" href="sec_rirect.html#fig_figrectsubrect" title="Figure 10.3">Figure 10.3</a>. Let <span class="process-math">\(m_k\)</span> and <span class="process-math">\(M_k\)</span> be the infimum and supremum of <span class="process-math">\(f\)</span> on <span class="process-math">\(R_k\)</span> as usual.  Then,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_figrectsubrect.html" id="sec_rirect-5-16-1-29">
+\begin{equation}
+\begin{split}
+\epsilon &amp; &gt; 
+U(P,f)-L(P,f)
+=
+\sum_{k=1}^K (M_k-m_k) V(R_k)
++
+\sum_{k=K+1}^N (M_k-m_k) V(R_k)
+\\
+&amp;
+\geq
+\sum_{k=1}^K (M_k-m_k) V(R_k)
+=
+U(\widetilde{P},f|_R)-L(\widetilde{P},f|_R) .
+\end{split}
+\end{equation}
+</div>
+<div class="para">Therefore, <span class="process-math">\(f|_R\)</span> is integrable.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-5-16-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 10.1.3.2"><a aria-label="Copy heading and permalink for Proof 10.1.3.2" href="#sec_rirect-5-16" title="Copy heading and permalink for Proof 10.1.3.2">🔗</a></div>
+</article><hr class="rahr"/>
+<figure class="figure figure-like" id="fig_figrectsubrect"><img alt="A rectangle subdivided into subrectangles in the same manner as before, this time with 2 horizontal and 3 vertical cuts into 12 smaller rectangles. A set of 4 smaller rectangles from the second and third row and second and third column is marked in dark shade and these 4 rectangles are labeled R sub 1, R sub 2, R sub 3, and R sub 4." class="raimg" role="img" src="figures/figrectsubrect-mbxpdft.svg" style="width:256pt; height:135pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>A partition of a large rectangle <span class="process-math">\(S\text{,}\)</span> that also gives a partition of a smaller rectangle (shaded and outlined) <span class="process-math">\(R \subset S\text{.}\)</span> The subrectangles <span class="process-math">\(R_1,R_2,R_3,R_4\)</span> are the subrectangles of <span class="process-math">\(\widetilde{P} = \bigl( \{ x_{1,1}, x_{1,2} , x_{1,3} \} ,
+\{ x_{2,1}, x_{2,2} , x_{2,3} \} \bigr)\text{.}\)</span><div class="autopermalink" data-description="Figure 10.3"><a aria-label="Copy heading and permalink for Figure 10.3" href="#fig_figrectsubrect" title="Copy heading and permalink for Figure 10.3">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="autopermalink" data-description="Subsection 10.1.3: The Riemann integral"><a aria-label="Copy heading and permalink for Subsection 10.1.3: The Riemann integral" href="#sec_rirect-5" title="Copy heading and permalink for Subsection 10.1.3: The Riemann integral">🔗</a></div>
+</section>
+<section class="subsection" id="sec_rirect-6">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.1.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Integrals of continuous functions</span>
+</h3>
+<div class="para" id="sec_rirect-6-2">Although we will prove a more general result later, it is useful to start with integrability of continuous functions. To do so, we wish to measure the fineness of partitions. In one variable, we measure the length of a subinterval. In several variables, we measure the sides of a subrectangle. We say a rectangle <span class="process-math">\(R = [a_1,b_1] \times
+[a_2,b_2] \times \cdots \times
+[a_n,b_n]\)</span> has <em class="emphasis">longest side at most <span class="process-math">\(\alpha\)</span></em> if <span class="process-math">\(b_k-a_k \leq \alpha\)</span> for all <span class="process-math">\(k=1,2,\ldots,n\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-6-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_diameterrectangle"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.1.14</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="prop_diameterrectangle-1-1">
+<div class="para">If a rectangle <span class="process-math">\(R \subset \R^n\)</span> has longest side at most <span class="process-math">\(\alpha\text{,}\)</span> then for all <span class="process-math">\(x,y \in R\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="prop_diameterrectangle-1-1-4">
+\begin{equation}
+\snorm{x-y} \leq \sqrt{n} \, \alpha .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_diameterrectangle-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 10.1.14"><a aria-label="Copy heading and permalink for Proposition 10.1.14" href="#prop_diameterrectangle" title="Copy heading and permalink for Proposition 10.1.14">🔗</a></div>
+</article>
+<article class="proof" id="sec_rirect-6-4"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_rirect-6-4-1">
+<div class="displaymath process-math" id="sec_rirect-6-4-1-1">
+\begin{equation}
+\begin{split}
+\snorm{x-y} 
+&amp; =
+\sqrt{
+{(x_1-y_1)}^2
++
+{(x_2-y_2)}^2
++ \cdots +
+{(x_n-y_n)}^2
+}
+\\
+&amp; \leq
+\sqrt{
+{(b_1-a_1)}^2
++
+{(b_2-a_2)}^2
++ \cdots +
+{(b_n-a_n)}^2
+}
+\\
+&amp; \leq
+\sqrt{
+{\alpha}^2
++
+{\alpha}^2
++ \cdots +
+{\alpha}^2
+}
+=
+\sqrt{n} \, \alpha .  \qedhere
+\end{split}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-6-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 10.1.4.1"><a aria-label="Copy heading and permalink for Proof 10.1.4.1" href="#sec_rirect-6-4" title="Copy heading and permalink for Proof 10.1.4.1">🔗</a></div>
+</article>
+<article class="theorem theorem-like" id="mv_thm_contintrect"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.1.15</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="mv_thm_contintrect-1-1">Let <span class="process-math">\(R \subset \R^n\)</span> be a closed rectangle. If <span class="process-math">\(f \colon R \to \R\)</span> is continuous, then <span class="process-math">\(f \in \sR(R)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_thm_contintrect-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 10.1.15"><a aria-label="Copy heading and permalink for Theorem 10.1.15" href="#mv_thm_contintrect" title="Copy heading and permalink for Theorem 10.1.15">🔗</a></div>
+</article>
+<article class="proof" id="sec_rirect-6-6"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_rirect-6-6-1">The proof is analogous to the one-variable proof with some complications. The set <span class="process-math">\(R\)</span> is a closed and bounded subset of <span class="process-math">\(\R^n\text{,}\)</span> and hence compact.  So <span class="process-math">\(f\)</span> is uniformly continuous by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metcont.html#thm_Xcompactfunifcont" title="Theorem 7.5.11">Theorem 7.5.11</a>. Let <span class="process-math">\(\epsilon &gt; 0\)</span> be given.  Find a <span class="process-math">\(\delta &gt; 0\)</span> such that <span class="process-math">\(\snorm{x-y} &lt; \delta\)</span> implies <span class="process-math">\(\babs{f(x)-f(y)} &lt; \frac{\epsilon}{V(R)}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-6-6-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_rirect-6-6-2">
+<div class="para">Let <span class="process-math">\(P\)</span> be a partition of <span class="process-math">\(R\text{,}\)</span> where the longest side of every subrectangle is strictly less than <span class="process-math">\(\frac{\delta}{\sqrt{n}}\text{.}\)</span> If <span class="process-math">\(x, y \in R_k\)</span> for a subrectangle <span class="process-math">\(R_k\)</span> of <span class="process-math">\(P\text{,}\)</span> then, by the proposition, <span class="process-math">\(\snorm{x-y} &lt; \sqrt{n} \frac{\delta}{\sqrt{n}} = \delta\text{.}\)</span>  Therefore,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/mv_prop_upperlowerepsilon.html" id="sec_rirect-6-6-2-8">
+\begin{equation}
+f(x)-f(y) \leq \babs{f(x)-f(y)} &lt; \frac{\epsilon}{V(R)} .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(f\)</span> is continuous on <span class="process-math">\(R_k\text{,}\)</span> which is compact, <span class="process-math">\(f\)</span> attains a maximum and a minimum on this subrectangle. Let <span class="process-math">\(x\)</span> be a point where <span class="process-math">\(f\)</span> attains the maximum and <span class="process-math">\(y\)</span> be a point where <span class="process-math">\(f\)</span> attains the minimum.  Then <span class="process-math">\(f(x) = M_k\)</span> and <span class="process-math">\(f(y) = m_k\)</span> in the notation from the definition of the integral. Thus,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/mv_prop_upperlowerepsilon.html" id="sec_rirect-6-6-2-18">
+\begin{equation}
+M_k-m_k = f(x)-f(y) &lt; 
+\frac{\epsilon}{V(R)} .
+\end{equation}
+</div>
+<div class="para">And so</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/mv_prop_upperlowerepsilon.html" id="sec_rirect-6-6-2-19">
+\begin{equation}
+\begin{split}
+U(P,f) - L(P,f)
+&amp; =
+\left(
+\sum_{k=1}^N
+M_k V(R_k)
+\right)
+-
+\left(
+\sum_{k=1}^N
+m_k V(R_k)
+\right)
+\\
+&amp; =
+\sum_{k=1}^N
+(M_k-m_k) V(R_k)
+\\
+&amp; &lt;
+\frac{\epsilon}{V(R)}
+\sum_{k=1}^N
+V(R_k)
+= \epsilon.
+\end{split}
+\end{equation}
+</div>
+<div class="para">
+<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rirect.html#mv_prop_upperlowerepsilon" title="Proposition 10.1.12">Proposition 10.1.12</a> then says that <span class="process-math">\(f \in \sR(R)\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-6-6-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 10.1.4.2"><a aria-label="Copy heading and permalink for Proof 10.1.4.2" href="#sec_rirect-6-6" title="Copy heading and permalink for Proof 10.1.4.2">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 10.1.4: Integrals of continuous functions"><a aria-label="Copy heading and permalink for Subsection 10.1.4: Integrals of continuous functions" href="#sec_rirect-6" title="Copy heading and permalink for Subsection 10.1.4: Integrals of continuous functions">🔗</a></div>
+</section>
+<section class="subsection" id="sec_rirect-7">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.1.5</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Integration of functions with compact support</span>
+</h3>
+<div class="para logical" id="sec_rirect-7-2">
+<div class="para">Let <span class="process-math">\(U \subset \R^n\)</span> be an open set and <span class="process-math">\(f \colon U \to \R\)</span> be a function.  The <em class="emphasis">support</em> of <span class="process-math">\(f\)</span> is the set</div>
+<div class="displaymath process-math" id="sec_rirect-7-2-5">
+\begin{equation}
+\operatorname{supp} (f) \coloneqq
+\overline{
+\{ x \in U : f(x) \neq 0 \}
+} ,
+\end{equation}
+</div>
+<div class="para">where the closure is with respect to the subspace topology on <span class="process-math">\(U\text{.}\)</span> Taking the closure with respect to the subspace topology is the same as <span class="process-math">\(\overline{
+\{ x \in U : f(x) \neq 0 \}
+} \cap U\text{,}\)</span> where the closure is with respect to the ambient euclidean space <span class="process-math">\(\R^n\text{.}\)</span> In particular, <span class="process-math">\(\operatorname{supp} (f) \subset U\text{.}\)</span> The support is the closure (in <span class="process-math">\(U\)</span>) of the set of points where the function is nonzero.  Its complement in <span class="process-math">\(U\)</span> is open. If <span class="process-math">\(x \in U\)</span> and <span class="process-math">\(x\)</span> is not in the support of <span class="process-math">\(f\text{,}\)</span> then <span class="process-math">\(f\)</span> is constantly zero in a whole neighborhood of <span class="process-math">\(x\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-7-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_rirect-7-3">A function <span class="process-math">\(f\)</span> is said to have <em class="emphasis">compact support</em> if <span class="process-math">\(\supp(f)\)</span> is a compact set.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-7-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_rirect-7-4"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.1.16</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_rirect-7-4-1-1">
+<div class="para">The function <span class="process-math">\(f \colon \R^2 \to \R\text{,}\)</span> defined by</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_compsup.html" id="sec_rirect-7-4-1-1-2">
+\begin{equation}
+f(x,y) \coloneqq
+\begin{cases}
+-x{(x^2+y^2-1)}^2 &amp; \text{if } \sqrt{x^2+y^2} \leq 1, \\
+0                 &amp; \text{else},
+\end{cases}
+\end{equation}
+</div>
+<div class="para">is continuous and its support is the closed unit disc <span class="process-math">\(C(0,1) = \bigl\{ (x,y) : \sqrt{x^2 + y^2} \leq 1 \bigr\}\text{,}\)</span> which is a compact set, so <span class="process-math">\(f\)</span> has compact support. Note that the function is zero on the entire <span class="process-math">\(y\)</span>-axis and on the unit circle, but all such points that lie in the closed unit disc are still within the support as they are in the closure of points where <span class="process-math">\(f\)</span> is nonzero. See <a class="internal" href="sec_rirect.html#fig_compsup" title="Figure 10.4">Figure 10.4</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-7-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <hr class="rahr"/>
+<figure class="figure figure-like" id="fig_compsup"><img alt="On the left a surface plot of a function that is zero outside the unit disc, it is positive for points inside the disc where x is negative and negative where x is positive. On the right is a diagram of the unit disc: a circle centered at the origin of radius 1 with the inside shaded." class="raimg" role="img" src="figures/compsup_full-mbxpdft.svg" style="width:367pt; height:141pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Function with compact support (left), the support is the closed unit disc (right).<div class="autopermalink" data-description="Figure 10.4"><a aria-label="Copy heading and permalink for Figure 10.4" href="#fig_compsup" title="Copy heading and permalink for Figure 10.4">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="autopermalink" data-description="Example 10.1.16"><a aria-label="Copy heading and permalink for Example 10.1.16" href="#sec_rirect-7-4" title="Copy heading and permalink for Example 10.1.16">🔗</a></div>
+</article>
+<div class="para" id="sec_rirect-7-5">If <span class="process-math">\(U \neq \R^n\text{,}\)</span> then you must be careful to take the closure in <span class="process-math">\(U\text{.}\)</span>  Consider the following two examples.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-7-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_rirect-7-6"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.1.17</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_rirect-7-6-1-1">
+<div class="para">Let <span class="process-math">\(B(0,1) \subset \R^2\)</span> be the unit disc.  The function <span class="process-math">\(f \colon B(0,1) \to \R\text{,}\)</span> defined by</div>
+<div class="displaymath process-math" id="sec_rirect-7-6-1-1-3">
+\begin{equation}
+f(x,y) \coloneqq
+\begin{cases}
+0                                &amp; \text{if } \sqrt{x^2+y^2} &gt; \nicefrac{1}{2}, \\
+\nicefrac{1}{2} - \sqrt{x^2+y^2} &amp; \text{if } \sqrt{x^2+y^2} \leq \nicefrac{1}{2},
+\end{cases}
+\end{equation}
+</div>
+<div class="para">is continuous on <span class="process-math">\(B(0,1)\)</span> and its support is the smaller closed ball <span class="process-math">\(C(0,\nicefrac{1}{2})\text{.}\)</span>  As that is a compact set, <span class="process-math">\(f\)</span> has compact support.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-7-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_rirect-7-6-1-2">
+<div class="para">The function <span class="process-math">\(g \colon B(0,1) \to \R\text{,}\)</span> defined by</div>
+<div class="displaymath process-math" id="sec_rirect-7-6-1-2-2">
+\begin{equation}
+g(x,y) \coloneqq
+\begin{cases}
+0 &amp; \text{if } x \leq 0, \\
+x &amp; \text{if } x &gt; 0,
+\end{cases}
+\end{equation}
+</div>
+<div class="para">is continuous on <span class="process-math">\(B(0,1)\text{,}\)</span> but its support is the set <span class="process-math">\(\bigl\{ (x,y) \in B(0,1) : x \geq 0 \bigr\}\text{.}\)</span>  In particular, <span class="process-math">\(g\)</span> is not compactly supported.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-7-6-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 10.1.17"><a aria-label="Copy heading and permalink for Example 10.1.17" href="#sec_rirect-7-6" title="Copy heading and permalink for Example 10.1.17">🔗</a></div>
+</article>
+<div class="para" id="sec_rirect-7-7">We really only need to consider the case when <span class="process-math">\(U=\R^n\text{.}\)</span>  In light of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rirect.html#exercise_contcompactsupportRn" title="Exercise 10.1.1">Exercise 10.1.1</a>, which says every continuous function on an open <span class="process-math">\(U \subset \R^n\)</span> with compact support can be extended to a continuous function with compact support on <span class="process-math">\(\R^n\text{,}\)</span> considering <span class="process-math">\(U=\R^n\)</span> is not an oversimplification.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-7-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_rirect-7-8"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.1.18</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_rirect-7-8-1-1">The continuous function <span class="process-math">\(f \colon B(0,1) \to \R\)</span> given by <span class="process-math">\(f(x,y) \coloneqq \sin\bigl(\frac{1}{1-x^2-y^2}\bigr)\)</span> does not have compact support; as <span class="process-math">\(f\)</span> is not constantly zero on any neighborhood of every point in <span class="process-math">\(B(0,1)\text{,}\)</span> the support is the entire disc <span class="process-math">\(B(0,1)\text{.}\)</span>  The function does not extend as above to a continuous function on <span class="process-math">\(\R^2\text{.}\)</span>  In fact, it is not difficult to show that <span class="process-math">\(f\)</span> cannot be extended in any way whatsoever to be continuous on all of <span class="process-math">\(\R^2\)</span> (the boundary of the disc is the problem).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-7-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 10.1.18"><a aria-label="Copy heading and permalink for Example 10.1.18" href="#sec_rirect-7-8" title="Copy heading and permalink for Example 10.1.18">🔗</a></div>
+</article>
+<article class="proposition theorem-like" id="mv_prop_rectanglessupp"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.1.19</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="mv_prop_rectanglessupp-1-1">
+<div class="para">Suppose <span class="process-math">\(f \colon \R^n \to \R\)</span> is a continuous function with compact support. If <span class="process-math">\(R\)</span> and <span class="process-math">\(S\)</span> are closed rectangles such that <span class="process-math">\(\operatorname{supp}(f) \subset R\)</span> and <span class="process-math">\(\operatorname{supp}(f) \subset S\text{,}\)</span> then</div>
+<div class="displaymath process-math" id="mv_prop_rectanglessupp-1-1-6">
+\begin{equation}
+\int_S f = \int_R f .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_prop_rectanglessupp-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 10.1.19"><a aria-label="Copy heading and permalink for Proposition 10.1.19" href="#mv_prop_rectanglessupp" title="Copy heading and permalink for Proposition 10.1.19">🔗</a></div>
+</article>
+<article class="proof" id="sec_rirect-7-10"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_rirect-7-10-1">As <span class="process-math">\(f\)</span> is continuous, it is automatically integrable on the rectangles <span class="process-math">\(R\text{,}\)</span> <span class="process-math">\(S\text{,}\)</span> and <span class="process-math">\(R
+\cap S\text{.}\)</span> Applying <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rirect.html#mv_zerooutside" title="Exercise 10.1.7">Exercise 10.1.7</a> twice, <span class="process-math">\(\int_S f = \int_{S \cap R} f = \int_R f\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-7-10-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 10.1.5.1"><a aria-label="Copy heading and permalink for Proof 10.1.5.1" href="#sec_rirect-7-10" title="Copy heading and permalink for Proof 10.1.5.1">🔗</a></div>
+</article>
+<div class="para logical" id="sec_rirect-7-11">
+<div class="para">Because of this proposition, when <span class="process-math">\(f \colon \R^n \to \R\)</span> has compact support and is integrable on a rectangle <span class="process-math">\(R\)</span> containing the support, we write</div>
+<div class="displaymath process-math" id="sec_rirect-7-11-3">
+\begin{equation}
+\int f \coloneqq \int_R f \qquad \text{or} \qquad 
+\int_{\R^n} f \coloneqq \int_R f .
+\end{equation}
+</div>
+<div class="para">For example, if <span class="process-math">\(f\)</span> is continuous and of compact support, then <span class="process-math">\(\int_{\R^n} f\)</span> exists.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-7-11" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 10.1.5: Integration of functions with compact support"><a aria-label="Copy heading and permalink for Subsection 10.1.5: Integration of functions with compact support" href="#sec_rirect-7" title="Copy heading and permalink for Subsection 10.1.5: Integration of functions with compact support">🔗</a></div>
+</section>
+<section class="exercises" id="sec_rirect-8">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.1.6</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="exercise_contcompactsupportRn"><h4 class="heading"><span class="codenumber">10.1.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="exercise_contcompactsupportRn-1-1">
+<div class="para">Suppose <span class="process-math">\(U \subset \R^n\)</span> is open and <span class="process-math">\(f \colon U \to \R\)</span> is continuous and of compact support.  Show that the function <span class="process-math">\(\widetilde{f} \colon \R^n \to
+\R\text{,}\)</span> where</div>
+<div class="displaymath process-math" id="exercise_contcompactsupportRn-1-1-4">
+\begin{equation}
+\widetilde{f}(x) \coloneqq
+\begin{cases}
+f(x) &amp; \text{if } x \in U, \\
+0 &amp; \text{otherwise,}
+\end{cases}
+\end{equation}
+</div>
+<div class="para">is continuous.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_contcompactsupportRn-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.1.1"><a aria-label="Copy heading and permalink for Exercise 10.1.1" href="#exercise_contcompactsupportRn" title="Copy heading and permalink for Exercise 10.1.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_rirect-8-2"><h4 class="heading"><span class="codenumber">10.1.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_rirect-8-2-1-1">Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rirect.html#mv_intlinearity_prop" title="Proposition 10.1.10: Linearity">Proposition 10.1.10</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-8-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.1.2"><a aria-label="Copy heading and permalink for Exercise 10.1.2" href="#sec_rirect-8-2" title="Copy heading and permalink for Exercise 10.1.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_rirect-8-3"><h4 class="heading"><span class="codenumber">10.1.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_rirect-8-3-1-1">Suppose <span class="process-math">\(R \subset \R^n\)</span> is a closed rectangle with the length of one of the sides equal to 0. For every bounded function <span class="process-math">\(f \colon R \to \R\text{,}\)</span> show that <span class="process-math">\(f \in \sR(R)\)</span> and <span class="process-math">\(\int_R f = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-8-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.1.3"><a aria-label="Copy heading and permalink for Exercise 10.1.3" href="#sec_rirect-8-3" title="Copy heading and permalink for Exercise 10.1.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="mv_zerosiderectangle"><h4 class="heading"><span class="codenumber">10.1.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="mv_zerosiderectangle-1-1">Suppose <span class="process-math">\(R \subset \R^n\)</span> is a closed rectangle with the length of one of the sides equal to 0, and suppose <span class="process-math">\(S\)</span> is a closed rectangle with <span class="process-math">\(R \subset S\text{.}\)</span> If <span class="process-math">\(f \colon S \to \R\)</span> is a bounded function such that <span class="process-math">\(f(x) = 0\)</span> for <span class="process-math">\(x \in S \setminus R\text{,}\)</span> show that <span class="process-math">\(f \in \sR(S)\)</span> and <span class="process-math">\(\int_S f = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_zerosiderectangle-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.1.4"><a aria-label="Copy heading and permalink for Exercise 10.1.4" href="#mv_zerosiderectangle" title="Copy heading and permalink for Exercise 10.1.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_rirect-8-5"><h4 class="heading"><span class="codenumber">10.1.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_rirect-8-5-1-1">Suppose <span class="process-math">\(f\colon \R^n \to \R\)</span> is such that <span class="process-math">\(f(x) \coloneqq 0\)</span> if <span class="process-math">\(x \neq 0\)</span> and <span class="process-math">\(f(0) \coloneqq 1\text{.}\)</span>  Show that <span class="process-math">\(f\)</span> is integrable on <span class="process-math">\(R \coloneqq [-1,1] \times [-1,1] \times \cdots \times [-1,1]\)</span> directly using the definition, and find <span class="process-math">\(\int_R f\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-8-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.1.5"><a aria-label="Copy heading and permalink for Exercise 10.1.5" href="#sec_rirect-8-5" title="Copy heading and permalink for Exercise 10.1.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="mv_zeroinside"><h4 class="heading"><span class="codenumber">10.1.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="mv_zeroinside-1-1">
+<div class="para">Suppose <span class="process-math">\(R \subset \R^n\)</span> and <span class="process-math">\(S \subset \R^n\)</span> are closed rectangles where <span class="process-math">\(R \subset S\text{.}\)</span> Let <span class="process-math">\(h \colon S \to \R\)</span> be a bounded function such that <span class="process-math">\(h(x) = 0\)</span> if <span class="process-math">\(x \notin \partial R\)</span> (the boundary of <span class="process-math">\(R\)</span>). Show that <span class="process-math">\(h \in \sR(S)\)</span> and</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/mv_zerosiderectangle.html" id="mv_zeroinside-1-1-9">
+\begin{equation}
+\int_{S} h = 0 .
+\end{equation}
+</div>
+<div class="para">Hint: Write <span class="process-math">\(h\)</span> as a sum of functions as in <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rirect.html#mv_zerosiderectangle" title="Exercise 10.1.4">Exercise 10.1.4</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_zeroinside-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.1.6"><a aria-label="Copy heading and permalink for Exercise 10.1.6" href="#mv_zeroinside" title="Copy heading and permalink for Exercise 10.1.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="mv_zerooutside"><h4 class="heading"><span class="codenumber">10.1.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="mv_zerooutside-1-1">
+<div class="para">Suppose <span class="process-math">\(R\)</span> and <span class="process-math">\(R'\)</span> are two closed rectangles in <span class="process-math">\(\R^n\)</span> with <span class="process-math">\(R' \subset R\text{.}\)</span>  Suppose <span class="process-math">\(f \colon R \to \R\)</span> is in <span class="process-math">\(\sR(R')\)</span> and <span class="process-math">\(f(x) = 0\)</span> for <span class="process-math">\(x \in R \setminus R'\text{.}\)</span> Show that <span class="process-math">\(f \in \sR(R)\)</span> and</div>
+<div class="displaymath process-math" id="mv_zerooutside-1-1-10">
+\begin{equation}
+\int_{R'} f = \int_R f .
+\end{equation}
+</div>
+<div class="para">Do this in the following steps.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_zerooutside-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="mv_zerooutside-1-2">
+<li id="mv_zerooutside-1-2-1">
+<div class="para" id="mv_zerooutside-1-2-1-1">First do the proof assuming that furthermore <span class="process-math">\(f(x) = 0\)</span> whenever <span class="process-math">\(x
+\in \overline{R \setminus R'}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_zerooutside-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.1.7.a"><a aria-label="Copy heading and permalink for Item 10.1.7.a" href="#mv_zerooutside-1-2-1" title="Copy heading and permalink for Item 10.1.7.a">🔗</a></div>
+</li>
+<li id="mv_zerooutside-1-2-2">
+<div class="para" id="mv_zerooutside-1-2-2-1">Write <span class="process-math">\(f(x) = g(x) + h(x)\)</span> where <span class="process-math">\(g(x) = 0\)</span> whenever <span class="process-math">\(x
+\in \overline{R \setminus R'}\text{,}\)</span> and <span class="process-math">\(h(x)\)</span> is zero except perhaps on <span class="process-math">\(\partial R'\text{.}\)</span> Then show <span class="process-math">\(\int_R h = \int_{R'} h = 0\)</span> (see <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rirect.html#mv_zeroinside" title="Exercise 10.1.6">Exercise 10.1.6</a>).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_zerooutside-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.1.7.b"><a aria-label="Copy heading and permalink for Item 10.1.7.b" href="#mv_zerooutside-1-2-2" title="Copy heading and permalink for Item 10.1.7.b">🔗</a></div>
+</li>
+<li id="mv_zerooutside-1-2-3">
+<div class="para" id="mv_zerooutside-1-2-3-1">Show <span class="process-math">\(\int_{R'} f = \int_R f\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_zerooutside-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.1.7.c"><a aria-label="Copy heading and permalink for Item 10.1.7.c" href="#mv_zerooutside-1-2-3" title="Copy heading and permalink for Item 10.1.7.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 10.1.7"><a aria-label="Copy heading and permalink for Exercise 10.1.7" href="#mv_zerooutside" title="Copy heading and permalink for Exercise 10.1.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_rirect-8-8"><h4 class="heading"><span class="codenumber">10.1.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_rirect-8-8-1-1">
+<div class="para">Suppose <span class="process-math">\(R' \subset \R^n\)</span> and <span class="process-math">\(R'' \subset \R^n\)</span> are two rectangles such that <span class="process-math">\(R = R' \cup R''\)</span> is a rectangle, and <span class="process-math">\(R' \cap R''\)</span> is rectangle with one of the sides having length 0 (that is, <span class="process-math">\(V(R' \cap R'') = 0\)</span>). Let <span class="process-math">\(f \colon R \to \R\)</span> be a function such that <span class="process-math">\(f \in \sR(R')\)</span> and <span class="process-math">\(f \in \sR(R'')\text{.}\)</span>  Show that <span class="process-math">\(f \in \sR(R)\)</span> and</div>
+<div class="displaymath process-math" id="sec_rirect-8-8-1-1-10">
+\begin{equation}
+\int_{R} f = \int_{R'} f + \int_{R''} f .
+\end{equation}
+</div>
+<div class="para">Hint: See previous exercise.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-8-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.1.8"><a aria-label="Copy heading and permalink for Exercise 10.1.8" href="#sec_rirect-8-8" title="Copy heading and permalink for Exercise 10.1.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_rirect-8-9"><h4 class="heading"><span class="codenumber">10.1.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_rirect-8-9-1-1">Prove a stronger version of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rirect.html#mv_prop_rectanglessupp" title="Proposition 10.1.19">Proposition 10.1.19</a>. Suppose <span class="process-math">\(f \colon \R^n \to \R\)</span> is a function with compact support but not necessarily continuous. Prove that if <span class="process-math">\(R\)</span> is a closed rectangle such that <span class="process-math">\(\operatorname{supp}(f) \subset R\)</span> and <span class="process-math">\(f\)</span> is integrable on <span class="process-math">\(R\text{,}\)</span> then for every other closed rectangle <span class="process-math">\(S\)</span> with <span class="process-math">\(\operatorname{supp}(f) \subset S\text{,}\)</span> the function <span class="process-math">\(f\)</span> is integrable on <span class="process-math">\(S\)</span> and <span class="process-math">\(\int_S f = \int_R f\text{.}\)</span> Hint: See <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_rirect.html#mv_zerooutside" title="Exercise 10.1.7">Exercise 10.1.7</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-8-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.1.9"><a aria-label="Copy heading and permalink for Exercise 10.1.9" href="#sec_rirect-8-9" title="Copy heading and permalink for Exercise 10.1.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_rirect-8-10"><h4 class="heading"><span class="codenumber">10.1.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_rirect-8-10-1-1">Suppose <span class="process-math">\(R\)</span> and <span class="process-math">\(S\)</span> are closed rectangles in <span class="process-math">\(\R^n\text{.}\)</span> Define <span class="process-math">\(f \colon \R^n \to \R\)</span> as <span class="process-math">\(f(x) \coloneqq 1\)</span> if <span class="process-math">\(x \in R\text{,}\)</span> and <span class="process-math">\(f(x) \coloneqq 0\)</span> otherwise.  Prove <span class="process-math">\(f\)</span> is integrable on <span class="process-math">\(S\)</span> and compute <span class="process-math">\(\int_S f\text{.}\)</span>  Hint: Consider <span class="process-math">\(S \cap R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-8-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.1.10"><a aria-label="Copy heading and permalink for Exercise 10.1.10" href="#sec_rirect-8-10" title="Copy heading and permalink for Exercise 10.1.10">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_rirect-8-11"><h4 class="heading"><span class="codenumber">10.1.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_rirect-8-11-1-1">Let <span class="process-math">\(R \coloneqq [0,1] \times [0,1] \subset \R^2\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-8-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_rirect-8-11-1-2">
+<li id="sec_rirect-8-11-1-2-1">
+<div class="para logical" id="sec_rirect-8-11-1-2-1-1">
+<div class="para">Suppose <span class="process-math">\(f \colon R \to \R\)</span> is defined by</div>
+<div class="displaymath process-math" id="sec_rirect-8-11-1-2-1-1-2">
+\begin{equation}
+f(x,y) \coloneqq 
+\begin{cases}
+1 &amp; \text{if } x = y, \\
+0 &amp; \text{else.}
+\end{cases}
+\end{equation}
+</div>
+<div class="para">Show that <span class="process-math">\(f \in \sR(R)\)</span> and compute <span class="process-math">\(\int_R f\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-8-11-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.1.11.a"><a aria-label="Copy heading and permalink for Item 10.1.11.a" href="#sec_rirect-8-11-1-2-1" title="Copy heading and permalink for Item 10.1.11.a">🔗</a></div>
+</li>
+<li id="sec_rirect-8-11-1-2-2">
+<div class="para logical" id="sec_rirect-8-11-1-2-2-1">
+<div class="para">Suppose <span class="process-math">\(f \colon R \to \R\)</span> is defined by</div>
+<div class="displaymath process-math" id="sec_rirect-8-11-1-2-2-1-2">
+\begin{equation}
+f(x,y) \coloneqq 
+\begin{cases}
+1 &amp; \text{if } x \in \Q \text{ or } y \in \Q, \\
+0 &amp; \text{else.}
+\end{cases}
+\end{equation}
+</div>
+<div class="para">Show that <span class="process-math">\(f \notin \sR(R)\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-8-11-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 10.1.11.b"><a aria-label="Copy heading and permalink for Item 10.1.11.b" href="#sec_rirect-8-11-1-2-2" title="Copy heading and permalink for Item 10.1.11.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 10.1.11"><a aria-label="Copy heading and permalink for Exercise 10.1.11" href="#sec_rirect-8-11" title="Copy heading and permalink for Exercise 10.1.11">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_rirect-8-12"><h4 class="heading"><span class="codenumber">10.1.12<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_rirect-8-12-1-1">
+<div class="para">Suppose <span class="process-math">\(R \subset \R^n\)</span> is a closed rectangle, and suppose <span class="process-math">\(\{ S_j \}_{j=1}^\infty\)</span> is a sequence of closed rectangles such that <span class="process-math">\(S_j \subset R\)</span> and <span class="process-math">\(S_j \subset S_{j+1}\)</span> for all <span class="process-math">\(j\text{,}\)</span> and also <span class="process-math">\(R = \bigcup_{j=1}^\infty S_j\text{.}\)</span> Suppose <span class="process-math">\(f \colon R \to \R\)</span> is bounded and <span class="process-math">\(f \in \sR(S_j)\)</span> for all <span class="process-math">\(j\text{.}\)</span> Show that <span class="process-math">\(f \in \sR(R)\)</span> and</div>
+<div class="displaymath process-math" id="sec_rirect-8-12-1-1-11">
+\begin{equation}
+\lim_{j\to\infty} \int_{S_j} f = \int_R f .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-8-12-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.1.12"><a aria-label="Copy heading and permalink for Exercise 10.1.12" href="#sec_rirect-8-12" title="Copy heading and permalink for Exercise 10.1.12">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_rirect-8-13"><h4 class="heading"><span class="codenumber">10.1.13<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_rirect-8-13-1-1">
+<div class="para">Suppose <span class="process-math">\(f\colon [-1,1] \times [-1,1] \to \R\)</span> is a Riemann integrable function where <span class="process-math">\(f(x) = -f(-x)\text{.}\)</span> Using the definition of the integral prove</div>
+<div class="displaymath process-math" id="sec_rirect-8-13-1-1-3">
+\begin{equation}
+\int_{[-1,1] \times [-1,1]} f = 0 .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_rirect-8-13-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 10.1.13"><a aria-label="Copy heading and permalink for Exercise 10.1.13" href="#sec_rirect-8-13" title="Copy heading and permalink for Exercise 10.1.13">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 10.1.6"><a aria-label="Copy heading and permalink for Exercises 10.1.6" href="#sec_rirect-8" title="Copy heading and permalink for Exercises 10.1.6">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 10.1: Riemann integral over rectangles"><a aria-label="Copy heading and permalink for Section 10.1: Riemann integral over rectangles" href="#sec_rirect" title="Copy heading and permalink for Section 10.1: Riemann integral over rectangles">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="mi_chapter.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_iteratedints.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

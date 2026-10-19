@@ -1,0 +1,1208 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Series · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_series">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.5</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Series</span>
+</h2>
+<section class="introduction" id="sec_series-2">
+<div class="para" id="sec_series-2-1">
+<em class="emphasis">Note: 2 lectures</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_series-2-2">A fundamental object in mathematics is that of a series.  In fact, when the foundations of analysis were being developed, the motivation was to understand series.  Understanding series is important in applications of analysis.  For example, solutions to differential equations are often given as series, and differential equations are the basis for understanding almost all of modern science.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-2-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section>
+<section class="subsection" id="sec_series-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.5.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Definition</span>
+</h3>
+<article class="definition definition-like" id="sec_series-3-2"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.5.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_series-3-2-1-1">
+<div class="para">Given a sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\text{,}\)</span> we write the formal object</div>
+<div class="displaymath process-math" id="sec_series-3-2-1-1-2">
+\begin{equation}
+\sum_{n=1}^\infty x_n
+\end{equation}
+</div>
+<div class="para">and call it a <em class="emphasis">series</em>.  A series <em class="emphasis">converges</em> if the sequence <span class="process-math">\(\{ s_k \}_{k=1}^\infty\)</span> defined by</div>
+<div class="displaymath process-math" id="sec_series-3-2-1-1-7">
+\begin{equation}
+s_k \coloneqq \sum_{n=1}^k x_n = x_1 + x_2 + \cdots + x_k
+\end{equation}
+</div>
+<div class="para">converges. The numbers <span class="process-math">\(s_k\)</span> are called <em class="emphasis">partial sums</em>. If the series converges, we write</div>
+<div class="displaymath process-math" id="sec_series-3-2-1-1-10">
+\begin{equation}
+\sum_{n=1}^\infty x_n =  \lim\limits_{k\to\infty} s_k .
+\end{equation}
+</div>
+<div class="para">In this case, we cheat a little and treat <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> as a number.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-3-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_series-3-2-1-2">If the sequence <span class="process-math">\(\{ s_k \}_{k=1}^\infty\)</span> diverges, we say the series is <em class="emphasis">divergent</em>. In this case, <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> is simply a formal object and not a number.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-3-2-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 2.5.1"><a aria-label="Copy heading and permalink for Definition 2.5.1" href="#sec_series-3-2" title="Copy heading and permalink for Definition 2.5.1">🔗</a></div>
+</article>
+<div class="para logical" id="sec_series-3-3">
+<div class="para">In other words, for a convergent series, we have</div>
+<div class="displaymath process-math" id="sec_series-3-3-1">
+\begin{equation}
+\sum_{n=1}^\infty x_n
+=
+\lim_{k\to\infty} 
+\sum_{n=1}^k x_n .
+\end{equation}
+</div>
+<div class="para">We only have this equality if the limit on the right actually exists.  If the series does not converge, the right-hand side does not make sense (the limit does not exist). Therefore, be careful as <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> means two different things (a notation for the series itself or the limit of the partial sums), and you must use context to distinguish.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-3-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="remark remark-like" id="sec_series-3-4"><h4 class="heading">
+<span class="type">Remark</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.5.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_series-3-4-1-1">
+<div class="para">It is sometimes convenient to start the series at an index different from 1.  For instance, we can write</div>
+<div class="displaymath process-math" id="sec_series-3-4-1-1-1">
+\begin{equation}
+\sum_{n=0}^\infty r^n = \sum_{n=1}^\infty r^{n-1} .
+\end{equation}
+</div>
+<div class="para">The left-hand side is more convenient to write.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-3-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Remark 2.5.2"><a aria-label="Copy heading and permalink for Remark 2.5.2" href="#sec_series-3-4" title="Copy heading and permalink for Remark 2.5.2">🔗</a></div>
+</article>
+<article class="remark remark-like" id="sec_series-3-5"><h4 class="heading">
+<span class="type">Remark</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.5.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_series-3-5-1-1">
+<div class="para">It is common to write the series <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> as</div>
+<div class="displaymath process-math" id="sec_series-3-5-1-1-2">
+\begin{equation}
+x_1 + x_2 + x_3 + \cdots
+\end{equation}
+</div>
+<div class="para">with the understanding that the ellipsis indicates a series and not a simple sum.  We do not use this notation as it is the sort of informal notation that leads to mistakes in proofs.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-3-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Remark 2.5.3"><a aria-label="Copy heading and permalink for Remark 2.5.3" href="#sec_series-3-5" title="Copy heading and permalink for Remark 2.5.3">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_series-3-6"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.5.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_series-3-6-1-1">
+<div class="para">The series</div>
+<div class="displaymath process-math" id="sec_series-3-6-1-1-1">
+\begin{equation}
+\sum_{n=1}^\infty \frac{1}{2^n}
+\end{equation}
+</div>
+<div class="para">converges and the limit is 1.  That is,</div>
+<div class="displaymath process-math" id="sec_series-3-6-1-1-2">
+\begin{equation}
+\sum_{n=1}^\infty \frac{1}{2^n} = 
+\lim_{k\to\infty} \sum_{n=1}^k \frac{1}{2^n} = 
+1 .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-3-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_series-3-6-1-2">
+<div class="para">Proof: We need the equality</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/induction_thm.html ./knowl/xref/figcutseries.html" id="sec_series-3-6-1-2-1">
+\begin{equation}
+\left( \sum_{n=1}^k \frac{1}{2^n} \right)
++ \frac{1}{2^k}
+= 1 .
+\end{equation}
+</div>
+<div class="para">The equality is immediate when <span class="process-math">\(k=1\text{.}\)</span>  The proof for general <span class="process-math">\(k\)</span> follows by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicset.html#induction_thm" title="Theorem 0.3.6: Principle of induction">induction</a>, which we leave to the reader.  See <a class="internal" href="sec_series.html#figcutseries" title="Figure 2.7">Figure 2.7</a> for an illustration.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-3-6-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <hr class="rahr"/>
+<figure class="figure figure-like" id="figcutseries"><img alt="A diagram of the real line. The point 0 is on the left and the point 1 is on the right. A distance of one half is marked from the 0 to one half. Then the distance of one quarter is marked from one half to the point at 3 quarters. Then a distance of one eighth is marked from 3 quarters to 7 eighths. Also marked is the distance one half plus one quarter plus one eighth, which puts together the three aforementioned distances. Lastly the remaining distance of one eighth from 7 eighths to 1 is also marked." class="raimg" role="img" src="figures/figcutseries-mbxpdft.svg" style="width:296pt; height:47pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>The equality <span class="process-math">\(\left( \sum_{n=1}^k \frac{1}{2^n} \right)
++ \frac{1}{2^k}
+= 1\)</span> illustrated for <span class="process-math">\(k=3\text{.}\)</span><div class="autopermalink" data-description="Figure 2.7"><a aria-label="Copy heading and permalink for Figure 2.7" href="#figcutseries" title="Copy heading and permalink for Figure 2.7">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para logical" id="sec_series-3-6-1-6">
+<div class="para">Let <span class="process-math">\(s_k\)</span> be the partial sum.  We write</div>
+<div class="displaymath process-math" id="sec_series-3-6-1-6-2">
+\begin{equation}
+\sabs{
+1 - s_k 
+}
+=
+\abs{
+1 - 
+\sum_{n=1}^k \frac{1}{2^n}
+}
+=
+\abs{\frac{1}{2^k}} = 
+\frac{1}{2^k} .
+\end{equation}
+</div>
+<div class="para">The sequence <span class="process-math">\(\bigl\{ \frac{1}{2^k} \bigr\}_{k=1}^\infty\text{,}\)</span> and therefore <span class="process-math">\(\bigl\{ \sabs{1-s_k} \bigr\}_{k=1}^\infty\text{,}\)</span> converges to zero.  So, <span class="process-math">\(\{ s_k \}_{k=1}^\infty\)</span> converges to <span class="process-math">\(1\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-3-6-1-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 2.5.4"><a aria-label="Copy heading and permalink for Example 2.5.4" href="#sec_series-3-6" title="Copy heading and permalink for Example 2.5.4">🔗</a></div>
+</article>
+<article class="proposition theorem-like" id="geometric_prop"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.5.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="geometric_prop-1-1">
+<div class="para">Suppose <span class="process-math">\(-1 &lt; r &lt; 1\text{.}\)</span>  Then the <em class="emphasis">geometric series</em> <span class="process-math">\(\sum_{n=0}^\infty r^n\)</span> converges, and</div>
+<div class="displaymath process-math" id="geometric_prop-1-1-4">
+\begin{equation}
+\sum_{n=0}^\infty r^n = \frac{1}{1-r} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#geometric_prop-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 2.5.5"><a aria-label="Copy heading and permalink for Proposition 2.5.5" href="#geometric_prop" title="Copy heading and permalink for Proposition 2.5.5">🔗</a></div>
+</article>
+<div class="para logical" id="sec_series-3-8">
+<div class="para">Details of the proof are left as an exercise. The proof consists of showing</div>
+<div class="displaymath process-math" id="sec_series-3-8-1">
+\begin{equation}
+\sum_{n=0}^{k-1} r^n = \frac{1-r^k}{1-r} ,
+\end{equation}
+</div>
+<div class="para">and then taking the limit as <span class="process-math">\(k\)</span> goes to <span class="process-math">\(\infty\text{.}\)</span> The geometric series is one of the most important series, and in fact it is one of the few series for which we can so explicitly find the limit.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-3-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_series-3-9">As with sequences, we can talk about a <em class="emphasis">tail of a series</em>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-3-9" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_series-3-10"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.5.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_series-3-10-1-1">
+<div class="para">Let <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> be a series.  Let <span class="process-math">\(M \in \N\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" id="sec_series-3-10-1-1-3">
+\begin{equation}
+\sum_{n=1}^\infty x_n \quad \text{converges if and only if} \quad
+\sum_{n=M}^\infty x_n \quad \text{converges.}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-3-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 2.5.6"><a aria-label="Copy heading and permalink for Proposition 2.5.6" href="#sec_series-3-10" title="Copy heading and permalink for Proposition 2.5.6">🔗</a></div>
+</article>
+<article class="proof" id="sec_series-3-11"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_series-3-11-1">
+<div class="para">We look at partial sums of the two series (for <span class="process-math">\(k \geq M\)</span>)</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_contalg.html" id="sec_series-3-11-1-2">
+\begin{equation}
+\sum_{n=1}^{k} x_n
+=
+\left(
+\sum_{n=1}^{M-1} x_n
+\right)
++
+\sum_{n=M}^{k} x_n .
+\end{equation}
+</div>
+<div class="para">Note that <span class="process-math">\(\sum_{n=1}^{M-1} x_n\)</span> is a fixed number.  Use <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_factslimsseqs.html#prop_contalg" title="Proposition 2.2.5">Proposition 2.2.5</a> to finish the proof.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-3-11-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 2.5.1.1"><a aria-label="Copy heading and permalink for Proof 2.5.1.1" href="#sec_series-3-11" title="Copy heading and permalink for Proof 2.5.1.1">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 2.5.1: Definition"><a aria-label="Copy heading and permalink for Subsection 2.5.1: Definition" href="#sec_series-3" title="Copy heading and permalink for Subsection 2.5.1: Definition">🔗</a></div>
+</section>
+<section class="subsection" id="sec_series-4">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.5.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Cauchy series</span>
+</h3>
+<article class="definition definition-like" id="sec_series-4-2"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.5.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_series-4-2-1-1">A series <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> is said to be <em class="emphasis">Cauchy</em> or a <em class="emphasis">Cauchy series</em> if the sequence of partial sums <span class="process-math">\(\{ s_n \}_{n=1}^\infty\)</span> is a Cauchy sequence.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-4-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 2.5.7"><a aria-label="Copy heading and permalink for Definition 2.5.7" href="#sec_series-4-2" title="Copy heading and permalink for Definition 2.5.7">🔗</a></div>
+</article>
+<div class="para logical" id="sec_series-4-3">
+<div class="para">A sequence of real numbers converges if and only if it is Cauchy.  Therefore, a series is convergent if and only if it is Cauchy. The series <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> is Cauchy if and only if for every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there exists an <span class="process-math">\(M \in \N\text{,}\)</span> such that for every <span class="process-math">\(n \geq M\)</span> and <span class="process-math">\(k \geq M\text{,}\)</span> we have</div>
+<div class="displaymath process-math" id="sec_series-4-3-6">
+\begin{equation}
+\abs{ \left( \sum_{i=1}^k x_i \right) - \left( \sum_{i=1}^n x_i \right) }
+&lt; \epsilon .
+\end{equation}
+</div>
+<div class="para">Without loss of generality, we assume <span class="process-math">\(n &lt; k\text{.}\)</span>  Then we write</div>
+<div class="displaymath process-math" id="sec_series-4-3-8">
+\begin{equation}
+\abs{ \left( \sum_{i=1}^k x_i \right) - \left( \sum_{i=1}^n x_i \right) }
+=
+\abs{ \sum_{i={n+1}}^k x_i }
+&lt; \epsilon .
+\end{equation}
+</div>
+<div class="para">We have proved the following simple proposition.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-4-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_cachyser"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.5.8</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="prop_cachyser-1-1">
+<div class="para">The series <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> is Cauchy if and only if for every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there exists an <span class="process-math">\(M \in \N\)</span> such that for every <span class="process-math">\(n \geq M\)</span> and every <span class="process-math">\(k &gt; n\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="prop_cachyser-1-1-6">
+\begin{equation}
+\abs{ \sum_{i={n+1}}^k x_i }
+&lt; \epsilon .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_cachyser-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 2.5.8"><a aria-label="Copy heading and permalink for Proposition 2.5.8" href="#prop_cachyser" title="Copy heading and permalink for Proposition 2.5.8">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 2.5.2: Cauchy series"><a aria-label="Copy heading and permalink for Subsection 2.5.2: Cauchy series" href="#sec_series-4" title="Copy heading and permalink for Subsection 2.5.2: Cauchy series">🔗</a></div>
+</section>
+<section class="subsection" id="sec_series-5">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.5.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Basic properties</span>
+</h3>
+<article class="proposition theorem-like" id="sec_series-5-2"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.5.9</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_series-5-2-1-1">
+<div class="para">Let <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> be a convergent series.  Then the sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is convergent and</div>
+<div class="displaymath process-math" id="sec_series-5-2-1-1-3">
+\begin{equation}
+\lim_{n\to\infty} x_n = 0.
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-5-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 2.5.9"><a aria-label="Copy heading and permalink for Proposition 2.5.9" href="#sec_series-5-2" title="Copy heading and permalink for Proposition 2.5.9">🔗</a></div>
+</article>
+<article class="proof" id="sec_series-5-3"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_series-5-3-1">
+<div class="para">Let <span class="process-math">\(\epsilon &gt; 0\)</span> be given.  As <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> is convergent, it is Cauchy. Thus we find an <span class="process-math">\(M\)</span> such that for every <span class="process-math">\(n \geq M\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_series-5-3-1-5">
+\begin{equation}
+\epsilon &gt; 
+\abs{ \sum_{i={n+1}}^{n+1} x_i }
+=
+\sabs{ x_{n+1} } .
+\end{equation}
+</div>
+<div class="para">Hence, for every <span class="process-math">\(n \geq M+1\text{,}\)</span> we have <span class="process-math">\(\sabs{x_{n}} &lt; \epsilon\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-5-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 2.5.3.1"><a aria-label="Copy heading and permalink for Proof 2.5.3.1" href="#sec_series-5-3" title="Copy heading and permalink for Proof 2.5.3.1">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_series-5-4"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.5.10</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_series-5-4-1-1">If <span class="process-math">\(r \geq 1\)</span> or <span class="process-math">\(r \leq -1\text{,}\)</span> then the geometric series <span class="process-math">\(\sum_{n=0}^\infty r^n\)</span> diverges.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-5-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_series-5-4-1-2">Proof: <span class="process-math">\(\sabs{r^n} = \sabs{r}^n \geq 1^n = 1\text{.}\)</span>  The terms do not go to zero and the series cannot converge.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-5-4-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 2.5.10"><a aria-label="Copy heading and permalink for Example 2.5.10" href="#sec_series-5-4" title="Copy heading and permalink for Example 2.5.10">🔗</a></div>
+</article>
+<div class="para" id="sec_series-5-5">So if a series converges, the terms of the series go to zero. The implication, however, goes only one way. Let us give an example.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-5-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="example_harmonicseries"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.5.11</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="example_harmonicseries-1-1">The series <span class="process-math">\(\sum_{n=1}^\infty \nicefrac{1}{n}\)</span> diverges (despite the fact that <span class="process-math">\(\lim_{n\to\infty} \nicefrac{1}{n} = 0\)</span>). This is the famous <em class="emphasis">harmonic series</em><details aria-live="polite" class="ptx-footnote" id="example_harmonicseries-1-1-4"><summary class="ptx-footnote__number" title="Footnote 2.5.1"><sup> 1 </sup></summary>
+<div class="ptx-footnote__contents" id="example_harmonicseries-1-1-4">The divergence of the harmonic series was known long before the theory of series was made rigorous.  The proof we give is the earliest proof and was given by <a class="external" href="https://en.wikipedia.org/wiki/Oresme" target="_blank">Nicole Oresme</a> (1323?–1382).
+</div></details>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_harmonicseries-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="example_harmonicseries-1-2">
+<div class="para">Proof: We will show that the sequence of partial sums is unbounded, and hence cannot converge. Write the partial sums <span class="process-math">\(s_n\)</span> for <span class="process-math">\(n = 2^k\)</span> as:</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_arch_i.html" id="example_harmonicseries-1-2-3">
+\begin{equation}
+\begin{aligned}
+s_1 &amp; = 1 , \\
+s_2 &amp; = \left( 1 \right) + \left( \frac{1}{2} \right) , \\
+s_4 &amp; = \left( 1 \right) + \left( \frac{1}{2} \right) +
+\left( \frac{1}{3} + \frac{1}{4} \right) , \\
+s_8 &amp; = \left( 1 \right) + \left( \frac{1}{2} \right) +
+\left( \frac{1}{3} + \frac{1}{4} \right) +
+\left( \frac{1}{5} + \frac{1}{6} + \frac{1}{7} + \frac{1}{8} \right) , \\
+&amp; ~~ \vdots \\
+s_{2^k} &amp; = 
+1 + 
+\sum_{i=1}^k
+\left(
+\sum_{m=2^{i-1}+1}^{2^i} \frac{1}{m}
+\right) .
+\end{aligned}
+\end{equation}
+</div>
+<div class="para">Notice <span class="process-math">\(\nicefrac{1}{3} + \nicefrac{1}{4} \geq \nicefrac{1}{4} + \nicefrac{1}{4} =
+\nicefrac{1}{2}\)</span> and <span class="process-math">\(\nicefrac{1}{5} + \nicefrac{1}{6} + \nicefrac{1}{7} + \nicefrac{1}{8}
+\geq \nicefrac{1}{8} + \nicefrac{1}{8} + \nicefrac{1}{8} + \nicefrac{1}{8} =
+\nicefrac{1}{2}\text{.}\)</span>  More generally</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_arch_i.html" id="example_harmonicseries-1-2-6">
+\begin{equation}
+\sum_{m=2^{k-1}+1}^{2^k} \frac{1}{m}
+\geq
+\sum_{m=2^{k-1}+1}^{2^k} \frac{1}{2^k}
+=
+(2^{k-1}) \frac{1}{2^k} = \frac{1}{2} .
+\end{equation}
+</div>
+<div class="para">Therefore,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_arch_i.html" id="example_harmonicseries-1-2-7">
+\begin{equation}
+s_{2^k} = 
+1 + 
+\sum_{i=1}^k
+\left(
+\sum_{m=2^{i-1}+1}^{2^i} \frac{1}{m}
+\right) 
+\geq
+1 + \sum_{i=1}^k \frac{1}{2} = 1 + \frac{k}{2} .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(\{ \nicefrac{k}{2} \}_{k=1}^\infty\)</span> is unbounded by the <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_setofreals.html#thm_arch_i" title="Item i">Archimedean property</a>, <span class="process-math">\(\{ s_{2^k} \}_{k=1}^\infty\)</span> is unbounded, and therefore <span class="process-math">\(\{ s_n \}_{n=1}^\infty\)</span> is unbounded. Hence, <span class="process-math">\(\{ s_n \}_{n=1}^\infty\)</span> diverges, and consequently <span class="process-math">\(\sum_{n=1}^\infty \nicefrac{1}{n}\)</span> diverges.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_harmonicseries-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 2.5.11"><a aria-label="Copy heading and permalink for Example 2.5.11" href="#example_harmonicseries" title="Copy heading and permalink for Example 2.5.11">🔗</a></div>
+</article>
+<div class="para" id="sec_series-5-7">Like finite sums, convergent series behave linearly. That is, we can multiply them by constants and add them and these operations are done term by term.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-5-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_series-5-8"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.5.12</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Linearity of series.</span>
+</h4>
+<div class="para" id="sec_series-5-8-3-1">Let <span class="process-math">\(\alpha \in \R\)</span> and <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> and <span class="process-math">\(\sum_{n=1}^\infty y_n\)</span> be convergent series.  Then<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-5-8-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="sec_series-5-8-3-2">
+<li id="sec_series-5-8-3-2-1">
+<div class="para logical" id="sec_series-5-8-3-2-1-1">
+<div class="para">
+<span class="process-math">\(\sum_{n=1}^\infty \alpha x_n\)</span> is a convergent series and</div>
+<div class="displaymath process-math" id="sec_series-5-8-3-2-1-1-2">
+\begin{equation}
+\sum_{n=1}^\infty \alpha x_n
+=
+\alpha \sum_{n=1}^\infty x_n .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-5-8-3-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#sec_series-5-8-3-2-1" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="sec_series-5-8-3-2-2">
+<div class="para logical" id="sec_series-5-8-3-2-2-1">
+<div class="para">
+<span class="process-math">\(\sum_{n=1}^\infty ( x_n + y_n )\)</span> is a convergent series and</div>
+<div class="displaymath process-math" id="sec_series-5-8-3-2-2-1-2">
+\begin{equation}
+\sum_{n=1}^\infty ( x_n + y_n ) 
+=
+\left( \sum_{n=1}^\infty x_n \right)
++
+\left( \sum_{n=1}^\infty y_n \right) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-5-8-3-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#sec_series-5-8-3-2-2" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Proposition 2.5.12: Linearity of series"><a aria-label="Copy heading and permalink for Proposition 2.5.12: Linearity of series" href="#sec_series-5-8" title="Copy heading and permalink for Proposition 2.5.12: Linearity of series">🔗</a></div>
+</article>
+<article class="proof" id="sec_series-5-9"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_series-5-9-1">
+<div class="para">For the first item, we simply write the <span class="process-math">\(k\)</span>th partial sum</div>
+<div class="displaymath process-math" id="sec_series-5-9-1-2">
+\begin{equation}
+\sum_{n=1}^k \alpha x_n
+=
+\alpha \left( \sum_{n=1}^k x_n \right) .
+\end{equation}
+</div>
+<div class="para">We look at the right-hand side and note that the constant multiple of a convergent sequence is convergent.  Hence, we take the limit of both sides to obtain the result.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-5-9-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_series-5-9-2">
+<div class="para">For the second item we also look at the <span class="process-math">\(k\)</span>th partial sum</div>
+<div class="displaymath process-math" id="sec_series-5-9-2-2">
+\begin{equation}
+\sum_{n=1}^k ( x_n + y_n ) 
+=
+\left( \sum_{n=1}^k x_n \right)
++
+\left( \sum_{n=1}^k y_n \right) .
+\end{equation}
+</div>
+<div class="para">We look at the right-hand side and note that the sum of convergent sequences is convergent.  Hence, we take the limit of both sides to obtain the proposition.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-5-9-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 2.5.3.2"><a aria-label="Copy heading and permalink for Proof 2.5.3.2" href="#sec_series-5-9" title="Copy heading and permalink for Proof 2.5.3.2">🔗</a></div>
+</article>
+<div class="para logical" id="sec_series-5-10">
+<div class="para">An example of a useful application of the first item is the following formula.  If <span class="process-math">\(\sabs{r} &lt; 1\)</span> and <span class="process-math">\(i \in \N\text{,}\)</span> then</div>
+<div class="displaymath process-math" id="sec_series-5-10-3">
+\begin{equation}
+\sum_{n=i}^\infty r^n = \frac{r^i}{1-r} .
+\end{equation}
+</div>
+<div class="para">The formula follows by using the geometric series and multiplying by <span class="process-math">\(r^i\text{:}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_series-5-10-5">
+\begin{equation}
+r^i \sum_{n=0}^\infty r^n =
+\sum_{n=0}^\infty r^{n+i}
+=
+\sum_{n=i}^\infty r^n .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-5-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_series-5-11">Multiplying series is not as simple as adding; see the next section. It is not true, of course, that we multiply term by term.  That strategy does not work even for finite sums: <span class="process-math">\((a+b)(c+d) \neq ac+bd\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-5-11" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 2.5.3: Basic properties"><a aria-label="Copy heading and permalink for Subsection 2.5.3: Basic properties" href="#sec_series-5" title="Copy heading and permalink for Subsection 2.5.3: Basic properties">🔗</a></div>
+</section>
+<section class="subsection" id="sec_series-6">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.5.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Absolute convergence</span>
+</h3>
+<div class="para" id="sec_series-6-2">As monotone sequences are easier to work with than arbitrary sequences, it is usually easier to work with series <span class="process-math">\(\sum_{n=1}^\infty x_n\text{,}\)</span> where <span class="process-math">\(x_n \geq 0\)</span> for all <span class="process-math">\(n\text{.}\)</span>  The sequence of partial sums is then monotone increasing and converges if it is bounded above. Let us formalize this statement as a proposition.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-6-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_series-6-3"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.5.13</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_series-6-3-1-1">If <span class="process-math">\(x_n \geq 0\)</span> for all <span class="process-math">\(n\text{,}\)</span> then <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> converges if and only if the sequence of partial sums is bounded above.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-6-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 2.5.13"><a aria-label="Copy heading and permalink for Proposition 2.5.13" href="#sec_series-6-3" title="Copy heading and permalink for Proposition 2.5.13">🔗</a></div>
+</article>
+<div class="para logical" id="sec_series-6-4">
+<div class="para">The limit of a monotone increasing sequence is the supremum. So when <span class="process-math">\(x_n \geq 0\)</span> for all <span class="process-math">\(n\text{,}\)</span> we have the inequality</div>
+<div class="displaymath process-math" id="sec_series-6-4-3">
+\begin{equation}
+\sum_{n=1}^k x_n \leq
+\sum_{n=1}^\infty x_n .
+\end{equation}
+</div>
+<div class="para">If we allow infinite limits, the inequality still holds even when the series diverges to infinity, although in that case it is not terribly useful.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-6-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_series-6-5">We will see that the following common criterion for convergence of series has big implications for how the series can be manipulated.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-6-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_series-6-6"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.5.14</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_series-6-6-1-1">A series <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> <em class="emphasis">converges absolutely</em> if the series <span class="process-math">\(\sum_{n=1}^\infty \sabs{x_n}\)</span> converges. If a series converges, but does not converge absolutely, we say it <em class="emphasis">converges conditionally</em>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-6-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 2.5.14"><a aria-label="Copy heading and permalink for Definition 2.5.14" href="#sec_series-6-6" title="Copy heading and permalink for Definition 2.5.14">🔗</a></div>
+</article>
+<article class="proposition theorem-like" id="sec_series-6-7"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.5.15</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_series-6-7-1-1">If the series <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> converges absolutely, then it converges.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-6-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 2.5.15"><a aria-label="Copy heading and permalink for Proposition 2.5.15" href="#sec_series-6-7" title="Copy heading and permalink for Proposition 2.5.15">🔗</a></div>
+</article>
+<article class="proof" id="sec_series-6-8"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_series-6-8-1">
+<div class="para">A series is convergent if and only if it is Cauchy. Suppose <span class="process-math">\(\sum_{n=1}^\infty \sabs{x_n}\)</span> is Cauchy.  That is, for every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there exists an <span class="process-math">\(M\)</span> such that for all <span class="process-math">\(k \geq M\)</span> and all <span class="process-math">\(n &gt; k\text{,}\)</span> we have</div>
+<div class="displaymath process-math" id="sec_series-6-8-1-6">
+\begin{equation}
+\sum_{i=k+1}^n \sabs{x_i} 
+=
+\abs{ \sum_{i=k+1}^n \sabs{x_i} }
+&lt;
+\epsilon .
+\end{equation}
+</div>
+<div class="para">We apply the triangle inequality for a finite sum to obtain</div>
+<div class="displaymath process-math" id="sec_series-6-8-1-7">
+\begin{equation}
+\abs{ \sum_{i=k+1}^n x_i }
+\leq
+\sum_{i=k+1}^n \sabs{x_i}
+&lt;
+\epsilon .
+\end{equation}
+</div>
+<div class="para">Hence, <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> is Cauchy, and therefore it converges.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-6-8-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 2.5.4.1"><a aria-label="Copy heading and permalink for Proof 2.5.4.1" href="#sec_series-6-8" title="Copy heading and permalink for Proof 2.5.4.1">🔗</a></div>
+</article>
+<div class="para logical" id="sec_series-6-9">
+<div class="para">If <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> converges absolutely, the limits of <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> and <span class="process-math">\(\sum_{n=1}^\infty \sabs{x_n}\)</span> are generally different.  Computing one does not help us compute the other.  However, the computation above leads to a useful inequality for absolutely convergent series, a series version of the triangle inequality, a proof of which we leave as an exercise:</div>
+<div class="displaymath process-math" id="sec_series-6-9-4">
+\begin{equation}
+\abs{ \sum_{i=1}^\infty x_i }
+\leq
+\sum_{i=1}^\infty \sabs{x_i} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-6-9" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_series-6-10">Absolutely convergent series have many wonderful properties. For example, absolutely convergent series can be rearranged arbitrarily, or we can multiply such series together easily.  Conditionally convergent series, on the other hand, often do not behave as one would expect.  See the next section.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-6-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_series-6-11">
+<div class="para">We leave it as an exercise to show that</div>
+<div class="displaymath process-math" id="sec_series-6-11-1">
+\begin{equation}
+\sum_{n=1}^\infty \frac{{(-1)}^n}{n}
+\end{equation}
+</div>
+<div class="para">converges, although the reader should finish this section before trying. On the other hand, we proved</div>
+<div class="displaymath process-math" id="sec_series-6-11-2">
+\begin{equation}
+\sum_{n=1}^\infty \frac{1}{n}
+\end{equation}
+</div>
+<div class="para">diverges.  Therefore, <span class="process-math">\(\sum_{n=1}^\infty \frac{{(-1)}^n}{n}\)</span> is a conditionally convergent series.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-6-11" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 2.5.4: Absolute convergence"><a aria-label="Copy heading and permalink for Subsection 2.5.4: Absolute convergence" href="#sec_series-6" title="Copy heading and permalink for Subsection 2.5.4: Absolute convergence">🔗</a></div>
+</section>
+<section class="subsection" id="sec_series-7">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.5.5</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Comparison test and the <span class="process-math">\(p\)</span>-series</span>
+</h3>
+<div class="para" id="sec_series-7-2">We noted above that for a series with positive terms to converge, the terms not only have to go to zero, but they have to go to zero “fast enough.”  If we know about convergence of a certain series, we can use the following comparison test to see if the terms of another series go to zero “fast enough.”<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-7-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_series-7-3"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.5.16</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Comparison test.</span>
+</h4>
+<div class="para" id="sec_series-7-3-3-1">Let <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> and <span class="process-math">\(\sum_{n=1}^\infty y_n\)</span> be series such that <span class="process-math">\(0 \leq x_n \leq y_n\)</span> for all <span class="process-math">\(n \in \N\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-7-3-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="sec_series-7-3-3-2">
+<li id="sec_series-7-3-3-2-1">
+<div class="para" id="sec_series-7-3-3-2-1-1">If <span class="process-math">\(\sum_{n=1}^\infty y_n\)</span> converges, then so does <span class="process-math">\(\sum_{n=1}^\infty x_n\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-7-3-3-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#sec_series-7-3-3-2-1" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="sec_series-7-3-3-2-2">
+<div class="para" id="sec_series-7-3-3-2-2-1">If <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> diverges, then so does <span class="process-math">\(\sum_{n=1}^\infty y_n\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-7-3-3-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#sec_series-7-3-3-2-2" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Proposition 2.5.16: Comparison test"><a aria-label="Copy heading and permalink for Proposition 2.5.16: Comparison test" href="#sec_series-7-3" title="Copy heading and permalink for Proposition 2.5.16: Comparison test">🔗</a></div>
+</article>
+<article class="proof" id="sec_series-7-4"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_series-7-4-1">
+<div class="para">As the terms of the series are all nonnegative, the sequences of partial sums are both monotone increasing. Since <span class="process-math">\(x_n \leq y_n\)</span> for all <span class="process-math">\(n\text{,}\)</span> the partial sums satisfy for all <span class="process-math">\(k\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/comptest_eq.html" id="comptest_eq">
+\begin{equation}
+\sum_{n=1}^k x_n \leq \sum_{n=1}^k y_n .\tag{2.1}
+\end{equation}
+</div>
+<div class="para">If the series <span class="process-math">\(\sum_{n=1}^\infty y_n\)</span> converges, the partial sums for the series are bounded.  Therefore, the right-hand side of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_series.html#comptest_eq" title="Equation 2.1">(2.1)</a> is bounded for all <span class="process-math">\(k\text{;}\)</span> there exists some <span class="process-math">\(B \in \R\)</span> such that <span class="process-math">\(\sum_{n=1}^k y_n \leq B\)</span> for all <span class="process-math">\(k\text{,}\)</span> and so</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/comptest_eq.html" id="sec_series-7-4-1-11">
+\begin{equation}
+\sum_{n=1}^k x_n \leq \sum_{n=1}^k y_n \leq B.
+\end{equation}
+</div>
+<div class="para">Hence, the partial sums for <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> are also bounded.  Since the partial sums are a monotone increasing sequence they are convergent.  The first item is thus proved.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-7-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_series-7-4-2">
+<div class="para">On the other hand if <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> diverges, the sequence of partial sums must be unbounded since it is monotone increasing.  That is, the partial sums for <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> are eventually bigger than any real number.  Putting this together with <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_series.html#comptest_eq" title="Equation 2.1">(2.1)</a> we see that for every <span class="process-math">\(B \in
+\R\text{,}\)</span> there is a <span class="process-math">\(k\)</span> such that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/comptest_eq.html" id="sec_series-7-4-2-6">
+\begin{equation}
+B \leq \sum_{n=1}^k x_n \leq \sum_{n=1}^k y_n .
+\end{equation}
+</div>
+<div class="para">Hence, the partial sums for <span class="process-math">\(\sum_{n=1}^\infty y_n\)</span> are also unbounded, and <span class="process-math">\(\sum_{n=1}^\infty y_n\)</span> also diverges.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-7-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 2.5.5.1"><a aria-label="Copy heading and permalink for Proof 2.5.5.1" href="#sec_series-7-4" title="Copy heading and permalink for Proof 2.5.5.1">🔗</a></div>
+</article>
+<div class="para" id="sec_series-7-5">A useful series to use with the comparison test is the <span class="process-math">\(p\)</span>-series<details aria-live="polite" class="ptx-footnote" id="sec_series-7-5-2"><summary class="ptx-footnote__number" title="Footnote 2.5.2"><sup> 2 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_series-7-5-2">We have not yet defined <span class="process-math">\(x^p\)</span> for <span class="process-math">\(x &gt; 0\)</span> and an arbitrary <span class="process-math">\(p \in \R\text{.}\)</span>  The definition is <span class="process-math">\(x^p \coloneqq \exp ( p \ln x )\text{.}\)</span> We will define the logarithm and the exponential in <a class="internal" href="sec_logandexp.html" title="Section 5.4: The logarithm and the exponential">Section 5.4</a>. For now you can just think of rational <span class="process-math">\(p\)</span> where <span class="process-math">\(x^{k/m} = {(x^{1/m})}^{k}\text{.}\)</span>  See also <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_setofreals.html#exercise_realpower" title="Exercise 1.2.17">Exercise 1.2.17</a>.
+</div></details>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-7-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_series-7-6"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.5.17</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title"><span class="process-math">\(p\)</span>-series or the <span class="process-math">\(p\)</span>-test.</span>
+</h4>
+<div class="para logical" id="sec_series-7-6-4-1">
+<div class="para">For <span class="process-math">\(p \in \R\text{,}\)</span> the series</div>
+<div class="displaymath process-math" id="sec_series-7-6-4-1-2">
+\begin{equation}
+\sum_{n=1}^\infty \frac{1}{n^p}
+\end{equation}
+</div>
+<div class="para">converges if and only if <span class="process-math">\(p &gt; 1\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-7-6-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 2.5.17: p-series or the p-test"><a aria-label="Copy heading and permalink for Proposition 2.5.17: p-series or the p-test" href="#sec_series-7-6" title="Copy heading and permalink for Proposition 2.5.17: p-series or the p-test">🔗</a></div>
+</article>
+<article class="proof" id="sec_series-7-7"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_series-7-7-1">First suppose <span class="process-math">\(p \leq 1\text{.}\)</span> As <span class="process-math">\(n \geq 1\text{,}\)</span> we have <span class="process-math">\(\frac{1}{n^p} \geq \frac{1}{n}\text{.}\)</span>  Since <span class="process-math">\(\sum_{n=1}^\infty \frac{1}{n}\)</span> diverges, <span class="process-math">\(\sum_{n=1}^\infty \frac{1}{n^p}\)</span> must diverge for all <span class="process-math">\(p \leq 1\)</span> by the comparison test.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-7-7-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_series-7-7-2">
+<div class="para">Now suppose <span class="process-math">\(p &gt; 1\text{.}\)</span> We proceed as we did for the harmonic series, but instead of showing that the sequence of partial sums is unbounded, we show that it is bounded. The terms of the series are positive, so the sequence of partial sums is monotone increasing and converges if it is bounded above. Let <span class="process-math">\(s_n\)</span> denote the <span class="process-math">\(n\)</span>th partial sum.</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/geometric_prop.html" id="sec_series-7-7-2-4">
+\begin{equation}
+\begin{aligned}
+s_1 &amp; = 1 , \\
+s_3 &amp; = \left( 1 \right) + \left( \frac{1}{2^p} + \frac{1}{3^p} \right) , \\
+s_7 &amp; = \left( 1 \right) + \left( \frac{1}{2^p} + \frac{1}{3^p} \right) +
+\left( \frac{1}{4^p} + \frac{1}{5^p} + \frac{1}{6^p} + \frac{1}{7^p} \right) , \\
+&amp; ~~ \vdots \\
+s_{2^k - 1} &amp;= 
+1 + 
+\sum_{i=1}^{k-1}
+\left(
+\sum_{m=2^i}^{2^{i+1}-1} \frac{1}{m^p}
+\right) .
+\end{aligned}
+\end{equation}
+</div>
+<div class="para">Instead of estimating from below, we estimate from above. As <span class="process-math">\(p\)</span> is positive, <span class="process-math">\(2^p &lt; 3^p\text{,}\)</span> and hence <span class="process-math">\(\frac{1}{2^p} + \frac{1}{3^p} &lt;
+\frac{1}{2^p} + \frac{1}{2^p}\text{.}\)</span>  Similarly, <span class="process-math">\(\frac{1}{4^p} + \frac{1}{5^p} +
+\frac{1}{6^p} + \frac{1}{7^p} &lt;
+\frac{1}{4^p} + \frac{1}{4^p} +
+\frac{1}{4^p} + \frac{1}{4^p}\text{.}\)</span>  Therefore, for all <span class="process-math">\(k \geq 2\text{,}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/geometric_prop.html" id="sec_series-7-7-2-10">
+\begin{equation}
+\begin{split}
+s_{2^k-1}
+&amp; =
+1+
+\sum_{i=1}^{k-1}
+\left(
+\sum_{m=2^{i}}^{2^{i+1}-1} \frac{1}{m^p}
+\right) 
+\\
+&amp; &lt;
+1+
+\sum_{i=1}^{k-1}
+\left(
+\sum_{m=2^{i}}^{2^{i+1}-1} \frac{1}{{(2^i)}^p}
+\right) 
+\\
+&amp; =
+1+
+\sum_{i=1}^{k-1}
+\left(
+\frac{2^i}{{(2^i)}^p}
+\right) 
+\\
+&amp; =
+1+
+\sum_{i=1}^{k-1}
+{\left(
+\frac{1}{2^{p-1}}
+\right)}^i .
+\end{split}
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(p &gt; 1\text{,}\)</span> we have <span class="process-math">\(\frac{1}{2^{p-1}} &lt; 1\text{.}\)</span> <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_series.html#geometric_prop" title="Proposition 2.5.5">Proposition 2.5.5</a> says that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/geometric_prop.html" id="sec_series-7-7-2-14">
+\begin{equation}
+\sum_{i=1}^\infty
+{\left(
+\frac{1}{2^{p-1}}
+\right)}^i
+\end{equation}
+</div>
+<div class="para">converges.  Thus,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/geometric_prop.html" id="sec_series-7-7-2-15">
+\begin{equation}
+s_{2^k-1} &lt; 
+1+
+\sum_{i=1}^{k-1}
+{\left(
+\frac{1}{2^{p-1}}
+\right)}^i 
+\leq 
+1+
+\sum_{i=1}^\infty
+{\left(
+\frac{1}{2^{p-1}}
+\right)}^i .
+\end{equation}
+</div>
+<div class="para">For every <span class="process-math">\(n\)</span> there is a <span class="process-math">\(k \geq 2\)</span> such that <span class="process-math">\(n \leq 2^k-1\text{,}\)</span> and as <span class="process-math">\(\{ s_n \}_{n=1}^\infty\)</span> is a monotone sequence, <span class="process-math">\(s_n \leq s_{2^k-1}\text{.}\)</span> So for all <span class="process-math">\(n\text{,}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/geometric_prop.html" id="sec_series-7-7-2-22">
+\begin{equation}
+s_n &lt; 
+1+
+\sum_{i=1}^\infty
+{\left(
+\frac{1}{2^{p-1}}
+\right)}^i
+\end{equation}
+</div>
+<div class="para">Thus the sequence of partial sums is bounded, and the series converges.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-7-7-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 2.5.5.2"><a aria-label="Copy heading and permalink for Proof 2.5.5.2" href="#sec_series-7-7" title="Copy heading and permalink for Proof 2.5.5.2">🔗</a></div>
+</article>
+<div class="para" id="sec_series-7-8">Neither the <span class="process-math">\(p\)</span>-series test nor the comparison test tells us what the sum converges to.  They only tell us that a limit of the partial sums exists.  For instance, while we know that <span class="process-math">\(\sum_{n=1}^\infty \nicefrac{1}{n^2}\)</span> converges, it is far harder to find<details aria-live="polite" class="ptx-footnote" id="sec_series-7-8-3"><summary class="ptx-footnote__number" title="Footnote 2.5.3"><sup> 3 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_series-7-8-3">Demonstration of this fact is what made the Swiss mathematician <a class="external" href="https://en.wikipedia.org/wiki/Leonhard_Euler" target="_blank">Leonhard Euler</a> (1707–1783) famous.
+</div></details> that the limit is <span class="process-math">\(\nicefrac{\pi^2}{6}\text{.}\)</span> If we treat <span class="process-math">\(\sum_{n=1}^\infty \nicefrac{1}{n^p}\)</span> as a function of <span class="process-math">\(p\text{,}\)</span> we get the Riemann <span class="process-math">\(\zeta\)</span> (zeta) function.  Understanding the behavior of this function contains one of the most famous unsolved problems in mathematics today and has applications in seemingly unrelated areas such as modern cryptography.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-7-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_series-7-9"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.5.18</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_series-7-9-1-1">The series <span class="process-math">\(\sum_{n=1}^\infty \frac{1}{n^2+1}\)</span> converges.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-7-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_series-7-9-1-2">Proof:  First, <span class="process-math">\(\frac{1}{n^2+1} &lt; \frac{1}{n^2}\)</span> for all <span class="process-math">\(n \in \N\text{.}\)</span> The series <span class="process-math">\(\sum_{n=1}^\infty \frac{1}{n^2}\)</span> converges by the <span class="process-math">\(p\)</span>-series test. Therefore, by the comparison test, <span class="process-math">\(\sum_{n=1}^\infty \frac{1}{n^2+1}\)</span> converges.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-7-9-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 2.5.18"><a aria-label="Copy heading and permalink for Example 2.5.18" href="#sec_series-7-9" title="Copy heading and permalink for Example 2.5.18">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 2.5.5: Comparison test and the p-series"><a aria-label="Copy heading and permalink for Subsection 2.5.5: Comparison test and the p-series" href="#sec_series-7" title="Copy heading and permalink for Subsection 2.5.5: Comparison test and the p-series">🔗</a></div>
+</section>
+<section class="subsection" id="sec_series-8">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.5.6</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Ratio test</span>
+</h3>
+<div class="para" id="sec_series-8-2">Suppose <span class="process-math">\(r &gt; 0\text{.}\)</span>  The ratio of two subsequent terms in the geometric series <span class="process-math">\(\sum_{n=0}^\infty r^n\)</span> is <span class="process-math">\(\frac{r^{n+1}}{r^n} = r\text{,}\)</span> and the series converges whenever <span class="process-math">\(r &lt; 1\text{.}\)</span>  Just as for sequences, this fact can be generalized to more arbitrary series as long as we have such a ratio “in the limit.”  We then compare the tail of a series to the geometric series.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-8-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_series-8-3"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.5.19</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Ratio test.</span>
+</h4>
+<div class="para logical" id="sec_series-8-3-3-1">
+<div class="para">Let <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> be a series, <span class="process-math">\(x_n \neq 0\)</span> for all <span class="process-math">\(n\text{,}\)</span> and such that</div>
+<div class="displaymath process-math" id="sec_series-8-3-3-1-4">
+\begin{equation}
+L \coloneqq \lim_{n\to\infty} \frac{\sabs{x_{n+1}}}{\sabs{x_n}}
+\qquad \text{exists.}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-8-3-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="sec_series-8-3-3-2">
+<li id="sec_series-8-3-3-2-1">
+<div class="para" id="sec_series-8-3-3-2-1-1">If <span class="process-math">\(L &lt; 1\text{,}\)</span> then <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> converges absolutely.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-8-3-3-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#sec_series-8-3-3-2-1" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="sec_series-8-3-3-2-2">
+<div class="para" id="sec_series-8-3-3-2-2-1">If <span class="process-math">\(L &gt; 1\text{,}\)</span> then <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> diverges.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-8-3-3-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#sec_series-8-3-3-2-2" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Proposition 2.5.19: Ratio test"><a aria-label="Copy heading and permalink for Proposition 2.5.19: Ratio test" href="#sec_series-8-3" title="Copy heading and permalink for Proposition 2.5.19: Ratio test">🔗</a></div>
+</article>
+<div class="para" id="sec_series-8-4">Although the test as stated is often sufficient, it can be strengthened a bit, see <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_series.html#exercise_strongerratiotest" title="Exercise 2.5.6">Exercise 2.5.6</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-8-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_series-8-5"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_series-8-5-1">If <span class="process-math">\(L &gt; 1\text{,}\)</span> then <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_factslimsseqs.html#seq_ratiotest" title="Lemma 2.2.12: Ratio test for sequences">Lemma 2.2.12</a> says that the sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> diverges.  Since it is a necessary condition for the convergence of series that the terms go to zero, we know that <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> must diverge.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-8-5-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_series-8-5-2">
+<div class="para">Thus suppose <span class="process-math">\(L &lt; 1\text{.}\)</span> We will argue that <span class="process-math">\(\sum_{n=1}^\infty \sabs{x_n}\)</span> must converge. The proof is similar to that of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_factslimsseqs.html#seq_ratiotest" title="Lemma 2.2.12: Ratio test for sequences">Lemma 2.2.12</a>.  Of course <span class="process-math">\(L \geq
+0\text{.}\)</span> Pick <span class="process-math">\(r\)</span> such that <span class="process-math">\(L &lt; r &lt; 1\text{.}\)</span>  As <span class="process-math">\(r-L &gt; 0\text{,}\)</span> there exists an <span class="process-math">\(M \in \N\)</span> such that for all <span class="process-math">\(n \geq M\text{,}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/seq_ratiotest.html" id="sec_series-8-5-2-10">
+\begin{equation}
+\abs{\frac{\sabs{x_{n+1}}}{\sabs{x_n}} - L} &lt; r-L .
+\end{equation}
+</div>
+<div class="para">Therefore,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/seq_ratiotest.html" id="sec_series-8-5-2-11">
+\begin{equation}
+\frac{\sabs{x_{n+1}}}{\sabs{x_n}} &lt; r .
+\end{equation}
+</div>
+<div class="para">For <span class="process-math">\(n &gt; M\)</span> (that is for <span class="process-math">\(n \geq M+1\)</span>), write</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/seq_ratiotest.html" id="sec_series-8-5-2-14">
+\begin{equation}
+\sabs{x_n} =
+\sabs{x_M}
+\frac{\sabs{x_{M+1}}}{\sabs{x_{M}}}
+\frac{\sabs{x_{M+2}}}{\sabs{x_{M+1}}}
+\cdots
+\frac{\sabs{x_{n}}}{\sabs{x_{n-1}}}
+&lt;
+\sabs{x_M}
+r r \cdots r = \sabs{x_M} r^{n-M} =
+\bigl(\sabs{x_M} r^{-M}\bigr) r^n .
+\end{equation}
+</div>
+<div class="para">For <span class="process-math">\(k &gt; M\text{,}\)</span> write the partial sum as</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/seq_ratiotest.html" id="sec_series-8-5-2-16">
+\begin{equation}
+\begin{split}
+\sum_{n=1}^k \sabs{x_n}
+&amp; =
+\left(\sum_{n=1}^{M} \sabs{x_n} \right)
++
+\left(\sum_{n=M+1}^{k} \sabs{x_n} \right)
+\\
+&amp; &lt;
+\left(\sum_{n=1}^{M} \sabs{x_n} \right)
++
+\left(\sum_{n=M+1}^{k} 
+\bigl(\sabs{x_M} r^{-M}\bigr) r^n
+\right)
+\\
+&amp; =
+\left(\sum_{n=1}^{M} \sabs{x_n} \right)
++
+\bigl(\sabs{x_M} r^{-M}\bigr)
+\left( \sum_{n=M+1}^{k} r^n \right) .
+\end{split}
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(0 &lt; r &lt; 1\text{,}\)</span> the geometric series <span class="process-math">\(\sum_{n=0}^{\infty} r^n\)</span> converges, so <span class="process-math">\(\sum_{n=M+1}^{\infty} r^n\)</span> converges as well.  We take the limit as <span class="process-math">\(k\)</span> goes to infinity on the right-hand side above to obtain</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/seq_ratiotest.html" id="sec_series-8-5-2-21">
+\begin{equation}
+\begin{split}
+\sum_{n=1}^k \sabs{x_n}
+&amp; &lt;
+\left(\sum_{n=1}^{M} \sabs{x_n} \right)
++
+\bigl(\sabs{x_M} r^{-M}\bigr)
+\left( \sum_{n=M+1}^{k} r^n \right) 
+\\
+&amp; \leq
+\left(\sum_{n=1}^{M} \sabs{x_n} \right)
++
+\bigl(\sabs{x_M} r^{-M}\bigr)
+\left( \sum_{n=M+1}^{\infty} r^n \right) .
+\end{split}
+\end{equation}
+</div>
+<div class="para">The right-hand side is a number that does not depend on <span class="process-math">\(k\text{.}\)</span> Hence, the sequence of partial sums of <span class="process-math">\(\sum_{n=1}^\infty \sabs{x_n}\)</span> is bounded and <span class="process-math">\(\sum_{n=1}^\infty \sabs{x_n}\)</span> is convergent.  Thus, <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> is absolutely convergent.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-8-5-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 2.5.6.1"><a aria-label="Copy heading and permalink for Proof 2.5.6.1" href="#sec_series-8-5" title="Copy heading and permalink for Proof 2.5.6.1">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_series-8-6"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.5.20</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_series-8-6-1-1">
+<div class="para">The series</div>
+<div class="displaymath process-math" id="sec_series-8-6-1-1-1">
+\begin{equation}
+\sum_{n=1}^\infty \frac{2^n}{n!}
+\end{equation}
+</div>
+<div class="para">converges absolutely.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-8-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_series-8-6-1-2">
+<div class="para">Proof:  We write</div>
+<div class="displaymath process-math" id="sec_series-8-6-1-2-1">
+\begin{equation}
+\lim_{n\to\infty} \frac{2^{(n+1)}/(n+1)!}{2^n / n!} =
+\lim_{n\to\infty} \frac{2}{n+1} = 0 .
+\end{equation}
+</div>
+<div class="para">Therefore, the series converges absolutely by the ratio test.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-8-6-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 2.5.20"><a aria-label="Copy heading and permalink for Example 2.5.20" href="#sec_series-8-6" title="Copy heading and permalink for Example 2.5.20">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 2.5.6: Ratio test"><a aria-label="Copy heading and permalink for Subsection 2.5.6: Ratio test" href="#sec_series-8" title="Copy heading and permalink for Subsection 2.5.6: Ratio test">🔗</a></div>
+</section>
+<section class="exercises" id="sec_series-9">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.5.7</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_series-9-1"><h4 class="heading"><span class="codenumber">2.5.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_series-9-1-1-1">Suppose the <span class="process-math">\(k\)</span>th partial sum of <span class="process-math">\(\displaystyle \sum_{n=1}^\infty x_n\)</span> is <span class="process-math">\(s_k = \frac{k}{k+1}\text{.}\)</span> Find the series (that is, find <span class="process-math">\(x_n\)</span>), prove that the series converges, and then find the limit.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-9-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.5.1"><a aria-label="Copy heading and permalink for Exercise 2.5.1" href="#sec_series-9-1" title="Copy heading and permalink for Exercise 2.5.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="geometric_exr"><h4 class="heading"><span class="codenumber">2.5.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="geometric_exr-1-1">
+<div class="para">Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_series.html#geometric_prop" title="Proposition 2.5.5">Proposition 2.5.5</a>, that is, for <span class="process-math">\(-1 &lt; r &lt; 1\text{,}\)</span> prove</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/geometric_prop.html ./knowl/xref/example_geometricsum.html" id="geometric_exr-1-1-3">
+\begin{equation}
+\sum_{n=0}^\infty r^n = \frac{1}{1-r} .
+\end{equation}
+</div>
+<div class="para">Hint:  See <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicset.html#example_geometricsum" title="Example 0.3.8">Example 0.3.8</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#geometric_exr-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.5.2"><a aria-label="Copy heading and permalink for Exercise 2.5.2" href="#geometric_exr" title="Copy heading and permalink for Exercise 2.5.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_series-9-3"><h4 class="heading"><span class="codenumber">2.5.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_series-9-3-1-1">Decide the convergence or divergence of the following series.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-9-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_series-9-3-1-2">a) <span class="process-math">\(\displaystyle \sum_{n=1}^\infty \frac{3}{9n+1}\)</span>        b) <span class="process-math">\(\displaystyle \sum_{n=1}^\infty \frac{1}{2n-1}\)</span>        c) <span class="process-math">\(\displaystyle \sum_{n=1}^\infty \frac{{(-1)}^n}{n^2}\)</span>        d) <span class="process-math">\(\displaystyle \sum_{n=1}^\infty \frac{1}{n(n+1)}\)</span>        e) <span class="process-math">\(\displaystyle \sum_{n=1}^\infty n e^{-n^2}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-9-3-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.5.3"><a aria-label="Copy heading and permalink for Exercise 2.5.3" href="#sec_series-9-3" title="Copy heading and permalink for Exercise 2.5.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_series-9-4"><h4 class="heading"><span class="codenumber">2.5.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_series-9-4-1-1"><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-9-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div></div>
+<ol class="lower-alpha ol-marker-3" id="sec_series-9-4-1-2">
+<li id="sec_series-9-4-1-2-1">
+<div class="para" id="sec_series-9-4-1-2-1-1">Prove that if <span class="process-math">\(\displaystyle
+\sum_{n=1}^\infty x_n\)</span> converges, then <span class="process-math">\(\displaystyle
+\sum_{n=1}^\infty ( x_{2n} + x_{2n+1} )\)</span> also converges.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-9-4-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2.5.4.a"><a aria-label="Copy heading and permalink for Item 2.5.4.a" href="#sec_series-9-4-1-2-1" title="Copy heading and permalink for Item 2.5.4.a">🔗</a></div>
+</li>
+<li id="sec_series-9-4-1-2-2">
+<div class="para" id="sec_series-9-4-1-2-2-1">Find an explicit example where the converse does not hold.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-9-4-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2.5.4.b"><a aria-label="Copy heading and permalink for Item 2.5.4.b" href="#sec_series-9-4-1-2-2" title="Copy heading and permalink for Item 2.5.4.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 2.5.4"><a aria-label="Copy heading and permalink for Exercise 2.5.4" href="#sec_series-9-4" title="Copy heading and permalink for Exercise 2.5.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_series-9-5"><h4 class="heading"><span class="codenumber">2.5.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_series-9-5-1-1">
+<div class="para">For <span class="process-math">\(i=1,2,\ldots,n\text{,}\)</span> let <span class="process-math">\(\{ x_{i,k} \}_{k=1}^\infty\)</span> denote <span class="process-math">\(n\)</span> sequences.  Suppose that for each <span class="process-math">\(i\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_series-9-5-1-1-5">
+\begin{equation}
+\sum_{k=1}^\infty x_{i,k}
+\end{equation}
+</div>
+<div class="para">is convergent.  Prove</div>
+<div class="displaymath process-math" id="sec_series-9-5-1-1-6">
+\begin{equation}
+\sum_{i=1}^n \left( \sum_{k=1}^\infty x_{i,k} \right)
+=
+\sum_{k=1}^\infty \left( \sum_{i=1}^n x_{i,k} \right) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-9-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.5.5"><a aria-label="Copy heading and permalink for Exercise 2.5.5" href="#sec_series-9-5" title="Copy heading and permalink for Exercise 2.5.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_strongerratiotest"><h4 class="heading"><span class="codenumber">2.5.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_strongerratiotest-1-1">Prove the following stronger version of the ratio test: Let <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> be a series.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_strongerratiotest-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="exercise_strongerratiotest-1-2">
+<li id="exercise_strongerratiotest-1-2-1">
+<div class="para" id="exercise_strongerratiotest-1-2-1-1">If there is an <span class="process-math">\(N\)</span> and a <span class="process-math">\(\rho &lt; 1\)</span> such that <span class="process-math">\(\frac{\sabs{x_{n+1}}}{\sabs{x_n}} &lt; \rho\)</span> for all <span class="process-math">\(n \geq N\text{,}\)</span> then the series converges absolutely. (Remark: Equivalently the condition can be stated as <span class="process-math">\(\limsup\limits_{n\to\infty} \frac{\sabs{x_{n+1}}}{\sabs{x_n}} &lt; 1\text{.}\)</span>)<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_strongerratiotest-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2.5.6.a"><a aria-label="Copy heading and permalink for Item 2.5.6.a" href="#exercise_strongerratiotest-1-2-1" title="Copy heading and permalink for Item 2.5.6.a">🔗</a></div>
+</li>
+<li id="exercise_strongerratiotest-1-2-2">
+<div class="para" id="exercise_strongerratiotest-1-2-2-1">If there is an <span class="process-math">\(N\)</span> such that <span class="process-math">\(\frac{\sabs{x_{n+1}}}{\sabs{x_n}} \geq 1\)</span> for all <span class="process-math">\(n \geq N\text{,}\)</span> then the series diverges.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_strongerratiotest-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2.5.6.b"><a aria-label="Copy heading and permalink for Item 2.5.6.b" href="#exercise_strongerratiotest-1-2-2" title="Copy heading and permalink for Item 2.5.6.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 2.5.6"><a aria-label="Copy heading and permalink for Exercise 2.5.6" href="#exercise_strongerratiotest" title="Copy heading and permalink for Exercise 2.5.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_series-9-7"><h4 class="heading"><span class="codenumber">2.5.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_series-9-7-1-1">
+<em class="emphasis">(Challenging)</em>   Suppose <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is a decreasing sequence and <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> converges. Prove <span class="process-math">\(\displaystyle \lim_{n\to\infty} n x_n = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-9-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.5.7"><a aria-label="Copy heading and permalink for Exercise 2.5.7" href="#sec_series-9-7" title="Copy heading and permalink for Exercise 2.5.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_series-9-8"><h4 class="heading"><span class="codenumber">2.5.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_series-9-8-1-1">Show that <span class="process-math">\(\displaystyle \sum_{n=1}^\infty \frac{{(-1)}^n}{n}\)</span> converges. Hint: Consider the sum of two subsequent entries.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-9-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.5.8"><a aria-label="Copy heading and permalink for Exercise 2.5.8" href="#sec_series-9-8" title="Copy heading and permalink for Exercise 2.5.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_series-9-9"><h4 class="heading"><span class="codenumber">2.5.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_series-9-9-1-1"><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-9-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div></div>
+<ol class="lower-alpha ol-marker-3" id="sec_series-9-9-1-2">
+<li id="sec_series-9-9-1-2-1">
+<div class="para" id="sec_series-9-9-1-2-1-1">Prove that if <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> and <span class="process-math">\(\sum_{n=1}^\infty y_n\)</span> converge absolutely, then <span class="process-math">\(\sum_{n=1}^\infty x_ny_n\)</span> converges absolutely.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-9-9-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2.5.9.a"><a aria-label="Copy heading and permalink for Item 2.5.9.a" href="#sec_series-9-9-1-2-1" title="Copy heading and permalink for Item 2.5.9.a">🔗</a></div>
+</li>
+<li id="sec_series-9-9-1-2-2">
+<div class="para" id="sec_series-9-9-1-2-2-1">Find an explicit example where the converse does not hold.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-9-9-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2.5.9.b"><a aria-label="Copy heading and permalink for Item 2.5.9.b" href="#sec_series-9-9-1-2-2" title="Copy heading and permalink for Item 2.5.9.b">🔗</a></div>
+</li>
+<li id="sec_series-9-9-1-2-3">
+<div class="para" id="sec_series-9-9-1-2-3-1">Find an explicit example where all three series are absolutely convergent, are not just finite sums, and <span class="process-math">\(\left(\sum_{n=1}^\infty x_n\right)\left(\sum_{n=1}^\infty y_n\right)
+\neq \sum_{n=1}^\infty x_ny_n\text{.}\)</span>  That is, show that series are not multiplied term-by-term.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-9-9-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2.5.9.c"><a aria-label="Copy heading and permalink for Item 2.5.9.c" href="#sec_series-9-9-1-2-3" title="Copy heading and permalink for Item 2.5.9.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 2.5.9"><a aria-label="Copy heading and permalink for Exercise 2.5.9" href="#sec_series-9-9" title="Copy heading and permalink for Exercise 2.5.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_series-9-10"><h4 class="heading"><span class="codenumber">2.5.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_series-9-10-1-1">
+<div class="para">Prove the triangle inequality for series: If <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> converges absolutely, then</div>
+<div class="displaymath process-math" id="sec_series-9-10-1-1-2">
+\begin{equation}
+\abs{\sum_{n=1}^\infty x_n} \leq
+\sum_{n=1}^\infty \sabs{x_n} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-9-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.5.10"><a aria-label="Copy heading and permalink for Exercise 2.5.10" href="#sec_series-9-10" title="Copy heading and permalink for Exercise 2.5.10">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_series-9-11"><h4 class="heading"><span class="codenumber">2.5.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_series-9-11-1-1">
+<div class="para">Prove the <em class="emphasis">limit comparison test</em>.  That is, prove that if <span class="process-math">\(a_n &gt; 0\)</span> and <span class="process-math">\(b_n &gt; 0\)</span> for all <span class="process-math">\(n\text{,}\)</span> and</div>
+<div class="displaymath process-math" id="sec_series-9-11-1-1-5">
+\begin{equation}
+0 &lt; \lim_{n\to\infty} \frac{a_n}{b_n} &lt; \infty ,
+\end{equation}
+</div>
+<div class="para">then either <span class="process-math">\(\sum_{n=1}^\infty a_n\)</span> and <span class="process-math">\(\sum_{n=1}^\infty b_n\)</span> both converge or both diverge.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-9-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.5.11"><a aria-label="Copy heading and permalink for Exercise 2.5.11" href="#sec_series-9-11" title="Copy heading and permalink for Exercise 2.5.11">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_badnocauchy"><h4 class="heading"><span class="codenumber">2.5.12<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_badnocauchy-1-1">Let <span class="process-math">\(x_n \coloneqq \sum_{i=1}^n \nicefrac{1}{i}\text{.}\)</span>  Show that for every <span class="process-math">\(k\text{,}\)</span> we get <span class="process-math">\(\displaystyle \lim_{n\to\infty} \sabs{x_{n+k}-x_n} = 0\text{,}\)</span> yet <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is not Cauchy.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_badnocauchy-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.5.12"><a aria-label="Copy heading and permalink for Exercise 2.5.12" href="#exercise_badnocauchy" title="Copy heading and permalink for Exercise 2.5.12">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_series-9-13"><h4 class="heading"><span class="codenumber">2.5.13<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_series-9-13-1-1">Let <span class="process-math">\(s_k\)</span> be the <span class="process-math">\(k\)</span>th partial sum of <span class="process-math">\(\sum_{n=1}^\infty x_n\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-9-13-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_series-9-13-1-2">
+<li id="sec_series-9-13-1-2-1">
+<div class="para" id="sec_series-9-13-1-2-1-1">Suppose there exists an <span class="process-math">\(m \in \N\)</span> such that <span class="process-math">\(\lim\limits_{k\to\infty}
+s_{mk}\)</span> exists and <span class="process-math">\(\lim\limits_{n\to\infty} x_n = 0\text{.}\)</span>  Show that <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> converges.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-9-13-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2.5.13.a"><a aria-label="Copy heading and permalink for Item 2.5.13.a" href="#sec_series-9-13-1-2-1" title="Copy heading and permalink for Item 2.5.13.a">🔗</a></div>
+</li>
+<li id="sec_series-9-13-1-2-2">
+<div class="para" id="sec_series-9-13-1-2-2-1">Find an example where <span class="process-math">\(\lim\limits_{k\to\infty} s_{2k}\)</span> exists and <span class="process-math">\(\lim\limits_{n\to\infty} x_n \neq 0\)</span> (and therefore <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> diverges).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-9-13-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2.5.13.b"><a aria-label="Copy heading and permalink for Item 2.5.13.b" href="#sec_series-9-13-1-2-2" title="Copy heading and permalink for Item 2.5.13.b">🔗</a></div>
+</li>
+<li id="sec_series-9-13-1-2-3">
+<div class="para" id="sec_series-9-13-1-2-3-1">(Challenging) Find an example where <span class="process-math">\(\lim_{n\to\infty} x_n = 0\text{,}\)</span> and there exists a subsequence <span class="process-math">\(\{ s_{k_i} \}_{i=1}^\infty\)</span> such that <span class="process-math">\(\displaystyle \lim_{i\to\infty} s_{k_i}\)</span> exists, but <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> still diverges.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-9-13-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2.5.13.c"><a aria-label="Copy heading and permalink for Item 2.5.13.c" href="#sec_series-9-13-1-2-3" title="Copy heading and permalink for Item 2.5.13.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 2.5.13"><a aria-label="Copy heading and permalink for Exercise 2.5.13" href="#sec_series-9-13" title="Copy heading and permalink for Exercise 2.5.13">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_squareseriesconv"><h4 class="heading"><span class="codenumber">2.5.14<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_squareseriesconv-1-1">Suppose <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> converges and <span class="process-math">\(x_n \geq 0\)</span> for all <span class="process-math">\(n\text{.}\)</span> Prove that <span class="process-math">\(\sum_{n=1}^\infty x_n^2\)</span> converges.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_squareseriesconv-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.5.14"><a aria-label="Copy heading and permalink for Exercise 2.5.14" href="#exercise_squareseriesconv" title="Copy heading and permalink for Exercise 2.5.14">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_cauchycondensation"><h4 class="heading"><span class="codenumber">2.5.15<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="exercise_cauchycondensation-1-1">
+<div class="para">
+<em class="emphasis">(Challenging)</em>   Suppose <span class="process-math">\(\{ x_n\}_{n=1}^\infty\)</span> is a decreasing sequence of positive numbers. The proof of convergence/divergence for the <span class="process-math">\(p\)</span>-series generalizes. Prove the <em class="emphasis">Cauchy condensation principle</em>:</div>
+<div class="displaymath process-math" id="exercise_cauchycondensation-1-1-7">
+\begin{equation}
+\sum_{n=1}^\infty x_n
+\qquad \text{converges if and only if} \qquad
+\sum_{n=1}^\infty 2^n x_{2^n} \qquad \text{converges}.
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_cauchycondensation-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.5.15"><a aria-label="Copy heading and permalink for Exercise 2.5.15" href="#exercise_cauchycondensation" title="Copy heading and permalink for Exercise 2.5.15">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_series-9-16"><h4 class="heading"><span class="codenumber">2.5.16<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_series-9-16-1-1">Use the Cauchy condensation principle (see <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_series.html#exercise_cauchycondensation" title="Exercise 2.5.15">Exercise 2.5.15</a>) to decide the convergence of<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-9-16-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_series-9-16-1-2">a) <span class="process-math">\(\displaystyle \sum_{n=1}^\infty \frac{\ln n}{n^2}\)</span>        b) <span class="process-math">\(\displaystyle \sum_{n=2}^\infty \frac{1}{n \ln n}\)</span>        c) <span class="process-math">\(\displaystyle \sum_{n=2}^\infty \frac{1}{n {(\ln n)}^2}\)</span>        d) <span class="process-math">\(\displaystyle \sum_{n=2}^\infty \frac{1}{n (\ln n ){(\ln \ln n)}^2}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-9-16-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_series-9-16-1-3">Note that only the tails of some of these series satisfy the hypotheses of the principle; you should argue why that is sufficient.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-9-16-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_series-9-16-1-4">Hint: Feel free to use the identity <span class="process-math">\(\ln (2^n) = n \ln 2\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-9-16-1-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.5.16"><a aria-label="Copy heading and permalink for Exercise 2.5.16" href="#sec_series-9-16" title="Copy heading and permalink for Exercise 2.5.16">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_series-9-17"><h4 class="heading"><span class="codenumber">2.5.17<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_series-9-17-1-1">
+<em class="emphasis">(Challenging)</em>   Prove <em class="emphasis">Abel’s theorem</em>:<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-9-17-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_series-9-17-1-2">
+<em class="emphasis"><em class="alert">Theorem.</em> Suppose <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> is a series whose sequence of partial sums is bounded, <span class="process-math">\(\{ \lambda_n \}_{n=1}^\infty\)</span> is a sequence with <span class="process-math">\(\lim_{n\to\infty} \lambda_n = 0\text{,}\)</span> and <span class="process-math">\(\sum_{n=1}^\infty \sabs{ \lambda_{n+1} - \lambda_n }\)</span> is convergent. Then <span class="process-math">\(\sum_{n=1}^\infty \lambda_n x_n\)</span> is convergent.</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_series-9-17-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.5.17"><a aria-label="Copy heading and permalink for Exercise 2.5.17" href="#sec_series-9-17" title="Copy heading and permalink for Exercise 2.5.17">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 2.5.7"><a aria-label="Copy heading and permalink for Exercises 2.5.7" href="#sec_series-9" title="Copy heading and permalink for Exercises 2.5.7">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 2.5: Series"><a aria-label="Copy heading and permalink for Section 2.5: Series" href="#sec_series" title="Copy heading and permalink for Section 2.5: Series">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_cauchy.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_moreonseries.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

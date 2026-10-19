@@ -1,0 +1,655 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Completeness and compactness · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_metcompact">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Completeness and compactness</span>
+</h2>
+<section class="introduction" id="sec_metcompact-2">
+<div class="para" id="sec_metcompact-2-1">
+<em class="emphasis">Note: 2 lectures</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section>
+<section class="subsection" id="sec_metcompact-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.4.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Cauchy sequences and completeness</span>
+</h3>
+<div class="para" id="sec_metcompact-3-2">Just like with sequences of real numbers, we define Cauchy sequences.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-3-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_metcompact-3-3"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.4.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_metcompact-3-3-1-1">
+<div class="para">Let <span class="process-math">\((X,d)\)</span> be a metric space. A sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> in <span class="process-math">\(X\)</span> is a <em class="emphasis">Cauchy sequence</em> if for every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there exists an <span class="process-math">\(M \in \N\)</span> such that for all <span class="process-math">\(n \geq M\)</span> and all <span class="process-math">\(k \geq M\text{,}\)</span> we have</div>
+<div class="displaymath process-math" id="sec_metcompact-3-3-1-1-9">
+\begin{equation}
+d(x_n, x_k) &lt; \epsilon .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-3-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 7.4.1"><a aria-label="Copy heading and permalink for Definition 7.4.1" href="#sec_metcompact-3-3" title="Copy heading and permalink for Definition 7.4.1">🔗</a></div>
+</article>
+<div class="para" id="sec_metcompact-3-4">The definition is again simply a translation of the concept from the real numbers to metric spaces.  A sequence of real numbers is Cauchy in the sense of <a class="internal" href="seq_chapter.html" title="Chapter 2: Sequences and Series">Chapter 2</a> if and only if it is Cauchy in the sense above, provided we equip the real numbers with the standard metric <span class="process-math">\(d(x,y) = \sabs{x-y}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-3-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_metcompact-3-5"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.4.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_metcompact-3-5-1-1">A convergent sequence in a metric space is Cauchy.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-3-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 7.4.2"><a aria-label="Copy heading and permalink for Proposition 7.4.2" href="#sec_metcompact-3-5" title="Copy heading and permalink for Proposition 7.4.2">🔗</a></div>
+</article>
+<article class="proof" id="sec_metcompact-3-6"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metcompact-3-6-1">Suppose <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> converges to <span class="process-math">\(p\text{.}\)</span> Given <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there is an <span class="process-math">\(M\)</span> such that for all <span class="process-math">\(n \geq M\text{,}\)</span> we have <span class="process-math">\(d(p,x_n) &lt; \nicefrac{\epsilon}{2}\text{.}\)</span>  Hence, for all <span class="process-math">\(n,k \geq M\text{,}\)</span> we have <span class="process-math">\(d(x_n,x_k) \leq d(x_n,p) + d(p,x_k) &lt; \nicefrac{\epsilon}{2} +
+\nicefrac{\epsilon}{2} = \epsilon\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-3-6-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 7.4.1.1"><a aria-label="Copy heading and permalink for Proof 7.4.1.1" href="#sec_metcompact-3-6" title="Copy heading and permalink for Proof 7.4.1.1">🔗</a></div>
+</article>
+<article class="definition definition-like" id="sec_metcompact-3-7"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.4.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_metcompact-3-7-1-1">We say a metric space <span class="process-math">\((X,d)\)</span> is <em class="emphasis">complete</em> or <em class="emphasis">Cauchy-complete</em> if every Cauchy sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> in <span class="process-math">\(X\)</span> converges to a <span class="process-math">\(p \in X\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-3-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 7.4.3"><a aria-label="Copy heading and permalink for Definition 7.4.3" href="#sec_metcompact-3-7" title="Copy heading and permalink for Definition 7.4.3">🔗</a></div>
+</article>
+<article class="proposition theorem-like" id="sec_metcompact-3-8"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.4.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_metcompact-3-8-1-1">The space <span class="process-math">\(\R^n\)</span> with the standard metric is a complete metric space.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-3-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 7.4.4"><a aria-label="Copy heading and permalink for Proposition 7.4.4" href="#sec_metcompact-3-8" title="Copy heading and permalink for Proposition 7.4.4">🔗</a></div>
+</article>
+<div class="para" id="sec_metcompact-3-9">For <span class="process-math">\(\R = \R^1\text{,}\)</span> completeness was proved in <a class="internal" href="seq_chapter.html" title="Chapter 2: Sequences and Series">Chapter 2</a>. The proof of completeness in <span class="process-math">\(\R^n\)</span> is a reduction to the one-dimensional case.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-3-9" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_metcompact-3-10"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_metcompact-3-10-1">
+<div class="para">Let <span class="process-math">\(\{ x_m \}_{m=1}^\infty\)</span> be a Cauchy sequence in <span class="process-math">\(\R^n\text{,}\)</span> where <span class="process-math">\(x_m = \bigl(x_{m,1},x_{m,2},\ldots,x_{m,n}\bigr) \in \R^n\text{.}\)</span> As the sequence is Cauchy, given <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there exists an <span class="process-math">\(M\)</span> such that for all <span class="process-math">\(i,j \geq M\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_metcompact-3-10-1-7">
+\begin{equation}
+d(x_i,x_j) &lt; \epsilon.
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-3-10-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_metcompact-3-10-2">
+<div class="para">Fix some <span class="process-math">\(k=1,2,\ldots,n\text{.}\)</span>  For <span class="process-math">\(i,j \geq M\text{,}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_msconveuc.html" id="sec_metcompact-3-10-2-3">
+\begin{equation}
+\bigl\lvert x_{i,k} - x_{j,k} \bigr\rvert
+=
+\sqrt{{\bigl(x_{i,k} - x_{j,k}\bigr)}^2}
+\leq
+\sqrt{\sum_{\ell=1}^n {\bigl(x_{i,\ell}-x_{j,\ell}\bigr)}^2}
+= d(x_i,x_j) &lt; \epsilon .
+\end{equation}
+</div>
+<div class="para">Hence, the sequence <span class="process-math">\(\{ x_{m,k} \}_{m=1}^\infty\)</span> is Cauchy.  As <span class="process-math">\(\R\)</span> is complete, the sequence converges; there exists a <span class="process-math">\(y_k \in \R\)</span> such that <span class="process-math">\(y_k = \lim_{m\to\infty} x_{m,k}\text{.}\)</span> Write <span class="process-math">\(y = (y_1,y_2,\ldots,y_n) \in \R^n\text{.}\)</span> By <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metseqs.html#prop_msconveuc" title="Proposition 7.3.9">Proposition 7.3.9</a>, <span class="process-math">\(\{ x_m \}_{m=1}^\infty\)</span> converges to <span class="process-math">\(y \in \R^n\text{,}\)</span> and hence <span class="process-math">\(\R^n\)</span> is complete.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-3-10-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 7.4.1.2"><a aria-label="Copy heading and permalink for Proof 7.4.1.2" href="#sec_metcompact-3-10" title="Copy heading and permalink for Proof 7.4.1.2">🔗</a></div>
+</article>
+<div class="para" id="sec_metcompact-3-11">In the language of metric spaces, the results on continuity of <a class="internal" href="sec_liminter.html" title="Section 6.2: Interchange of limits">Section 6.2</a> say that the metric space <span class="process-math">\(C\bigl([a,b],\R\bigr)\)</span> of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metric.html#example_msC01" title="Example 7.1.8">Example 7.1.8</a> is complete. The proof follows by “unrolling the definitions” and is left as <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metcompact.html#exercise_CabRcomplete" title="Exercise 7.4.7">Exercise 7.4.7</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-3-11" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_CabRcomplete"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.4.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="prop_CabRcomplete-1-1">The space of continuous functions <span class="process-math">\(C\bigl([a,b],\R\bigr)\)</span> with the uniform norm as metric is a complete metric space.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_CabRcomplete-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 7.4.5"><a aria-label="Copy heading and permalink for Proposition 7.4.5" href="#prop_CabRcomplete" title="Copy heading and permalink for Proposition 7.4.5">🔗</a></div>
+</article>
+<div class="para" id="sec_metcompact-3-13">A subset of a complete metric space such as <span class="process-math">\(\R^n\)</span> with the subspace metric need not be complete.  For example, <span class="process-math">\((0,1]\)</span> with the subspace metric is not complete, as <span class="process-math">\(\{ \nicefrac{1}{n} \}_{n=1}^\infty\)</span> is a Cauchy sequence in <span class="process-math">\((0,1]\)</span> with no limit in <span class="process-math">\((0,1]\text{.}\)</span> However, a closed subspace of a complete metric space is complete.  After all, one way to think of a closed set is that it contains all points reachable from the set via a sequence. The proof is <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metcompact.html#exercise_closedcomplete" title="Exercise 7.4.16">Exercise 7.4.16</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-3-13" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_closedcomplete"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.4.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="prop_closedcomplete-1-1">Suppose <span class="process-math">\((X,d)\)</span> is a complete metric space and <span class="process-math">\(E \subset X\)</span> is closed. Then <span class="process-math">\(E\)</span> is a complete metric space with the subspace metric.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_closedcomplete-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 7.4.6"><a aria-label="Copy heading and permalink for Proposition 7.4.6" href="#prop_closedcomplete" title="Copy heading and permalink for Proposition 7.4.6">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 7.4.1: Cauchy sequences and completeness"><a aria-label="Copy heading and permalink for Subsection 7.4.1: Cauchy sequences and completeness" href="#sec_metcompact-3" title="Copy heading and permalink for Subsection 7.4.1: Cauchy sequences and completeness">🔗</a></div>
+</section>
+<section class="subsection" id="sec_metcompact-4">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.4.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Compactness</span>
+</h3>
+<article class="definition definition-like" id="sec_metcompact-4-2"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.4.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_metcompact-4-2-1-1">
+<div class="para">Let <span class="process-math">\((X,d)\)</span> be a metric space and <span class="process-math">\(K \subset X\text{.}\)</span> The set <span class="process-math">\(K\)</span> is said to be <em class="emphasis">compact</em> if for every collection of open sets <span class="process-math">\(\{ U_{\lambda} \}_{\lambda \in I}\)</span> such that</div>
+<div class="displaymath process-math" id="sec_metcompact-4-2-1-1-6">
+\begin{equation}
+K \subset \bigcup_{\lambda \in I} U_\lambda ,
+\end{equation}
+</div>
+<div class="para">there exists a finite subset <span class="process-math">\(\{ \lambda_1, \lambda_2,\ldots,\lambda_m \} \subset I\)</span> such that</div>
+<div class="displaymath process-math" id="sec_metcompact-4-2-1-1-8">
+\begin{equation}
+K \subset \bigcup_{j=1}^m U_{\lambda_j} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 7.4.7"><a aria-label="Copy heading and permalink for Definition 7.4.7" href="#sec_metcompact-4-2" title="Copy heading and permalink for Definition 7.4.7">🔗</a></div>
+</article>
+<div class="para" id="sec_metcompact-4-3">A collection of open sets <span class="process-math">\(\{ U_{\lambda} \}_{\lambda \in I}\)</span> as above is said to be an <em class="emphasis">open cover</em> of <span class="process-math">\(K\text{.}\)</span>  A way to say that <span class="process-math">\(K\)</span> is compact is to say that <em class="emphasis">every open cover of <span class="process-math">\(K\)</span> has a finite subcover</em>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_metcompact-4-4"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.4.8</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_metcompact-4-4-1-1">Let <span class="process-math">\(\R\)</span> be the metric space with the standard metric.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_metcompact-4-4-1-2">The set <span class="process-math">\(\R\)</span> is not compact.  Proof: For <span class="process-math">\(j \in \N\text{,}\)</span> let <span class="process-math">\(U_j \coloneqq (-j,j)\text{.}\)</span> Any <span class="process-math">\(x \in \R\)</span> is in some <span class="process-math">\(U_j\)</span> (by the <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_setofreals.html#thm_arch_i" title="Item i">Archimedean property</a>), so we have an open cover. Suppose we have a finite subcover <span class="process-math">\(\R \subset U_{j_1} \cup U_{j_2} \cup \cdots \cup U_{j_m}\text{,}\)</span> and suppose <span class="process-math">\(j_1 &lt; j_2 &lt; \cdots &lt; j_m\text{.}\)</span>  Then <span class="process-math">\(\R \subset U_{j_m}\text{,}\)</span> but that is a contradiction as <span class="process-math">\(j_m \in \R\)</span> on one hand and <span class="process-math">\(j_m \notin U_{j_m} =
+(-j_m,j_m)\)</span> on the other.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-4-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_metcompact-4-4-1-3">The set <span class="process-math">\((0,1) \subset \R\)</span> is also not compact.  Proof:  Take the sets <span class="process-math">\(U_{j} \coloneqq (\nicefrac{1}{j},1-\nicefrac{1}{j})\)</span> for <span class="process-math">\(j=3,4,5,\ldots\text{.}\)</span> As above, <span class="process-math">\((0,1) = \bigcup_{j=3}^\infty U_j\text{.}\)</span>  And similarly as above, if there exists a finite subcover, then there is one <span class="process-math">\(U_j\)</span> such that <span class="process-math">\((0,1)
+\subset U_j\text{,}\)</span> which again leads to a contradiction.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-4-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_metcompact-4-4-1-4">The set <span class="process-math">\(\{ 0 \} \subset \R\)</span> is compact.  Proof: Given an open cover <span class="process-math">\(\{
+U_{\lambda} \}_{\lambda \in I}\text{,}\)</span> there must exist a <span class="process-math">\(\lambda_0 \in I\)</span> such that <span class="process-math">\(0
+\in U_{\lambda_0}\)</span> since <span class="process-math">\(\{ U_{\lambda} \}_{\lambda \in I}\)</span> is a cover. The single <span class="process-math">\(U_{\lambda_0}\)</span> gives a finite subcover.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-4-1-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_metcompact-4-4-1-5">We will prove below that <span class="process-math">\([0,1]\text{,}\)</span> and in fact every closed and bounded interval <span class="process-math">\([a,b]\text{,}\)</span> is compact.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-4-1-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 7.4.8"><a aria-label="Copy heading and permalink for Example 7.4.8" href="#sec_metcompact-4-4" title="Copy heading and permalink for Example 7.4.8">🔗</a></div>
+</article>
+<article class="proposition theorem-like" id="sec_metcompact-4-5"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.4.9</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_metcompact-4-5-1-1">Let <span class="process-math">\((X,d)\)</span> be a metric space.  If <span class="process-math">\(K \subset X\)</span> is compact, then <span class="process-math">\(K\)</span> is closed and bounded.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 7.4.9"><a aria-label="Copy heading and permalink for Proposition 7.4.9" href="#sec_metcompact-4-5" title="Copy heading and permalink for Proposition 7.4.9">🔗</a></div>
+</article>
+<article class="proof" id="sec_metcompact-4-6"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_metcompact-4-6-1">
+<div class="para">First, we prove that a compact set is bounded. Fix <span class="process-math">\(p \in X\text{.}\)</span>  We have the open cover</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_compactbndclosed.html" id="sec_metcompact-4-6-1-2">
+\begin{equation}
+K \subset \bigcup_{n=1}^\infty B(p,n) = X .
+\end{equation}
+</div>
+<div class="para">If <span class="process-math">\(K\)</span> is compact, then there exists some set of indices <span class="process-math">\(n_1 &lt; n_2 &lt; \ldots &lt; n_m\)</span> such that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_compactbndclosed.html" id="sec_metcompact-4-6-1-5">
+\begin{equation}
+K \subset \bigcup_{j=1}^m B(p,n_j) = B(p,n_m) .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(K\)</span> is contained in a ball, <span class="process-math">\(K\)</span> is bounded. See the left-hand side of <a class="internal" href="sec_metcompact.html#fig_compactbndclosed" title="Figure 7.11">Figure 7.11</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-6-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_metcompact-4-6-2">
+<div class="para">Next, we show that a set that is not closed is not compact.  Suppose <span class="process-math">\(\widebar{K} \neq K\text{,}\)</span> that is, there is a point <span class="process-math">\(x \in \widebar{K}
+\setminus K\text{.}\)</span> If <span class="process-math">\(y \neq x\text{,}\)</span> then <span class="process-math">\(y \notin C(x,\nicefrac{1}{n})\)</span> for <span class="process-math">\(n \in \N\)</span> such that <span class="process-math">\(\nicefrac{1}{n} &lt; d(x,y)\text{.}\)</span> Furthermore, <span class="process-math">\(x \notin K\text{,}\)</span> so</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_compactbndclosed.html" id="sec_metcompact-4-6-2-8">
+\begin{equation}
+K \subset \bigcup_{n=1}^\infty {C(x,\nicefrac{1}{n})}^c .
+\end{equation}
+</div>
+<div class="para">A closed ball is closed, so its complement <span class="process-math">\({C(x,\nicefrac{1}{n})}^c\)</span> is open, and we have an open cover. If we take any finite collection of indices <span class="process-math">\(n_1 &lt; n_2 &lt; \ldots &lt; n_m\text{,}\)</span> then</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_compactbndclosed.html" id="sec_metcompact-4-6-2-11">
+\begin{equation}
+\bigcup_{j=1}^m {C(x,\nicefrac{1}{n_j})}^c 
+=
+{C(x,\nicefrac{1}{n_m})}^c 
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(x\)</span> is in the closure of <span class="process-math">\(K\text{,}\)</span> then <span class="process-math">\(C(x,\nicefrac{1}{n_m}) \cap K \neq \emptyset\text{.}\)</span>  So there is no finite subcover and <span class="process-math">\(K\)</span> is not compact. See the right-hand side of <a class="internal" href="sec_metcompact.html#fig_compactbndclosed" title="Figure 7.11">Figure 7.11</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-6-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 7.4.2.1"><a aria-label="Copy heading and permalink for Proof 7.4.2.1" href="#sec_metcompact-4-6" title="Copy heading and permalink for Proof 7.4.2.1">🔗</a></div>
+</article><hr class="rahr"/>
+<figure class="figure figure-like" id="fig_compactbndclosed"><img alt="Two diagrams. A set K is given as a shaded region with solid boundary. In the left diagram, a point p is highlighted together with 3 nested open balls (circles in this case) of radius 1, 2, and 3 all centered at p with dotted boundary. The set K lies in the largest one. In the right diagram, the background of the diagram is shaded. A point x that is on the boundary of K is shown, and 4 closed balls are drawn as circles with the inside shaded in lighter and lighter gray, indicating that we are looking at the complements. The outer ball is of radius 1, then there is a ball of radius one half, then a ball of radius one third, then a ball of radius one fourth. We note that as x sits on the boundary, the complements of the balls cover more and more of K. On the other hand we also note that K has nonempty intersection with all the closed balls." class="raimg" role="img" src="figures/compact_bnd_closed-mbxpdft.svg" style="width:376pt; height:121pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Proving compact set is bounded (left) and closed (right).<div class="autopermalink" data-description="Figure 7.11"><a aria-label="Copy heading and permalink for Figure 7.11" href="#fig_compactbndclosed" title="Copy heading and permalink for Figure 7.11">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para" id="sec_metcompact-4-10">We prove below that in a finite-dimensional euclidean space, every closed bounded set is compact. So closed bounded sets of <span class="process-math">\(\R^n\)</span> are examples of compact sets. It is not true that in every metric space, closed and bounded is equivalent to compact.  A simple example is an incomplete metric space such as <span class="process-math">\((0,1)\)</span> with the subspace metric from <span class="process-math">\(\R\text{.}\)</span> There are many complete and very useful metric spaces where closed and bounded is not enough to give compactness: <span class="process-math">\(C\bigl([a,b],\R\bigr)\)</span> is a complete metric space, but the closed unit ball <span class="process-math">\(C(0,1)\)</span> is not compact, see <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metcompact.html#exercise_msclbounnotcompt" title="Exercise 7.4.8">Exercise 7.4.8</a>.  However, see also <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metcompact.html#exercise_mstotbound" title="Exercise 7.4.12">Exercise 7.4.12</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_metcompact-4-11">Not worrying about the boundedness for a moment, note further the difference between being closed and being compact.  Being closed depends on the ambient metric space: The set <span class="process-math">\((0,1]\)</span> is not closed in <span class="process-math">\(\R\text{,}\)</span> but it is closed in the subspace <span class="process-math">\((0,\infty)\text{.}\)</span> However, a set <span class="process-math">\(K\)</span> is compact in some metric space <span class="process-math">\((X,d)\)</span> if and only if it is compact in the subspace metric on <span class="process-math">\(K\text{.}\)</span>  So for a compact set, we do not have to ask what metric space it lives in. On the other hand, every set is always closed in the subspace metric as a subset of itself. See also <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metcompact.html#exercise_subspacecompact" title="Exercise 7.4.6">Exercise 7.4.6</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-11" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_metcompact-4-12">A useful property of compact sets in a metric space is that every sequence in the set has a convergent subsequence converging to a point in the set. Such sets are called <em class="emphasis">sequentially compact</em>. We will prove that in the context of metric spaces, a set is compact if and only if it is sequentially compact. First we prove a lemma.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="lemma theorem-like" id="ms_lebesgue"><h4 class="heading">
+<span class="type">Lemma</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.4.10</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Lebesgue covering lemma.</span>
+</h4>
+<div class="para" id="ms_lebesgue-3-1">
+<details aria-live="polite" class="ptx-footnote" id="ms_lebesgue-3-1-1"><summary class="ptx-footnote__number" title="Footnote 7.4.1"><sup> 1 </sup></summary>
+<div class="ptx-footnote__contents" id="ms_lebesgue-3-1-1">Named after the French mathematician <a class="external" href="https://en.wikipedia.org/wiki/Henri_Lebesgue" target="_blank">Henri Léon Lebesgue</a> (1875–1941). The number <span class="process-math">\(\delta\)</span> is sometimes called the Lebesgue number of the cover.
+</div></details> Let <span class="process-math">\((X,d)\)</span> be a metric space and <span class="process-math">\(K \subset X\text{.}\)</span>  Suppose every sequence in <span class="process-math">\(K\)</span> has a subsequence convergent in <span class="process-math">\(K\text{.}\)</span>  Given an open cover <span class="process-math">\(\{ U_\lambda \}_{\lambda \in I}\)</span> of <span class="process-math">\(K\text{,}\)</span> there exists a <span class="process-math">\(\delta &gt; 0\)</span> such that for every <span class="process-math">\(x \in K\text{,}\)</span> there exists a <span class="process-math">\(\lambda \in I\)</span> with <span class="process-math">\(B(x,\delta) \subset U_\lambda\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#ms_lebesgue-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Lemma 7.4.10: Lebesgue covering lemma"><a aria-label="Copy heading and permalink for Lemma 7.4.10: Lebesgue covering lemma" href="#ms_lebesgue" title="Copy heading and permalink for Lemma 7.4.10: Lebesgue covering lemma">🔗</a></div>
+</article>
+<article class="proof" id="sec_metcompact-4-14"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_metcompact-4-14-1">
+<div class="para">We prove the lemma by contrapositive. If the conclusion is not true, then there is an open cover <span class="process-math">\(\{ U_\lambda \}_{\lambda \in I}\)</span> of <span class="process-math">\(K\)</span> with the following property. For every <span class="process-math">\(n \in \N\text{,}\)</span> there exists an <span class="process-math">\(x_n \in K\)</span> such that <span class="process-math">\(B(x_n,\nicefrac{1}{n})\)</span> is not a subset of any <span class="process-math">\(U_\lambda\text{.}\)</span> Take any <span class="process-math">\(x \in K\text{.}\)</span>  There is a <span class="process-math">\(\lambda \in I\)</span> such that <span class="process-math">\(x \in U_\lambda\text{.}\)</span>  As <span class="process-math">\(U_\lambda\)</span> is open, there is an <span class="process-math">\(\epsilon &gt; 0\)</span> such that <span class="process-math">\(B(x,\epsilon) \subset U_\lambda\text{.}\)</span>  Take <span class="process-math">\(M\)</span> such that <span class="process-math">\(\nicefrac{1}{M} &lt; \nicefrac{\epsilon}{2}\text{.}\)</span>  If <span class="process-math">\(y \in 
+B(x,\nicefrac{\epsilon}{2})\)</span> and <span class="process-math">\(n \geq M\text{,}\)</span> then</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_lebesguedelta.html" id="sec_metcompact-4-14-1-17">
+\begin{equation}
+B(y,\nicefrac{1}{n}) \subset
+B(y,\nicefrac{1}{M}) \subset
+B(y,\nicefrac{\epsilon}{2}) \subset B(x,\epsilon)
+\subset U_\lambda ,
+\end{equation}
+</div>
+<div class="para">where <span class="process-math">\(B(y,\nicefrac{\epsilon}{2}) \subset B(x,\epsilon)\)</span> follows by triangle inequality. See <a class="internal" href="sec_metcompact.html#fig_lebesguedelta" title="Figure 7.12">Figure 7.12</a>. Thus <span class="process-math">\(y \neq x_n\text{.}\)</span> In other words, for all <span class="process-math">\(n \geq M\text{,}\)</span> <span class="process-math">\(x_n \notin B(x,\nicefrac{\epsilon}{2})\text{.}\)</span> The sequence cannot have a subsequence converging to <span class="process-math">\(x\text{.}\)</span>  As <span class="process-math">\(x \in K\)</span> was arbitrary, we are done.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-14-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 7.4.2.2"><a aria-label="Copy heading and permalink for Proof 7.4.2.2" href="#sec_metcompact-4-14" title="Copy heading and permalink for Proof 7.4.2.2">🔗</a></div>
+</article><hr class="rahr"/>
+<figure class="figure figure-like" id="fig_lebesguedelta"><img alt="A diagram of a shaded open set U sub lambda. A point x in U sub lambda is marked and a ball of radius epsilon centered at x is drawn and this ball sits within U sub lambda. A ball of radius epsilon over 2 centered at x is also drawn which sits within the larger ball. A point y in the smaller ball is marked and a ball of radius epsilon over 2 centered at y is shown. We note that this ball centered at y sits entirely within the ball of radius epsilon centered at x, the largest ball, and hence also within U sub lambda. One last small ball of radius 1 over n centered at y is shown that sits within the epsilon over 2 ball centered at y." class="raimg" role="img" src="figures/lebesguedelta-mbxpdft.svg" style="width:229pt; height:113pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.12<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Proof of Lebesgue covering lemma. Note that <span class="process-math">\(B(y,\nicefrac{\epsilon}{2}) \subset
+B(x,\epsilon)\)</span> by triangle inequality.<div class="autopermalink" data-description="Figure 7.12"><a aria-label="Copy heading and permalink for Figure 7.12" href="#fig_lebesguedelta" title="Copy heading and permalink for Figure 7.12">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para" id="sec_metcompact-4-18">It is important to recognize what the lemma says.  It says that if <span class="process-math">\(K\)</span> is sequentially compact, then for any given cover, there is a single <span class="process-math">\(\delta &gt; 0\text{.}\)</span>  The <span class="process-math">\(\delta\)</span> depends on the cover, but, of course, it does not depend on <span class="process-math">\(x\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-18" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_metcompact-4-19">For example, let <span class="process-math">\(K \coloneqq [-10,10]\)</span> and let <span class="process-math">\(U_n \coloneqq (n,n+2)\)</span> for <span class="process-math">\(n \in \Z\)</span> give an open cover. Consider <span class="process-math">\(x \in K\text{.}\)</span> There is an <span class="process-math">\(n \in \Z\text{,}\)</span> such that <span class="process-math">\(n \leq x &lt; n+1\text{.}\)</span> If <span class="process-math">\(n \leq x &lt; n+\nicefrac{1}{2}\text{,}\)</span> then <span class="process-math">\(B\bigl(x,\nicefrac{1}{2}\bigr) \subset U_{n-1}\text{.}\)</span> If <span class="process-math">\(n+ \nicefrac{1}{2} \leq x &lt; n+1\text{,}\)</span> then <span class="process-math">\(B\bigl(x,\nicefrac{1}{2}\bigr) \subset U_{n}\text{.}\)</span>  So <span class="process-math">\(\delta =
+\nicefrac{1}{2}\)</span> will do.  The sets <span class="process-math">\(U'_n \coloneqq \bigl(\frac{n}{2},\frac{n+2}{2} \bigr)\text{,}\)</span> again give an open cover, but now the largest <span class="process-math">\(\delta\)</span> that works is <span class="process-math">\(\nicefrac{1}{4}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-19" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_metcompact-4-20">On the other hand, <span class="process-math">\(\N \subset \R\)</span> is not sequentially compact. It is an exercise to find a cover for which no <span class="process-math">\(\delta &gt; 0\)</span> works.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-20" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="thm_mscompactisseqcpt"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.4.11</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="thm_mscompactisseqcpt-1-1">Let <span class="process-math">\((X,d)\)</span> be a metric space.  Then <span class="process-math">\(K \subset X\)</span> is compact if and only if every sequence in <span class="process-math">\(K\)</span> has a subsequence converging to a point in <span class="process-math">\(K\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#thm_mscompactisseqcpt-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 7.4.11"><a aria-label="Copy heading and permalink for Theorem 7.4.11" href="#thm_mscompactisseqcpt" title="Copy heading and permalink for Theorem 7.4.11">🔗</a></div>
+</article>
+<article class="proof" id="sec_metcompact-4-22"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metcompact-4-22-1">Claim: <em class="emphasis">Let <span class="process-math">\(K \subset X\)</span> be a subset of <span class="process-math">\(X\)</span> and <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> a sequence in <span class="process-math">\(K\text{.}\)</span>  Suppose that for each <span class="process-math">\(x \in K\text{,}\)</span> there is a ball <span class="process-math">\(B(x,\alpha_x)\)</span> for some <span class="process-math">\(\alpha_x &gt; 0\)</span> such that <span class="process-math">\(x_n \in B(x,\alpha_x)\)</span> for only finitely many <span class="process-math">\(n \in \N\text{.}\)</span> Then <span class="process-math">\(K\)</span> is not compact.</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-22-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_metcompact-4-22-2">
+<div class="para">Proof of the claim: Notice</div>
+<div class="displaymath process-math" id="sec_metcompact-4-22-2-1">
+\begin{equation}
+K \subset \bigcup_{x \in K} B(x,\alpha_x) .
+\end{equation}
+</div>
+<div class="para">Any finite collection of these balls contains at most finitely many elements of <span class="process-math">\(\{ x_n \}_{n=1}^\infty\text{,}\)</span> and so there must be an <span class="process-math">\(x_n \in K\)</span> not in their union.  Hence, <span class="process-math">\(K\)</span> is not compact and the claim is proved.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-22-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_metcompact-4-22-3">So suppose that <span class="process-math">\(K\)</span> is compact and <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is a sequence in <span class="process-math">\(K\text{.}\)</span> Then there exists an <span class="process-math">\(x \in K\)</span> such that for all <span class="process-math">\(\delta &gt; 0\text{,}\)</span> <span class="process-math">\(B(x,\delta)\)</span> contains <span class="process-math">\(x_n\)</span> for infinitely many <span class="process-math">\(n \in \N\text{.}\)</span> We define the subsequence inductively. The ball <span class="process-math">\(B(x,1)\)</span> contains some <span class="process-math">\(x_k\text{,}\)</span> so let <span class="process-math">\(n_1 \coloneqq k\text{.}\)</span> Suppose <span class="process-math">\(n_{j-1}\)</span> is defined. There must exist a <span class="process-math">\(k &gt; n_{j-1}\)</span> such that <span class="process-math">\(x_k \in B(x,\nicefrac{1}{j})\text{.}\)</span>  Define <span class="process-math">\(n_j \coloneqq k\text{.}\)</span> We now possess a subsequence <span class="process-math">\(\{ x_{n_j} \}_{j=1}^\infty\text{.}\)</span> Since <span class="process-math">\(d(x,x_{n_j}) &lt; \nicefrac{1}{j}\text{,}\)</span> <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metseqs.html#prop_msconvifa" title="Proposition 7.3.5">Proposition 7.3.5</a> says <span class="process-math">\(\lim_{j\to\infty} x_{n_j} = x\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-22-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_metcompact-4-22-4">For the other direction, suppose every sequence in <span class="process-math">\(K\)</span> has a subsequence converging in <span class="process-math">\(K\text{.}\)</span> Take an open cover <span class="process-math">\(\{ U_\lambda \}_{\lambda \in I}\)</span> of <span class="process-math">\(K\text{.}\)</span> Using the Lebesgue covering lemma above, find a <span class="process-math">\(\delta &gt; 0\)</span> such that for every <span class="process-math">\(x \in K\text{,}\)</span> there is a <span class="process-math">\(\lambda \in I\)</span> with <span class="process-math">\(B(x,\delta) \subset U_\lambda\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-22-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_metcompact-4-22-5">Pick <span class="process-math">\(x_1 \in K\)</span> and find <span class="process-math">\(\lambda_1 \in I\)</span> such that <span class="process-math">\(B(x_1,\delta) \subset
+U_{\lambda_1}\text{.}\)</span> If <span class="process-math">\(K \subset U_{\lambda_1}\text{,}\)</span> we stop as we have found a finite subcover. Otherwise, there must be a point <span class="process-math">\(x_2 \in K \setminus U_{\lambda_1}\text{.}\)</span> Note that <span class="process-math">\(d(x_2,x_1) \geq \delta\text{.}\)</span> There must exist some <span class="process-math">\(\lambda_2 \in I\)</span> such that <span class="process-math">\(B(x_2,\delta) \subset U_{\lambda_2}\text{.}\)</span> We work inductively.  Suppose <span class="process-math">\(\lambda_{n-1}\)</span> is defined. Either <span class="process-math">\(U_{\lambda_1} \cup
+U_{\lambda_2} \cup \cdots \cup
+U_{\lambda_{n-1}}\)</span> is a finite cover of <span class="process-math">\(K\text{,}\)</span> in which case we stop, or there must be a point <span class="process-math">\(x_n \in K \setminus \bigl( U_{\lambda_1} \cup
+U_{\lambda_2} \cup \cdots \cup
+U_{\lambda_{n-1}}\bigr)\text{.}\)</span> Note that <span class="process-math">\(d(x_n,x_j) \geq \delta\)</span> for all <span class="process-math">\(j = 1,2,\ldots,n-1\text{.}\)</span> Next, there must be some <span class="process-math">\(\lambda_n \in I\)</span> such that <span class="process-math">\(B(x_n,\delta) \subset U_{\lambda_n}\text{.}\)</span> See <a class="internal" href="sec_metcompact.html#fig_seqcompactiscompact" title="Figure 7.13">Figure 7.13</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-22-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="fig_seqcompactiscompact"><img alt="A shaded region with a solid boundary is marked K. Four points in K are marked x sub 1, x sub 2, x sub 3, and x sub 4. Circles of radius delta are drawn centered at x sub 1, x sub 2, and x sub 3. Around each of these circles there are three regions outlined in dotted line marked U sub lambda sub 1, U sub lambda sub 2, and U sub lambda sub 3. The discs, and therefore the surrounding regions, seem to be slowly covering the set K entirely on the left-hand side of the picture." class="raimg" role="img" src="figures/seqcompactiscompact-mbxpdft.svg" style="width:281pt; height:117pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.13<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Covering <span class="process-math">\(K\)</span> by <span class="process-math">\(U_{\lambda}\text{.}\)</span>  The points <span class="process-math">\(x_1,x_2,x_3,x_4\text{,}\)</span> the three sets <span class="process-math">\(U_{\lambda_1}\text{,}\)</span> <span class="process-math">\(U_{\lambda_2}\text{,}\)</span> <span class="process-math">\(U_{\lambda_3}\text{,}\)</span> and the first three balls of radius <span class="process-math">\(\delta\)</span> are drawn.<div class="autopermalink" data-description="Figure 7.13"><a aria-label="Copy heading and permalink for Figure 7.13" href="#fig_seqcompactiscompact" title="Copy heading and permalink for Figure 7.13">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para" id="sec_metcompact-4-22-9">Either at some point we obtain a finite subcover of <span class="process-math">\(K\text{,}\)</span> or we obtain an infinite sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> as above. For contradiction, suppose that there is no finite subcover and we have the sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\text{.}\)</span> For all <span class="process-math">\(n\)</span> and <span class="process-math">\(k\text{,}\)</span> <span class="process-math">\(n \neq k\text{,}\)</span> we have <span class="process-math">\(d(x_n,x_k) \geq \delta\text{.}\)</span> So no subsequence of <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is Cauchy. Hence, no subsequence of <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is convergent, which is a contradiction.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-22-9" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 7.4.2.3"><a aria-label="Copy heading and permalink for Proof 7.4.2.3" href="#sec_metcompact-4-22" title="Copy heading and permalink for Proof 7.4.2.3">🔗</a></div>
+</article>
+<article class="example example-like" id="example_intervalcompact"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.4.12</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="example_intervalcompact-1-1">
+<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_bw.html#thm_bwseq" title="Theorem 2.3.8: Bolzano–Weierstrass">Theorem 2.3.8</a>, the Bolzano–Weierstrass theorem for sequences of real numbers, says that every bounded sequence in <span class="process-math">\(\R\)</span> has a convergent subsequence.  Therefore, every sequence in a closed interval <span class="process-math">\([a,b] \subset \R\)</span> has a convergent subsequence.  The limit is also in <span class="process-math">\([a,b]\)</span> as limits preserve non-strict inequalities.  Hence, a closed bounded interval <span class="process-math">\([a,b]
+\subset \R\)</span> is (sequentially) compact.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_intervalcompact-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 7.4.12"><a aria-label="Copy heading and permalink for Example 7.4.12" href="#example_intervalcompact" title="Copy heading and permalink for Example 7.4.12">🔗</a></div>
+</article>
+<article class="proposition theorem-like" id="prop_closedsubsetcompact"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.4.13</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="prop_closedsubsetcompact-1-1">Let <span class="process-math">\((X,d)\)</span> be a metric space and let <span class="process-math">\(K \subset X\)</span> be compact.  If <span class="process-math">\(E \subset K\)</span> is a closed set, then <span class="process-math">\(E\)</span> is compact.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_closedsubsetcompact-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 7.4.13"><a aria-label="Copy heading and permalink for Proposition 7.4.13" href="#prop_closedsubsetcompact" title="Copy heading and permalink for Proposition 7.4.13">🔗</a></div>
+</article>
+<div class="para" id="sec_metcompact-4-25">Because <span class="process-math">\(K\)</span> is closed, <span class="process-math">\(E\)</span> is closed in <span class="process-math">\(K\)</span> if and only if it is closed in <span class="process-math">\(X\text{.}\)</span> See <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_mettop.html#prop_topology_subspacesame" title="Proposition 7.2.12">Proposition 7.2.12</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-25" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_metcompact-4-26"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metcompact-4-26-1">Let <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> be a sequence in <span class="process-math">\(E\text{.}\)</span>  It is also a sequence in <span class="process-math">\(K\text{.}\)</span> Therefore, it has a convergent subsequence <span class="process-math">\(\{ x_{n_j} \}_{j=1}^\infty\)</span> that converges to some <span class="process-math">\(x \in K\text{.}\)</span>  As <span class="process-math">\(E\)</span> is closed, the limit of a sequence in <span class="process-math">\(E\)</span> is also in <span class="process-math">\(E\)</span> and so <span class="process-math">\(x \in E\text{.}\)</span>  Thus <span class="process-math">\(E\)</span> must be compact.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-26-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 7.4.2.4"><a aria-label="Copy heading and permalink for Proof 7.4.2.4" href="#sec_metcompact-4-26" title="Copy heading and permalink for Proof 7.4.2.4">🔗</a></div>
+</article>
+<article class="theorem theorem-like" id="thm_msbw"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.4.14</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Heine–Borel.</span>
+</h4>
+<div class="para" id="thm_msbw-3-1">
+<details aria-live="polite" class="ptx-footnote" id="thm_msbw-3-1-1"><summary class="ptx-footnote__number" title="Footnote 7.4.2"><sup> 2 </sup></summary>
+<div class="ptx-footnote__contents" id="thm_msbw-3-1-1">Named after the German mathematician <a class="external" href="https://en.wikipedia.org/wiki/Eduard_Heine" target="_blank">Heinrich Eduard Heine</a> (1821–1881), and the French mathematician <a class="external" href="https://en.wikipedia.org/wiki/\%C3\%89mile_Borel" target="_blank">Félix Édouard Justin Émile Borel</a> (1871–1956).
+</div></details> A closed bounded subset <span class="process-math">\(K \subset \R^n\)</span> is compact.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#thm_msbw-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 7.4.14: Heine–Borel"><a aria-label="Copy heading and permalink for Theorem 7.4.14: Heine–Borel" href="#thm_msbw" title="Copy heading and permalink for Theorem 7.4.14: Heine–Borel">🔗</a></div>
+</article>
+<div class="para" id="sec_metcompact-4-28">So subsets of <span class="process-math">\(\R^n\)</span> are compact if and only if they are closed and bounded, a condition that is much easier to check. Let us reiterate that the Heine–Borel theorem only holds for <span class="process-math">\(\R^n\)</span> and not for metric spaces in general. The theorem does not hold even for subspaces of <span class="process-math">\(\R^n\text{,}\)</span> just in <span class="process-math">\(\R^n\)</span> itself. In general, compact implies closed and bounded, but not vice versa.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-28" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_metcompact-4-29"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metcompact-4-29-1">For <span class="process-math">\(\R = \R^1\text{,}\)</span> suppose <span class="process-math">\(K \subset \R\)</span> is closed and bounded. Then <span class="process-math">\(K \subset [a,b]\)</span> for some closed and bounded interval, which is compact by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metcompact.html#example_intervalcompact" title="Example 7.4.12">Example 7.4.12</a>. As <span class="process-math">\(K\)</span> is a closed subset of a compact set, it is compact by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metcompact.html#prop_closedsubsetcompact" title="Proposition 7.4.13">Proposition 7.4.13</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-29-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_metcompact-4-29-2">We carry out the proof for <span class="process-math">\(n=2\)</span> and leave arbitrary <span class="process-math">\(n\)</span> as an exercise. As <span class="process-math">\(K \subset \R^2\)</span> is bounded, there exists a set <span class="process-math">\(B=[a,b]\times[c,d] \subset \R^2\)</span> such that <span class="process-math">\(K \subset B\text{.}\)</span>  We will show that <span class="process-math">\(B\)</span> is compact.  Then <span class="process-math">\(K\text{,}\)</span> being a closed subset of a compact <span class="process-math">\(B\text{,}\)</span> is also compact.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-29-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_metcompact-4-29-3">
+<div class="para">Let <span class="process-math">\(\bigl\{ (x_k,y_k) \bigr\}_{k=1}^\infty\)</span> be a sequence in <span class="process-math">\(B\text{.}\)</span>  That is, <span class="process-math">\(a \leq x_k \leq b\)</span> and <span class="process-math">\(c \leq y_k \leq d\)</span> for all <span class="process-math">\(k\text{.}\)</span>  A bounded sequence of real numbers has a convergent subsequence, so there is a subsequence <span class="process-math">\(\{ x_{k_j} \}_{j=1}^\infty\)</span> that is convergent.  The subsequence <span class="process-math">\(\{ y_{k_j} \}_{j=1}^\infty\)</span> is also a bounded sequence so there exists a subsequence <span class="process-math">\(\{ y_{k_{j_i}} \}_{i=1}^\infty\)</span> that is convergent.  A subsequence of a convergent sequence is still convergent, so <span class="process-math">\(\{ x_{k_{j_i}} \}_{i=1}^\infty\)</span> is convergent. Let</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_msconveuc.html" id="sec_metcompact-4-29-3-10">
+\begin{equation}
+x \coloneqq \lim_{i\to\infty} x_{k_{j_i}}
+\qquad \text{and} \qquad
+y \coloneqq \lim_{i\to\infty} y_{k_{j_i}} .
+\end{equation}
+</div>
+<div class="para">By <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metseqs.html#prop_msconveuc" title="Proposition 7.3.9">Proposition 7.3.9</a>, <span class="process-math">\(\bigl\{ (x_{k_{j_i}},y_{k_{j_i}}) \bigr\}_{i=1}^\infty\)</span> converges to <span class="process-math">\((x,y)\text{.}\)</span> Furthermore, as <span class="process-math">\(a \leq x_k \leq b\)</span> and <span class="process-math">\(c \leq y_k \leq d\)</span> for all <span class="process-math">\(k\text{,}\)</span> we know that <span class="process-math">\((x,y) \in B\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-29-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 7.4.2.5"><a aria-label="Copy heading and permalink for Proof 7.4.2.5" href="#sec_metcompact-4-29" title="Copy heading and permalink for Proof 7.4.2.5">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_metcompact-4-30"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.4.15</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_metcompact-4-30-1-1">The discrete metric provides interesting counterexamples again. Let <span class="process-math">\((X,d)\)</span> be a metric space with the discrete metric, that is, <span class="process-math">\(d(x,y) = 1\)</span> if <span class="process-math">\(x \neq y\text{.}\)</span>  Suppose <span class="process-math">\(X\)</span> is an infinite set.  Then<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-30-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="sec_metcompact-4-30-1-2">
+<li id="sec_metcompact-4-30-1-2-1">
+<div class="para" id="sec_metcompact-4-30-1-2-1-1">
+<span class="process-math">\((X,d)\)</span> is a complete metric space.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-30-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#sec_metcompact-4-30-1-2-1" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="sec_metcompact-4-30-1-2-2">
+<div class="para" id="sec_metcompact-4-30-1-2-2-1">Any subset <span class="process-math">\(K \subset X\)</span> is closed and bounded.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-30-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#sec_metcompact-4-30-1-2-2" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+<li id="sec_metcompact-4-30-1-2-3">
+<div class="para" id="sec_metcompact-4-30-1-2-3-1">A subset <span class="process-math">\(K \subset X\)</span> is compact if and only if it is a finite set.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-30-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iii"><a aria-label="Copy heading and permalink for Item iii" href="#sec_metcompact-4-30-1-2-3" title="Copy heading and permalink for Item iii">🔗</a></div>
+</li>
+<li id="sec_metcompact-4-30-1-2-4">
+<div class="para" id="sec_metcompact-4-30-1-2-4-1">The conclusion of the Lebesgue covering lemma is always satisfied, e.g. with <span class="process-math">\(\delta = \nicefrac{1}{2}\text{,}\)</span> even for noncompact <span class="process-math">\(K \subset X\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-30-1-2-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iv"><a aria-label="Copy heading and permalink for Item iv" href="#sec_metcompact-4-30-1-2-4" title="Copy heading and permalink for Item iv">🔗</a></div>
+</li>
+</ol>
+<div class="para" id="sec_metcompact-4-30-1-3">The proofs of the statements above are either trivial or are relegated to the exercises below.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-30-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 7.4.15"><a aria-label="Copy heading and permalink for Example 7.4.15" href="#sec_metcompact-4-30" title="Copy heading and permalink for Example 7.4.15">🔗</a></div>
+</article>
+<article class="remark remark-like" id="sec_metcompact-4-31"><h4 class="heading">
+<span class="type">Remark</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.4.16</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_metcompact-4-31-1-1">A subtle issue with Cauchy sequences, completeness, compactness, and convergence is that compactness and convergence only depend on the topology, that is, on which sets are the open sets.  On the other hand, Cauchy sequences and completeness depend on the actual metric. See <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metcompact.html#exercise_cauchydepndsonmetric" title="Exercise 7.4.19">Exercise 7.4.19</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-4-31-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Remark 7.4.16"><a aria-label="Copy heading and permalink for Remark 7.4.16" href="#sec_metcompact-4-31" title="Copy heading and permalink for Remark 7.4.16">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 7.4.2: Compactness"><a aria-label="Copy heading and permalink for Subsection 7.4.2: Compactness" href="#sec_metcompact-4" title="Copy heading and permalink for Subsection 7.4.2: Compactness">🔗</a></div>
+</section>
+<section class="exercises" id="sec_metcompact-5">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.4.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_metcompact-5-1"><h4 class="heading"><span class="codenumber">7.4.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metcompact-5-1-1-1">Let <span class="process-math">\((X,d)\)</span> be a metric space and <span class="process-math">\(A\)</span> a finite subset of <span class="process-math">\(X\text{.}\)</span> Show that <span class="process-math">\(A\)</span> is compact.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-5-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.4.1"><a aria-label="Copy heading and permalink for Exercise 7.4.1" href="#sec_metcompact-5-1" title="Copy heading and permalink for Exercise 7.4.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metcompact-5-2"><h4 class="heading"><span class="codenumber">7.4.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metcompact-5-2-1-1">Let <span class="process-math">\(A \coloneqq \{ \nicefrac{1}{n} : n \in \N \} \subset \R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-5-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_metcompact-5-2-1-2">
+<li id="sec_metcompact-5-2-1-2-1">
+<div class="para" id="sec_metcompact-5-2-1-2-1-1">Show that <span class="process-math">\(A\)</span> is not compact directly using the definition.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-5-2-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.4.2.a"><a aria-label="Copy heading and permalink for Item 7.4.2.a" href="#sec_metcompact-5-2-1-2-1" title="Copy heading and permalink for Item 7.4.2.a">🔗</a></div>
+</li>
+<li id="sec_metcompact-5-2-1-2-2">
+<div class="para" id="sec_metcompact-5-2-1-2-2-1">Show that <span class="process-math">\(A \cup \{ 0 \}\)</span> is compact directly using the definition.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-5-2-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.4.2.b"><a aria-label="Copy heading and permalink for Item 7.4.2.b" href="#sec_metcompact-5-2-1-2-2" title="Copy heading and permalink for Item 7.4.2.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 7.4.2"><a aria-label="Copy heading and permalink for Exercise 7.4.2" href="#sec_metcompact-5-2" title="Copy heading and permalink for Exercise 7.4.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metcompact-5-3"><h4 class="heading"><span class="codenumber">7.4.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metcompact-5-3-1-1">Let <span class="process-math">\((X,d)\)</span> be a metric space with the discrete metric.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-5-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_metcompact-5-3-1-2">
+<li id="sec_metcompact-5-3-1-2-1">
+<div class="para" id="sec_metcompact-5-3-1-2-1-1">Prove that <span class="process-math">\(X\)</span> is complete.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-5-3-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.4.3.a"><a aria-label="Copy heading and permalink for Item 7.4.3.a" href="#sec_metcompact-5-3-1-2-1" title="Copy heading and permalink for Item 7.4.3.a">🔗</a></div>
+</li>
+<li id="sec_metcompact-5-3-1-2-2">
+<div class="para" id="sec_metcompact-5-3-1-2-2-1">Prove that <span class="process-math">\(X\)</span> is compact if and only if <span class="process-math">\(X\)</span> is a finite set.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-5-3-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.4.3.b"><a aria-label="Copy heading and permalink for Item 7.4.3.b" href="#sec_metcompact-5-3-1-2-2" title="Copy heading and permalink for Item 7.4.3.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 7.4.3"><a aria-label="Copy heading and permalink for Exercise 7.4.3" href="#sec_metcompact-5-3" title="Copy heading and permalink for Exercise 7.4.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metcompact-5-4"><h4 class="heading"><span class="codenumber">7.4.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metcompact-5-4-1-1"><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-5-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div></div>
+<ol class="lower-alpha ol-marker-3" id="sec_metcompact-5-4-1-2">
+<li id="sec_metcompact-5-4-1-2-1">
+<div class="para" id="sec_metcompact-5-4-1-2-1-1">Show that the union of finitely many compact sets is a compact set.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-5-4-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.4.4.a"><a aria-label="Copy heading and permalink for Item 7.4.4.a" href="#sec_metcompact-5-4-1-2-1" title="Copy heading and permalink for Item 7.4.4.a">🔗</a></div>
+</li>
+<li id="sec_metcompact-5-4-1-2-2">
+<div class="para" id="sec_metcompact-5-4-1-2-2-1">Find an example where the union of infinitely many compact sets is not compact.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-5-4-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.4.4.b"><a aria-label="Copy heading and permalink for Item 7.4.4.b" href="#sec_metcompact-5-4-1-2-2" title="Copy heading and permalink for Item 7.4.4.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 7.4.4"><a aria-label="Copy heading and permalink for Exercise 7.4.4" href="#sec_metcompact-5-4" title="Copy heading and permalink for Exercise 7.4.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metcompact-5-5"><h4 class="heading"><span class="codenumber">7.4.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metcompact-5-5-1-1">Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metcompact.html#thm_msbw" title="Theorem 7.4.14: Heine–Borel">Theorem 7.4.14</a> for arbitrary dimension. Hint: The trick is to use the correct notation.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-5-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.4.5"><a aria-label="Copy heading and permalink for Exercise 7.4.5" href="#sec_metcompact-5-5" title="Copy heading and permalink for Exercise 7.4.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_subspacecompact"><h4 class="heading"><span class="codenumber">7.4.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_subspacecompact-1-1">Show that a compact set <span class="process-math">\(K\)</span> (in any metric space) is itself a complete metric space (using the subspace metric).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_subspacecompact-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.4.6"><a aria-label="Copy heading and permalink for Exercise 7.4.6" href="#exercise_subspacecompact" title="Copy heading and permalink for Exercise 7.4.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_CabRcomplete"><h4 class="heading"><span class="codenumber">7.4.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_CabRcomplete-1-1">Let <span class="process-math">\(C\bigl([a,b],\R\bigr)\)</span> be the metric space as in <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metric.html#example_msC01" title="Example 7.1.8">Example 7.1.8</a>.  Show that <span class="process-math">\(C\bigl([a,b],\R\bigr)\)</span> is a complete metric space.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_CabRcomplete-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.4.7"><a aria-label="Copy heading and permalink for Exercise 7.4.7" href="#exercise_CabRcomplete" title="Copy heading and permalink for Exercise 7.4.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_msclbounnotcompt"><h4 class="heading"><span class="codenumber">7.4.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_msclbounnotcompt-1-1">
+<em class="emphasis">(Challenging)</em>   Let <span class="process-math">\(C\bigl([0,1],\R\bigr)\)</span> be the metric space of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metric.html#example_msC01" title="Example 7.1.8">Example 7.1.8</a>.  Let <span class="process-math">\(0\)</span> denote the zero function.  Then show that the closed ball <span class="process-math">\(C(0,1)\)</span> is not compact (even though it is closed and bounded). Hints: Construct a sequence of distinct continuous functions <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> such that <span class="process-math">\(d(f_n,0) = 1\)</span> and <span class="process-math">\(d(f_n,f_k) = 1\)</span> for all <span class="process-math">\(n \neq k\text{.}\)</span>  Show that the set <span class="process-math">\(\{ f_n : n \in \N \} \subset C(0,1)\)</span> is closed but not compact. See <a class="internal" href="fs_chapter.html" title="Chapter 6: Sequences of Functions">Chapter 6</a> for inspiration.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_msclbounnotcompt-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.4.8"><a aria-label="Copy heading and permalink for Exercise 7.4.8" href="#exercise_msclbounnotcompt" title="Copy heading and permalink for Exercise 7.4.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metcompact-5-9"><h4 class="heading"><span class="codenumber">7.4.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metcompact-5-9-1-1">
+<em class="emphasis">(Challenging)</em>   Show that there exists a metric on <span class="process-math">\(\R\)</span> that makes <span class="process-math">\(\R\)</span> into a compact set.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-5-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.4.9"><a aria-label="Copy heading and permalink for Exercise 7.4.9" href="#sec_metcompact-5-9" title="Copy heading and permalink for Exercise 7.4.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metcompact-5-10"><h4 class="heading"><span class="codenumber">7.4.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metcompact-5-10-1-1">Suppose <span class="process-math">\((X,d)\)</span> is complete and suppose we have a countably infinite collection of nonempty compact sets <span class="process-math">\(E_1 \supset E_2 \supset E_3 \supset
+\cdots\text{.}\)</span>  Prove <span class="process-math">\(\bigcap_{j=1}^\infty E_j \neq \emptyset\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-5-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.4.10"><a aria-label="Copy heading and permalink for Exercise 7.4.10" href="#sec_metcompact-5-10" title="Copy heading and permalink for Exercise 7.4.10">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metcompact-5-11"><h4 class="heading"><span class="codenumber">7.4.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metcompact-5-11-1-1">
+<em class="emphasis">(Challenging)</em>   Let <span class="process-math">\(C\bigl([0,1],\R\bigr)\)</span> be the metric space of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metric.html#example_msC01" title="Example 7.1.8">Example 7.1.8</a>. Let <span class="process-math">\(K\)</span> be the set of <span class="process-math">\(f \in C\bigl([0,1],\R\bigr)\)</span> such that <span class="process-math">\(f\)</span> is equal to a quadratic polynomial, i.e. <span class="process-math">\(f(x) = a+bx+cx^2\text{,}\)</span> and such that <span class="process-math">\(\babs{f(x)} \leq 1\)</span> for all <span class="process-math">\(x \in [0,1]\text{,}\)</span> that is <span class="process-math">\(f \in C(0,1)\text{.}\)</span>  Show that <span class="process-math">\(K\)</span> is compact.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-5-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.4.11"><a aria-label="Copy heading and permalink for Exercise 7.4.11" href="#sec_metcompact-5-11" title="Copy heading and permalink for Exercise 7.4.11">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_mstotbound"><h4 class="heading"><span class="codenumber">7.4.12<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_mstotbound-1-1">
+<em class="emphasis">(Challenging)</em>   Let <span class="process-math">\((X,d)\)</span> be a complete metric space. Show that <span class="process-math">\(K \subset X\)</span> is compact if and only if <span class="process-math">\(K\)</span> is closed and such that for every <span class="process-math">\(\epsilon &gt; 0\)</span> there exists a finite set of points <span class="process-math">\(x_1,x_2,\ldots,x_n\)</span> with <span class="process-math">\(K \subset \bigcup_{j=1}^n B(x_j,\epsilon)\text{.}\)</span> Note: Such a set <span class="process-math">\(K\)</span> is said to be <em class="emphasis">totally bounded</em>, so in a complete metric space a set is compact if and only if it is closed and totally bounded.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_mstotbound-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.4.12"><a aria-label="Copy heading and permalink for Exercise 7.4.12" href="#exercise_mstotbound" title="Copy heading and permalink for Exercise 7.4.12">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metcompact-5-13"><h4 class="heading"><span class="codenumber">7.4.13<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metcompact-5-13-1-1">Take <span class="process-math">\(\N \subset \R\)</span> using the standard metric.  Find an open cover of <span class="process-math">\(\N\)</span> such that the conclusion of the Lebesgue covering lemma does not hold.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-5-13-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.4.13"><a aria-label="Copy heading and permalink for Exercise 7.4.13" href="#sec_metcompact-5-13" title="Copy heading and permalink for Exercise 7.4.13">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metcompact-5-14"><h4 class="heading"><span class="codenumber">7.4.14<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metcompact-5-14-1-1">Prove the general Bolzano–Weierstrass theorem: Any bounded sequence <span class="process-math">\(\{ x_k \}_{k=1}^\infty\)</span> in <span class="process-math">\(\R^n\)</span> has a convergent subsequence.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-5-14-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.4.14"><a aria-label="Copy heading and permalink for Exercise 7.4.14" href="#sec_metcompact-5-14" title="Copy heading and permalink for Exercise 7.4.14">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metcompact-5-15"><h4 class="heading"><span class="codenumber">7.4.15<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metcompact-5-15-1-1">Let <span class="process-math">\(X\)</span> be a metric space and <span class="process-math">\(C \subset \sP(X)\)</span> the set of nonempty compact subsets of <span class="process-math">\(X\text{.}\)</span> Using the Hausdorff metric from <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metric.html#exercise_mshausdorffpseudo" title="Exercise 7.1.8">Exercise 7.1.8</a>, show that <span class="process-math">\((C,d_H)\)</span> is a metric space.  That is, show that if <span class="process-math">\(L\)</span> and <span class="process-math">\(K\)</span> are nonempty compact subsets, then <span class="process-math">\(d_H(L,K) = 0\)</span> if and only if <span class="process-math">\(L=K\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-5-15-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.4.15"><a aria-label="Copy heading and permalink for Exercise 7.4.15" href="#sec_metcompact-5-15" title="Copy heading and permalink for Exercise 7.4.15">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_closedcomplete"><h4 class="heading"><span class="codenumber">7.4.16<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_closedcomplete-1-1">Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metcompact.html#prop_closedcomplete" title="Proposition 7.4.6">Proposition 7.4.6</a>.  That is, let <span class="process-math">\((X,d)\)</span> be a complete metric space and <span class="process-math">\(E \subset X\)</span> a closed set. Show that <span class="process-math">\(E\)</span> with the subspace metric is a complete metric space.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_closedcomplete-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.4.16"><a aria-label="Copy heading and permalink for Exercise 7.4.16" href="#exercise_closedcomplete" title="Copy heading and permalink for Exercise 7.4.16">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metcompact-5-17"><h4 class="heading"><span class="codenumber">7.4.17<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metcompact-5-17-1-1">Let <span class="process-math">\((X,d)\)</span> be an incomplete metric space.  Show that there exists a closed and bounded set <span class="process-math">\(E \subset X\)</span> that is not compact.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-5-17-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.4.17"><a aria-label="Copy heading and permalink for Exercise 7.4.17" href="#sec_metcompact-5-17" title="Copy heading and permalink for Exercise 7.4.17">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_metcompact-5-18"><h4 class="heading"><span class="codenumber">7.4.18<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_metcompact-5-18-1-1">Let <span class="process-math">\((X,d)\)</span> be a metric space and <span class="process-math">\(K \subset X\text{.}\)</span> Prove that <span class="process-math">\(K\)</span> is compact as a subset of <span class="process-math">\((X,d)\)</span> if and only if <span class="process-math">\(K\)</span> is compact as a subset of itself with the subspace metric.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_metcompact-5-18-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.4.18"><a aria-label="Copy heading and permalink for Exercise 7.4.18" href="#sec_metcompact-5-18" title="Copy heading and permalink for Exercise 7.4.18">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_cauchydepndsonmetric"><h4 class="heading"><span class="codenumber">7.4.19<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_cauchydepndsonmetric-1-1">Consider two metrics on <span class="process-math">\(\R\text{.}\)</span> Let <span class="process-math">\(d(x,y) \coloneqq \sabs{x-y}\)</span> be the standard metric, and let <span class="process-math">\(d'(x,y) \coloneqq
+\babs{ \frac{x}{1+\sabs{x}} - \frac{y}{1+\sabs{y}} }\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_cauchydepndsonmetric-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="exercise_cauchydepndsonmetric-1-2">
+<li id="exercise_cauchydepndsonmetric-1-2-1">
+<div class="para" id="exercise_cauchydepndsonmetric-1-2-1-1">Show that <span class="process-math">\((\R,d')\)</span> is a metric space (if you have done <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_metseqs.html#exercise_extendedrealsmetric" title="Exercise 7.3.10">Exercise 7.3.10</a>, the computation is the same).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_cauchydepndsonmetric-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.4.19.a"><a aria-label="Copy heading and permalink for Item 7.4.19.a" href="#exercise_cauchydepndsonmetric-1-2-1" title="Copy heading and permalink for Item 7.4.19.a">🔗</a></div>
+</li>
+<li id="exercise_cauchydepndsonmetric-1-2-2">
+<div class="para" id="exercise_cauchydepndsonmetric-1-2-2-1">Show that the topology is the same, that is, a set is open in <span class="process-math">\((\R,d)\)</span> if and only if it is open in <span class="process-math">\((\R,d')\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_cauchydepndsonmetric-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.4.19.b"><a aria-label="Copy heading and permalink for Item 7.4.19.b" href="#exercise_cauchydepndsonmetric-1-2-2" title="Copy heading and permalink for Item 7.4.19.b">🔗</a></div>
+</li>
+<li id="exercise_cauchydepndsonmetric-1-2-3">
+<div class="para" id="exercise_cauchydepndsonmetric-1-2-3-1">Show that a set is compact in <span class="process-math">\((\R,d)\)</span> if and only if it is compact in <span class="process-math">\((\R,d')\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_cauchydepndsonmetric-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.4.19.c"><a aria-label="Copy heading and permalink for Item 7.4.19.c" href="#exercise_cauchydepndsonmetric-1-2-3" title="Copy heading and permalink for Item 7.4.19.c">🔗</a></div>
+</li>
+<li id="exercise_cauchydepndsonmetric-1-2-4">
+<div class="para" id="exercise_cauchydepndsonmetric-1-2-4-1">Show that a sequence converges in <span class="process-math">\((\R,d)\)</span> if and only if it converges in <span class="process-math">\((\R,d')\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_cauchydepndsonmetric-1-2-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.4.19.d"><a aria-label="Copy heading and permalink for Item 7.4.19.d" href="#exercise_cauchydepndsonmetric-1-2-4" title="Copy heading and permalink for Item 7.4.19.d">🔗</a></div>
+</li>
+<li id="exercise_cauchydepndsonmetric-1-2-5">
+<div class="para" id="exercise_cauchydepndsonmetric-1-2-5-1">Find a sequence of real numbers that is Cauchy in <span class="process-math">\((\R,d')\)</span> but not Cauchy in <span class="process-math">\((\R,d)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_cauchydepndsonmetric-1-2-5-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.4.19.e"><a aria-label="Copy heading and permalink for Item 7.4.19.e" href="#exercise_cauchydepndsonmetric-1-2-5" title="Copy heading and permalink for Item 7.4.19.e">🔗</a></div>
+</li>
+<li id="exercise_cauchydepndsonmetric-1-2-6">
+<div class="para" id="exercise_cauchydepndsonmetric-1-2-6-1">While <span class="process-math">\((\R,d)\)</span> is complete, show that <span class="process-math">\((\R,d')\)</span> is not complete.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_cauchydepndsonmetric-1-2-6-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 7.4.19.f"><a aria-label="Copy heading and permalink for Item 7.4.19.f" href="#exercise_cauchydepndsonmetric-1-2-6" title="Copy heading and permalink for Item 7.4.19.f">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 7.4.19"><a aria-label="Copy heading and permalink for Exercise 7.4.19" href="#exercise_cauchydepndsonmetric" title="Copy heading and permalink for Exercise 7.4.19">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_relativelycompactseq"><h4 class="heading"><span class="codenumber">7.4.20<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_relativelycompactseq-1-1">Let <span class="process-math">\((X,d)\)</span> be a complete metric space. We say a set <span class="process-math">\(S \subset X\)</span> is <em class="emphasis">relatively compact</em> if the closure <span class="process-math">\(\widebar{S}\)</span> is compact. Prove that <span class="process-math">\(S \subset X\)</span> is relatively compact if and only if given any sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> in <span class="process-math">\(S\text{,}\)</span> there exists a subsequence <span class="process-math">\(\{ x_{n_k} \}_{k=1}^\infty\)</span> that converges (in <span class="process-math">\(X\)</span>).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_relativelycompactseq-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 7.4.20"><a aria-label="Copy heading and permalink for Exercise 7.4.20" href="#exercise_relativelycompactseq" title="Copy heading and permalink for Exercise 7.4.20">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 7.4.3"><a aria-label="Copy heading and permalink for Exercises 7.4.3" href="#sec_metcompact-5" title="Copy heading and permalink for Exercises 7.4.3">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 7.4: Completeness and compactness"><a aria-label="Copy heading and permalink for Section 7.4: Completeness and compactness" href="#sec_metcompact" title="Copy heading and permalink for Section 7.4: Completeness and compactness">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_metseqs.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_metcont.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

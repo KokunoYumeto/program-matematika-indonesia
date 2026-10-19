@@ -1,0 +1,835 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sequences and limits · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_seqsandlims">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Sequences and limits</span>
+</h2>
+<section class="introduction" id="sec_seqsandlims-2">
+<div class="para" id="sec_seqsandlims-2-1">
+<em class="emphasis">Note: 2.5 lectures</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_seqsandlims-2-2">Analysis is essentially about taking limits.  The most basic type of a limit is a limit of a sequence of real numbers. We have already seen sequences used informally.  Let us give the formal definition.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-2-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_seqsandlims-2-3"><h3 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.1.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para logical" id="sec_seqsandlims-2-3-1-1">
+<div class="para">A <em class="emphasis">sequence</em> (of real numbers) is a function <span class="process-math">\(x \colon \N \to
+\R\text{.}\)</span>  Instead of <span class="process-math">\(x(n)\text{,}\)</span> we usually denote the <span class="process-math">\(n\)</span>th element in the sequence by <span class="process-math">\(x_n\text{.}\)</span> To denote a sequence we write<details aria-live="polite" class="ptx-footnote" id="sec_seqsandlims-2-3-1-1-6"><summary class="ptx-footnote__number" title="Footnote 2.1.1"><sup> 1 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_seqsandlims-2-3-1-1-6">It is common to use <span class="process-math">\(\{ x_n \}\)</span> or <span class="process-math">\(\{ x_n \}_n\)</span> for brevity.
+</div></details>
+</div>
+<div class="displaymath process-math" id="sec_seqsandlims-2-3-1-1-7">
+\begin{equation}
+\{ x_n \}_{n=1}^\infty.
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-2-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_seqsandlims-2-3-1-2">
+<div class="para">A sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is <em class="emphasis">bounded</em> if the underlying function is bounded.  That is, if there exists a <span class="process-math">\(B \in \R\)</span> such that</div>
+<div class="displaymath process-math" id="sec_seqsandlims-2-3-1-2-5">
+\begin{equation}
+\sabs{x_n} \leq B \qquad \text{for all } n \in \N.
+\end{equation}
+</div>
+<div class="para">In other words, the sequence <span class="process-math">\(\{x_n\}_{n=1}^\infty\)</span> is bounded whenever the set <span class="process-math">\(\{ x_n : n \in \N \}\)</span> is bounded. We similarly define the words <em class="emphasis">bounded below</em> and <em class="emphasis">bounded above</em>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-2-3-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 2.1.1"><a aria-label="Copy heading and permalink for Definition 2.1.1" href="#sec_seqsandlims-2-3" title="Copy heading and permalink for Definition 2.1.1">🔗</a></div>
+</article>
+<div class="para" id="sec_seqsandlims-2-4">When we need to give a concrete sequence, we often give each term as a formula in terms of <span class="process-math">\(n\text{.}\)</span> For example, <span class="process-math">\(\{ \nicefrac{1}{n} \}_{n=1}^\infty\)</span> stands for the sequence <span class="process-math">\(1, \nicefrac{1}{2}, \nicefrac{1}{3}, \nicefrac{1}{4},
+\nicefrac{1}{5}, \ldots\text{.}\)</span> The sequence <span class="process-math">\(\{ \nicefrac{1}{n} \}_{n=1}^\infty\)</span> is a bounded sequence (<span class="process-math">\(B=1\)</span> suffices).  On the other hand, the sequence <span class="process-math">\(\{ n \}_{n=1}^\infty\)</span> stands for <span class="process-math">\(1,2,3,4,\ldots\text{,}\)</span> and this sequence is not bounded (why?).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-2-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_seqsandlims-2-5">While the notation for a sequence is similar<details aria-live="polite" class="ptx-footnote" id="sec_seqsandlims-2-5-1"><summary class="ptx-footnote__number" title="Footnote 2.1.2"><sup> 2 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_seqsandlims-2-5-1">
+<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="furtherreading_chapter.html#biblio-BS" title="Bibliographic Entry BS: Introduction to Real Analysis">[BS]</a> use <span class="process-math">\((x_n)_{n=1}^\infty\)</span> to denote a sequence instead of <span class="process-math">\(\{ x_n \}_{n=1}^\infty\text{,}\)</span> which is what <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="furtherreading_chapter.html#biblio-Rudin_baby" title="Bibliographic Entry R2: Principles of Mathematical Analysis">[R2]</a> uses. Both are common.
+</div></details> to that of a set, the notions are distinct.  For example, the sequence <span class="process-math">\(\bigl\{ {(-1)}^n \bigr\}_{n=1}^\infty\)</span> is the sequence <span class="process-math">\(-1,1,-1,1,-1,1,\ldots\text{,}\)</span> whereas the set of values, the <em class="emphasis">range of the sequence</em>, is just the set <span class="process-math">\(\{ -1, 1 \}\text{.}\)</span>  We write this set as <span class="process-math">\(\bigl\{ {(-1)}^n : n \in \N \bigr\}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-2-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_seqsandlims-2-6">Another example of a sequence is the <em class="emphasis">constant sequence</em>. That is a sequence <span class="process-math">\(\{ c \}_{n=1}^\infty = c,c,c,c,\ldots\)</span> consisting of a single constant <span class="process-math">\(c \in \R\)</span> repeating indefinitely.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-2-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_seqsandlims-2-7"><h3 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.1.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para logical" id="sec_seqsandlims-2-7-1-1">
+<div class="para">A sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is said to <em class="emphasis">converge</em> to a number <span class="process-math">\(x \in \R\)</span> if for every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there exists an <span class="process-math">\(M \in \N\)</span> such that <span class="process-math">\(\sabs{x_n - x} &lt; \epsilon\)</span> for all <span class="process-math">\(n \geq M\text{.}\)</span> The number <span class="process-math">\(x\)</span> is called a <em class="emphasis">limit</em> of the sequence. We will prove that the limit <span class="process-math">\(x\)</span> is unique, and so we write<details aria-live="polite" class="ptx-footnote" id="sec_seqsandlims-2-7-1-1-11"><summary class="ptx-footnote__number" title="Footnote 2.1.3"><sup> 3 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_seqsandlims-2-7-1-1-11">In text, this may get rendered as <span class="process-math">\(\lim_{n\to\infty} x_n\text{.}\)</span>
+</div></details>
+</div>
+<div class="displaymath process-math" id="sec_seqsandlims-2-7-1-1-12">
+\begin{equation}
+\lim_{n\to \infty} x_n \coloneqq x .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-2-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_seqsandlims-2-7-1-2">A sequence that converges is said to be <em class="emphasis">convergent</em>. Otherwise, we say the sequence <em class="emphasis">diverges</em> or that it is <em class="emphasis">divergent</em>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-2-7-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 2.1.2"><a aria-label="Copy heading and permalink for Definition 2.1.2" href="#sec_seqsandlims-2-7" title="Copy heading and permalink for Definition 2.1.2">🔗</a></div>
+</article>
+<div class="para" id="sec_seqsandlims-2-8">Shortly, in <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_seqsandlims.html#prop_limisunique" title="Proposition 2.1.6">Proposition 2.1.6</a> we will show that the limit <span class="process-math">\(x\)</span> is always unique if it exists.  It makes sense to talk about <em class="emphasis">the</em> limit of a sequence and we only need to show that the sequence converges to one number. For the next couple of examples, let us pretend we have already proved that limits are unique.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-2-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_seqsandlims-2-9">Intuitively, the limit being <span class="process-math">\(x\)</span> means that eventually every number in the sequence is close to the number <span class="process-math">\(x\text{.}\)</span>  More precisely, we get arbitrarily close to the limit, provided we go far enough in the sequence.  It does not mean we ever reach the limit.  It is possible, and quite common, that there is no <span class="process-math">\(x_n\)</span> in the sequence that equals the limit <span class="process-math">\(x\text{.}\)</span> We illustrate the concept in <a class="internal" href="sec_seqsandlims.html#figsequenceconvergence" title="Figure 2.1">Figure 2.1</a>.  In the figure we first think of the sequence as a graph, as it is a function of <span class="process-math">\(\N\text{.}\)</span>   Secondly, we also plot it as a sequence of labeled points on the real line.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-2-9" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="figsequenceconvergence"><img alt="Two diagrams. The first is a graph of a sequence, that is, the values are on the vertical axis and the horizontal axis is the index. On the vertical axis, the number x is marked and a horizontal line is drawn. A strip from x minus epsilon to x plus epsilon is shaded. The values of the sequence are mostly outside the shaded strip until the index is 7, which is marked as M. All the subsequent values are within the strip. On the second diagram, the x-axis is horizontal, with the number x marked and the values x sub 1, x sub 2, until x sub 10 marked as ticks." class="raimg" role="img" src="figures/sequence-convergence_full-mbxpdft.svg" style="width:265pt; height:242pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Illustration of convergence. On top, we show the first ten points of the sequence as a graph with <span class="process-math">\(M\)</span> and the interval around the limit <span class="process-math">\(x\)</span> marked. On bottom, the points of the same sequence are marked on the number line.<div class="autopermalink" data-description="Figure 2.1"><a aria-label="Copy heading and permalink for Figure 2.1" href="#figsequenceconvergence" title="Copy heading and permalink for Figure 2.1">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para" id="sec_seqsandlims-2-13">When we write <span class="process-math">\(\lim_{n\to\infty} x_n = x\)</span> for some real number <span class="process-math">\(x\text{,}\)</span> we are saying two things: First, that <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is convergent, and second, that the limit is <span class="process-math">\(x\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-2-13" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_seqsandlims-2-14">The definition above is one of the most important definitions in analysis, and it is necessary to understand it perfectly.  The key point in the definition is that given <em class="emphasis">any</em> <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> we can find an <span class="process-math">\(M\text{.}\)</span>  The <span class="process-math">\(M\)</span> can depend on <span class="process-math">\(\epsilon\text{,}\)</span> so we only pick an <span class="process-math">\(M\)</span> once we know <span class="process-math">\(\epsilon\text{.}\)</span>  Let us illustrate convergence on a few examples.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-2-14" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_seqsandlims-2-15"><h3 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.1.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="sec_seqsandlims-2-15-1-1">The constant sequence <span class="process-math">\(1,1,1,1,\ldots\)</span> converges to 1.  For every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> pick <span class="process-math">\(M = 1\text{.}\)</span>  That is, <span class="process-math">\(\sabs{x_n-x} = \sabs{1-1} &lt; \epsilon\)</span> for all <span class="process-math">\(n\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-2-15-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 2.1.3"><a aria-label="Copy heading and permalink for Example 2.1.3" href="#sec_seqsandlims-2-15" title="Copy heading and permalink for Example 2.1.3">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_seqsandlims-2-16"><h3 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.1.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para logical" id="sec_seqsandlims-2-16-1-1">
+<div class="para">Claim: <em class="emphasis">The sequence <span class="process-math">\(\{ \nicefrac{1}{n} \}_{n=1}^\infty\)</span> is convergent and</em>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_arch_i.html" id="sec_seqsandlims-2-16-1-1-2">
+\begin{equation}
+\lim_{n\to \infty} \frac{1}{n} = 0 .
+\end{equation}
+</div>
+<div class="para">Proof: Given an <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> find an <span class="process-math">\(M \in \N\)</span> such that <span class="process-math">\(0 &lt; \nicefrac{1}{M} &lt; \epsilon\)</span> (<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_setofreals.html#thm_arch_i" title="Item i">Archimedean property</a> at work). For all <span class="process-math">\(n \geq M\text{,}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_arch_i.html" id="sec_seqsandlims-2-16-1-1-8">
+\begin{equation}
+\sabs{x_n - x}
+=
+\abs{\frac{1}{n} - 0} = \abs{\frac{1}{n}} = \frac{1}{n} \leq \frac{1}{M} &lt; \epsilon .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-2-16-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 2.1.4"><a aria-label="Copy heading and permalink for Example 2.1.4" href="#sec_seqsandlims-2-16" title="Copy heading and permalink for Example 2.1.4">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_seqsandlims-2-17"><h3 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.1.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para logical" id="sec_seqsandlims-2-17-1-1">
+<div class="para">The sequence <span class="process-math">\(\bigl\{ {(-1)}^n \bigr\}_{n=1}^\infty\)</span> is divergent.  Proof: If there were a limit <span class="process-math">\(x\text{,}\)</span> then for <span class="process-math">\(\epsilon = \frac{1}{2}\text{,}\)</span> we expect an <span class="process-math">\(M\)</span> that satisfies the definition.  Suppose such an <span class="process-math">\(M\)</span> exists. Then for an even <span class="process-math">\(n \geq M\text{,}\)</span> we compute</div>
+<div class="displaymath process-math" id="sec_seqsandlims-2-17-1-1-7">
+\begin{equation}
+\nicefrac{1}{2} &gt; \sabs{x_n - x}  = \sabs{1 - x}
+\qquad \text{and} \qquad
+\nicefrac{1}{2} &gt; \sabs{x_{n+1} - x}  = \sabs{-1 - x} .
+\end{equation}
+</div>
+<div class="para">And we obtain a contradiction</div>
+<div class="displaymath process-math" id="sec_seqsandlims-2-17-1-1-8">
+\begin{equation}
+2 = \babs{1 - x - (-1 -x)} \leq
+\sabs{1 - x} + \sabs{-1 -x} &lt; \nicefrac{1}{2} + \nicefrac{1}{2} = 1 .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-2-17-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 2.1.5"><a aria-label="Copy heading and permalink for Example 2.1.5" href="#sec_seqsandlims-2-17" title="Copy heading and permalink for Example 2.1.5">🔗</a></div>
+</article>
+<article class="proposition theorem-like" id="prop_limisunique"><h3 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.1.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="prop_limisunique-1-1">A convergent sequence has a unique limit.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_limisunique-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 2.1.6"><a aria-label="Copy heading and permalink for Proposition 2.1.6" href="#prop_limisunique" title="Copy heading and permalink for Proposition 2.1.6">🔗</a></div>
+</article>
+<div class="para" id="sec_seqsandlims-2-19">The proof of this proposition exhibits a useful technique in analysis.  Many proofs follow the same general scheme.  We want to show a certain quantity is zero.  We write the quantity using the triangle inequality as two quantities, and we estimate each one by arbitrarily small numbers.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-2-19" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_seqsandlims-2-20"><h3 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h3>
+<div class="para logical" id="sec_seqsandlims-2-20-1">
+<div class="para">Suppose <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> has limits <span class="process-math">\(x\)</span> and <span class="process-math">\(y\text{.}\)</span> Take an arbitrary <span class="process-math">\(\epsilon &gt; 0\text{.}\)</span> From the definition find an <span class="process-math">\(M_1\)</span> such that for all <span class="process-math">\(n \geq M_1\text{,}\)</span> <span class="process-math">\(\sabs{x_n-x} &lt; \nicefrac{\epsilon}{2}\text{.}\)</span>  Similarly, find an <span class="process-math">\(M_2\)</span> such that for all <span class="process-math">\(n \geq M_2\text{,}\)</span> we have <span class="process-math">\(\sabs{x_n-y} &lt; \nicefrac{\epsilon}{2}\text{.}\)</span> Now take an <span class="process-math">\(n\)</span> such that <span class="process-math">\(n \geq M_1\)</span> and also <span class="process-math">\(n \geq M_2\text{,}\)</span> and estimate</div>
+<div class="displaymath process-math" id="sec_seqsandlims-2-20-1-14">
+\begin{equation}
+\begin{split}
+\sabs{y-x}
+&amp; =
+\babs{x_n-x - (x_n -y)} \\
+&amp; \leq
+\sabs{x_n-x} + \sabs{x_n -y} \\
+&amp; &lt;
+\frac{\epsilon}{2} + \frac{\epsilon}{2} = \epsilon .
+\end{split}
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(\sabs{y-x} &lt; \epsilon\)</span> for all <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> we have <span class="process-math">\(\sabs{y-x} = 0\)</span> and <span class="process-math">\(y=x\text{.}\)</span>  Hence, the limit (if it exists) is unique.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-2-20-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 1"><a aria-label="Copy heading and permalink for Proof 1" href="#sec_seqsandlims-2-20" title="Copy heading and permalink for Proof 1">🔗</a></div>
+</article>
+<article class="proposition theorem-like" id="sec_seqsandlims-2-21"><h3 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.1.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="sec_seqsandlims-2-21-1-1">A convergent sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is bounded.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-2-21-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 2.1.7"><a aria-label="Copy heading and permalink for Proposition 2.1.7" href="#sec_seqsandlims-2-21" title="Copy heading and permalink for Proposition 2.1.7">🔗</a></div>
+</article>
+<article class="proof" id="sec_seqsandlims-2-22"><h3 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h3>
+<div class="para logical" id="sec_seqsandlims-2-22-1">
+<div class="para">Suppose <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> converges to <span class="process-math">\(x\text{.}\)</span>  Thus there exists an <span class="process-math">\(M \in \N\)</span> such that for all <span class="process-math">\(n \geq M\text{,}\)</span> we have <span class="process-math">\(\sabs{x_n - x} &lt; 1\text{.}\)</span>  For <span class="process-math">\(n \geq M\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_seqsandlims-2-22-1-7">
+\begin{equation}
+\begin{split}
+\sabs{x_n} &amp; = \sabs{x_n - x + x}
+\\
+&amp; \leq \sabs{x_n - x} + \sabs{x}
+\\
+&amp; &lt; 1 + \sabs{x} .
+\end{split}
+\end{equation}
+</div>
+<div class="para">The set <span class="process-math">\(\bigl\{ \sabs{x_1}, \sabs{x_2}, \ldots, \sabs{x_{M-1}} , 1+\sabs{x} \bigr\}\)</span> is a finite set and hence let</div>
+<div class="displaymath process-math" id="sec_seqsandlims-2-22-1-9">
+\begin{equation}
+B \coloneqq \max \bigl\{ \sabs{x_1}, \sabs{x_2}, \ldots, \sabs{x_{M-1}}, 1+\sabs{x} \bigr\} .
+\end{equation}
+</div>
+<div class="para">Then for all <span class="process-math">\(n \in \N\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_seqsandlims-2-22-1-11">
+\begin{equation}
+\sabs{x_n} \leq B. \qedhere
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-2-22-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 2"><a aria-label="Copy heading and permalink for Proof 2" href="#sec_seqsandlims-2-22" title="Copy heading and permalink for Proof 2">🔗</a></div>
+</article>
+<div class="para" id="sec_seqsandlims-2-23">The sequence <span class="process-math">\(\bigl\{ {(-1)}^n \bigr\}_{n=1}^\infty\)</span> shows that the converse does not hold.  A bounded sequence is not necessarily convergent.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-2-23" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_seqsandlims-2-24"><h3 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.1.8</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para logical" id="sec_seqsandlims-2-24-1-1">
+<div class="para">Let us show <span class="process-math">\(\left\{ \frac{n^2+1}{n^2+n} \right\}_{n=1}^\infty\)</span> converges and</div>
+<div class="displaymath process-math" id="sec_seqsandlims-2-24-1-1-2">
+\begin{equation}
+\lim_{n\to\infty} \frac{n^2+1}{n^2+n} = 1 .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-2-24-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_seqsandlims-2-24-1-2">
+<div class="para">Given <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> find <span class="process-math">\(M \in \N\)</span> such that <span class="process-math">\(\frac{1}{M} &lt; \epsilon\text{.}\)</span>  Then for all <span class="process-math">\(n \geq
+M\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_seqsandlims-2-24-1-2-5">
+\begin{equation}
+\begin{split}
+\abs{\frac{n^2+1}{n^2+n} - 1}  =
+\abs{\frac{n^2+1 - (n^2+n)}{n^2+n}}
+&amp; =
+\abs{\frac{1 - n}{n^2+n}} \\
+&amp; =
+\frac{n-1}{n^2+n} \\
+&amp; \leq 
+\frac{n}{n^2+n} 
+=
+\frac{1}{n+1}  \\
+&amp; \leq \frac{1}{n}
+\leq \frac{1}{M} &lt; \epsilon .
+\end{split}
+\end{equation}
+</div>
+<div class="para">Therefore, <span class="process-math">\(\lim_{n\to\infty} \frac{n^2+1}{n^2+n} = 1\text{.}\)</span> This example shows that sometimes to get what you want, you must throw away some information to get a simpler estimate.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-2-24-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 2.1.8"><a aria-label="Copy heading and permalink for Example 2.1.8" href="#sec_seqsandlims-2-24" title="Copy heading and permalink for Example 2.1.8">🔗</a></div>
+</article></section>
+<section class="subsection" id="sec_seqsandlims-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.1.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Monotone sequences</span>
+</h3>
+<div class="para" id="sec_seqsandlims-3-2">The simplest type of a sequence is a monotone sequence.  Checking that a monotone sequence converges is as easy as checking that it is bounded. It is also easy to find the limit for a convergent monotone sequence, provided we can find the supremum or infimum of a countable set of numbers.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-3-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_seqsandlims-3-3"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.1.9</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_seqsandlims-3-3-1-1">A sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is <em class="emphasis">monotone increasing</em> if <span class="process-math">\(x_n \leq x_{n+1}\)</span> for all <span class="process-math">\(n \in \N\text{.}\)</span> A sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is <em class="emphasis">monotone decreasing</em> if <span class="process-math">\(x_n \geq x_{n+1}\)</span> for all <span class="process-math">\(n \in \N\text{.}\)</span> If a sequence is either monotone increasing or monotone decreasing, we can simply say the sequence is <em class="emphasis">monotone</em>.<details aria-live="polite" class="ptx-footnote" id="sec_seqsandlims-3-3-1-1-13"><summary class="ptx-footnote__number" title="Footnote 2.1.4"><sup> 4 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_seqsandlims-3-3-1-1-13">Some authors use the word <em class="emphasis">monotonic</em>.
+</div></details><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-3-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 2.1.9"><a aria-label="Copy heading and permalink for Definition 2.1.9" href="#sec_seqsandlims-3-3" title="Copy heading and permalink for Definition 2.1.9">🔗</a></div>
+</article>
+<div class="para" id="sec_seqsandlims-3-4">For example, <span class="process-math">\(\{ n \}_{n=1}^\infty\)</span> is monotone increasing, <span class="process-math">\(\{ \nicefrac{1}{n} \}_{n=1}^\infty\)</span> is monotone decreasing, the constant sequence <span class="process-math">\(\{ 1 \}_{n=1}^\infty\)</span> is both monotone increasing and monotone decreasing, and <span class="process-math">\(\bigl\{ {(-1)}^n \bigr\}_{n=1}^\infty\)</span> is not monotone. The first few terms of a sample monotone increasing sequence are shown in <a class="internal" href="sec_seqsandlims.html#figsequenceincreasing" title="Figure 2.2">Figure 2.2</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-3-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="figsequenceincreasing"><img alt="A graph of the first few terms of a sequence with the horizontal axis being the index. Each subsequent value in the sequence is either the same or larger than the previous, so the dots giving the values go up as we move right across the graph." class="raimg" role="img" src="figures/sequence-increasing-mbx.svg" style="width:218pt; height:148pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>First few terms of a monotone increasing sequence as a graph.<div class="autopermalink" data-description="Figure 2.2"><a aria-label="Copy heading and permalink for Figure 2.2" href="#figsequenceincreasing" title="Copy heading and permalink for Figure 2.2">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<article class="theorem theorem-like" id="thm_monotoneconv"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.1.10</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Monotone convergence theorem.</span>
+</h4>
+<div class="para" id="thm_monotoneconv-3-1">A monotone sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is bounded if and only if it is convergent.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#thm_monotoneconv-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="thm_monotoneconv-3-2">
+<div class="para">Furthermore, if <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is monotone increasing and bounded, then</div>
+<div class="displaymath process-math" id="thm_monotoneconv-3-2-2">
+\begin{equation}
+\lim_{n\to \infty} x_n = \sup \{ x_n : n \in \N \} .
+\end{equation}
+</div>
+<div class="para">If <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is monotone decreasing and bounded, then</div>
+<div class="displaymath process-math" id="thm_monotoneconv-3-2-4">
+\begin{equation}
+\lim_{n\to \infty} x_n = \inf \{ x_n : n \in \N \} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#thm_monotoneconv-3-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 2.1.10: Monotone convergence theorem"><a aria-label="Copy heading and permalink for Theorem 2.1.10: Monotone convergence theorem" href="#thm_monotoneconv" title="Copy heading and permalink for Theorem 2.1.10: Monotone convergence theorem">🔗</a></div>
+</article>
+<article class="proof" id="sec_seqsandlims-3-9"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_seqsandlims-3-9-1">
+<div class="para">Consider a monotone increasing sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\text{.}\)</span>  Suppose first the sequence is bounded, that is, the set <span class="process-math">\(\{ x_n : n \in  \N \}\)</span> is bounded.  Let</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/induction_thm.html" id="sec_seqsandlims-3-9-1-3">
+\begin{equation}
+x \coloneqq \sup \{ x_n : n \in \N \} .
+\end{equation}
+</div>
+<div class="para">Let <span class="process-math">\(\epsilon &gt; 0\)</span> be arbitrary.  As <span class="process-math">\(x\)</span> is the supremum, there must be at least one <span class="process-math">\(M \in \N\)</span> such that <span class="process-math">\(x_{M} &gt; x-\epsilon\text{.}\)</span> As <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is monotone increasing, it is easy to see (by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicset.html#induction_thm" title="Theorem 0.3.6: Principle of induction">induction</a>) that <span class="process-math">\(x_n \geq x_{M}\)</span> for all <span class="process-math">\(n \geq M\text{.}\)</span>  Hence, for all <span class="process-math">\(n \geq M\text{,}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/induction_thm.html" id="sec_seqsandlims-3-9-1-13">
+\begin{equation}
+\sabs{x_n-x} = x-x_n \leq x-x_{M} &lt; \epsilon  .
+\end{equation}
+</div>
+<div class="para">So <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> converges to <span class="process-math">\(x\text{.}\)</span> Therefore, a bounded monotone increasing sequence converges. For the other direction, we already proved that a convergent sequence is bounded.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-3-9-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_seqsandlims-3-9-2">The proof for monotone decreasing sequences is left as an exercise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-3-9-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 2.1.1.1"><a aria-label="Copy heading and permalink for Proof 2.1.1.1" href="#sec_seqsandlims-3-9" title="Copy heading and permalink for Proof 2.1.1.1">🔗</a></div>
+</article>
+<div class="para" id="sec_seqsandlims-3-10">A monotone increasing sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is always bounded from below since <span class="process-math">\(x_1 \leq x_2 \leq \cdots \leq x_n\)</span> for any <span class="process-math">\(n\text{,}\)</span> so <span class="process-math">\(x_1\)</span> is a lower bound.  So to see if a monotone increasing sequence is bounded, it is enough to check if it is bounded above.  Similarly, a monotone decreasing sequence is always bounded from above, so it is enough to check whether it is bounded from below.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-3-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_seqsandlims-3-11"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.1.11</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_seqsandlims-3-11-1-1">Take the sequence <span class="process-math">\(\bigl\{ \frac{1}{\sqrt{n}} \bigr\}_{n=1}^\infty\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-3-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_seqsandlims-3-11-1-2">
+<div class="para">The sequence is bounded below as <span class="process-math">\(\frac{1}{\sqrt{n}} &gt; 0\)</span> for all <span class="process-math">\(n \in \N\text{.}\)</span> Let us show that it is monotone decreasing.  We start with <span class="process-math">\(\sqrt{n+1} \geq \sqrt{n}\)</span> (why is that true?).  From this inequality we obtain</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_monotoneconv.html ./knowl/xref/thm_arch_i.html" id="sec_seqsandlims-3-11-1-2-4">
+\begin{equation}
+\frac{1}{\sqrt{n+1}} \leq \frac{1}{\sqrt{n}} .
+\end{equation}
+</div>
+<div class="para">So the sequence is monotone decreasing and bounded below (hence bounded).  Via <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_seqsandlims.html#thm_monotoneconv" title="Theorem 2.1.10: Monotone convergence theorem">Theorem 2.1.10</a> we find that the sequence is convergent and</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_monotoneconv.html ./knowl/xref/thm_arch_i.html" id="sec_seqsandlims-3-11-1-2-6">
+\begin{equation}
+\lim_{n\to \infty} \frac{1}{\sqrt{n}}
+=
+\inf \left\{ \frac{1}{\sqrt{n}} : n \in \N \right\} .
+\end{equation}
+</div>
+<div class="para">We already know that the infimum is greater than or equal to 0, as 0 is a lower bound.  Take a number <span class="process-math">\(b \geq 0\)</span> such that <span class="process-math">\(b \leq \frac{1}{\sqrt{n}}\)</span> for all <span class="process-math">\(n\text{.}\)</span>  We square both sides to obtain</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_monotoneconv.html ./knowl/xref/thm_arch_i.html" id="sec_seqsandlims-3-11-1-2-10">
+\begin{equation}
+b^2 \leq \frac{1}{n} \qquad \text{for all } n \in \N.
+\end{equation}
+</div>
+<div class="para">We have seen before that this implies that <span class="process-math">\(b^2 \leq 0\)</span> (a consequence of the <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_setofreals.html#thm_arch_i" title="Item i">Archimedean property</a>).  As <span class="process-math">\(b^2 \geq 0\)</span> as well, we have <span class="process-math">\(b^2 = 0\)</span> and so <span class="process-math">\(b = 0\text{.}\)</span> Hence, <span class="process-math">\(b=0\)</span> is the greatest lower bound, and <span class="process-math">\(\lim\limits_{n\to\infty} \frac{1}{\sqrt{n}} = 0\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-3-11-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 2.1.11"><a aria-label="Copy heading and permalink for Example 2.1.11" href="#sec_seqsandlims-3-11" title="Copy heading and permalink for Example 2.1.11">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_seqsandlims-3-12"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.1.12</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_seqsandlims-3-12-1-1">A word of caution:  Showing that a monotone sequence is bounded in order to use <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_seqsandlims.html#thm_monotoneconv" title="Theorem 2.1.10: Monotone convergence theorem">Theorem 2.1.10</a> may be difficult. The sequence <span class="process-math">\(\{ 1 + \nicefrac{1}{2} + \cdots + \nicefrac{1}{n} \}_{n=1}^\infty\)</span> is a monotone increasing sequence that grows slowly and in fact grows slower and slower as <span class="process-math">\(n\)</span> gets larger.  We will see, once we get to series, that this sequence has no upper bound and so does not converge.  It is not at all obvious that this sequence has no upper bound.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-3-12-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 2.1.12"><a aria-label="Copy heading and permalink for Example 2.1.12" href="#sec_seqsandlims-3-12" title="Copy heading and permalink for Example 2.1.12">🔗</a></div>
+</article>
+<div class="para" id="sec_seqsandlims-3-13">A common example of where monotone sequences arise is the following proposition.  The proof is left as an exercise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-3-13" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_supinfseq"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.1.13</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="prop_supinfseq-1-1">
+<div class="para">Let <span class="process-math">\(S \subset \R\)</span> be a nonempty bounded set. Then there exist monotone sequences <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> and <span class="process-math">\(\{ y_n \}_{n=1}^\infty\)</span> such that <span class="process-math">\(x_n, y_n \in S\)</span> and</div>
+<div class="displaymath process-math" id="prop_supinfseq-1-1-5">
+\begin{equation}
+\sup\,S = \lim_{n\to \infty} x_n \qquad \text{and} \qquad \inf\,S =
+\lim_{n\to\infty} y_n .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_supinfseq-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 2.1.13"><a aria-label="Copy heading and permalink for Proposition 2.1.13" href="#prop_supinfseq" title="Copy heading and permalink for Proposition 2.1.13">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 2.1.1: Monotone sequences"><a aria-label="Copy heading and permalink for Subsection 2.1.1: Monotone sequences" href="#sec_seqsandlims-3" title="Copy heading and permalink for Subsection 2.1.1: Monotone sequences">🔗</a></div>
+</section>
+<section class="subsection" id="sec_seqsandlims-4">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.1.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Tail of a sequence</span>
+</h3>
+<article class="definition definition-like" id="sec_seqsandlims-4-2"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.1.14</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_seqsandlims-4-2-1-1">
+<div class="para">For a sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\text{,}\)</span> the <em class="emphasis"><span class="process-math">\(K\)</span>-tail</em> (where <span class="process-math">\(K \in \N\)</span>), or just the <em class="emphasis">tail</em>, of <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is the sequence starting at <span class="process-math">\(K+1\text{,}\)</span> usually written as</div>
+<div class="displaymath process-math" id="sec_seqsandlims-4-2-1-1-8">
+\begin{equation}
+\{ x_{n+K} \}_{n=1}^\infty
+\qquad \text{or} \qquad \{ x_n \}_{n=K+1}^\infty .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-4-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 2.1.14"><a aria-label="Copy heading and permalink for Definition 2.1.14" href="#sec_seqsandlims-4-2" title="Copy heading and permalink for Definition 2.1.14">🔗</a></div>
+</article>
+<div class="para" id="sec_seqsandlims-4-3">For example, the <span class="process-math">\(4\)</span>-tail of <span class="process-math">\(\{ \nicefrac{1}{n} \}_{n=1}^\infty\)</span> is <span class="process-math">\(\nicefrac{1}{5}, \nicefrac{1}{6}, \nicefrac{1}{7}, \nicefrac{1}{8},
+\ldots\text{.}\)</span>  The <span class="process-math">\(0\)</span>-tail of a sequence is the sequence itself. The convergence and the limit of a sequence only depend on its tail.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-4-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_seqsandlims-4-4"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.1.15</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_seqsandlims-4-4-1-1">Let <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> be a sequence.  Then the following statements are equivalent:<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-4-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="sec_seqsandlims-4-4-1-2">
+<li id="prop_ktail_i">
+<div class="para" id="prop_ktail_i-1">The sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> converges.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_ktail_i-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#prop_ktail_i" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="prop_ktail_ii">
+<div class="para" id="prop_ktail_ii-1">The <span class="process-math">\(K\)</span>-tail <span class="process-math">\(\{ x_{n+K} \}_{n=1}^\infty\)</span> converges for all <span class="process-math">\(K \in \N\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_ktail_ii-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#prop_ktail_ii" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+<li id="prop_ktail_iii">
+<div class="para" id="prop_ktail_iii-1">The <span class="process-math">\(K\)</span>-tail <span class="process-math">\(\{ x_{n+K} \}_{n=1}^\infty\)</span> converges for some <span class="process-math">\(K \in \N\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_ktail_iii-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iii"><a aria-label="Copy heading and permalink for Item iii" href="#prop_ktail_iii" title="Copy heading and permalink for Item iii">🔗</a></div>
+</li>
+</ol>
+<div class="para logical" id="sec_seqsandlims-4-4-1-3">
+<div class="para">Furthermore, if any (and hence all) of the limits exist, then for all <span class="process-math">\(K \in \N\)</span>
+</div>
+<div class="displaymath process-math" id="sec_seqsandlims-4-4-1-3-2">
+\begin{equation}
+\lim_{n\to \infty} x_n = \lim_{n \to \infty} x_{n+K} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-4-4-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 2.1.15"><a aria-label="Copy heading and permalink for Proposition 2.1.15" href="#sec_seqsandlims-4-4" title="Copy heading and permalink for Proposition 2.1.15">🔗</a></div>
+</article>
+<article class="proof" id="sec_seqsandlims-4-5"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_seqsandlims-4-5-1">It is clear that <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_seqsandlims.html#prop_ktail_ii" title="Item ii">ii</a> implies <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_seqsandlims.html#prop_ktail_iii" title="Item iii">iii</a>. We will therefore show first that <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_seqsandlims.html#prop_ktail_i" title="Item i">i</a> implies <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_seqsandlims.html#prop_ktail_ii" title="Item ii">ii</a>, and then we will show that <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_seqsandlims.html#prop_ktail_iii" title="Item iii">iii</a> implies <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_seqsandlims.html#prop_ktail_i" title="Item i">i</a>.  That is, <img alt='A diagram with three implication arrows. First arrow from (i) to (ii) is labeled with "to prove". Second arrow from (ii) to (iii) is not labeled. Third arrow from (iii) to (i) is labeled with "to prove".' class="raimg" role="img" src="figures/tail_of_sequence_cd-mbxpdft.svg" style="width:124pt; height:35pt; display:block;"/> In the process we will also show that the limits are equal.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-4-5-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_seqsandlims-4-5-2">
+<div class="para">We start with <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_seqsandlims.html#prop_ktail_i" title="Item i">i</a> implies <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_seqsandlims.html#prop_ktail_ii" title="Item ii">ii</a>. Suppose <span class="process-math">\(\{x_n \}_{n=1}^\infty\)</span> converges to some <span class="process-math">\(x \in \R\text{.}\)</span> Let <span class="process-math">\(K \in \N\)</span> be arbitrary, and define <span class="process-math">\(y_n \coloneqq x_{n+K}\text{.}\)</span>  We wish to show that <span class="process-math">\(\{ y_n \}_{n=1}^\infty\)</span> converges to <span class="process-math">\(x\text{.}\)</span> Given an <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there exists an <span class="process-math">\(M \in \N\)</span> such that <span class="process-math">\(\sabs{x-x_n} &lt; \epsilon\)</span> for all <span class="process-math">\(n \geq M\text{.}\)</span> Note that <span class="process-math">\(n \geq M\)</span> implies <span class="process-math">\(n+K \geq M\text{.}\)</span>  Therefore, for all <span class="process-math">\(n \geq M\text{,}\)</span> we have</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_ktail_i.html ./knowl/xref/prop_ktail_ii.html" id="sec_seqsandlims-4-5-2-16">
+\begin{equation}
+\sabs{x-y_n} = \sabs{x-x_{n+K}} &lt; \epsilon .
+\end{equation}
+</div>
+<div class="para">Consequently, <span class="process-math">\(\{ y_n \}_{n=1}^\infty\)</span> converges to <span class="process-math">\(x\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-4-5-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_seqsandlims-4-5-3">
+<div class="para">Let us move to <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_seqsandlims.html#prop_ktail_iii" title="Item iii">iii</a> implies <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_seqsandlims.html#prop_ktail_i" title="Item i">i</a>. Let <span class="process-math">\(K \in \N\)</span> be given, define <span class="process-math">\(y_n \coloneqq x_{n+K}\text{,}\)</span> and suppose that <span class="process-math">\(\{ y_n \}_{n=1}^\infty\)</span> converges to <span class="process-math">\(x \in \R\text{.}\)</span> That is, given an <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there exists an <span class="process-math">\(M' \in \N\)</span> such that <span class="process-math">\(\sabs{x-y_n} &lt; \epsilon\)</span> for all <span class="process-math">\(n \geq M'\text{.}\)</span> Let <span class="process-math">\(M \coloneqq M'+K\text{.}\)</span>  Then <span class="process-math">\(n \geq M\)</span> implies <span class="process-math">\(n-K \geq M'\text{.}\)</span> Thus, whenever <span class="process-math">\(n \geq M\text{,}\)</span> we have</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_ktail_iii.html ./knowl/xref/prop_ktail_i.html" id="sec_seqsandlims-4-5-3-15">
+\begin{equation}
+\sabs{x-x_n} = \sabs{x-y_{n-K}} &lt; \epsilon.
+\end{equation}
+</div>
+<div class="para">Therefore, <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> converges to <span class="process-math">\(x\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-4-5-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 2.1.2.1"><a aria-label="Copy heading and permalink for Proof 2.1.2.1" href="#sec_seqsandlims-4-5" title="Copy heading and permalink for Proof 2.1.2.1">🔗</a></div>
+</article>
+<div class="para" id="sec_seqsandlims-4-6">At the end of the day, the limit does not care about how the sequence begins, it only cares about the tail of the sequence.  The beginning of the sequence may be arbitrary.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-4-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_seqsandlims-4-7">
+<div class="para">For example, the sequence defined by <span class="process-math">\(x_n \coloneqq \frac{n}{n^2+16}\)</span> is decreasing if we start at <span class="process-math">\(n=4\)</span> (it is increasing before).  That is: <span class="process-math">\(\{ x_n \}_{n=1}^\infty =
+\nicefrac{1}{17},
+\nicefrac{1}{10},
+\nicefrac{3}{25},
+\nicefrac{1}{8},
+\nicefrac{5}{41},
+\nicefrac{3}{26},
+\nicefrac{7}{65},
+\nicefrac{1}{10},
+\nicefrac{9}{97},
+\nicefrac{5}{58},\ldots\text{,}\)</span> and</div>
+<div class="displaymath process-math" id="sec_seqsandlims-4-7-4">
+\begin{equation}
+\nicefrac{1}{17} &lt;
+\nicefrac{1}{10} &lt;
+\nicefrac{3}{25} &lt;
+\nicefrac{1}{8} &gt;
+\nicefrac{5}{41} &gt;
+\nicefrac{3}{26} &gt;
+\nicefrac{7}{65} &gt;
+\nicefrac{1}{10} &gt;
+\nicefrac{9}{97} &gt;
+\nicefrac{5}{58} &gt; \ldots .
+\end{equation}
+</div>
+<div class="para">If we throw away the first 3 terms and look at the 3-tail, it is decreasing.  The proof is left as an exercise.  Since the 3-tail is monotone and bounded below by zero, it is convergent, and therefore the sequence is convergent.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-4-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 2.1.2: Tail of a sequence"><a aria-label="Copy heading and permalink for Subsection 2.1.2: Tail of a sequence" href="#sec_seqsandlims-4" title="Copy heading and permalink for Subsection 2.1.2: Tail of a sequence">🔗</a></div>
+</section>
+<section class="subsection" id="sec_seqsandlims-5">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.1.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Subsequences</span>
+</h3>
+<div class="para" id="sec_seqsandlims-5-2">It is useful to sometimes consider only some terms of a sequence. A subsequence of <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is a sequence that contains only some of the numbers from <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> in the same order.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-5-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_seqsandlims-5-3"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.1.16</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_seqsandlims-5-3-1-1">
+<div class="para">Let <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> be a sequence. Let <span class="process-math">\(\{ n_i \}_{i=1}^\infty\)</span> be a strictly increasing sequence of natural numbers, that is, <span class="process-math">\(n_i &lt; n_{i+1}\)</span> for all <span class="process-math">\(i \in \N\)</span> (in other words <span class="process-math">\(n_1 &lt; n_2 &lt; n_3 &lt; \cdots\)</span>). The sequence</div>
+<div class="displaymath process-math" id="sec_seqsandlims-5-3-1-1-6">
+\begin{equation}
+\{ x_{n_i} \}_{i=1}^\infty
+\end{equation}
+</div>
+<div class="para">is called a <em class="emphasis">subsequence</em> of <span class="process-math">\(\{ x_n \}_{n=1}^\infty\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-5-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 2.1.16"><a aria-label="Copy heading and permalink for Definition 2.1.16" href="#sec_seqsandlims-5-3" title="Copy heading and permalink for Definition 2.1.16">🔗</a></div>
+</article>
+<div class="para" id="sec_seqsandlims-5-4">So the subsequence is the sequence <span class="process-math">\(x_{n_1},x_{n_2},x_{n_3},\ldots\text{.}\)</span> For instance, the sequence <span class="process-math">\(\{ \nicefrac{1}{3i} \}_{i=1}^\infty
+= \nicefrac{1}{3},\nicefrac{1}{6},\nicefrac{1}{9},\nicefrac{1}{12},\ldots\)</span> is a subsequence of <span class="process-math">\(\{ \nicefrac{1}{n} \}_{n=1}^\infty
+= 1, \nicefrac{1}{2},\nicefrac{1}{3},\nicefrac{1}{4},\ldots\text{.}\)</span> To see how these two sequences fit in the definition, take <span class="process-math">\(n_i \coloneqq 3i\text{,}\)</span> that is, <span class="process-math">\(\{ n_i \}_{i=1}^\infty\)</span> is the sequence <span class="process-math">\(3,6,9,12,\ldots\text{.}\)</span> The numbers <span class="process-math">\(x_{n_i}\)</span> in the subsequence must come from the original sequence.  So <span class="process-math">\(1,0,\nicefrac{1}{3},0,
+\nicefrac{1}{5},\ldots\)</span> is not a subsequence of <span class="process-math">\(\{ \nicefrac{1}{n} \}_{n=1}^\infty\text{.}\)</span>  Similarly, order must be preserved; the sequence <span class="process-math">\(1,\nicefrac{1}{3},\nicefrac{1}{2},\nicefrac{1}{5},\ldots\)</span> is not a subsequence of <span class="process-math">\(\{ \nicefrac{1}{n} \}_{n=1}^\infty\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-5-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_seqsandlims-5-5">A tail of a sequence is one special type of a subsequence.  For an arbitrary subsequence, we have the following proposition about convergence, which is weaker than that for tails.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-5-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_seqtosubseq"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.1.17</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="prop_seqtosubseq-1-1">
+<div class="para">If <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is a convergent sequence, then every subsequence <span class="process-math">\(\{ x_{n_i} \}_{i=1}^\infty\)</span> is also convergent, and</div>
+<div class="displaymath process-math" id="prop_seqtosubseq-1-1-3">
+\begin{equation}
+\lim_{n\to \infty} x_n = 
+\lim_{i\to \infty} x_{n_i} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_seqtosubseq-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 2.1.17"><a aria-label="Copy heading and permalink for Proposition 2.1.17" href="#prop_seqtosubseq" title="Copy heading and permalink for Proposition 2.1.17">🔗</a></div>
+</article>
+<article class="proof" id="sec_seqsandlims-5-7"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_seqsandlims-5-7-1">
+<div class="para">Suppose <span class="process-math">\(\lim_{n\to \infty} x_n = x\text{.}\)</span>  So for every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there is an <span class="process-math">\(M \in \N\)</span> such that for all <span class="process-math">\(n \geq M\text{,}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/induction_thm.html" id="sec_seqsandlims-5-7-1-5">
+\begin{equation}
+\sabs{x_n - x} &lt; \epsilon .
+\end{equation}
+</div>
+<div class="para">It is not hard to prove (do it!) by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicset.html#induction_thm" title="Theorem 0.3.6: Principle of induction">induction</a> that <span class="process-math">\(n_i \geq i\)</span> for all <span class="process-math">\(i \in \N\text{.}\)</span>  Hence, <span class="process-math">\(i \geq M\)</span> implies <span class="process-math">\(n_i \geq M\text{.}\)</span>  Thus, for all <span class="process-math">\(i \geq M\text{,}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/induction_thm.html" id="sec_seqsandlims-5-7-1-12">
+\begin{equation}
+\sabs{x_{n_i} - x} &lt; \epsilon ,
+\end{equation}
+</div>
+<div class="para">and we are done.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-5-7-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 2.1.3.1"><a aria-label="Copy heading and permalink for Proof 2.1.3.1" href="#sec_seqsandlims-5-7" title="Copy heading and permalink for Proof 2.1.3.1">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_seqsandlims-5-8"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.1.18</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_seqsandlims-5-8-1-1">Existence of a convergent subsequence does not imply convergence of the sequence itself. Take the sequence <span class="process-math">\(0,1,0,1,0,1,\ldots\text{.}\)</span>  That is, <span class="process-math">\(x_n = 0\)</span> if <span class="process-math">\(n\)</span> is odd, and <span class="process-math">\(x_n = 1\)</span> if <span class="process-math">\(n\)</span> is even.  The sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is divergent; however, the subsequence <span class="process-math">\(\{ x_{2i} \}_{i=1}^\infty\)</span> converges to 1 and the subsequence <span class="process-math">\(\{ x_{2i+1} \}_{i=1}^\infty\)</span> converges to 0.  Compare <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_bw.html#seqconvsubseqconv_prop" title="Proposition 2.3.7">Proposition 2.3.7</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-5-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 2.1.18"><a aria-label="Copy heading and permalink for Example 2.1.18" href="#sec_seqsandlims-5-8" title="Copy heading and permalink for Example 2.1.18">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 2.1.3: Subsequences"><a aria-label="Copy heading and permalink for Subsection 2.1.3: Subsequences" href="#sec_seqsandlims-5" title="Copy heading and permalink for Subsection 2.1.3: Subsequences">🔗</a></div>
+</section>
+<section class="exercises" id="sec_seqsandlims-6">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.1.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<div class="para" id="sec_seqsandlims-6-1">In the following exercises, feel free to use what you know from calculus to find the limit, if it exists.  But you must <em class="emphasis">prove</em> that you found the correct limit, or prove that the sequence is divergent.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-6-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="exercise exercise-like" id="sec_seqsandlims-6-2"><h4 class="heading"><span class="codenumber">2.1.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_seqsandlims-6-2-1-1">Is the sequence <span class="process-math">\(\{ 3n \}_{n=1}^\infty\)</span> bounded?  Prove or disprove.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-6-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.1.1"><a aria-label="Copy heading and permalink for Exercise 2.1.1" href="#sec_seqsandlims-6-2" title="Copy heading and permalink for Exercise 2.1.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_seqsandlims-6-3"><h4 class="heading"><span class="codenumber">2.1.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_seqsandlims-6-3-1-1">Is the sequence <span class="process-math">\(\{ n \}_{n=1}^\infty\)</span> convergent?  If so, what is the limit?<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-6-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.1.2"><a aria-label="Copy heading and permalink for Exercise 2.1.2" href="#sec_seqsandlims-6-3" title="Copy heading and permalink for Exercise 2.1.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_seqsandlims-6-4"><h4 class="heading"><span class="codenumber">2.1.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_seqsandlims-6-4-1-1">Is the sequence <span class="process-math">\(\left\{ \dfrac{{(-1)}^n}{2n} \right\}_{n=1}^\infty\)</span> convergent?  If so, what is the limit?<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-6-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.1.3"><a aria-label="Copy heading and permalink for Exercise 2.1.3" href="#sec_seqsandlims-6-4" title="Copy heading and permalink for Exercise 2.1.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_seqsandlims-6-5"><h4 class="heading"><span class="codenumber">2.1.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_seqsandlims-6-5-1-1">Is the sequence <span class="process-math">\(\{ 2^{-n} \}_{n=1}^\infty\)</span> convergent?  If so, what is the limit?<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-6-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.1.4"><a aria-label="Copy heading and permalink for Exercise 2.1.4" href="#sec_seqsandlims-6-5" title="Copy heading and permalink for Exercise 2.1.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_seqsandlims-6-6"><h4 class="heading"><span class="codenumber">2.1.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_seqsandlims-6-6-1-1">Is the sequence <span class="process-math">\(\left\{ \dfrac{n}{n+1} \right\}_{n=1}^\infty\)</span> convergent?  If so, what is the limit?<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-6-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.1.5"><a aria-label="Copy heading and permalink for Exercise 2.1.5" href="#sec_seqsandlims-6-6" title="Copy heading and permalink for Exercise 2.1.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_seqsandlims-6-7"><h4 class="heading"><span class="codenumber">2.1.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_seqsandlims-6-7-1-1">Is the sequence <span class="process-math">\(\left\{ \dfrac{n}{n^2+1} \right\}_{n=1}^\infty\)</span> convergent?  If so, what is the limit?<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-6-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.1.6"><a aria-label="Copy heading and permalink for Exercise 2.1.6" href="#sec_seqsandlims-6-7" title="Copy heading and permalink for Exercise 2.1.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_absconv"><h4 class="heading"><span class="codenumber">2.1.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_absconv-1-1">Let <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> be a sequence.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_absconv-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="exercise_absconv-1-2">
+<li id="exercise_absconv-1-2-1">
+<div class="para" id="exercise_absconv-1-2-1-1">Show that <span class="process-math">\(\lim\limits_{n\to\infty} x_n = 0\)</span> (that is, the limit exists and is zero) if and only if <span class="process-math">\(\lim\limits_{n\to\infty} \sabs{x_n} = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_absconv-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2.1.7.a"><a aria-label="Copy heading and permalink for Item 2.1.7.a" href="#exercise_absconv-1-2-1" title="Copy heading and permalink for Item 2.1.7.a">🔗</a></div>
+</li>
+<li id="exercise_absconv-1-2-2">
+<div class="para" id="exercise_absconv-1-2-2-1">Find an example such that <span class="process-math">\(\{ \sabs{x_n} \}_{n=1}^\infty\)</span> converges and <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> diverges.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_absconv-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2.1.7.b"><a aria-label="Copy heading and permalink for Item 2.1.7.b" href="#exercise_absconv-1-2-2" title="Copy heading and permalink for Item 2.1.7.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 2.1.7"><a aria-label="Copy heading and permalink for Exercise 2.1.7" href="#exercise_absconv" title="Copy heading and permalink for Exercise 2.1.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_seqsandlims-6-9"><h4 class="heading"><span class="codenumber">2.1.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_seqsandlims-6-9-1-1">Is the sequence <span class="process-math">\(\left\{ \dfrac{2^n}{n!} \right\}_{n=1}^\infty\)</span> convergent?  If so, what is the limit?<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-6-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.1.8"><a aria-label="Copy heading and permalink for Exercise 2.1.8" href="#sec_seqsandlims-6-9" title="Copy heading and permalink for Exercise 2.1.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_seqsandlims-6-10"><h4 class="heading"><span class="codenumber">2.1.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_seqsandlims-6-10-1-1">Show that the sequence <span class="process-math">\(\left\{ \dfrac{1}{\sqrt[3]{n}} \right\}_{n=1}^\infty\)</span> is monotone and bounded.  Then use <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_seqsandlims.html#thm_monotoneconv" title="Theorem 2.1.10: Monotone convergence theorem">Theorem 2.1.10</a> to find the limit.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-6-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.1.9"><a aria-label="Copy heading and permalink for Exercise 2.1.9" href="#sec_seqsandlims-6-10" title="Copy heading and permalink for Exercise 2.1.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_seqsandlims-6-11"><h4 class="heading"><span class="codenumber">2.1.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_seqsandlims-6-11-1-1">Show that the sequence <span class="process-math">\(\left\{ \dfrac{n+1}{n} \right\}_{n=1}^\infty\)</span> is monotone and bounded.  Then use <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_seqsandlims.html#thm_monotoneconv" title="Theorem 2.1.10: Monotone convergence theorem">Theorem 2.1.10</a> to find the limit.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-6-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.1.10"><a aria-label="Copy heading and permalink for Exercise 2.1.10" href="#sec_seqsandlims-6-11" title="Copy heading and permalink for Exercise 2.1.10">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_seqsandlims-6-12"><h4 class="heading"><span class="codenumber">2.1.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_seqsandlims-6-12-1-1">Finish the proof of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_seqsandlims.html#thm_monotoneconv" title="Theorem 2.1.10: Monotone convergence theorem">Theorem 2.1.10</a> for monotone decreasing sequences.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-6-12-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.1.11"><a aria-label="Copy heading and permalink for Exercise 2.1.11" href="#sec_seqsandlims-6-12" title="Copy heading and permalink for Exercise 2.1.11">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_seqsandlims-6-13"><h4 class="heading"><span class="codenumber">2.1.12<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_seqsandlims-6-13-1-1">Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_seqsandlims.html#prop_supinfseq" title="Proposition 2.1.13">Proposition 2.1.13</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-6-13-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.1.12"><a aria-label="Copy heading and permalink for Exercise 2.1.12" href="#sec_seqsandlims-6-13" title="Copy heading and permalink for Exercise 2.1.12">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_seqsandlims-6-14"><h4 class="heading"><span class="codenumber">2.1.13<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_seqsandlims-6-14-1-1">
+<div class="para">Let <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> be a convergent monotone sequence.  Suppose there exists a <span class="process-math">\(k \in \N\)</span> such that</div>
+<div class="displaymath process-math" id="sec_seqsandlims-6-14-1-1-3">
+\begin{equation}
+\lim_{n\to \infty} x_n = x_k .
+\end{equation}
+</div>
+<div class="para">Show that <span class="process-math">\(x_n = x_k\)</span> for all <span class="process-math">\(n \geq k\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-6-14-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.1.13"><a aria-label="Copy heading and permalink for Exercise 2.1.13" href="#sec_seqsandlims-6-14" title="Copy heading and permalink for Exercise 2.1.13">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_seqsandlims-6-15"><h4 class="heading"><span class="codenumber">2.1.14<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_seqsandlims-6-15-1-1">Find a convergent subsequence of the sequence <span class="process-math">\(\bigl\{ {(-1)}^n \bigr\}_{n=1}^\infty\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-6-15-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.1.14"><a aria-label="Copy heading and permalink for Exercise 2.1.14" href="#sec_seqsandlims-6-15" title="Copy heading and permalink for Exercise 2.1.14">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_seqsandlims-6-16"><h4 class="heading"><span class="codenumber">2.1.15<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_seqsandlims-6-16-1-1">
+<div class="para">Let <span class="process-math">\(\{x_n\}_{n=1}^\infty\)</span> be a sequence defined by</div>
+<div class="displaymath process-math" id="sec_seqsandlims-6-16-1-1-2">
+\begin{equation}
+x_n \coloneqq 
+\begin{cases}
+n               &amp; \text{if } n \text{ is odd} , \\
+\nicefrac{1}{n} &amp; \text{if } n \text{ is even} .
+\end{cases}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-6-16-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_seqsandlims-6-16-1-2">
+<li id="sec_seqsandlims-6-16-1-2-1">
+<div class="para" id="sec_seqsandlims-6-16-1-2-1-1">Is the sequence bounded? (prove or disprove)<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-6-16-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2.1.15.a"><a aria-label="Copy heading and permalink for Item 2.1.15.a" href="#sec_seqsandlims-6-16-1-2-1" title="Copy heading and permalink for Item 2.1.15.a">🔗</a></div>
+</li>
+<li id="sec_seqsandlims-6-16-1-2-2">
+<div class="para" id="sec_seqsandlims-6-16-1-2-2-1">Is there a convergent subsequence?  If so, find it.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-6-16-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2.1.15.b"><a aria-label="Copy heading and permalink for Item 2.1.15.b" href="#sec_seqsandlims-6-16-1-2-2" title="Copy heading and permalink for Item 2.1.15.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 2.1.15"><a aria-label="Copy heading and permalink for Exercise 2.1.15" href="#sec_seqsandlims-6-16" title="Copy heading and permalink for Exercise 2.1.15">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_seqsandlims-6-17"><h4 class="heading"><span class="codenumber">2.1.16<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_seqsandlims-6-17-1-1">
+<div class="para">Let <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> be a sequence. Suppose there are two convergent subsequences <span class="process-math">\(\{ x_{n_i} \}_{i=1}^\infty\)</span> and <span class="process-math">\(\{ x_{m_i} \}_{i=1}^\infty\text{.}\)</span>  Suppose</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_seqtosubseq.html" id="sec_seqsandlims-6-17-1-1-4">
+\begin{equation}
+\lim_{i\to\infty} x_{n_i} = a
+\qquad \text{and} \qquad
+\lim_{i\to\infty} x_{m_i} = b,
+\end{equation}
+</div>
+<div class="para">where <span class="process-math">\(a \neq b\text{.}\)</span>  Prove that <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is not convergent, without using <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_seqsandlims.html#prop_seqtosubseq" title="Proposition 2.1.17">Proposition 2.1.17</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-6-17-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.1.16"><a aria-label="Copy heading and permalink for Exercise 2.1.16" href="#sec_seqsandlims-6-17" title="Copy heading and permalink for Exercise 2.1.16">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_seqsandlims-6-18"><h4 class="heading"><span class="codenumber">2.1.17<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_seqsandlims-6-18-1-1">
+<em class="emphasis">(Tricky)</em>   Find a sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> such that for every <span class="process-math">\(y \in \R\text{,}\)</span> there exists a subsequence <span class="process-math">\(\{ x_{n_i} \}_{i=1}^\infty\)</span> converging to <span class="process-math">\(y\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-6-18-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.1.17"><a aria-label="Copy heading and permalink for Exercise 2.1.17" href="#sec_seqsandlims-6-18" title="Copy heading and permalink for Exercise 2.1.17">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_seqsandlims-6-19"><h4 class="heading"><span class="codenumber">2.1.18<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_seqsandlims-6-19-1-1">
+<em class="emphasis">(Easy)</em>   Let <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> be a sequence and <span class="process-math">\(x \in \R\text{.}\)</span> Suppose for every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there is an <span class="process-math">\(M\)</span> such that <span class="process-math">\(\sabs{x_n-x} \leq \epsilon\)</span> for all <span class="process-math">\(n \geq M\text{.}\)</span> Show that <span class="process-math">\(\lim\limits_{n\to\infty} x_n = x\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-6-19-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.1.18"><a aria-label="Copy heading and permalink for Exercise 2.1.18" href="#sec_seqsandlims-6-19" title="Copy heading and permalink for Exercise 2.1.18">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_seqsandlims-6-20"><h4 class="heading"><span class="codenumber">2.1.19<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_seqsandlims-6-20-1-1">
+<em class="emphasis">(Easy)</em>   Let <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> be a sequence and <span class="process-math">\(x \in \R\)</span> such that there exists a <span class="process-math">\(k \in \N\)</span> such that for all <span class="process-math">\(n \geq k\text{,}\)</span> <span class="process-math">\(x_n = x\text{.}\)</span>  Prove that <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> converges to <span class="process-math">\(x\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-6-20-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.1.19"><a aria-label="Copy heading and permalink for Exercise 2.1.19" href="#sec_seqsandlims-6-20" title="Copy heading and permalink for Exercise 2.1.19">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_seqsandlims-6-21"><h4 class="heading"><span class="codenumber">2.1.20<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_seqsandlims-6-21-1-1">Let <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> be a sequence and define a sequence <span class="process-math">\(\{ y_n \}_{n=1}^\infty\)</span> by <span class="process-math">\(y_{2k} \coloneqq x_{k^2}\)</span> and <span class="process-math">\(y_{2k-1} \coloneqq x_k\)</span> for all <span class="process-math">\(k \in \N\text{.}\)</span> Prove that <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> converges if and only if <span class="process-math">\(\{ y_n \}_{n=1}^\infty\)</span> converges. Furthermore, prove that if they converge, then <span class="process-math">\(\lim\limits_{n\to\infty} x_n = \lim\limits_{n\to\infty} y_n\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-6-21-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.1.20"><a aria-label="Copy heading and permalink for Exercise 2.1.20" href="#sec_seqsandlims-6-21" title="Copy heading and permalink for Exercise 2.1.20">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_seqsandlims-6-22"><h4 class="heading"><span class="codenumber">2.1.21<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_seqsandlims-6-22-1-1">Show that the 3-tail of the sequence defined by <span class="process-math">\(x_n \coloneqq \frac{n}{n^2+16}\)</span> is monotone decreasing.  Hint: Suppose <span class="process-math">\(n \geq m \geq 4\)</span> and consider the numerator of the expression <span class="process-math">\(x_n-x_m\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-6-22-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.1.21"><a aria-label="Copy heading and permalink for Exercise 2.1.21" href="#sec_seqsandlims-6-22" title="Copy heading and permalink for Exercise 2.1.21">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_seqsandlims-6-23"><h4 class="heading"><span class="codenumber">2.1.22<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_seqsandlims-6-23-1-1">Suppose that <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is a sequence such that the subsequences <span class="process-math">\(\{ x_{2n} \}_{n=1}^\infty\text{,}\)</span> <span class="process-math">\(\{ x_{2n-1} \}_{n=1}^\infty\text{,}\)</span> and <span class="process-math">\(\{ x_{3n} \}_{n=1}^\infty\)</span> all converge.  Show that <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is convergent.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-6-23-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.1.22"><a aria-label="Copy heading and permalink for Exercise 2.1.22" href="#sec_seqsandlims-6-23" title="Copy heading and permalink for Exercise 2.1.22">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_seqsandlims-6-24"><h4 class="heading"><span class="codenumber">2.1.23<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_seqsandlims-6-24-1-1">Suppose that <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is a monotone increasing sequence that has a convergent subsequence. Show that <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is convergent. Note: So <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_seqsandlims.html#prop_seqtosubseq" title="Proposition 2.1.17">Proposition 2.1.17</a> is an “if and only if” for monotone sequences.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_seqsandlims-6-24-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.1.23"><a aria-label="Copy heading and permalink for Exercise 2.1.23" href="#sec_seqsandlims-6-24" title="Copy heading and permalink for Exercise 2.1.23">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 2.1.4"><a aria-label="Copy heading and permalink for Exercises 2.1.4" href="#sec_seqsandlims-6" title="Copy heading and permalink for Exercises 2.1.4">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 2.1: Sequences and limits"><a aria-label="Copy heading and permalink for Section 2.1: Sequences and limits" href="#sec_seqsandlims" title="Copy heading and permalink for Section 2.1: Sequences and limits">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="seq_chapter.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_factslimsseqs.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

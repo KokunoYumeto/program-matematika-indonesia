@@ -1,0 +1,1373 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Fourier series · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_fourier">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.8</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Fourier series</span>
+</h2>
+<section class="introduction" id="sec_fourier-2">
+<div class="para" id="sec_fourier-2-1">
+<em class="emphasis">Note: 3–4 lectures</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_fourier-2-2">Fourier series<details aria-live="polite" class="ptx-footnote" id="sec_fourier-2-2-1"><summary class="ptx-footnote__number" title="Footnote 11.8.1"><sup> 1 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_fourier-2-2-1">Named after the French mathematician <a class="external" href="https://en.wikipedia.org/wiki/Joseph_Fourier" target="_blank">Jean-Baptiste Joseph Fourier</a> (1768–1830).
+</div></details> is perhaps the most important (and the most difficult) of the series that we cover in this book.  We saw a few examples already, but let us start at the beginning.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-2-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section>
+<section class="subsection" id="sec_fourier-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.8.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Trigonometric polynomials</span>
+</h3>
+<div class="para logical" id="sec_fourier-3-2">
+<div class="para">A <em class="emphasis">trigonometric polynomial</em> is an expression of the form</div>
+<div class="displaymath process-math" id="sec_fourier-3-2-2">
+\begin{equation}
+a_0 + \sum_{n=1}^N \bigl(a_n \cos(nx) + b_n \sin(nx) \bigr),
+\end{equation}
+</div>
+<div class="para">or equivalently, thanks to Euler’s formula (<span class="process-math">\(e^{i\theta} = \cos(\theta) + i
+\sin(\theta)\)</span>):</div>
+<div class="displaymath process-math" id="sec_fourier-3-2-4">
+\begin{equation}
+\sum_{n=-N}^N c_n e^{inx} .
+\end{equation}
+</div>
+<div class="para">The second form is usually more convenient.  If <span class="process-math">\(z \in \C\)</span> with <span class="process-math">\(\sabs{z}=1,\)</span> we write <span class="process-math">\(z = e^{ix}\text{,}\)</span> and so</div>
+<div class="displaymath process-math" id="sec_fourier-3-2-8">
+\begin{equation}
+\sum_{n=-N}^N c_n e^{inx} = 
+\sum_{n=-N}^N c_n z^n .
+\end{equation}
+</div>
+<div class="para">So a trigonometric polynomial is really a rational function of the complex variable <span class="process-math">\(z\)</span> (we are allowing negative powers) evaluated on the unit circle.  There is a wonderful connection between power series (actually Laurent series due to the negative powers) and Fourier series because of this observation, but we will not investigate this further.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-3-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_fourier-3-3">
+<div class="para">Another reason why Fourier series is important and comes up in so many applications is that the functions <span class="process-math">\(e^{inx}\)</span> are eigenfunctions<details aria-live="polite" class="ptx-footnote" id="sec_fourier-3-3-2"><summary class="ptx-footnote__number" title="Footnote 11.8.2"><sup> 2 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_fourier-3-3-2">An eigenfunction is like an eigenvector for a matrix, but for an operator on a vector space of functions.
+</div></details> of various differential operators.  For example,</div>
+<div class="displaymath process-math" id="sec_fourier-3-3-3">
+\begin{equation}
+\frac{d}{dx} \bigl[ e^{inx} \bigr] = (in) e^{inx}, \qquad
+\frac{d^2}{dx^2} \bigl[ e^{inx} \bigr] = (-n^2) e^{inx} .
+\end{equation}
+</div>
+<div class="para">That is, they are the functions whose derivative is a scalar (the eigenvalue) times themselves. Just as eigenvalues and eigenvectors are important in studying matrices, eigenvalues and eigenfunctions are important when studying linear differential equations.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-3-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_fourier-3-4">
+<div class="para">The functions <span class="process-math">\(\cos (nx)\text{,}\)</span> <span class="process-math">\(\sin (nx)\text{,}\)</span> and <span class="process-math">\(e^{inx}\)</span> are <span class="process-math">\(2\pi\)</span>-periodic, hence trigonometric polynomials are also <span class="process-math">\(2\pi\)</span>-periodic. We could rescale <span class="process-math">\(x\)</span> to make the period different, but the theory is the same, so we stick with the period <span class="process-math">\(2\pi\text{.}\)</span> The antiderivative of <span class="process-math">\(e^{inx}\)</span> is <span class="process-math">\(\frac{e^{inx}}{in}\)</span> and so</div>
+<div class="displaymath process-math" id="sec_fourier-3-4-10">
+\begin{equation}
+\int_{-\pi}^\pi e^{inx} \, dx =
+\begin{cases}
+2\pi &amp; \text{if } n=0, \\
+0    &amp; \text{otherwise.}
+\end{cases}
+\end{equation}
+</div>
+<div class="para">Consider</div>
+<div class="displaymath process-math" id="sec_fourier-3-4-11">
+\begin{equation}
+f(x) \coloneqq \sum_{n=-N}^N c_n e^{inx} ,
+\end{equation}
+</div>
+<div class="para">and for <span class="process-math">\(m=-N,\ldots,N\)</span> compute</div>
+<div class="displaymath process-math" id="sec_fourier-3-4-13">
+\begin{equation}
+\begin{aligned}
+\frac{1}{2\pi} \int_{-\pi}^\pi
+f(x) e^{-imx} \, dx
+&amp;
+=
+\frac{1}{2\pi} \int_{-\pi}^\pi
+\left(\sum_{n=-N}^N c_n e^{i(n-m)x}\right) \, dx
+\\
+&amp;
+=
+\sum_{n=-N}^N
+c_n
+\frac{1}{2\pi}
+\int_{-\pi}^\pi
+e^{i(n-m)x}
+\, dx
+=
+c_m .
+\end{aligned}
+\end{equation}
+</div>
+<div class="para">We just found a way of computing the coefficients <span class="process-math">\(c_m\)</span> using an integral of <span class="process-math">\(f\text{.}\)</span>  If <span class="process-math">\(\sabs{m} &gt; N\text{,}\)</span> the integral is 0, so we might as well have included enough zero coefficients to make <span class="process-math">\(\sabs{m} \leq N\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-3-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_fourier-3-5"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.8.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_fourier-3-5-1-1">A trigonometric polynomial <span class="process-math">\(f(x) = \sum_{n=-N}^N c_n\, e^{inx}\)</span> is real-valued for real <span class="process-math">\(x\)</span> if and only if <span class="process-math">\(c_{-m} = \overline{c_m}\)</span> for all <span class="process-math">\(m=-N,\ldots,N\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-3-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 11.8.1"><a aria-label="Copy heading and permalink for Proposition 11.8.1" href="#sec_fourier-3-5" title="Copy heading and permalink for Proposition 11.8.1">🔗</a></div>
+</article>
+<article class="proof" id="sec_fourier-3-6"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_fourier-3-6-1">
+<div class="para">If <span class="process-math">\(f(x)\)</span> is real-valued, that is, <span class="process-math">\(\overline{f(x)} = f(x)\text{,}\)</span> then</div>
+<div class="displaymath process-math" id="sec_fourier-3-6-1-3">
+\begin{equation}
+\overline{c_m}
+=
+\overline{
+\frac{1}{2\pi} \int_{-\pi}^\pi
+f(x) e^{-imx} \, dx
+}
+=
+\frac{1}{2\pi} \int_{-\pi}^\pi
+\overline{
+f(x) e^{-imx} } \, dx
+=
+\frac{1}{2\pi} \int_{-\pi}^\pi
+f(x) e^{imx} \, dx
+= c_{-m} .
+\end{equation}
+</div>
+<div class="para">The complex conjugate goes inside the integral because the integral is done on real and imaginary parts separately.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-3-6-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_fourier-3-6-2">
+<div class="para">On the other hand, if <span class="process-math">\(c_{-m} = \overline{c_m}\text{,}\)</span> then</div>
+<div class="displaymath process-math" id="sec_fourier-3-6-2-2">
+\begin{equation}
+\overline{c_{-m}\, e^{-imx}+ c_{m}\, e^{imx}}
+=
+\overline{c_{-m}}\, e^{imx}+ \overline{c_{m}}\, e^{-imx}
+=
+c_{m}\, e^{imx}+ c_{-m}\, e^{-imx} ,
+\end{equation}
+</div>
+<div class="para">which is real-valued.  Also <span class="process-math">\(c_0 = \overline{c_0}\text{,}\)</span> so <span class="process-math">\(c_0\)</span> is real. By pairing up the terms, we obtain that <span class="process-math">\(f\)</span> has to be real-valued.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-3-6-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 11.8.1.1"><a aria-label="Copy heading and permalink for Proof 11.8.1.1" href="#sec_fourier-3-6" title="Copy heading and permalink for Proof 11.8.1.1">🔗</a></div>
+</article>
+<div class="para" id="sec_fourier-3-7">The functions <span class="process-math">\(e^{inx}\)</span> are also linearly independent.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-3-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_fourier-3-8"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.8.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_fourier-3-8-1-1">
+<div class="para">If</div>
+<div class="displaymath process-math" id="sec_fourier-3-8-1-1-1">
+\begin{equation}
+\sum_{n=-N}^N c_n \, e^{inx} = 0
+\end{equation}
+</div>
+<div class="para">for all <span class="process-math">\(x \in [-\pi,\pi]\text{,}\)</span> then <span class="process-math">\(c_n = 0\)</span> for all <span class="process-math">\(n\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-3-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 11.8.2"><a aria-label="Copy heading and permalink for Proposition 11.8.2" href="#sec_fourier-3-8" title="Copy heading and permalink for Proposition 11.8.2">🔗</a></div>
+</article>
+<article class="proof" id="sec_fourier-3-9"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_fourier-3-9-1">The result follows immediately from the integral formula for <span class="process-math">\(c_n\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-3-9-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 11.8.1.2"><a aria-label="Copy heading and permalink for Proof 11.8.1.2" href="#sec_fourier-3-9" title="Copy heading and permalink for Proof 11.8.1.2">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 11.8.1: Trigonometric polynomials"><a aria-label="Copy heading and permalink for Subsection 11.8.1: Trigonometric polynomials" href="#sec_fourier-3" title="Copy heading and permalink for Subsection 11.8.1: Trigonometric polynomials">🔗</a></div>
+</section>
+<section class="subsection" id="sec_fourier-4">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.8.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Fourier series</span>
+</h3>
+<div class="para logical" id="sec_fourier-4-2">
+<div class="para">We now take limits.  The series</div>
+<div class="displaymath process-math" id="sec_fourier-4-2-1">
+\begin{equation}
+\sum_{n=-\infty}^\infty c_n \, e^{inx}
+\end{equation}
+</div>
+<div class="para">is called the <em class="emphasis">Fourier series</em> and the numbers <span class="process-math">\(c_n\)</span> the <em class="emphasis">Fourier coefficients</em>.  Using Euler’s formula <span class="process-math">\(e^{i\theta} = \cos(\theta) + i \sin (\theta)\text{,}\)</span> we could also develop everything with sines and cosines, that is, as the series <span class="process-math">\(a_0 + \sum_{n=1}^\infty a_n \cos(nx) + b_n \sin(nx)\text{.}\)</span> It is equivalent, but slightly messier.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_fourier-4-3">
+<div class="para">Several questions arise.  What functions are expressible as Fourier series?  Obviously, they have to be <span class="process-math">\(2\pi\)</span>-periodic, but not every periodic function is expressible with the series.  Furthermore, if we do have a Fourier series, where does it converge (where and if at all)?  Does it converge absolutely?  Uniformly?  Also note that the series has two limits.  When talking about Fourier series convergence, we often talk about the following limit:</div>
+<div class="displaymath process-math" id="sec_fourier-4-3-2">
+\begin{equation}
+\lim_{N\to\infty} 
+\sum_{n=-N}^N c_n e^{inx} .
+\end{equation}
+</div>
+<div class="para">There are other ways we can sum the series to get convergence in more situations, but we refrain from discussing those.  In light of this, define the <em class="emphasis">symmetric partial sums</em>
+</div>
+<div class="displaymath process-math" id="sec_fourier-4-3-4">
+\begin{equation}
+s_N(f;x) \coloneqq 
+\sum_{n=-N}^N c_n \,e^{inx} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-4-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_fourier-4-4">
+<div class="para">Conversely, for an integrable function <span class="process-math">\(f \colon [-\pi,\pi] \to
+\C\text{,}\)</span> call the numbers</div>
+<div class="displaymath process-math" id="sec_fourier-4-4-2">
+\begin{equation}
+c_n \coloneqq 
+\frac{1}{2\pi} \int_{-\pi}^\pi
+f(x) e^{-inx} \, dx
+\end{equation}
+</div>
+<div class="para">its <em class="emphasis">Fourier coefficients</em>.  To emphasize the function the coefficients belong to, we write <span class="process-math">\(\hat{f}(n)\text{.}\)</span><details aria-live="polite" class="ptx-footnote" id="sec_fourier-4-4-5"><summary class="ptx-footnote__number" title="Footnote 11.8.3"><sup> 3 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_fourier-4-4-5">The notation should seem similar to Fourier transform to those readers that have seen it. The similarity is not just coincidental, we are taking a type of Fourier transform here.
+</div></details> We then formally write down a Fourier series:</div>
+<div class="displaymath process-math" id="sec_fourier-4-4-6">
+\begin{equation}
+f(x) \sim
+\sum_{n=-\infty}^\infty c_n \, e^{inx} .
+\end{equation}
+</div>
+<div class="para">As you might imagine such a series might not even converge. The <span class="process-math">\(\sim\)</span> doesn’t imply anything about the two sides being equal in any way.  It is simply that we created a formal series using the formula for the coefficients.  We will see that when the functions are “nice enough,” we do get convergence.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-4-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_fourier-4-5"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.8.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_fourier-4-5-1-1">
+<div class="para">Consider the step function <span class="process-math">\(h(x)\)</span> so that <span class="process-math">\(h(x) \coloneqq 1\)</span> on <span class="process-math">\([0,\pi]\)</span> and <span class="process-math">\(h(x) \coloneqq -1\)</span> on <span class="process-math">\((-\pi,0)\text{,}\)</span> extended periodically to a <span class="process-math">\(2\pi\)</span>-periodic function.  With a little bit of calculus, we compute the coefficients:</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_fourierheavicsaw.html" id="sec_fourier-4-5-1-1-7">
+\begin{equation}
+\begin{aligned}
+\hat{h}(0)
+&amp;
+=
+\frac{1}{2\pi} \int_{-\pi}^\pi h(x) \, dx = 0,
+\\
+\hat{h}(n)
+&amp;
+=
+\frac{1}{2\pi} \int_{-\pi}^\pi h(x) e^{-inx} \, dx
+=
+\frac{i\bigl( (-1)^n-1 \bigr)}{\pi n} \quad \text{for } n \neq 0 .
+\end{aligned}
+\end{equation}
+</div>
+<div class="para">A little bit of simplification leads to</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_fourierheavicsaw.html" id="sec_fourier-4-5-1-1-8">
+\begin{equation}
+s_N(h;x) =
+\sum_{n=-N}^N \hat{h}(n) \,e^{inx} 
+=
+\sum_{n=1}^N \frac{2\bigl(1-(-1)^n\bigr)}{\pi n} \sin(n x) .
+\end{equation}
+</div>
+<div class="para">See the left hand graph in <a class="internal" href="sec_fourier.html#fig_fourierheavicsaw" title="Figure 11.11">Figure 11.11</a> for a graph of <span class="process-math">\(h\)</span> and several symmetric partial sums.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-4-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_fourier-4-5-1-2">
+<div class="para">For a second example, consider the function <span class="process-math">\(g(x) \coloneqq \sabs{x}\)</span> on <span class="process-math">\([-\pi,\pi]\)</span> and then extended to a <span class="process-math">\(2\pi\)</span>-periodic function. Computing the coefficients, we find</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_fourierheavicsaw.html" id="sec_fourier-4-5-1-2-4">
+\begin{equation}
+\begin{aligned}
+\hat{g}(0)
+&amp;
+=
+\frac{1}{2\pi} \int_{-\pi}^\pi g(x) \, dx = \frac{\pi}{2},
+\\
+\hat{g}(n)
+&amp;
+=
+\frac{1}{2\pi} \int_{-\pi}^\pi g(x) e^{-inx} \, dx
+=
+\frac{(-1)^n-1}{\pi n^2} \quad \text{for } n \neq 0 .
+\end{aligned}
+\end{equation}
+</div>
+<div class="para">A little simplification yields</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_fourierheavicsaw.html" id="sec_fourier-4-5-1-2-5">
+\begin{equation}
+s_N(g;x) =
+\sum_{n=-N}^N \hat{g}(n) \,e^{inx} 
+=
+\frac{\pi}{2} + 
+\sum_{n=1}^N \frac{2\bigl((-1)^n-1\bigr)}{\pi n^2} \cos(n x) .
+\end{equation}
+</div>
+<div class="para">See the right hand graph in <a class="internal" href="sec_fourier.html#fig_fourierheavicsaw" title="Figure 11.11">Figure 11.11</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-4-5-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <hr class="rahr"/>
+<figure class="figure figure-like" id="fig_fourierheavicsaw"><img alt="Two graphs of 2 pi periodic functions shown over an interval slightly larger than from minus pi to pi. On the left, the rectangular wave is shown which starts at value 1 when x is less than minus pi, then becomes minus 1 from minus pi to 0, then becomes 1 from 0 to pi, then becomes minus 1 again. On the right, a triangular (in particular continuous) wave is shown that is an upward sloping straight line hitting pi at minus pi, then a downward sloping straight line hitting 0 at 0, then going up again to pi at pi, then down again. Several partial sum approximations of the Fourier series are graphed in lighter shades of gray approximating the two functions. Notably on the left the approximations are visibly worse with lots of wiggles around the straight segments, while on the right the approximations quickly seem to approximate only approaching slowly near the corners of the graph." class="raimg" role="img" src="figures/fourierheavi_csaw-mbxpdft.svg" style="width:427pt; height:134pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>The functions <span class="process-math">\(h\)</span> and <span class="process-math">\(g\)</span> in bold, with several symmetric partial sums in gray.<div class="autopermalink" data-description="Figure 11.11"><a aria-label="Copy heading and permalink for Figure 11.11" href="#fig_fourierheavicsaw" title="Copy heading and permalink for Figure 11.11">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para" id="sec_fourier-4-5-1-6">Note that for both <span class="process-math">\(h\)</span> and <span class="process-math">\(g\text{,}\)</span> the even coefficients (except <span class="process-math">\(\hat{g}(0)\)</span>) happen to vanish, but that is not really important. What is important is convergence. First, at the discontinuity at <span class="process-math">\(x=0\text{,}\)</span> we find <span class="process-math">\(s_N(h;0) = 0\)</span> for all <span class="process-math">\(N\text{,}\)</span> so <span class="process-math">\(s_N(h;0)\)</span> converges to a different number from <span class="process-math">\(h(0)\)</span> (at a nice enough jump discontinuity, the limit is the average of the two-sided limits, see the exercises). That should not be surprising; the coefficients are computed by an integral, and integration does not notice if the value of a function changes at a single point. We should remark, however, that we are not guaranteed that in general the Fourier series converges to the function even at a point where the function is continuous. We will prove convergence if the function is at least Lipschitz.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-4-5-1-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_fourier-4-5-1-7">What is really important is how fast the coefficients go to zero.  For the discontinuous <span class="process-math">\(h\text{,}\)</span> the coefficients <span class="process-math">\(\hat{h}(n)\)</span> go to zero approximately like <span class="process-math">\(\nicefrac{1}{n}\text{.}\)</span>  On the other hand, for the continuous <span class="process-math">\(g\text{,}\)</span> the coefficients <span class="process-math">\(\hat{g}(n)\)</span> go to zero approximately like <span class="process-math">\(\nicefrac{1}{n^2}\text{.}\)</span> The Fourier coefficients “see” the discontinuity in some sense.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-4-5-1-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_fourier-4-5-1-8">Do note that continuity in this setting is the continuity of the periodic extension, that is, we include the endpoints <span class="process-math">\(\pm \pi\text{.}\)</span> So the function <span class="process-math">\(f(x) = x\)</span> defined on <span class="process-math">\((-\pi,\pi]\)</span> and extended periodically would be discontinuous at the endpoints <span class="process-math">\(\pm\pi\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-4-5-1-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 11.8.3"><a aria-label="Copy heading and permalink for Example 11.8.3" href="#sec_fourier-4-5" title="Copy heading and permalink for Example 11.8.3">🔗</a></div>
+</article>
+<div class="para logical" id="sec_fourier-4-6">
+<div class="para">In general, the relationship between regularity of the function and the rate of decay of the coefficients is somewhat more complicated than the example above might make it seem, but there are some quick conclusions we can make. We forget about finding a series for a function for a moment, and we consider simply the limit of some given series. A few sections ago, we proved that the Fourier series</div>
+<div class="displaymath process-math" id="sec_fourier-4-6-1">
+\begin{equation}
+\sum_{n=1}^\infty \frac{\sin(nx)}{n^2}
+\end{equation}
+</div>
+<div class="para">converges uniformly and hence converges to a continuous function.  This example and its proof can be extended to a more general criterion.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-4-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_fourier-4-7"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.8.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_fourier-4-7-1-1">
+<div class="para">Let <span class="process-math">\(\sum_{n=-\infty}^\infty c_n\, e^{inx}\)</span> be a Fourier series, and <span class="process-math">\(C\text{,}\)</span> <span class="process-math">\(\alpha &gt; 1\)</span> constants such that</div>
+<div class="displaymath process-math" id="sec_fourier-4-7-1-1-4">
+\begin{equation}
+\sabs{c_n} \leq \frac{C}{\sabs{n}^\alpha}
+\qquad \text{for all } n \in \Z \setminus \{ 0 \}.
+\end{equation}
+</div>
+<div class="para">Then the series converges (absolutely and uniformly) to a continuous function on <span class="process-math">\(\R\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-4-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 11.8.4"><a aria-label="Copy heading and permalink for Proposition 11.8.4" href="#sec_fourier-4-7" title="Copy heading and permalink for Proposition 11.8.4">🔗</a></div>
+</article>
+<div class="para" id="sec_fourier-4-8">The proof is to apply the Weierstrass <span class="process-math">\(M\)</span>-test (<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_swaplim.html#thm_weiermtest" title="Theorem 11.2.4: Weierstrass M-test">Theorem 11.2.4</a>) and the <span class="process-math">\(p\)</span>-series test to find that the series converges uniformly and hence to a continuous function (<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_swaplim.html#cor_metricuniformcontinuous" title="Corollary 11.2.8">Corollary 11.2.8</a>). We can also take derivatives.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-4-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_fourier-4-9"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.8.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_fourier-4-9-1-1">
+<div class="para">Let <span class="process-math">\(\sum_{n=-\infty}^\infty c_n\, e^{inx}\)</span> be a Fourier series, and <span class="process-math">\(C\text{,}\)</span> <span class="process-math">\(\alpha &gt; 2\)</span> constants such that</div>
+<div class="displaymath process-math" id="sec_fourier-4-9-1-1-4">
+\begin{equation}
+\sabs{c_n} \leq \frac{C}{\sabs{n}^\alpha}
+\qquad \text{for all } n \in \Z \setminus \{ 0 \}.
+\end{equation}
+</div>
+<div class="para">Then the series converges to a continuously differentiable function on <span class="process-math">\(\R\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-4-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 11.8.5"><a aria-label="Copy heading and permalink for Proposition 11.8.5" href="#sec_fourier-4-9" title="Copy heading and permalink for Proposition 11.8.5">🔗</a></div>
+</article>
+<div class="para logical" id="sec_fourier-4-10">
+<div class="para">The proof is to note that the series converges to a continuous function by the previous proposition. In particular, it converges at some point. Then differentiate the partial sums,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_dersconvergecomplex.html" id="sec_fourier-4-10-1">
+\begin{equation}
+\sum_{n=-N}^{N}
+i n c_n \,e^{inx}
+\end{equation}
+</div>
+<div class="para">and notice that for all nonzero <span class="process-math">\(n\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_dersconvergecomplex.html" id="sec_fourier-4-10-3">
+\begin{equation}
+\sabs{i n c_n} \leq \frac{C}{\sabs{n}^{\alpha-1}} .
+\end{equation}
+</div>
+<div class="para">The differentiated series converges uniformly by the <span class="process-math">\(M\)</span>-test again.  Since the differentiated series converges uniformly, we find that the original series <span class="process-math">\(\sum_{n=-\infty}^\infty c_n\,e^{inx}\)</span> converges to a continuously differentiable function, whose derivative is the differentiated series (see <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_swaplim.html#thm_dersconvergecomplex" title="Theorem 11.2.14">Theorem 11.2.14</a>).</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-4-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_fourier-4-11">
+<div class="para">We can iterate this reasoning. Suppose there is some <span class="process-math">\(C\)</span> and <span class="process-math">\(\alpha &gt; k+1\)</span> (<span class="process-math">\(k \in \N\)</span>) such that for all nonzero integers <span class="process-math">\(n\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_fourier-4-11-5">
+\begin{equation}
+\sabs{c_n} 
+\leq \frac{C}{\sabs{n}^\alpha} .
+\end{equation}
+</div>
+<div class="para">Then the Fourier series converges to a <span class="process-math">\(k\)</span>-times continuously differentiable function.  Therefore, the faster the coefficients go to zero, the more regular the function is.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-4-11" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 11.8.2: Fourier series"><a aria-label="Copy heading and permalink for Subsection 11.8.2: Fourier series" href="#sec_fourier-4" title="Copy heading and permalink for Subsection 11.8.2: Fourier series">🔗</a></div>
+</section>
+<section class="subsection" id="sec_fourier-5">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.8.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Orthonormal systems</span>
+</h3>
+<div class="para logical" id="sec_fourier-5-2">
+<div class="para">Let us abstract away the exponentials and study a more general series for a function. One fundamental property of the exponentials that makes Fourier series work is that the exponentials are what we call an <em class="emphasis">orthonormal system</em>. Fix an interval <span class="process-math">\([a,b]\text{.}\)</span>  We define an <em class="emphasis">inner product</em> for the space of functions.  We restrict our attention to Riemann integrable functions as we do not have the Lebesgue integral, which would be the natural choice.  Let <span class="process-math">\(f\)</span> and <span class="process-math">\(g\)</span> be complex-valued Riemann integrable functions on <span class="process-math">\([a,b]\)</span> and define the inner product</div>
+<div class="displaymath process-math" id="sec_fourier-5-2-8">
+\begin{equation}
+\langle f , g \rangle \coloneqq
+\int_a^b f(x) \overline{g(x)} \, dx .
+\end{equation}
+</div>
+<div class="para">If you have seen Hermitian inner products in linear algebra, this is precisely such a product.  We must include the conjugate as we are working with complex numbers.  We then have the “size” of <span class="process-math">\(f\text{,}\)</span> that is, the <span class="process-math">\(L^2\)</span> norm <span class="process-math">\(\snorm{f}_2\text{,}\)</span> by (defining the square)</div>
+<div class="displaymath process-math" id="sec_fourier-5-2-13">
+\begin{equation}
+\snorm{f}_2^2 \coloneqq
+\langle f , f \rangle =
+\int_a^b \babs{f(x)}^2 \, dx .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-5-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="remark remark-like" id="sec_fourier-5-3"><h4 class="heading">
+<span class="type">Remark</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.8.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_fourier-5-3-1-1">
+<div class="para">Note the similarity to finite dimensions. For <span class="process-math">\(z = (z_1,z_2,\ldots,z_d) \in \C^d\text{,}\)</span> one defines</div>
+<div class="displaymath process-math" id="sec_fourier-5-3-1-1-2">
+\begin{equation}
+\langle z , w \rangle \coloneqq
+\sum_{n=1}^d z_n \overline{w_n} .
+\end{equation}
+</div>
+<div class="para">Then the norm is (usually denoted simply by <span class="process-math">\(\snorm{z}\)</span> in <span class="process-math">\(\C^d\)</span> rather than by <span class="process-math">\(\snorm{z}_2\)</span>)</div>
+<div class="displaymath process-math" id="sec_fourier-5-3-1-1-6">
+\begin{equation}
+\snorm{z}^2 = 
+\langle z , z \rangle =
+\sum_{n=1}^d \sabs{z_n}^2 .
+\end{equation}
+</div>
+<div class="para">This is just the euclidean distance to the origin in <span class="process-math">\(\C^d\)</span> (same as <span class="process-math">\(\R^{2d}\)</span>).</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-5-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Remark 11.8.6"><a aria-label="Copy heading and permalink for Remark 11.8.6" href="#sec_fourier-5-3" title="Copy heading and permalink for Remark 11.8.6">🔗</a></div>
+</article>
+<div class="para" id="sec_fourier-5-4">In what follows, we will assume all functions are Riemann integrable.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-5-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_fourier-5-5"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.8.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_fourier-5-5-1-1">
+<div class="para">Let <span class="process-math">\(\{ \varphi_n \}_{n=1}^\infty\)</span> be a sequence of integrable complex-valued functions on <span class="process-math">\([a,b]\text{.}\)</span>  We say that this is an <em class="emphasis">orthonormal system</em> if</div>
+<div class="displaymath process-math" id="sec_fourier-5-5-1-1-4">
+\begin{equation}
+\langle \varphi_n , \varphi_m \rangle
+=
+\int_a^b \varphi_n(x) \, \overline{\varphi_m(x)} \, dx
+= 
+\begin{cases}
+1 &amp; \text{if } n=m, \\
+0 &amp; \text{otherwise.}
+\end{cases}
+\end{equation}
+</div>
+<div class="para">In particular, <span class="process-math">\(\snorm{\varphi_n}_2 = 1\)</span> for all <span class="process-math">\(n\text{.}\)</span>  If we only require that <span class="process-math">\(\langle \varphi_n , \varphi_m \rangle = 0\)</span> for <span class="process-math">\(m \neq n\text{,}\)</span> then the system would be called an <em class="emphasis">orthogonal system</em>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-5-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 11.8.7"><a aria-label="Copy heading and permalink for Definition 11.8.7" href="#sec_fourier-5-5" title="Copy heading and permalink for Definition 11.8.7">🔗</a></div>
+</article>
+<div class="para logical" id="sec_fourier-5-6">
+<div class="para">We noticed above that</div>
+<div class="displaymath process-math" id="sec_fourier-5-6-1">
+\begin{equation}
+{\left\{ \frac{1}{\sqrt{2\pi}} \, e^{inx} \right\}}_{n=1}^\infty
+\end{equation}
+</div>
+<div class="para">is an orthonormal system on <span class="process-math">\([-\pi,\pi]\text{.}\)</span> The factor out in front is to make the norm be 1.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-5-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_fourier-5-7">
+<div class="para">Having an orthonormal system <span class="process-math">\(\{ \varphi_n \}_{n=1}^\infty\)</span> on <span class="process-math">\([a,b]\)</span> and an integrable function <span class="process-math">\(f\)</span> on <span class="process-math">\([a,b]\text{,}\)</span> we can write a Fourier series relative to <span class="process-math">\(\{ \varphi_n \}_{n=1}^\infty\text{.}\)</span>  Let</div>
+<div class="displaymath process-math" id="sec_fourier-5-7-6">
+\begin{equation}
+c_n \coloneqq
+\langle f , \varphi_n \rangle
+=
+\int_a^b f(x) \overline{\varphi_n(x)} \, dx ,
+\end{equation}
+</div>
+<div class="para">and write</div>
+<div class="displaymath process-math" id="sec_fourier-5-7-7">
+\begin{equation}
+f(x) \sim \sum_{n=1}^\infty c_n \varphi_n .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-5-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_fourier-5-8">
+<div class="para">In other words, the series is</div>
+<div class="displaymath process-math" id="sec_fourier-5-8-1">
+\begin{equation}
+\sum_{n=1}^\infty \langle f , \varphi_n \rangle \varphi_n(x) .
+\end{equation}
+</div>
+<div class="para">Notice the similarity to the expression for the orthogonal projection of a vector onto a subspace from linear algebra.  We are in fact doing just that, but in a space of functions.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-5-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="thm_l2bestapprox"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.8.8</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="thm_l2bestapprox-1-1">
+<div class="para">Suppose <span class="process-math">\(f\)</span> is a Riemann integrable function on <span class="process-math">\([a,b]\text{.}\)</span> Let <span class="process-math">\(\{ \varphi_n \}_{n=1}^\infty\)</span> be an orthonormal system on <span class="process-math">\([a,b]\)</span> and suppose</div>
+<div class="displaymath process-math" id="thm_l2bestapprox-1-1-5">
+\begin{equation}
+f(x) \sim \sum_{n=1}^\infty c_n \varphi_n(x) .
+\end{equation}
+</div>
+<div class="para">If</div>
+<div class="displaymath process-math" id="thm_l2bestapprox-1-1-6">
+\begin{equation}
+s_k (x) \coloneqq \sum_{n=1}^k c_n \varphi_n(x)
+\quad\text{and}\quad
+p_k (x) \coloneqq \sum_{n=1}^k d_n \varphi_n(x)
+\end{equation}
+</div>
+<div class="para">for some other sequence <span class="process-math">\(\{ d_n \}_{n=1}^\infty\text{,}\)</span> then</div>
+<div class="displaymath process-math" id="thm_l2bestapprox-1-1-8">
+\begin{equation}
+\int_a^b \babs{f(x)-s_k(x)}^2 \, dx = \snorm{f-s_k}_2^2 \leq
+\snorm{f-p_k}_2^2 = \int_a^b \sabs{f(x)-p_k(x)}^2 \, dx
+\end{equation}
+</div>
+<div class="para">with equality only if <span class="process-math">\(d_n = c_n\)</span> for all <span class="process-math">\(n=1,2,\ldots,k\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#thm_l2bestapprox-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 11.8.8"><a aria-label="Copy heading and permalink for Theorem 11.8.8" href="#thm_l2bestapprox" title="Copy heading and permalink for Theorem 11.8.8">🔗</a></div>
+</article>
+<div class="para" id="sec_fourier-5-10">In other words, the partial sums of the Fourier series are the best approximation with respect to the <span class="process-math">\(L^2\)</span> norm.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-5-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_fourier-5-11"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_fourier-5-11-1">
+<div class="para">Let us write</div>
+<div class="displaymath process-math" id="sec_fourier-5-11-1-1">
+\begin{equation}
+\int_a^b \sabs{f-p_k}^2
+=
+\int_a^b \sabs{f}^2
+-
+\int_a^b f \widebar{p_k}
+-
+\int_a^b \widebar{f} p_k
++
+\int_a^b \sabs{p_k}^2 .
+\end{equation}
+</div>
+<div class="para">Now</div>
+<div class="displaymath process-math" id="sec_fourier-5-11-1-2">
+\begin{equation}
+\int_a^b f \widebar{p_k}
+=
+\int_a^b f \sum_{n=1}^k \overline{d_n} \overline{\varphi_n}
+=
+\sum_{n=1}^k \overline{d_n} \int_a^b f \, \overline{\varphi_n}
+=
+\sum_{n=1}^k \overline{d_n} c_n ,
+\end{equation}
+</div>
+<div class="para">and</div>
+<div class="displaymath process-math" id="sec_fourier-5-11-1-3">
+\begin{equation}
+\int_a^b \sabs{p_k}^2
+=
+\int_a^b
+\sum_{n=1}^k d_n \varphi_n
+\sum_{m=1}^k \overline{d_m} \overline{\varphi_m}
+=
+\sum_{n=1}^k
+\sum_{m=1}^k 
+d_n
+\overline{d_m} 
+\int_a^b
+\varphi_n
+\overline{\varphi_m}
+=
+\sum_{n=1}^k
+\sabs{d_n}^2 .
+\end{equation}
+</div>
+<div class="para">So</div>
+<div class="displaymath process-math" id="sec_fourier-5-11-1-4">
+\begin{equation}
+\begin{split}
+\int_a^b \sabs{f-p_k}^2
+&amp; =
+\int_a^b \sabs{f}^2
+-
+\sum_{n=1}^k \overline{d_n} c_n
+-
+\sum_{n=1}^k d_n \overline{c_n}
++
+\sum_{n=1}^k
+\sabs{d_n}^2
+\\
+&amp; =
+\int_a^b \sabs{f}^2
+-
+\sum_{n=1}^k \sabs{c_n}^2
++
+\sum_{n=1}^k
+\sabs{d_n-c_n}^2 .
+\end{split}
+\end{equation}
+</div>
+<div class="para">This is minimized precisely when <span class="process-math">\(d_n = c_n\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-5-11-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 11.8.3.1"><a aria-label="Copy heading and permalink for Proof 11.8.3.1" href="#sec_fourier-5-11" title="Copy heading and permalink for Proof 11.8.3.1">🔗</a></div>
+</article>
+<div class="para logical" id="sec_fourier-5-12">
+<div class="para">When we do plug in <span class="process-math">\(d_n = c_n\text{,}\)</span> then</div>
+<div class="displaymath process-math" id="sec_fourier-5-12-2">
+\begin{equation}
+\int_a^b \sabs{f-s_k}^2
+=
+\int_a^b \sabs{f}^2
+-
+\sum_{n=1}^k \sabs{c_n}^2 ,
+\end{equation}
+</div>
+<div class="para">and so for all <span class="process-math">\(k\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_fourier-5-12-4">
+\begin{equation}
+\sum_{n=1}^k \sabs{c_n}^2
+\leq
+\int_a^b \sabs{f}^2 .
+\end{equation}
+</div>
+<div class="para">Note that</div>
+<div class="displaymath process-math" id="sec_fourier-5-12-5">
+\begin{equation}
+\sum_{n=1}^k \sabs{c_n}^2 = \snorm{s_k}_2^2
+\end{equation}
+</div>
+<div class="para">by the calculation above. We take a limit to obtain <em class="emphasis">Bessel’s inequality</em>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-5-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="thm_bessels"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.8.9</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Bessel’s inequality.</span>
+</h4>
+<div class="para logical" id="thm_bessels-2-1">
+<div class="para">
+<details aria-live="polite" class="ptx-footnote" id="thm_bessels-2-1-1"><summary class="ptx-footnote__number" title="Footnote 11.8.4"><sup> 4 </sup></summary>
+<div class="ptx-footnote__contents" id="thm_bessels-2-1-1">Named after the German astronomer, mathematician, physicist, and geodesist <a class="external" href="https://en.wikipedia.org/wiki/Friedrich_Bessel" target="_blank">Friedrich Wilhelm Bessel</a> (1784–1846).
+</div></details> Suppose <span class="process-math">\(f\)</span> is a Riemann integrable function on <span class="process-math">\([a,b]\text{.}\)</span> Let <span class="process-math">\(\{ \varphi_n \}_{n=1}^\infty\)</span> be an orthonormal system on <span class="process-math">\([a,b]\)</span> and suppose</div>
+<div class="displaymath process-math" id="thm_bessels-2-1-6">
+\begin{equation}
+f(x) \sim \sum_{n=1}^\infty c_n \varphi_n(x) .
+\end{equation}
+</div>
+<div class="para">Then</div>
+<div class="displaymath process-math" id="thm_bessels-2-1-7">
+\begin{equation}
+\sum_{n=1}^\infty \sabs{c_n}^2
+\leq
+\int_a^b \sabs{f}^2
+= \snorm{f}_2^2 .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#thm_bessels-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 11.8.9: Bessel’s inequality"><a aria-label="Copy heading and permalink for Theorem 11.8.9: Bessel’s inequality" href="#thm_bessels" title="Copy heading and permalink for Theorem 11.8.9: Bessel’s inequality">🔗</a></div>
+</article>
+<div class="para logical" id="sec_fourier-5-14">
+<div class="para">In particular, <span class="process-math">\(\int_a^b \sabs{f}^2 &lt; \infty\)</span> implies the series converges and hence</div>
+<div class="displaymath process-math" id="sec_fourier-5-14-2">
+\begin{equation}
+\lim_{k \to \infty} c_k = 0 .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-5-14" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 11.8.3: Orthonormal systems"><a aria-label="Copy heading and permalink for Subsection 11.8.3: Orthonormal systems" href="#sec_fourier-5" title="Copy heading and permalink for Subsection 11.8.3: Orthonormal systems">🔗</a></div>
+</section>
+<section class="subsection" id="sec_fourier-6">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.8.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">The Dirichlet kernel and approximate delta functions</span>
+</h3>
+<div class="para logical" id="sec_fourier-6-2">
+<div class="para">We return to the trigonometric Fourier series. The system <span class="process-math">\(\{ e^{inx} \}_{n=1}^\infty\)</span> is orthogonal, but not orthonormal if we simply integrate over <span class="process-math">\([-\pi,\pi]\text{.}\)</span>  We can rescale the integral and hence the inner product to make <span class="process-math">\(\{ e^{inx} \}_{n=1}^\infty\)</span> orthonormal.  That is, if we replace</div>
+<div class="displaymath process-math" id="sec_fourier-6-2-4">
+\begin{equation}
+\int_a^b \qquad \text{with} \qquad
+\frac{1}{2\pi} \int_{-\pi}^\pi,
+\end{equation}
+</div>
+<div class="para">(we are just rescaling the <span class="process-math">\(dx\)</span> really)<details aria-live="polite" class="ptx-footnote" id="sec_fourier-6-2-6"><summary class="ptx-footnote__number" title="Footnote 11.8.5"><sup> 5 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_fourier-6-2-6">Mathematicians in this field sometimes simplify matters with a tongue-in-cheek definition that <span class="process-math">\(1=2\pi\text{.}\)</span>
+</div></details>, then everything works and we obtain that the system <span class="process-math">\(\{ e^{inx} \}_{n=1}^\infty\)</span> is orthonormal with respect to the inner product</div>
+<div class="displaymath process-math" id="sec_fourier-6-2-8">
+\begin{equation}
+\langle f , g \rangle =
+\frac{1}{2\pi} \int_{-\pi}^\pi f(x) \, \overline{g(x)} \, dx .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-6-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_fourier-6-3">
+<div class="para">Suppose <span class="process-math">\(f \colon \R \to \C\)</span> is <span class="process-math">\(2\pi\)</span>-periodic and integrable on <span class="process-math">\([-\pi,\pi]\text{.}\)</span> Write</div>
+<div class="displaymath process-math" id="sec_fourier-6-3-4">
+\begin{equation}
+f(x) \sim
+\sum_{n=-\infty}^\infty c_n \,e^{inx} ,
+\qquad \text{where} \quad
+c_n \coloneqq 
+\frac{1}{2\pi} \int_{-\pi}^\pi
+f(x) e^{-inx} \, dx .
+\end{equation}
+</div>
+<div class="para">Recall the notation for the symmetric partial sums, <span class="process-math">\(s_N(f;x) \coloneqq 
+\sum_{n=-N}^N c_n \,e^{inx}\text{.}\)</span> The inequality leading up to Bessel now reads:</div>
+<div class="displaymath process-math" id="sec_fourier-6-3-6">
+\begin{equation}
+\frac{1}{2\pi} \int_{-\pi}^\pi
+\babs{s_N(f;x)}^2 \, dx =
+\sum_{n=-N}^N \sabs{c_n}^2
+\leq
+\frac{1}{2\pi} \int_{-\pi}^\pi
+\babs{f(x)}^2
+\, dx .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-6-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_fourier-6-4">
+<div class="para">Let the <em class="emphasis">Dirichlet kernel</em> be</div>
+<div class="displaymath process-math" id="sec_fourier-6-4-2">
+\begin{equation}
+D_N(x) \coloneqq \sum_{n=-N}^N e^{inx} .
+\end{equation}
+</div>
+<div class="para">We claim that</div>
+<div class="displaymath process-math" id="sec_fourier-6-4-3">
+\begin{equation}
+D_N(x) =
+\frac{\sin\bigl( (N+\nicefrac{1}{2})x \bigr)}{\sin(\nicefrac{x}{2})} ,
+\end{equation}
+</div>
+<div class="para">for <span class="process-math">\(x\)</span> such that <span class="process-math">\(\sin(\nicefrac{x}{2}) \neq 0\text{.}\)</span>  The left-hand side is continuous on <span class="process-math">\(\R\text{,}\)</span> and hence the right-hand side extends continuously to all of <span class="process-math">\(\R\text{.}\)</span> To show the claim, we use a familiar trick:</div>
+<div class="displaymath process-math" id="sec_fourier-6-4-8">
+\begin{equation}
+(e^{ix}-1) D_N(x) = e^{i(N+1)x} - e^{-iNx} .
+\end{equation}
+</div>
+<div class="para">Multiply by <span class="process-math">\(e^{-ix/2}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_fourier-6-4-10">
+\begin{equation}
+(e^{ix/2}-e^{-ix/2}) D_N(x) = e^{i(N+\nicefrac{1}{2})x} -
+e^{-i(N+\nicefrac{1}{2})x} .
+\end{equation}
+</div>
+<div class="para">The claim follows.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-6-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_fourier-6-5">
+<div class="para">Expand the definition of <span class="process-math">\(s_N\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_approxdeltas.html" id="sec_fourier-6-5-2">
+\begin{multline*}
+s_N(f;x) = 
+\sum_{n=-N}^N \frac{1}{2\pi} \int_{-\pi}^\pi f(t) e^{-int}  \,  dt ~ e^{inx}
+\\
+=
+\frac{1}{2\pi} \int_{-\pi}^\pi f(t) \sum_{n=-N}^N e^{in(x-t)} \, dt
+=
+\frac{1}{2\pi} \int_{-\pi}^\pi f(t) D_N(x-t) \, dt .
+\end{multline*}
+</div>
+<div class="para">Convolution strikes again! As <span class="process-math">\(D_N\)</span> and <span class="process-math">\(f\)</span> are <span class="process-math">\(2\pi\)</span>-periodic, we may also change variables and write</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_approxdeltas.html" id="sec_fourier-6-5-6">
+\begin{equation}
+s_N(f;x) = 
+\frac{1}{2\pi} \int_{x-\pi}^{x+\pi} f(x-t) D_N(t) \, dt
+=
+\frac{1}{2\pi} \int_{-\pi}^\pi f(x-t) D_N(t) \, dt .
+\end{equation}
+</div>
+<div class="para">See <a class="internal" href="sec_fourier.html#fig_approxdeltas" title="Figure 11.12">Figure 11.12</a> for a plot of <span class="process-math">\(D_N\)</span> for <span class="process-math">\(N=5\)</span> and <span class="process-math">\(N=20\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-6-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="fig_approxdeltas"><img alt="A plot of two functions for x within mius pi to pi. In gray there is a function that starts with small-amplitude slow oscillation on the left, becomes a sizable bump in the middle and then becomes a small-amplitude slow oscillation on the right. In black, it is a function with similar pattern except the frequency is much higher and instead of a bump in the middle it becomes a tall peak. The oscillations go both above and below the x-axis." class="raimg" role="img" src="figures/approxdeltas-mbx.svg" style="width:279pt; height:178pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.12<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Plot of <span class="process-math">\(D_N(x)\)</span> for <span class="process-math">\(N=5\)</span> (gray) and <span class="process-math">\(N=20\)</span> (black).<div class="autopermalink" data-description="Figure 11.12"><a aria-label="Copy heading and permalink for Figure 11.12" href="#fig_approxdeltas" title="Copy heading and permalink for Figure 11.12">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para logical" id="sec_fourier-6-9">
+<div class="para">The central peak gets taller and taller as <span class="process-math">\(N\)</span> gets larger, and the side peaks stay small. We are convolving (again) with <em class="emphasis">approximate delta functions</em>, although these functions have all these oscillations away from zero.  The oscillations on the side do not go away but they are eventually so fast that we expect the integral to just sort of cancel itself out there. Overall, we expect that <span class="process-math">\(s_N(f)\)</span> goes to <span class="process-math">\(f\text{.}\)</span>  Things are not always simple, but under some conditions on <span class="process-math">\(f\text{,}\)</span> such a conclusion holds.  For this reason people write</div>
+<div class="displaymath process-math" id="sec_fourier-6-9-7">
+\begin{equation}
+2\pi \, \delta(x) \sim \sum_{n=-\infty}^\infty e^{inx} ,
+\end{equation}
+</div>
+<div class="para">where <span class="process-math">\(\delta\)</span> is the “delta function” (not really a function), which is an object that will give something like “<span class="process-math">\(\int_{-\pi}^{\pi} f(x-t) \delta(t) \, dt = f(x)\text{.}\)</span>” We can think of <span class="process-math">\(D_N(x)\)</span> converging in some sense to <span class="process-math">\(2 \pi\, \delta(x)\text{.}\)</span> However, we have not defined (and will not define) what the delta function is, nor what it means for it to be a limit of <span class="process-math">\(D_N\)</span> or have a Fourier series.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-6-9" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 11.8.4: The Dirichlet kernel and approximate delta functions"><a aria-label="Copy heading and permalink for Subsection 11.8.4: The Dirichlet kernel and approximate delta functions" href="#sec_fourier-6" title="Copy heading and permalink for Subsection 11.8.4: The Dirichlet kernel and approximate delta functions">🔗</a></div>
+</section>
+<section class="subsection" id="sec_fourier-7">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.8.5</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Localization</span>
+</h3>
+<div class="para" id="sec_fourier-7-2">If <span class="process-math">\(f\)</span> satisfies a Lipschitz condition at a point, then the Fourier series converges at that point.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-7-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="thm_fourierlocalization"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.8.10</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="thm_fourierlocalization-1-1">
+<div class="para">Let <span class="process-math">\(x\)</span> be fixed and let <span class="process-math">\(f\)</span> be a <span class="process-math">\(2\pi\)</span>-periodic function Riemann integrable on <span class="process-math">\([-\pi,\pi]\text{.}\)</span>  Suppose there exist <span class="process-math">\(\delta &gt; 0\)</span> and <span class="process-math">\(M\)</span> such that</div>
+<div class="displaymath process-math" id="thm_fourierlocalization-1-1-7">
+\begin{equation}
+\babs{f(x+t)-f(x)} \leq M \sabs{t}
+\end{equation}
+</div>
+<div class="para">for all <span class="process-math">\(t \in (-\delta,\delta)\text{,}\)</span> then</div>
+<div class="displaymath process-math" id="thm_fourierlocalization-1-1-9">
+\begin{equation}
+\lim_{N \to \infty} s_N(f;x) = f(x) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#thm_fourierlocalization-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 11.8.10"><a aria-label="Copy heading and permalink for Theorem 11.8.10" href="#thm_fourierlocalization" title="Copy heading and permalink for Theorem 11.8.10">🔗</a></div>
+</article>
+<div class="para" id="sec_fourier-7-4">In particular, if <span class="process-math">\(f\)</span> is continuously differentiable at <span class="process-math">\(x\text{,}\)</span> then we obtain convergence at <span class="process-math">\(x\)</span> (exercise). A function <span class="process-math">\(f \colon [a,b] \to \C\)</span> is <em class="emphasis">continuous piecewise smooth</em> if it is continuous and there exist points <span class="process-math">\(x_0 = a &lt; x_1 &lt; x_2 &lt; \cdots &lt; x_k = b\)</span> such that for every <span class="process-math">\(j\text{,}\)</span> <span class="process-math">\(f\)</span> restricted to <span class="process-math">\([x_j,x_{j+1}]\)</span> is continuously differentiable (up to the endpoints).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-7-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="corollary theorem-like" id="cor_fourierpiecewisesmooth"><h4 class="heading">
+<span class="type">Corollary</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.8.11</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="cor_fourierpiecewisesmooth-1-1">
+<div class="para">Let <span class="process-math">\(f\)</span> be a <span class="process-math">\(2\pi\)</span>-periodic function Riemann integrable on <span class="process-math">\([-\pi,\pi]\text{.}\)</span>  Suppose there exist <span class="process-math">\(x\in \R\)</span> and <span class="process-math">\(\delta &gt; 0\)</span> such that <span class="process-math">\(f\)</span> is continuous piecewise smooth on <span class="process-math">\([x-\delta,x+\delta]\text{,}\)</span> then</div>
+<div class="displaymath process-math" id="cor_fourierpiecewisesmooth-1-1-8">
+\begin{equation}
+\lim_{N \to \infty} s_N(f;x) = f(x) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#cor_fourierpiecewisesmooth-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Corollary 11.8.11"><a aria-label="Copy heading and permalink for Corollary 11.8.11" href="#cor_fourierpiecewisesmooth" title="Copy heading and permalink for Corollary 11.8.11">🔗</a></div>
+</article>
+<div class="para" id="sec_fourier-7-6">The proof of the corollary is left as an exercise.  Let us prove the theorem.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-7-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_fourier-7-7"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_fourier-7-7-1">
+<div class="para">
+<em class="emphasis">(Proof of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_fourier.html#thm_fourierlocalization" title="Theorem 11.8.10">Theorem 11.8.10</a>)</em> For all <span class="process-math">\(N\text{,}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_fourierlocalization.html ./knowl/xref/thm_bessels.html" id="sec_fourier-7-7-1-3">
+\begin{equation}
+\frac{1}{2\pi} \int_{-\pi}^\pi D_N = 1 .
+\end{equation}
+</div>
+<div class="para">Write</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_fourierlocalization.html ./knowl/xref/thm_bessels.html" id="sec_fourier-7-7-1-4">
+\begin{equation}
+\begin{split}
+s_N(f;x)-f(x) &amp; =
+\frac{1}{2\pi} \int_{-\pi}^\pi f(x-t) D_N(t) \, dt 
+-
+f(x)
+\frac{1}{2\pi} \int_{-\pi}^\pi D_N(t) \, dt
+\\
+&amp; = 
+\frac{1}{2\pi} \int_{-\pi}^\pi \bigl( f(x-t) - f(x) \bigr) D_N(t) \, dt 
+\\
+&amp; = 
+\frac{1}{2\pi} \int_{-\pi}^\pi \frac{f(x-t) - f(x)}{\sin(\nicefrac{t}{2})} \sin\bigl(
+(N+\nicefrac{1}{2})t \bigr) \, dt .
+\end{split}
+\end{equation}
+</div>
+<div class="para">By the hypotheses, for small nonzero <span class="process-math">\(t\text{,}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_fourierlocalization.html ./knowl/xref/thm_bessels.html" id="sec_fourier-7-7-1-6">
+\begin{equation}
+\abs{ \frac{f(x-t) - f(x)}{\sin(\nicefrac{t}{2})} }
+\leq
+\frac{M\sabs{t}}{\babs{\sin(\nicefrac{t}{2})}} .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(\sin(\theta) = \theta + h(\theta)\)</span> where <span class="process-math">\(\frac{h(\theta)}{\theta} \to
+0\)</span> as <span class="process-math">\(\theta \to 0\text{,}\)</span> we notice that <span class="process-math">\(\frac{M\sabs{t}}{\sabs{\sin(\nicefrac{t}{2})}}\)</span> is continuous at the origin. Hence, <span class="process-math">\(\frac{f(x-t) - f(x)}{\sin(\nicefrac{t}{2})}\text{,}\)</span> as a function of <span class="process-math">\(t\text{,}\)</span> is bounded near the origin. As <span class="process-math">\(t=0\)</span> is the only place on <span class="process-math">\([-\pi,\pi]\)</span> where the denominator vanishes, it is the only place where there could be a problem. So, the function is bounded near <span class="process-math">\(t=0\)</span> and clearly Riemann integrable on any interval not including <span class="process-math">\(0\text{,}\)</span> and thus it is Riemann integrable on <span class="process-math">\([-\pi,\pi]\text{.}\)</span> We use the trigonometric identity</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_fourierlocalization.html ./knowl/xref/thm_bessels.html" id="sec_fourier-7-7-1-18">
+\begin{equation}
+\sin\bigl( (N+\nicefrac{1}{2})t \bigr)
+=
+\cos(\nicefrac{t}{2}) \sin(Nt) + 
+\sin(\nicefrac{t}{2}) \cos(Nt) ,
+\end{equation}
+</div>
+<div class="para">to compute</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_fourierlocalization.html ./knowl/xref/thm_bessels.html" id="sec_fourier-7-7-1-19">
+\begin{multline*}
+\frac{1}{2\pi} \int_{-\pi}^\pi \frac{f(x-t) - f(x)}{\sin(\nicefrac{t}{2})} \sin\bigl(
+(N+\nicefrac{1}{2})t \bigr) \, dt 
+= \\
+\frac{1}{2\pi} \int_{-\pi}^\pi
+\left( \frac{f(x-t) - f(x)}{\sin(\nicefrac{t}{2})}
+\cos (\nicefrac{t}{2}) \right) \sin (Nt) \, dt
++
+\frac{1}{2\pi} \int_{-\pi}^\pi \bigl( f(x-t) - f(x) \bigr)
+\cos (Nt) \, dt .
+\end{multline*}
+</div>
+<div class="para">As functions of <span class="process-math">\(t\text{,}\)</span> <span class="process-math">\(\frac{f(x-t) - f(x)}{\sin(\nicefrac{t}{2})} \cos (\nicefrac{t}{2})\)</span> and <span class="process-math">\(\bigl( f(x-t) - f(x) \bigr)\)</span> are bounded Riemann integrable functions and so their Fourier coefficients go to zero by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_fourier.html#thm_bessels" title="Theorem 11.8.9: Bessel’s inequality">Theorem 11.8.9</a>.  So the two integrals on the right-hand side, which compute the Fourier coefficients for the real version of the Fourier series go to 0 as <span class="process-math">\(N\)</span> goes to infinity. This is because <span class="process-math">\(\sin(Nt)\)</span> and <span class="process-math">\(\cos(Nt)\)</span> are also orthonormal systems with respect to the same inner product. Hence <span class="process-math">\(s_N(f;x)-f(x)\)</span> goes to 0, that is, <span class="process-math">\(s_N(f;x)\)</span> goes to <span class="process-math">\(f(x)\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-7-7-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 11.8.5.1"><a aria-label="Copy heading and permalink for Proof 11.8.5.1" href="#sec_fourier-7-7" title="Copy heading and permalink for Proof 11.8.5.1">🔗</a></div>
+</article>
+<div class="para" id="sec_fourier-7-8">The theorem also says that convergence depends only on local behavior. That is, to understand convergence of <span class="process-math">\(s_N(f;x)\)</span> we only need to know <span class="process-math">\(f\)</span> in some neighborhood of <span class="process-math">\(x\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-7-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="corollary theorem-like" id="sec_fourier-7-9"><h4 class="heading">
+<span class="type">Corollary</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.8.12</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_fourier-7-9-1-1">Suppose <span class="process-math">\(f\)</span> is a <span class="process-math">\(2\pi\)</span>-periodic function, Riemann integrable on <span class="process-math">\([-\pi,\pi]\text{.}\)</span> If <span class="process-math">\(J\)</span> is an open interval and <span class="process-math">\(f(x) = 0\)</span> for all <span class="process-math">\(x \in J\text{,}\)</span> then <span class="process-math">\(\lim\limits_{N\to\infty} s_N(f;x) = 0\)</span> for all <span class="process-math">\(x \in J\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-7-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_fourier-7-9-1-2">In particular, if <span class="process-math">\(f\)</span> and <span class="process-math">\(g\)</span> are <span class="process-math">\(2\pi\)</span>-periodic functions, Riemann integrable on <span class="process-math">\([-\pi,\pi]\text{,}\)</span> <span class="process-math">\(J\)</span> an open interval, and <span class="process-math">\(f(x) = g(x)\)</span> for all <span class="process-math">\(x \in J\text{,}\)</span> then for all <span class="process-math">\(x \in J\text{,}\)</span> the sequence <span class="process-math">\(\bigl\{ s_N(f;x) \bigr\}_{N=1}^\infty\)</span> converges if and only if <span class="process-math">\(\bigl\{ s_N(g;x) \bigr\}_{N=1}^\infty\)</span> converges.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-7-9-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Corollary 11.8.12"><a aria-label="Copy heading and permalink for Corollary 11.8.12" href="#sec_fourier-7-9" title="Copy heading and permalink for Corollary 11.8.12">🔗</a></div>
+</article>
+<div class="para" id="sec_fourier-7-10">The first claim follows by taking <span class="process-math">\(M=0\)</span> in the theorem. The “In particular” follows by considering <span class="process-math">\(f-g\text{,}\)</span> which is zero on <span class="process-math">\(J\)</span> and <span class="process-math">\(s_N(f-g) = s_N(f) - s_N(g)\text{.}\)</span> So convergence at <span class="process-math">\(x\)</span> depends only on the values of the function near <span class="process-math">\(x\text{.}\)</span> However, we saw that the rate of convergence, that is, how fast does <span class="process-math">\(s_N(f)\)</span> converge to <span class="process-math">\(f\text{,}\)</span> depends on global behavior of <span class="process-math">\(f\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-7-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_fourier-7-11">Note a subtle difference between the results above and what <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_stoneweier.html#thm_SWcomplex" title="Theorem 11.7.16: Stone–Weierstrass, complex version">Stone–Weierstrass theorem</a> gives. Any continuous function on <span class="process-math">\([-\pi,\pi]\)</span> equal at the endpoints can be uniformly approximated by trigonometric polynomials, but these trigonometric polynomials may not be the partial sums <span class="process-math">\(s_N\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-7-11" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 11.8.5: Localization"><a aria-label="Copy heading and permalink for Subsection 11.8.5: Localization" href="#sec_fourier-7" title="Copy heading and permalink for Subsection 11.8.5: Localization">🔗</a></div>
+</section>
+<section class="subsection" id="sec_fourier-8">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.8.6</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Parseval’s theorem</span>
+</h3>
+<div class="para" id="sec_fourier-8-2">Finally, convergence always happens in the <span class="process-math">\(L^2\)</span> sense and operations on the (infinite) vectors of Fourier coefficients are the same as the operations using the integral inner product.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-8-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="sec_fourier-8-3"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.8.13</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Parseval.</span>
+</h4>
+<div class="para logical" id="sec_fourier-8-3-3-1">
+<div class="para">
+<details aria-live="polite" class="ptx-footnote" id="sec_fourier-8-3-3-1-1"><summary class="ptx-footnote__number" title="Footnote 11.8.6"><sup> 6 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_fourier-8-3-3-1-1">Named after the French mathematician <a class="external" href="https://en.wikipedia.org/wiki/Marc-Antoine_Parseval" target="_blank">Marc-Antoine Parseval</a> (1755–1836).
+</div></details> Let <span class="process-math">\(f\)</span> and <span class="process-math">\(g\)</span> be <span class="process-math">\(2\pi\)</span>-periodic functions, Riemann integrable on <span class="process-math">\([-\pi,\pi]\)</span> with</div>
+<div class="displaymath process-math" id="sec_fourier-8-3-3-1-6">
+\begin{equation}
+f(x) \sim
+\sum_{n=-\infty}^\infty c_n \,e^{inx}
+\qquad \text{and} \qquad
+g(x) \sim
+\sum_{n=-\infty}^\infty d_n \,e^{inx} .
+\end{equation}
+</div>
+<div class="para">Then</div>
+<div class="displaymath process-math" id="sec_fourier-8-3-3-1-7">
+\begin{equation}
+\lim_{N\to\infty} \bnorm{f-s_N(f)}_2^2 = 
+\lim_{N\to\infty}
+\frac{1}{2\pi}
+\int_{-\pi}^\pi
+\babs{f(x)-s_N(f;x)}^2 \, dx
+=0 .
+\end{equation}
+</div>
+<div class="para">Also</div>
+<div class="displaymath process-math" id="sec_fourier-8-3-3-1-8">
+\begin{equation}
+\langle f , g \rangle =
+\frac{1}{2\pi}
+\int_{-\pi}^\pi
+f(x) \overline{g(x)}\, dx
+=
+\sum_{n=-\infty}^\infty c_n \overline{d_n} ,
+\end{equation}
+</div>
+<div class="para">and</div>
+<div class="displaymath process-math" id="sec_fourier-8-3-3-1-9">
+\begin{equation}
+\snorm{f}_2^2
+=
+\frac{1}{2\pi}
+\int_{-\pi}^\pi
+\babs{f(x)}^2 \, dx
+=
+\sum_{n=-\infty}^\infty \sabs{c_n}^2.
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-8-3-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 11.8.13: Parseval"><a aria-label="Copy heading and permalink for Theorem 11.8.13: Parseval" href="#sec_fourier-8-3" title="Copy heading and permalink for Theorem 11.8.13: Parseval">🔗</a></div>
+</article>
+<article class="proof" id="sec_fourier-8-4"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_fourier-8-4-1">
+<div class="para">There exists (<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_fourier.html#exercise_contL2close" title="Exercise 11.8.4">Exercise 11.8.4</a>) a continuous <span class="process-math">\(2\pi\)</span>-periodic function <span class="process-math">\(h\)</span> such that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_contL2close.html ./knowl/xref/thm_SWcomplex.html ./knowl/xref/exercise_trigpolydense.html ./knowl/xref/thm_l2bestapprox.html ./knowl/xref/exercise_L2triangleineq.html" id="sec_fourier-8-4-1-4">
+\begin{equation}
+\snorm{f-h}_2 &lt; \epsilon .
+\end{equation}
+</div>
+<div class="para">Via <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_stoneweier.html#thm_SWcomplex" title="Theorem 11.7.16: Stone–Weierstrass, complex version">Stone–Weierstrass</a> (namely <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_stoneweier.html#exercise_trigpolydense" title="Exercise 11.7.8">Exercise 11.7.8</a>), there is a trigonometric polynomial <span class="process-math">\(P(x)\)</span> such that <span class="process-math">\(\babs{h(x) - P(x)} &lt; \epsilon\)</span> for all <span class="process-math">\(x\text{.}\)</span> Hence,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_contL2close.html ./knowl/xref/thm_SWcomplex.html ./knowl/xref/exercise_trigpolydense.html ./knowl/xref/thm_l2bestapprox.html ./knowl/xref/exercise_L2triangleineq.html" id="sec_fourier-8-4-1-10">
+\begin{equation}
+\snorm{h-P}_2
+=
+\sqrt{
+\frac{1}{2\pi}
+\int_{-\pi}^{\pi}
+\babs{h(x)-P(x)}^2
+\,
+dx
+}
+\leq \epsilon.
+\end{equation}
+</div>
+<div class="para">If <span class="process-math">\(P\)</span> is of degree <span class="process-math">\(N_0\text{,}\)</span> then for all <span class="process-math">\(N \geq N_0\)</span> ,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_contL2close.html ./knowl/xref/thm_SWcomplex.html ./knowl/xref/exercise_trigpolydense.html ./knowl/xref/thm_l2bestapprox.html ./knowl/xref/exercise_L2triangleineq.html" id="sec_fourier-8-4-1-14">
+\begin{equation}
+\bnorm{h-s_N(h)}_2 \leq \snorm{h-P}_2 \leq \epsilon ,
+\end{equation}
+</div>
+<div class="para">as <span class="process-math">\(s_N(h)\)</span> is the best approximation for <span class="process-math">\(h\)</span> in <span class="process-math">\(L^2\)</span> (<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_fourier.html#thm_l2bestapprox" title="Theorem 11.8.8">Theorem 11.8.8</a>). By the inequality leading up to Bessel,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_contL2close.html ./knowl/xref/thm_SWcomplex.html ./knowl/xref/exercise_trigpolydense.html ./knowl/xref/thm_l2bestapprox.html ./knowl/xref/exercise_L2triangleineq.html" id="sec_fourier-8-4-1-19">
+\begin{equation}
+\bnorm{s_N(h)-s_N(f)}_2
+=
+\bnorm{s_N(h-f)}_2
+\leq
+\snorm{h-f}_2 \leq \epsilon .
+\end{equation}
+</div>
+<div class="para">The <span class="process-math">\(L^2\)</span> norm satisfies the triangle inequality (<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_fourier.html#exercise_L2triangleineq" title="Exercise 11.8.6">Exercise 11.8.6</a>). Thus, for all <span class="process-math">\(N \geq N_0\text{,}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_contL2close.html ./knowl/xref/thm_SWcomplex.html ./knowl/xref/exercise_trigpolydense.html ./knowl/xref/thm_l2bestapprox.html ./knowl/xref/exercise_L2triangleineq.html" id="sec_fourier-8-4-1-23">
+\begin{equation}
+\bnorm{f-s_N(f)}_2
+\leq
+\snorm{f-h}_2
++
+\bnorm{h-s_N(h)}_2
++
+\bnorm{s_N(h)-s_N(f)}_2
+\leq 3\epsilon .
+\end{equation}
+</div>
+<div class="para">The first claim follows.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-8-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_fourier-8-4-2">
+<div class="para">Next,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_L2cauchyschwarz.html" id="sec_fourier-8-4-2-1">
+\begin{equation}
+\langle s_N(f) , g \rangle
+=
+\frac{1}{2\pi}
+\int_{-\pi}^\pi
+s_N(f;x) \overline{g(x)} \, dx
+=
+\sum_{n=-N}^N
+c_n 
+\frac{1}{2\pi}
+\int_{-\pi}^\pi
+e^{inx}
+\overline{g(x)} \, dx
+=
+\sum_{n=-N}^N
+c_n 
+\overline{d_n} .
+\end{equation}
+</div>
+<div class="para">We need the Schwarz (or Cauchy–Schwarz or Cauchy–Bunyakovsky–Schwarz) inequality for <span class="process-math">\(L^2\text{,}\)</span> that is,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_L2cauchyschwarz.html" id="sec_fourier-8-4-2-3">
+\begin{equation}
+{\abs{\int_a^b f\bar{g}}}^2
+\leq
+\left( \int_a^b \sabs{f}^2 \right)
+\left( \int_a^b \sabs{g}^2 \right) .
+\end{equation}
+</div>
+<div class="para">Its proof is left as <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_fourier.html#exercise_L2cauchyschwarz" title="Exercise 11.8.5">Exercise 11.8.5</a>; it is not much different from the finite-dimensional version. So</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_L2cauchyschwarz.html" id="sec_fourier-8-4-2-5">
+\begin{equation}
+\begin{split}
+\abs{\int_{-\pi}^\pi f\bar{g} - \int_{-\pi}^\pi s_N(f)\bar{g}}
+&amp; =
+\abs{\int_{-\pi}^\pi \bigl(f- s_N(f)\bigr)\bar{g}} \\
+&amp; \leq
+{\left(\int_{-\pi}^\pi \babs{f- s_N(f)}^2 \right)}^{1/2}
+{\left( \int_{-\pi}^\pi \sabs{g}^2 \right)}^{1/2} .
+\end{split}
+\end{equation}
+</div>
+<div class="para">The right-hand side goes to 0 as <span class="process-math">\(N\)</span> goes to infinity by the first claim of the theorem. That is, as <span class="process-math">\(N\)</span> goes to infinity, <span class="process-math">\(\langle s_N(f),g \rangle\)</span> goes to <span class="process-math">\(\langle f,g \rangle\text{,}\)</span> and the second claim is proved.  The last claim in the theorem follows by using <span class="process-math">\(g=f\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-8-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 11.8.6.1"><a aria-label="Copy heading and permalink for Proof 11.8.6.1" href="#sec_fourier-8-4" title="Copy heading and permalink for Proof 11.8.6.1">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 11.8.6: Parseval’s theorem"><a aria-label="Copy heading and permalink for Subsection 11.8.6: Parseval’s theorem" href="#sec_fourier-8" title="Copy heading and permalink for Subsection 11.8.6: Parseval’s theorem">🔗</a></div>
+</section>
+<section class="exercises" id="sec_fourier-9">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.8.7</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="exercise_fsweierser"><h4 class="heading"><span class="codenumber">11.8.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="exercise_fsweierser-1-1">
+<div class="para">Consider the Fourier series</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_fourierserweier.html" id="exercise_fsweierser-1-1-1">
+\begin{equation}
+\sum_{k=1}^\infty \frac{1}{2^k} \sin(2^k x) .
+\end{equation}
+</div>
+<div class="para">Show that the series converges uniformly and absolutely to a continuous function.  Remark: This is another example of a nowhere differentiable function (you do not have to prove that)<details aria-live="polite" class="ptx-footnote" id="exercise_fsweierser-1-1-2"><summary class="ptx-footnote__number" title="Footnote 11.8.7"><sup> 7 </sup></summary>
+<div class="ptx-footnote__contents" id="exercise_fsweierser-1-1-2">See G. H. Hardy, <em class="emphasis">Weierstrass’s Non-Differentiable Function</em>, Transactions of the American Mathematical Society, <em class="alert">17</em>, No. 3 (Jul., 1916), pp. 301–325. A thing to notice here is the <span class="process-math">\(n\)</span>th Fourier coefficient is <span class="process-math">\(\nicefrac{1}{n}\)</span> if <span class="process-math">\(n=2^k\)</span> and zero otherwise, so the coefficients go to zero like <span class="process-math">\(\nicefrac{1}{n}\text{.}\)</span>
+</div></details>. See <a class="internal" href="sec_fourier.html#fig_fourierserweier" title="Figure 11.13">Figure 11.13</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_fsweierser-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <hr class="rahr"/>
+<figure class="figure figure-like" id="fig_fourierserweier"><img alt="A plot of a very rough periodic function. It seems to have lots of small sharp peaks all over." class="raimg" role="img" src="figures/fourierserweier-mbx.svg" style="width:209pt; height:142pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.13<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Plot of <span class="process-math">\(\sum_{n=1}^\infty \frac{1}{2^n} \sin(2^n x)\text{.}\)</span><div class="autopermalink" data-description="Figure 11.13"><a aria-label="Copy heading and permalink for Figure 11.13" href="#fig_fourierserweier" title="Copy heading and permalink for Figure 11.13">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="autopermalink" data-description="Exercise 11.8.1"><a aria-label="Copy heading and permalink for Exercise 11.8.1" href="#exercise_fsweierser" title="Copy heading and permalink for Exercise 11.8.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_fourier-9-2"><h4 class="heading"><span class="codenumber">11.8.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_fourier-9-2-1-1">Suppose that a <span class="process-math">\(2\pi\)</span>-periodic function that is Riemann integrable on <span class="process-math">\([-\pi,\pi]\text{,}\)</span> and such that <span class="process-math">\(f\)</span> is continuously differentiable on some open interval <span class="process-math">\((a,b)\text{.}\)</span>  Prove that for every <span class="process-math">\(x \in (a,b)\text{,}\)</span> we have <span class="process-math">\(\lim\limits_{N\to\infty} s_N(f;x) = f(x)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-9-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.8.2"><a aria-label="Copy heading and permalink for Exercise 11.8.2" href="#sec_fourier-9-2" title="Copy heading and permalink for Exercise 11.8.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_fourier-9-3"><h4 class="heading"><span class="codenumber">11.8.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_fourier-9-3-1-1">Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_fourier.html#cor_fourierpiecewisesmooth" title="Corollary 11.8.11">Corollary 11.8.11</a>, that is, suppose a <span class="process-math">\(2\pi\)</span>-periodic function is continuous piecewise smooth near a point <span class="process-math">\(x\text{,}\)</span> then <span class="process-math">\(\lim\limits_{N\to\infty} s_N(f;x) = f(x)\text{.}\)</span>  Hint: See the previous exercise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-9-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.8.3"><a aria-label="Copy heading and permalink for Exercise 11.8.3" href="#sec_fourier-9-3" title="Copy heading and permalink for Exercise 11.8.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_contL2close"><h4 class="heading"><span class="codenumber">11.8.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_contL2close-1-1">Given a <span class="process-math">\(2\pi\)</span>-periodic function <span class="process-math">\(f \colon \R \to \C\text{,}\)</span> Riemann integrable on <span class="process-math">\([-\pi,\pi]\text{,}\)</span> and <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> show that there exists a continuous <span class="process-math">\(2\pi\)</span>-periodic function <span class="process-math">\(g \colon \R
+\to \C\)</span> such that <span class="process-math">\(\snorm{f-g}_2 &lt; \epsilon\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_contL2close-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.8.4"><a aria-label="Copy heading and permalink for Exercise 11.8.4" href="#exercise_contL2close" title="Copy heading and permalink for Exercise 11.8.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_L2cauchyschwarz"><h4 class="heading"><span class="codenumber">11.8.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="exercise_L2cauchyschwarz-1-1">
+<div class="para">Prove the Cauchy–Bunyakovsky–Schwarz inequality for Riemann integrable functions:</div>
+<div class="displaymath process-math" id="exercise_L2cauchyschwarz-1-1-1">
+\begin{equation}
+{\abs{\int_a^b f\bar{g}}}^2
+\leq
+\left( \int_a^b \sabs{f}^2 \right)
+\left( \int_a^b \sabs{g}^2 \right) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_L2cauchyschwarz-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.8.5"><a aria-label="Copy heading and permalink for Exercise 11.8.5" href="#exercise_L2cauchyschwarz" title="Copy heading and permalink for Exercise 11.8.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_L2triangleineq"><h4 class="heading"><span class="codenumber">11.8.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="exercise_L2triangleineq-1-1">
+<div class="para">Prove the <span class="process-math">\(L^2\)</span> triangle inequality for Riemann integrable functions on <span class="process-math">\([-\pi,\pi]\text{:}\)</span>
+</div>
+<div class="displaymath process-math" id="exercise_L2triangleineq-1-1-3">
+\begin{equation}
+\snorm{f+g}_2 \leq \snorm{f}_2 + \snorm{g}_2 .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_L2triangleineq-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.8.6"><a aria-label="Copy heading and permalink for Exercise 11.8.6" href="#exercise_L2triangleineq" title="Copy heading and permalink for Exercise 11.8.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_fourier-9-7"><h4 class="heading"><span class="codenumber">11.8.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_fourier-9-7-1-1">
+<div class="para">Suppose for some <span class="process-math">\(C\)</span> and <span class="process-math">\(\alpha &gt; 1\text{,}\)</span> we have a real sequence <span class="process-math">\(\{ a_n \}_{n=1}^\infty\)</span> with <span class="process-math">\(\sabs{a_n} \leq \frac{C}{n^\alpha}\)</span> for all <span class="process-math">\(n\text{.}\)</span> Let</div>
+<div class="displaymath process-math" id="sec_fourier-9-7-1-1-6">
+\begin{equation}
+g(x) \coloneqq \sum_{n=1}^\infty a_n \sin(n x) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-9-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_fourier-9-7-1-2">
+<li id="sec_fourier-9-7-1-2-1">
+<div class="para" id="sec_fourier-9-7-1-2-1-1">Show that <span class="process-math">\(g\)</span> is continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-9-7-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 11.8.7.a"><a aria-label="Copy heading and permalink for Item 11.8.7.a" href="#sec_fourier-9-7-1-2-1" title="Copy heading and permalink for Item 11.8.7.a">🔗</a></div>
+</li>
+<li id="sec_fourier-9-7-1-2-2">
+<div class="para logical" id="sec_fourier-9-7-1-2-2-1">
+<div class="para">Formally (that is, suppose you can differentiate under the sum) find a solution (formal solution, that is, do not yet worry about convergence) to the differential equation</div>
+<div class="displaymath process-math" id="sec_fourier-9-7-1-2-2-1-1">
+\begin{equation}
+y''+ 2 y = g(x)
+\end{equation}
+</div>
+<div class="para">of the form</div>
+<div class="displaymath process-math" id="sec_fourier-9-7-1-2-2-1-2">
+\begin{equation}
+y(x) = \sum_{n=1}^\infty b_n \sin(n x) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-9-7-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 11.8.7.b"><a aria-label="Copy heading and permalink for Item 11.8.7.b" href="#sec_fourier-9-7-1-2-2" title="Copy heading and permalink for Item 11.8.7.b">🔗</a></div>
+</li>
+<li id="sec_fourier-9-7-1-2-3">
+<div class="para" id="sec_fourier-9-7-1-2-3-1">Then show that this solution <span class="process-math">\(y\)</span> is twice continuously differentiable, and in fact solves the equation.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-9-7-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 11.8.7.c"><a aria-label="Copy heading and permalink for Item 11.8.7.c" href="#sec_fourier-9-7-1-2-3" title="Copy heading and permalink for Item 11.8.7.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 11.8.7"><a aria-label="Copy heading and permalink for Exercise 11.8.7" href="#sec_fourier-9-7" title="Copy heading and permalink for Exercise 11.8.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_fourier-9-8"><h4 class="heading"><span class="codenumber">11.8.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_fourier-9-8-1-1">
+<div class="para">Let <span class="process-math">\(f\)</span> be a <span class="process-math">\(2\pi\)</span>-periodic  function such that <span class="process-math">\(f(x) = x\)</span> for <span class="process-math">\(0 &lt; x &lt; 2\pi\text{.}\)</span> Use Parseval’s theorem to find</div>
+<div class="displaymath process-math" id="sec_fourier-9-8-1-1-5">
+\begin{equation}
+\sum_{n=1}^\infty \frac{1}{n^2} = \frac{\pi^2}{6} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-9-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.8.8"><a aria-label="Copy heading and permalink for Exercise 11.8.8" href="#sec_fourier-9-8" title="Copy heading and permalink for Exercise 11.8.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_fourier-9-9"><h4 class="heading"><span class="codenumber">11.8.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_fourier-9-9-1-1">Suppose that <span class="process-math">\(c_n = 0\)</span> for all <span class="process-math">\(n &lt; 0\)</span> and <span class="process-math">\(\sum_{n=0}^\infty \sabs{c_n}\)</span> converges.  Let <span class="process-math">\(\D \coloneqq B(0,1) \subset \C\)</span> be the unit disc, and <span class="process-math">\(\overline{\D} = C(0,1)\)</span> be the closed unit disc. Show that there exists a continuous function <span class="process-math">\(f \colon \overline{\D} \to \C\)</span> that is analytic on <span class="process-math">\(\D\)</span> and such that on the boundary of <span class="process-math">\(\D\)</span> we have <span class="process-math">\(f(e^{i\theta}) = \sum_{n=0}^\infty c_n e^{in\theta}\text{.}\)</span><br/> Hint: If <span class="process-math">\(z=re^{i\theta}\text{,}\)</span> then <span class="process-math">\(z^n = r^n e^{in\theta}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-9-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.8.9"><a aria-label="Copy heading and permalink for Exercise 11.8.9" href="#sec_fourier-9-9" title="Copy heading and permalink for Exercise 11.8.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_fourier-9-10"><h4 class="heading"><span class="codenumber">11.8.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_fourier-9-10-1-1">
+<div class="para">Show that</div>
+<div class="displaymath process-math" id="sec_fourier-9-10-1-1-1">
+\begin{equation}
+\sum_{n=1}^\infty e^{-n} \sin(n x)
+\end{equation}
+</div>
+<div class="para">converges to an infinitely differentiable function.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-9-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.8.10"><a aria-label="Copy heading and permalink for Exercise 11.8.10" href="#sec_fourier-9-10" title="Copy heading and permalink for Exercise 11.8.10">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_fsdiffmindecay"><h4 class="heading"><span class="codenumber">11.8.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="exercise_fsdiffmindecay-1-1">
+<div class="para">Let <span class="process-math">\(f\)</span> be a <span class="process-math">\(2\pi\)</span>-periodic function such that <span class="process-math">\(f(x) = f(0) + \int_0^x g\)</span> for a function <span class="process-math">\(g\)</span> that is Riemann integrable on every interval. Suppose</div>
+<div class="displaymath process-math" id="exercise_fsdiffmindecay-1-1-5">
+\begin{equation}
+f(x) \sim
+\sum_{n=-\infty}^\infty c_n \,e^{inx} .
+\end{equation}
+</div>
+<div class="para">Show that there exists a <span class="process-math">\(C &gt; 0\)</span> such that <span class="process-math">\(\sabs{c_n} \leq \frac{C}{\sabs{n}}\)</span> for all nonzero <span class="process-math">\(n\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_fsdiffmindecay-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.8.11"><a aria-label="Copy heading and permalink for Exercise 11.8.11" href="#exercise_fsdiffmindecay" title="Copy heading and permalink for Exercise 11.8.11">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_fourier-9-12"><h4 class="heading"><span class="codenumber">11.8.12<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_fourier-9-12-1-1"><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-9-12-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div></div>
+<ol class="lower-alpha ol-marker-3" id="sec_fourier-9-12-1-2">
+<li id="sec_fourier-9-12-1-2-1">
+<div class="para" id="sec_fourier-9-12-1-2-1-1">Let <span class="process-math">\(\varphi\)</span> be the <span class="process-math">\(2\pi\)</span>-periodic function defined by <span class="process-math">\(\varphi(x) \coloneqq 0\)</span> if <span class="process-math">\(x \in (-\pi,0)\text{,}\)</span> and <span class="process-math">\(\varphi(x) \coloneqq 1\)</span> if <span class="process-math">\(x \in (0,\pi)\text{,}\)</span> letting <span class="process-math">\(\varphi(0)\)</span> and <span class="process-math">\(\varphi(\pi)\)</span> be arbitrary.  Show that <span class="process-math">\(\lim\limits_{N \to \infty} s_N(\varphi;0) = \nicefrac{1}{2}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-9-12-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 11.8.12.a"><a aria-label="Copy heading and permalink for Item 11.8.12.a" href="#sec_fourier-9-12-1-2-1" title="Copy heading and permalink for Item 11.8.12.a">🔗</a></div>
+</li>
+<li id="sec_fourier-9-12-1-2-2">
+<div class="para logical" id="sec_fourier-9-12-1-2-2-1">
+<div class="para">Let <span class="process-math">\(f\)</span> be a <span class="process-math">\(2\pi\)</span>-periodic function Riemann integrable on <span class="process-math">\([-\pi,\pi]\text{,}\)</span> <span class="process-math">\(x \in \R\text{,}\)</span> <span class="process-math">\(\delta &gt; 0\text{,}\)</span> and there are continuously differentiable <span class="process-math">\(g \colon [x-\delta,x] \to \C\)</span> and <span class="process-math">\(h \colon [x,x+\delta] \to \C\)</span> where <span class="process-math">\(f(t) = g(t)\)</span> for all <span class="process-math">\(t \in [x-\delta,x)\)</span> and where <span class="process-math">\(f(t) = h(t)\)</span> for all <span class="process-math">\(t \in (x,x+\delta]\text{.}\)</span> Then <span class="process-math">\(\lim\limits_{N\to\infty} s_N(f;x) = \frac{g(x)+h(x)}{2}\text{,}\)</span> or in other words,</div>
+<div class="displaymath process-math" id="sec_fourier-9-12-1-2-2-1-13">
+\begin{equation}
+\lim_{N \to \infty} s_N(f;x) =
+\frac{1}{2}
+\left(
+\lim_{t \to x^-} f(t) +
+\lim_{t \to x^+} f(t)
+\right) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-9-12-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 11.8.12.b"><a aria-label="Copy heading and permalink for Item 11.8.12.b" href="#sec_fourier-9-12-1-2-2" title="Copy heading and permalink for Item 11.8.12.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 11.8.12"><a aria-label="Copy heading and permalink for Exercise 11.8.12" href="#sec_fourier-9-12" title="Copy heading and permalink for Exercise 11.8.12">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_fourier-9-13"><h4 class="heading"><span class="codenumber">11.8.13<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_fourier-9-13-1-1">Let <span class="process-math">\(\{ a_n \}_{n=1}^\infty\)</span> be such that <span class="process-math">\(\lim_{n\to \infty} a_n = 0\text{.}\)</span>  Show that there is a continuous <span class="process-math">\(2\pi\)</span>-periodic function <span class="process-math">\(f\)</span> whose Fourier coefficients <span class="process-math">\(c_{n}\)</span> satisfy that for each <span class="process-math">\(N\)</span> there is a <span class="process-math">\(k \geq N\)</span> where <span class="process-math">\(\sabs{c_k} \geq
+a_k\text{.}\)</span><br/> Remark: The exercise says that if <span class="process-math">\(f\)</span> is only continuous, there is no “minimum rate of decay” of the coefficients.  Compare with <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_fourier.html#exercise_fsdiffmindecay" title="Exercise 11.8.11">Exercise 11.8.11</a>. <br/> Hint: Look at <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_fourier.html#exercise_fsweierser" title="Exercise 11.8.1">Exercise 11.8.1</a> for inspiration.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_fourier-9-13-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.8.13"><a aria-label="Copy heading and permalink for Exercise 11.8.13" href="#sec_fourier-9-13" title="Copy heading and permalink for Exercise 11.8.13">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 11.8.7"><a aria-label="Copy heading and permalink for Exercises 11.8.7" href="#sec_fourier-9" title="Copy heading and permalink for Exercises 11.8.7">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 11.8: Fourier series"><a aria-label="Copy heading and permalink for Section 11.8: Fourier series" href="#sec_fourier" title="Copy heading and permalink for Section 11.8: Fourier series">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_stoneweier.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="ra-16.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

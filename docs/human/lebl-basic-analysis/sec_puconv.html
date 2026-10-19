@@ -1,0 +1,607 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pointwise and uniform convergence · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_puconv">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Pointwise and uniform convergence</span>
+</h2>
+<section class="introduction" id="sec_puconv-2">
+<div class="para" id="sec_puconv-2-1">
+<em class="emphasis">Note: 1–1.5 lecture</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_puconv-2-2">Up till now, when we talked about limits of sequences we talked about sequences of numbers. A very useful concept in analysis is a sequence of functions. For example, a solution to some differential equation might be found by finding only approximate solutions. Then the actual solution is some sort of limit of those approximate solutions.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-2-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_puconv-2-3">When talking about sequences of functions, the tricky part is that there are multiple notions of a limit. Let us describe two common notions of a limit of a sequence of functions.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-2-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section>
+<section class="subsection" id="sec_puconv-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.1.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Pointwise convergence</span>
+</h3>
+<article class="definition definition-like" id="sec_puconv-3-2"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.1.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_puconv-3-2-2-1">
+<div class="para">For every <span class="process-math">\(n \in \N\text{,}\)</span> let <span class="process-math">\(f_n \colon S \to \R\)</span> be a function.  The sequence <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> <em class="emphasis">converges pointwise</em><details aria-live="polite" class="ptx-footnote" id="sec_puconv-3-2-2-1-5"><summary class="ptx-footnote__number" title="Footnote 6.1.1"><sup> 1 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_puconv-3-2-2-1-5">Unless otherwise specified, <em class="emphasis">converges</em> generally means <em class="emphasis">converges pointwise</em>.
+</div></details> to <span class="process-math">\(f \colon S \to \R\)</span> if for every <span class="process-math">\(x
+\in S\text{,}\)</span> we have</div>
+<div class="displaymath process-math" id="sec_puconv-3-2-2-1-8">
+\begin{equation}
+f(x) =
+\lim_{n\to\infty} f_n(x) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-3-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 6.1.1"><a aria-label="Copy heading and permalink for Definition 6.1.1" href="#sec_puconv-3-2" title="Copy heading and permalink for Definition 6.1.1">🔗</a></div>
+</article>
+<div class="para" id="sec_puconv-3-3">Limits of sequences of numbers are unique, and so if a sequence <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> converges pointwise, the limit function <span class="process-math">\(f\)</span> is unique. It is common to say that <span class="process-math">\(f_n \colon S \to \R\)</span> <em class="emphasis">converges pointwise to <span class="process-math">\(f\)</span> on <span class="process-math">\(T \subset S\)</span></em> for some <span class="process-math">\(f \colon T \to \R\text{.}\)</span>  In that case we mean <span class="process-math">\(f(x) = \lim_{n\to\infty} f_n(x)\)</span> for every <span class="process-math">\(x \in T\text{.}\)</span>  In other words, the restrictions of <span class="process-math">\(f_n\)</span> to <span class="process-math">\(T\)</span> converge pointwise to <span class="process-math">\(f\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-3-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_puconv-3-4"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.1.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_puconv-3-4-1-1">
+<div class="para">On <span class="process-math">\([-1,1]\text{,}\)</span> the sequence of functions defined by <span class="process-math">\(f_n(x) \coloneqq x^{2n}\)</span> converges pointwise to <span class="process-math">\(f \colon [-1,1] \to \R\text{,}\)</span> where</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/x2nfig.html" id="sec_puconv-3-4-1-1-4">
+\begin{equation}
+f(x) =
+\begin{cases}
+1 &amp; \text{if } x=-1 \text{ or } x=1, \\
+0 &amp; \text{otherwise.}
+\end{cases}
+\end{equation}
+</div>
+<div class="para">See <a class="internal" href="sec_puconv.html#x2nfig" title="Figure 6.1">Figure 6.1</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-3-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <hr class="rahr"/>
+<figure class="figure figure-like" id="x2nfig"><img alt="Graphs of the functions x squared, x to the fourth, x to the sixth, and x to the sixteenth. The graphs are over the region from minus 1 to 1, and all start at the same point on the left-hand side and all end at the same point on the right-hand side (as the functions are all 1 at the endpoints). Inside the interval the higher powers make the graph flatter and closer to the x-axis in the middle, but they have to then rise more steeply back to 1 when we get to the ends of the interval." class="raimg" role="img" src="figures/x2nfig-mbx.svg" style="width:225pt; height:148pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Graphs of <span class="process-math">\(f_1\text{,}\)</span> <span class="process-math">\(f_2\text{,}\)</span> <span class="process-math">\(f_3\text{,}\)</span> and <span class="process-math">\(f_8\)</span> for <span class="process-math">\(f_n(x) \coloneqq
+x^{2n}\text{.}\)</span><div class="autopermalink" data-description="Figure 6.1"><a aria-label="Copy heading and permalink for Figure 6.1" href="#x2nfig" title="Copy heading and permalink for Figure 6.1">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para logical" id="sec_puconv-3-4-1-5">
+<div class="para">To see this is so, first take <span class="process-math">\(x \in (-1,1)\text{.}\)</span>  Then <span class="process-math">\(0 \leq x^2 &lt; 1\text{.}\)</span> We have seen before that</div>
+<div class="displaymath process-math" id="sec_puconv-3-4-1-5-3">
+\begin{equation}
+\sabs{x^{2n} - 0} = {(x^2)}^n \to 0 \quad \text{as} \quad n \to \infty .
+\end{equation}
+</div>
+<div class="para">Therefore, <span class="process-math">\(\lim_{n\to\infty}f_n(x) = 0\text{.}\)</span> When <span class="process-math">\(x = 1\)</span> or <span class="process-math">\(x=-1\text{,}\)</span> we have <span class="process-math">\(x^{2n} = 1\)</span> for all <span class="process-math">\(n\)</span> and hence <span class="process-math">\(\lim_{n\to\infty}f_n(x) = 1\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-3-4-1-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_puconv-3-4-1-6">Note that for <span class="process-math">\(x\)</span> not in <span class="process-math">\([-1,1]\text{,}\)</span> the sequence <span class="process-math">\(\{ x^{2n} \}_{n=1}^\infty\)</span> does not converge. So if we defined <span class="process-math">\(f_n\)</span> on a set larger than <span class="process-math">\([-1,1]\text{,}\)</span> then <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> would converge pointwise only on <span class="process-math">\([-1,1]\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-3-4-1-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 6.1.2"><a aria-label="Copy heading and permalink for Example 6.1.2" href="#sec_puconv-3-4" title="Copy heading and permalink for Example 6.1.2">🔗</a></div>
+</article>
+<div class="para" id="sec_puconv-3-5">Often, functions are given as a series.  In this case, we use the notion of pointwise convergence to find the values of the function.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-3-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="example_geomsumptconv"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.1.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="example_geomsumptconv-1-1">
+<div class="para">We write</div>
+<div class="displaymath process-math" id="example_geomsumptconv-1-1-1">
+\begin{equation}
+\sum_{k=0}^\infty x^k
+\end{equation}
+</div>
+<div class="para">to denote the limit of the functions</div>
+<div class="displaymath process-math" id="example_geomsumptconv-1-1-2">
+\begin{equation}
+f_n(x) \coloneqq \sum_{k=0}^n x^k .
+\end{equation}
+</div>
+<div class="para">When studying series, we saw that for <span class="process-math">\((-1,1)\)</span> the <span class="process-math">\(f_n\)</span> converge pointwise to</div>
+<div class="displaymath process-math" id="example_geomsumptconv-1-1-5">
+\begin{equation}
+\frac{1}{1-x} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_geomsumptconv-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="example_geomsumptconv-1-2">
+<div class="para">The subtle point here is that while <span class="process-math">\(\frac{1}{1-x}\)</span> is defined for all <span class="process-math">\(x \neq 1\text{,}\)</span> and <span class="process-math">\(f_n\)</span> are defined for all <span class="process-math">\(x\)</span> (even at <span class="process-math">\(x=1\)</span>), convergence only happens on <span class="process-math">\((-1,1)\text{.}\)</span> Therefore, when we write</div>
+<div class="displaymath process-math" id="example_geomsumptconv-1-2-7">
+\begin{equation}
+f(x) \coloneqq \sum_{k=0}^\infty x^k ,
+\end{equation}
+</div>
+<div class="para">we mean that <span class="process-math">\(f\)</span> is defined on <span class="process-math">\((-1,1)\)</span> and is the pointwise limit of the partial sums.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_geomsumptconv-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 6.1.3"><a aria-label="Copy heading and permalink for Example 6.1.3" href="#example_geomsumptconv" title="Copy heading and permalink for Example 6.1.3">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_puconv-3-7"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.1.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_puconv-3-7-1-1">Let <span class="process-math">\(f_n(x) \coloneqq \sin(nx)\text{.}\)</span>  Then <span class="process-math">\(f_n\)</span> does not converge pointwise to any function on any interval.  It may converge at certain points, such as when <span class="process-math">\(x=0\)</span> or <span class="process-math">\(x=\pi\text{.}\)</span>  It is left as an exercise that in any interval <span class="process-math">\([a,b]\text{,}\)</span> there exists an <span class="process-math">\(x\)</span> such that <span class="process-math">\(\sin(xn)\)</span> does not have a limit as <span class="process-math">\(n\)</span> goes to infinity.  See <a class="internal" href="sec_puconv.html#fig_nonconvsinxn" title="Figure 6.2">Figure 6.2</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-3-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <hr class="rahr"/>
+<figure class="figure figure-like" id="fig_nonconvsinxn"><img alt="Graphs of a number of sine waves, with higher frequencies in lighter gray. It is almost like we are trying to fill out a horizontal strip by drawing wavy lines. All the curves start at the same point on the x-axis on the left-hand side going upwards, and all go through same point on the x-axis on the right hand side going up. All the curves go through the center on the x-axis, but some upwards and some downwards. Similar patterns repeat at other points, but only some of the higher frequency lines go through those points." class="raimg" role="img" src="figures/nonconvsinxn-mbx.svg" style="width:362pt; height:117pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Graphs of <span class="process-math">\(\sin(nx)\)</span> for <span class="process-math">\(n=1,2,\ldots,10\text{,}\)</span> with higher <span class="process-math">\(n\)</span> in fainter gray.<div class="autopermalink" data-description="Figure 6.2"><a aria-label="Copy heading and permalink for Figure 6.2" href="#fig_nonconvsinxn" title="Copy heading and permalink for Figure 6.2">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="autopermalink" data-description="Example 6.1.4"><a aria-label="Copy heading and permalink for Example 6.1.4" href="#sec_puconv-3-7" title="Copy heading and permalink for Example 6.1.4">🔗</a></div>
+</article>
+<div class="para" id="sec_puconv-3-8">Before we move to uniform convergence, let us reformulate pointwise convergence in a different way. We leave the proof to the reader—it is a simple application of the definition of convergence of a sequence of real numbers.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-3-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="ptwsconv_prop"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.1.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="ptwsconv_prop-1-1">
+<div class="para">Let <span class="process-math">\(f_n \colon S \to \R\)</span> and <span class="process-math">\(f \colon S \to \R\)</span> be functions. Then <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> converges pointwise to <span class="process-math">\(f\)</span> if and only if for every <span class="process-math">\(x \in S\)</span> and every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there exists an <span class="process-math">\(N \in \N\)</span> such that</div>
+<div class="displaymath process-math" id="ptwsconv_prop-1-1-8">
+\begin{equation}
+\babs{f_n(x)-f(x)} &lt; \epsilon \quad \text{for all } n \geq N .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#ptwsconv_prop-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 6.1.5"><a aria-label="Copy heading and permalink for Proposition 6.1.5" href="#ptwsconv_prop" title="Copy heading and permalink for Proposition 6.1.5">🔗</a></div>
+</article>
+<div class="para" id="sec_puconv-3-10">The key point is that <span class="process-math">\(N\)</span> can depend on <span class="process-math">\(x\text{,}\)</span> not just on <span class="process-math">\(\epsilon\text{.}\)</span>  For each <span class="process-math">\(x\text{,}\)</span> we can pick a different <span class="process-math">\(N\text{.}\)</span> If we could pick one <span class="process-math">\(N\)</span> for all <span class="process-math">\(x\text{,}\)</span> we would have what is called uniform convergence.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-3-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 6.1.1: Pointwise convergence"><a aria-label="Copy heading and permalink for Subsection 6.1.1: Pointwise convergence" href="#sec_puconv-3" title="Copy heading and permalink for Subsection 6.1.1: Pointwise convergence">🔗</a></div>
+</section>
+<section class="subsection" id="sec_puconv-4">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.1.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Uniform convergence</span>
+</h3>
+<article class="definition definition-like" id="sec_puconv-4-2"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.1.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_puconv-4-2-2-1">
+<div class="para">Let <span class="process-math">\(f_n \colon S \to \R\)</span> and <span class="process-math">\(f \colon S \to \R\)</span> be functions.  The sequence <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> <em class="emphasis">converges uniformly</em> to <span class="process-math">\(f\)</span> if for every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there exists an <span class="process-math">\(N \in \N\)</span> such that for all <span class="process-math">\(n \geq N\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_puconv-4-2-2-1-9">
+\begin{equation}
+\babs{f_n(x) - f(x)} &lt; \epsilon \qquad \text{for all } x \in S.
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-4-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 6.1.6"><a aria-label="Copy heading and permalink for Definition 6.1.6" href="#sec_puconv-4-2" title="Copy heading and permalink for Definition 6.1.6">🔗</a></div>
+</article><hr class="rahr"/>
+<figure class="figure figure-like" id="fig_uniformconv"><img alt="A graph of a function marked f with a strip marked around the function with its boundary marked f minus epsilon and f plus epsilon. A function marked f sub n is shown as a wiggly line that fits entirely within this strip." class="raimg" role="img" src="figures/uniformconv-mbx.svg" style="width:261pt; height:117pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>In uniform convergence, for <span class="process-math">\(n \geq N\text{,}\)</span> the functions <span class="process-math">\(f_n\)</span> are within a strip of <span class="process-math">\(\pm\epsilon\)</span> from <span class="process-math">\(f\text{.}\)</span><div class="autopermalink" data-description="Figure 6.3"><a aria-label="Copy heading and permalink for Figure 6.3" href="#fig_uniformconv" title="Copy heading and permalink for Figure 6.3">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para" id="sec_puconv-4-6">In uniform convergence, <span class="process-math">\(N\)</span> cannot depend on <span class="process-math">\(x\text{.}\)</span>  Given <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> we must find an <span class="process-math">\(N\)</span> that works for all <span class="process-math">\(x \in S\text{.}\)</span>  See <a class="internal" href="sec_puconv.html#fig_uniformconv" title="Figure 6.3">Figure 6.3</a> for an illustration. Uniform convergence implies pointwise convergence, and the proof follows by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_puconv.html#ptwsconv_prop" title="Proposition 6.1.5">Proposition 6.1.5</a>:<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-4-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_puconv-4-7"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.1.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_puconv-4-7-1-1">Let <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> be a sequence of functions <span class="process-math">\(f_n \colon S \to \R\text{.}\)</span> If <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> converges uniformly to <span class="process-math">\(f \colon S \to \R\text{,}\)</span> then <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> converges pointwise to <span class="process-math">\(f\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-4-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 6.1.7"><a aria-label="Copy heading and permalink for Proposition 6.1.7" href="#sec_puconv-4-7" title="Copy heading and permalink for Proposition 6.1.7">🔗</a></div>
+</article>
+<div class="para" id="sec_puconv-4-8">The converse does not hold.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-4-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_puconv-4-9"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.1.8</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_puconv-4-9-1-1">
+<div class="para">The functions <span class="process-math">\(f_n(x) \coloneqq x^{2n}\)</span> do not converge uniformly on <span class="process-math">\([-1,1]\text{,}\)</span> even though they converge pointwise.  To see this, suppose for contradiction that the convergence is uniform.  For <span class="process-math">\(\epsilon \coloneqq \nicefrac{1}{2}\text{,}\)</span> there would have to exist an <span class="process-math">\(N\)</span> such that <span class="process-math">\(x^{2N} = \sabs{x^{2N} - 0} &lt; \nicefrac{1}{2}\)</span> for all <span class="process-math">\(x \in
+(-1,1)\)</span> (as <span class="process-math">\(f_n(x)\)</span> converges to 0 on <span class="process-math">\((-1,1)\)</span>).  But that means that for every sequence <span class="process-math">\(\{ x_k \}_{k=1}^\infty\)</span> in <span class="process-math">\((-1,1)\)</span> such that <span class="process-math">\(\lim_{k\to\infty} x_k = 1\text{,}\)</span> we have <span class="process-math">\(x_k^{2N} &lt; \nicefrac{1}{2}\)</span> for all <span class="process-math">\(k\text{.}\)</span>  On the other hand, <span class="process-math">\(x^{2N}\)</span> is a continuous function of <span class="process-math">\(x\)</span> (it is a polynomial).  Therefore, we obtain a contradiction</div>
+<div class="displaymath process-math" id="sec_puconv-4-9-1-1-16">
+\begin{equation}
+1 = 1^{2N}  = \lim_{k\to\infty} x_k^{2N} \leq \nicefrac{1}{2} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-4-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_puconv-4-9-1-2">
+<div class="para">However, if we restrict our domain to <span class="process-math">\([-a,a]\)</span> where <span class="process-math">\(0 &lt; a &lt; 1\text{,}\)</span> then <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> converges uniformly to 0 on <span class="process-math">\([-a,a]\text{.}\)</span>  Note that <span class="process-math">\(a^{2n} \to 0\)</span> as <span class="process-math">\(n \to \infty\text{.}\)</span>  Given <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> pick <span class="process-math">\(N \in \N\)</span> such that <span class="process-math">\(a^{2n} &lt; \epsilon\)</span> for all <span class="process-math">\(n \geq N\text{.}\)</span> If <span class="process-math">\(x \in [-a,a]\text{,}\)</span> then <span class="process-math">\(\sabs{x} \leq a\text{.}\)</span>  So for all <span class="process-math">\(n \geq N\)</span> and all <span class="process-math">\(x \in [-a,a]\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_puconv-4-9-1-2-15">
+\begin{equation}
+\sabs{x^{2n}} = \sabs{x}^{2n} \leq a^{2n} &lt; \epsilon .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-4-9-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 6.1.8"><a aria-label="Copy heading and permalink for Example 6.1.8" href="#sec_puconv-4-9" title="Copy heading and permalink for Example 6.1.8">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 6.1.2: Uniform convergence"><a aria-label="Copy heading and permalink for Subsection 6.1.2: Uniform convergence" href="#sec_puconv-4" title="Copy heading and permalink for Subsection 6.1.2: Uniform convergence">🔗</a></div>
+</section>
+<section class="subsection" id="sec_puconv-5">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.1.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Convergence in uniform norm</span>
+</h3>
+<div class="para" id="sec_puconv-5-2">For bounded functions, there is another more abstract way to think of uniform convergence.  To every bounded function we assign a certain nonnegative number that measures the “distance” of the function from the constant function <span class="process-math">\(0\text{.}\)</span> This number allows us to “measure” how far two functions are from each other.  We then translate a statement about uniform convergence into a statement about a certain sequence of real numbers converging to zero.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-5-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="def_unifnorm"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.1.9</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="def_unifnorm-1-1">
+<div class="para">Let <span class="process-math">\(f \colon S \to \R\)</span> be a bounded function.  Define</div>
+<div class="displaymath process-math" id="def_unifnorm-1-1-2">
+\begin{equation}
+\snorm{f}_S \coloneqq
+\sup \Bigl\{ \babs{f(x)} : x \in S \Bigr\} .
+\end{equation}
+</div>
+<div class="para">We call <span class="process-math">\(\snorm{\cdot}_S\)</span> the <em class="emphasis">uniform norm</em>. Sometimes other notation<details aria-live="polite" class="ptx-footnote" id="def_unifnorm-1-1-5"><summary class="ptx-footnote__number" title="Footnote 6.1.2"><sup> 2 </sup></summary>
+<div class="ptx-footnote__contents" id="def_unifnorm-1-1-5">The notation and terminology are not completely standardized.  The norm is also called the <em class="emphasis">sup norm</em> or <em class="emphasis">infinity norm</em>, and in addition to <span class="process-math">\(\snorm{f}_u\)</span> and <span class="process-math">\(\snorm{f}_S\)</span> it is sometimes written as <span class="process-math">\(\snorm{f}_{\infty}\)</span> or <span class="process-math">\(\snorm{f}_{\infty,S}\text{.}\)</span>
+</div></details> is used, such as <span class="process-math">\(\snorm{f}_u\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#def_unifnorm-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 6.1.9"><a aria-label="Copy heading and permalink for Definition 6.1.9" href="#def_unifnorm" title="Copy heading and permalink for Definition 6.1.9">🔗</a></div>
+</article>
+<div class="para logical" id="sec_puconv-5-4">
+<div class="para">The subscript is the set over which the supremum is taken. So if <span class="process-math">\(K \subset S\text{,}\)</span> then</div>
+<div class="displaymath process-math" id="sec_puconv-5-4-2">
+\begin{equation}
+\snorm{f}_K =
+\sup \Bigl\{ \babs{f(x)} : x \in K \Bigr\} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-5-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_puconv-5-5"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.1.10</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_puconv-5-5-1-1">
+<div class="para">A sequence of bounded functions <span class="process-math">\(f_n \colon S \to \R\)</span> converges uniformly to <span class="process-math">\(f \colon S \to \R\)</span> if and only if</div>
+<div class="displaymath process-math" id="sec_puconv-5-5-1-1-3">
+\begin{equation}
+\lim_{n\to\infty} \snorm{f_n - f}_S = 0 .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-5-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 6.1.10"><a aria-label="Copy heading and permalink for Proposition 6.1.10" href="#sec_puconv-5-5" title="Copy heading and permalink for Proposition 6.1.10">🔗</a></div>
+</article>
+<article class="proof" id="sec_puconv-5-6"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_puconv-5-6-1">First suppose <span class="process-math">\(\lim_{n\to\infty} \snorm{f_n - f}_S = 0\text{.}\)</span>  Let <span class="process-math">\(\epsilon &gt; 0\)</span> be given.  There exists an <span class="process-math">\(N\)</span> such that for <span class="process-math">\(n \geq N\text{,}\)</span> we have <span class="process-math">\(\snorm{f_n - f}_S &lt; \epsilon\text{.}\)</span>  As <span class="process-math">\(\snorm{f_n-f}_S\)</span> is the supremum of <span class="process-math">\(\babs{f_n(x)-f(x)}\text{,}\)</span> we see that for all <span class="process-math">\(x \in S\text{,}\)</span> we have <span class="process-math">\(\babs{f_n(x)-f(x)} \leq \snorm{f_n - f}_S &lt; \epsilon\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-5-6-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_puconv-5-6-2">On the other hand, suppose <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> converges uniformly to <span class="process-math">\(f\text{.}\)</span> Let <span class="process-math">\(\epsilon &gt; 0\)</span> be given.  Then find <span class="process-math">\(N\)</span> such that for all <span class="process-math">\(n \geq N\text{,}\)</span> we have <span class="process-math">\(\babs{f_n(x)-f(x)} &lt; \epsilon\)</span> for all <span class="process-math">\(x \in S\text{.}\)</span> Taking the supremum over <span class="process-math">\(x \in S\text{,}\)</span> we see that <span class="process-math">\(\snorm{f_n - f}_S \leq \epsilon\text{.}\)</span>  Hence, <span class="process-math">\(\lim_{n\to\infty} \snorm{f_n-f}_S = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-5-6-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 6.1.3.1"><a aria-label="Copy heading and permalink for Proof 6.1.3.1" href="#sec_puconv-5-6" title="Copy heading and permalink for Proof 6.1.3.1">🔗</a></div>
+</article>
+<div class="para" id="sec_puconv-5-7">Sometimes it is said that <em class="emphasis"><span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> converges to <span class="process-math">\(f\)</span> in uniform norm</em> instead of <em class="emphasis">converges uniformly</em> if <span class="process-math">\(\snorm{f_n-f}_S \to 0\text{.}\)</span>  The proposition says that the two notions are the same thing for bounded functions.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-5-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_puconv-5-8"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.1.11</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_puconv-5-8-1-1">
+<div class="para">Let <span class="process-math">\(f_n \colon [0,1] \to \R\)</span> be defined by <span class="process-math">\(f_n(x) \coloneqq \frac{nx+ \sin(nx^2)}{n}\text{.}\)</span> We claim <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> converges uniformly to <span class="process-math">\(f(x) \coloneqq x\text{.}\)</span>  Let us compute:</div>
+<div class="displaymath process-math" id="sec_puconv-5-8-1-1-5">
+\begin{equation}
+\begin{split}
+\snorm{f_n-f}_{[0,1]}
+&amp; =
+\sup \left\{ \abs{\frac{nx+ \sin(nx^2)}{n} - x} : x \in [0,1] \right\}
+\\
+&amp; =
+\sup \left\{ \frac{\babs{\sin(nx^2)}}{n} : x \in [0,1] \right\}
+\\
+&amp; \leq
+\sup \bigl\{ \nicefrac{1}{n} : x \in [0,1] \bigr\}
+\\
+&amp; = \nicefrac{1}{n}.
+\end{split}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-5-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 6.1.11"><a aria-label="Copy heading and permalink for Example 6.1.11" href="#sec_puconv-5-8" title="Copy heading and permalink for Example 6.1.11">🔗</a></div>
+</article>
+<div class="para" id="sec_puconv-5-9">Using the uniform norm, we define Cauchy sequences similarly to how we define Cauchy sequences of real numbers.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-5-9" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="sec_puconv-5-10"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.1.12</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_puconv-5-10-1-1">
+<div class="para">Let <span class="process-math">\(f_n \colon S \to \R\)</span> be bounded functions. The sequence is <em class="emphasis">Cauchy in the uniform norm</em> or <em class="emphasis">uniformly Cauchy</em> if for every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there exists an <span class="process-math">\(N \in \N\)</span> such that for all <span class="process-math">\(m,k \geq N\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_puconv-5-10-1-1-7">
+\begin{equation}
+\snorm{f_m-f_k}_S &lt; \epsilon .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-5-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 6.1.12"><a aria-label="Copy heading and permalink for Definition 6.1.12" href="#sec_puconv-5-10" title="Copy heading and permalink for Definition 6.1.12">🔗</a></div>
+</article>
+<article class="proposition theorem-like" id="prop_uniformcauchy"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.1.13</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="prop_uniformcauchy-1-1">Let <span class="process-math">\(f_n \colon S \to \R\)</span> be bounded functions. Then <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> is Cauchy in the uniform norm if and only if there exists an <span class="process-math">\(f \colon S \to \R\)</span> and <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> converges uniformly to <span class="process-math">\(f\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_uniformcauchy-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 6.1.13"><a aria-label="Copy heading and permalink for Proposition 6.1.13" href="#prop_uniformcauchy" title="Copy heading and permalink for Proposition 6.1.13">🔗</a></div>
+</article>
+<article class="proof" id="sec_puconv-5-12"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_puconv-5-12-1">
+<div class="para">First suppose <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> is Cauchy in the uniform norm. Let us define <span class="process-math">\(f\text{.}\)</span>  Fix <span class="process-math">\(x\text{.}\)</span> The sequence <span class="process-math">\(\bigl\{ f_n(x) \bigr\}_{n=1}^\infty\)</span> is Cauchy because</div>
+<div class="displaymath process-math" id="sec_puconv-5-12-1-5">
+\begin{equation}
+\babs{f_m(x)-f_k(x)}
+\leq
+\snorm{f_m-f_k}_S .
+\end{equation}
+</div>
+<div class="para">Thus <span class="process-math">\(\bigl\{ f_n(x) \bigr\}_{n=1}^\infty\)</span> converges to some real number.  Define <span class="process-math">\(f \colon S
+\to \R\)</span> by</div>
+<div class="displaymath process-math" id="sec_puconv-5-12-1-8">
+\begin{equation}
+f(x) \coloneqq \lim_{n \to \infty} f_n(x) .
+\end{equation}
+</div>
+<div class="para">The sequence <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> converges pointwise to <span class="process-math">\(f\text{.}\)</span>  To show that the convergence is uniform, let <span class="process-math">\(\epsilon &gt; 0\)</span> be given.  Find an <span class="process-math">\(N\)</span> such that for all <span class="process-math">\(m, k \geq N\text{,}\)</span> we have <span class="process-math">\(\snorm{f_m-f_k}_S &lt; \nicefrac{\epsilon}{2}\text{.}\)</span>  In other words, for all <span class="process-math">\(x\text{,}\)</span> we have <span class="process-math">\(\babs{f_m(x)-f_k(x)} &lt; \nicefrac{\epsilon}{2}\text{.}\)</span>  For any fixed <span class="process-math">\(x\text{,}\)</span> take the limit as <span class="process-math">\(k\)</span> goes to infinity.  Then <span class="process-math">\(\babs{f_m(x)-f_k(x)}\)</span> goes to <span class="process-math">\(\babs{f_m(x)-f(x)}\text{.}\)</span> Consequently for all <span class="process-math">\(x\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_puconv-5-12-1-22">
+\begin{equation}
+\babs{f_m(x)-f(x)} \leq \nicefrac{\epsilon}{2} &lt; \epsilon .
+\end{equation}
+</div>
+<div class="para">Hence, <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> converges uniformly.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-5-12-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_puconv-5-12-2">
+<div class="para">Next, we prove the other direction. Suppose <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> converges uniformly to <span class="process-math">\(f\text{.}\)</span>  Given <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> find <span class="process-math">\(N\)</span> such that for all <span class="process-math">\(n \geq N\text{,}\)</span> we have <span class="process-math">\(\babs{f_n(x)-f(x)} &lt; \nicefrac{\epsilon}{4}\)</span> for all <span class="process-math">\(x \in S\text{.}\)</span> Therefore, for all <span class="process-math">\(m, k \geq N\)</span> and all <span class="process-math">\(x\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_puconv-5-12-2-10">
+\begin{multline*}
+\babs{f_m(x)-f_k(x)} = 
+\babs{f_m(x)-f(x)+f(x)-f_k(x)}
+\\
+\leq
+\babs{f_m(x)-f(x)}+\babs{f(x)-f_k(x)} &lt; \nicefrac{\epsilon}{4} +
+\nicefrac{\epsilon}{4} = \nicefrac{\epsilon}{2} .
+\end{multline*}
+</div>
+<div class="para">Take the supremum over all <span class="process-math">\(x\)</span> to obtain</div>
+<div class="displaymath process-math" id="sec_puconv-5-12-2-12">
+\begin{equation}
+\snorm{f_m-f_k}_S \leq \nicefrac{\epsilon}{2} &lt; \epsilon .  \qedhere
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-5-12-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 6.1.3.2"><a aria-label="Copy heading and permalink for Proof 6.1.3.2" href="#sec_puconv-5-12" title="Copy heading and permalink for Proof 6.1.3.2">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 6.1.3: Convergence in uniform norm"><a aria-label="Copy heading and permalink for Subsection 6.1.3: Convergence in uniform norm" href="#sec_puconv-5" title="Copy heading and permalink for Subsection 6.1.3: Convergence in uniform norm">🔗</a></div>
+</section>
+<section class="exercises" id="sec_puconv-6">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.1.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_puconv-6-1"><h4 class="heading"><span class="codenumber">6.1.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_puconv-6-1-1-1">
+<div class="para">Let <span class="process-math">\(f\)</span> and <span class="process-math">\(g\)</span> be bounded functions on <span class="process-math">\([a,b]\text{.}\)</span>  Prove</div>
+<div class="displaymath process-math" id="sec_puconv-6-1-1-1-4">
+\begin{equation}
+\snorm{f+g}_{[a,b]} \leq \snorm{f}_{[a,b]} + \snorm{g}_{[a,b]} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-6-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 6.1.1"><a aria-label="Copy heading and permalink for Exercise 6.1.1" href="#sec_puconv-6-1" title="Copy heading and permalink for Exercise 6.1.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_puconv-6-2"><h4 class="heading"><span class="codenumber">6.1.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_puconv-6-2-1-1"><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-6-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div></div>
+<ol class="lower-alpha ol-marker-3" id="sec_puconv-6-2-1-2">
+<li id="sec_puconv-6-2-1-2-1">
+<div class="para" id="sec_puconv-6-2-1-2-1-1">Find the pointwise limit of <span class="process-math">\(\left\{ \dfrac{e^{x/n}}{n} \right\}_{n=1}^\infty\)</span> for <span class="process-math">\(x \in \R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-6-2-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 6.1.2.a"><a aria-label="Copy heading and permalink for Item 6.1.2.a" href="#sec_puconv-6-2-1-2-1" title="Copy heading and permalink for Item 6.1.2.a">🔗</a></div>
+</li>
+<li id="sec_puconv-6-2-1-2-2">
+<div class="para" id="sec_puconv-6-2-1-2-2-1">Is the limit uniform on <span class="process-math">\(\R\text{?}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-6-2-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 6.1.2.b"><a aria-label="Copy heading and permalink for Item 6.1.2.b" href="#sec_puconv-6-2-1-2-2" title="Copy heading and permalink for Item 6.1.2.b">🔗</a></div>
+</li>
+<li id="sec_puconv-6-2-1-2-3">
+<div class="para" id="sec_puconv-6-2-1-2-3-1">Is the limit uniform on <span class="process-math">\([0,1]\text{?}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-6-2-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 6.1.2.c"><a aria-label="Copy heading and permalink for Item 6.1.2.c" href="#sec_puconv-6-2-1-2-3" title="Copy heading and permalink for Item 6.1.2.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 6.1.2"><a aria-label="Copy heading and permalink for Exercise 6.1.2" href="#sec_puconv-6-2" title="Copy heading and permalink for Exercise 6.1.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_puconv-6-3"><h4 class="heading"><span class="codenumber">6.1.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_puconv-6-3-1-1">Suppose <span class="process-math">\(f_n \colon S \to \R\)</span> are functions that converge uniformly to <span class="process-math">\(f \colon S \to \R\text{.}\)</span>  Suppose <span class="process-math">\(A \subset S\text{.}\)</span>  Show that the sequence of restrictions <span class="process-math">\(\{ f_n|_A \}_{n=1}^\infty\)</span> converges uniformly to <span class="process-math">\(f|_A\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-6-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 6.1.3"><a aria-label="Copy heading and permalink for Exercise 6.1.3" href="#sec_puconv-6-3" title="Copy heading and permalink for Exercise 6.1.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_puconv-6-4"><h4 class="heading"><span class="codenumber">6.1.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_puconv-6-4-1-1">Suppose <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> and <span class="process-math">\(\{ g_n \}_{n=1}^\infty\)</span> defined on some set <span class="process-math">\(A\)</span> converge to <span class="process-math">\(f\)</span> and <span class="process-math">\(g\)</span> respectively pointwise.  Show that <span class="process-math">\(\{ f_n+g_n \}_{n=1}^\infty\)</span> converges pointwise to <span class="process-math">\(f+g\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-6-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 6.1.4"><a aria-label="Copy heading and permalink for Exercise 6.1.4" href="#sec_puconv-6-4" title="Copy heading and permalink for Exercise 6.1.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_puconv-6-5"><h4 class="heading"><span class="codenumber">6.1.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_puconv-6-5-1-1">Suppose <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> and <span class="process-math">\(\{ g_n \}_{n=1}^\infty\)</span> defined on some set <span class="process-math">\(A\)</span> converge to <span class="process-math">\(f\)</span> and <span class="process-math">\(g\)</span> respectively uniformly on <span class="process-math">\(A\text{.}\)</span> Show that <span class="process-math">\(\{ f_n+g_n \}_{n=1}^\infty\)</span> converges uniformly to <span class="process-math">\(f+g\)</span> on <span class="process-math">\(A\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-6-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 6.1.5"><a aria-label="Copy heading and permalink for Exercise 6.1.5" href="#sec_puconv-6-5" title="Copy heading and permalink for Exercise 6.1.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_puconv-6-6"><h4 class="heading"><span class="codenumber">6.1.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_puconv-6-6-1-1">Find an example of a pair of sequences of functions <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> and <span class="process-math">\(\{ g_n \}_{n=1}^\infty\)</span> that converge uniformly to some <span class="process-math">\(f\)</span> and <span class="process-math">\(g\)</span> on some set <span class="process-math">\(A\text{,}\)</span> but such that <span class="process-math">\(\{ f_ng_n \}_{n=1}^\infty\)</span> (the multiple) does not converge uniformly to <span class="process-math">\(fg\)</span> on <span class="process-math">\(A\text{.}\)</span> Hint: Let <span class="process-math">\(A \coloneqq \R\text{,}\)</span> let <span class="process-math">\(f(x)\coloneqq g(x) \coloneqq x\text{.}\)</span>  You can even pick <span class="process-math">\(f_n = g_n\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-6-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 6.1.6"><a aria-label="Copy heading and permalink for Exercise 6.1.6" href="#sec_puconv-6-6" title="Copy heading and permalink for Exercise 6.1.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_puconv-6-7"><h4 class="heading"><span class="codenumber">6.1.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_puconv-6-7-1-1">
+<div class="para">Suppose there exists a sequence of functions <span class="process-math">\(\{ g_n \}_{n=1}^\infty\)</span> uniformly converging to <span class="process-math">\(0\)</span> on <span class="process-math">\(A\text{.}\)</span>  Now suppose we have a sequence of functions <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> and a function <span class="process-math">\(f\)</span> on <span class="process-math">\(A\)</span> such that</div>
+<div class="displaymath process-math" id="sec_puconv-6-7-1-1-7">
+\begin{equation}
+\babs{f_n(x) - f(x)} \leq g_n(x) 
+\end{equation}
+</div>
+<div class="para">for all <span class="process-math">\(x \in A\text{.}\)</span>  Show that <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> converges uniformly to <span class="process-math">\(f\)</span> on <span class="process-math">\(A\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-6-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 6.1.7"><a aria-label="Copy heading and permalink for Exercise 6.1.7" href="#sec_puconv-6-7" title="Copy heading and permalink for Exercise 6.1.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_puconv-6-8"><h4 class="heading"><span class="codenumber">6.1.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_puconv-6-8-1-1">Let <span class="process-math">\(\{ f_n \}_{n=1}^\infty\text{,}\)</span> <span class="process-math">\(\{ g_n \}_{n=1}^\infty\)</span> and <span class="process-math">\(\{ h_n \}_{n=1}^\infty\)</span> be sequences of functions on <span class="process-math">\([a,b]\text{.}\)</span>  Suppose <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> and <span class="process-math">\(\{ h_n \}_{n=1}^\infty\)</span> converge uniformly to some function <span class="process-math">\(f \colon [a,b] \to \R\)</span> and suppose <span class="process-math">\(f_n(x) \leq g_n(x) \leq h_n(x)\)</span> for all <span class="process-math">\(x \in [a,b]\text{.}\)</span>  Show that <span class="process-math">\(\{ g_n \}_{n=1}^\infty\)</span> converges uniformly to <span class="process-math">\(f\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-6-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 6.1.8"><a aria-label="Copy heading and permalink for Exercise 6.1.8" href="#sec_puconv-6-8" title="Copy heading and permalink for Exercise 6.1.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_puconv-6-9"><h4 class="heading"><span class="codenumber">6.1.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_puconv-6-9-1-1">Let <span class="process-math">\(f_n \colon [0,1] \to \R\)</span> be a sequence of increasing functions (that is, <span class="process-math">\(f_n(x) \geq f_n(y)\)</span> whenever <span class="process-math">\(x \geq y\)</span>).  Suppose <span class="process-math">\(f_n(0) = 0\)</span> and <span class="process-math">\(\lim\limits_{n \to \infty} f_n(1) = 0\text{.}\)</span>  Show that <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> converges uniformly to <span class="process-math">\(0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-6-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 6.1.9"><a aria-label="Copy heading and permalink for Exercise 6.1.9" href="#sec_puconv-6-9" title="Copy heading and permalink for Exercise 6.1.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_puconv-6-10"><h4 class="heading"><span class="codenumber">6.1.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_puconv-6-10-1-1">
+<div class="para">Consider a sequence of functions <span class="process-math">\(f_n \colon [0,1] \to \R\)</span> so that there is a sequence of distinct numbers <span class="process-math">\(x_n \in [0,1]\)</span> such that for all <span class="process-math">\(n\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_puconv-6-10-1-1-4">
+\begin{equation}
+f_n(x_n) = 1.
+\end{equation}
+</div>
+<div class="para">Prove or disprove the following statements:</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-6-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_puconv-6-10-1-2">
+<li id="sec_puconv-6-10-1-2-1">
+<div class="para" id="sec_puconv-6-10-1-2-1-1">True or false: There exists <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> as above that converges pointwise to <span class="process-math">\(0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-6-10-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 6.1.10.a"><a aria-label="Copy heading and permalink for Item 6.1.10.a" href="#sec_puconv-6-10-1-2-1" title="Copy heading and permalink for Item 6.1.10.a">🔗</a></div>
+</li>
+<li id="sec_puconv-6-10-1-2-2">
+<div class="para" id="sec_puconv-6-10-1-2-2-1">True or false: There exists <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> as above that converges uniformly to <span class="process-math">\(0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-6-10-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 6.1.10.b"><a aria-label="Copy heading and permalink for Item 6.1.10.b" href="#sec_puconv-6-10-1-2-2" title="Copy heading and permalink for Item 6.1.10.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 6.1.10"><a aria-label="Copy heading and permalink for Exercise 6.1.10" href="#sec_puconv-6-10" title="Copy heading and permalink for Exercise 6.1.10">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_puconv-6-11"><h4 class="heading"><span class="codenumber">6.1.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_puconv-6-11-1-1">
+<div class="para">Fix a continuous <span class="process-math">\(h \colon [a,b] \to \R\text{.}\)</span> Let <span class="process-math">\(f(x) \coloneqq h(x)\)</span> for <span class="process-math">\(x \in [a,b]\text{,}\)</span> <span class="process-math">\(f(x) \coloneqq h(a)\)</span> for <span class="process-math">\(x &lt; a\)</span> and <span class="process-math">\(f(x) \coloneqq h(b)\)</span> for all <span class="process-math">\(x &gt; b\text{.}\)</span>  First show that <span class="process-math">\(f \colon \R \to \R\)</span> is continuous. Now let <span class="process-math">\(f_n\)</span> be the function <span class="process-math">\(g\)</span> from <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_ftc.html#exercise_smoothingout" title="Exercise 5.3.7">Exercise 5.3.7</a> with <span class="process-math">\(\epsilon = \nicefrac{1}{n}\text{,}\)</span> defined on the interval <span class="process-math">\([a,b]\text{.}\)</span>  That is,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_smoothingout.html" id="sec_puconv-6-11-1-1-14">
+\begin{equation}
+f_n(x) \coloneqq \frac{n}{2} \int_{x-1/n}^{x+1/n} f .
+\end{equation}
+</div>
+<div class="para">Show that <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> converges uniformly to <span class="process-math">\(h\)</span> on <span class="process-math">\([a,b]\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-6-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 6.1.11"><a aria-label="Copy heading and permalink for Exercise 6.1.11" href="#sec_puconv-6-11" title="Copy heading and permalink for Exercise 6.1.11">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_puconv-6-12"><h4 class="heading"><span class="codenumber">6.1.12<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_puconv-6-12-1-1">Prove that if a sequence of functions <span class="process-math">\(f_n \colon S \to \R\)</span> converge uniformly to a bounded function <span class="process-math">\(f \colon S \to \R\text{,}\)</span> then there exists an <span class="process-math">\(N\)</span> such that for all <span class="process-math">\(n \geq N\text{,}\)</span> the <span class="process-math">\(f_n\)</span> are bounded.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-6-12-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 6.1.12"><a aria-label="Copy heading and permalink for Exercise 6.1.12" href="#sec_puconv-6-12" title="Copy heading and permalink for Exercise 6.1.12">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_puconv-6-13"><h4 class="heading"><span class="codenumber">6.1.13<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_puconv-6-13-1-1">Suppose there is a single constant <span class="process-math">\(B\)</span> and a sequence of functions <span class="process-math">\(f_n \colon S \to \R\)</span> that are bounded by <span class="process-math">\(B\text{,}\)</span> that is <span class="process-math">\(\babs{f_n(x)} \leq B\)</span> for all <span class="process-math">\(x \in S\text{.}\)</span> Suppose that <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> converges pointwise to <span class="process-math">\(f \colon S \to \R\text{.}\)</span> Prove that <span class="process-math">\(f\)</span> is bounded.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-6-13-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 6.1.13"><a aria-label="Copy heading and permalink for Exercise 6.1.13" href="#sec_puconv-6-13" title="Copy heading and permalink for Exercise 6.1.13">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_puconv-6-14"><h4 class="heading"><span class="codenumber">6.1.14<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_puconv-6-14-1-1">
+<em class="emphasis">(requires <a class="internal" href="sec_moreonseries.html" title="Section 2.6: More on series">Section 2.6</a>)</em>   In <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_puconv.html#example_geomsumptconv" title="Example 6.1.3">Example 6.1.3</a> we saw <span class="process-math">\(\sum_{k=0}^\infty x^k\)</span> converges pointwise to <span class="process-math">\(\frac{1}{1-x}\)</span> on <span class="process-math">\((-1,1)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-6-14-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_puconv-6-14-1-2">
+<li id="sec_puconv-6-14-1-2-1">
+<div class="para" id="sec_puconv-6-14-1-2-1-1">Show that whenever <span class="process-math">\(0 \leq c &lt; 1\text{,}\)</span> the series <span class="process-math">\(\sum_{k=0}^\infty x^k\)</span> converges uniformly on <span class="process-math">\([-c,c]\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-6-14-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 6.1.14.a"><a aria-label="Copy heading and permalink for Item 6.1.14.a" href="#sec_puconv-6-14-1-2-1" title="Copy heading and permalink for Item 6.1.14.a">🔗</a></div>
+</li>
+<li id="sec_puconv-6-14-1-2-2">
+<div class="para" id="sec_puconv-6-14-1-2-2-1">Show that the series <span class="process-math">\(\sum_{k=0}^\infty x^k\)</span> does not converge uniformly on <span class="process-math">\((-1,1)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_puconv-6-14-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 6.1.14.b"><a aria-label="Copy heading and permalink for Item 6.1.14.b" href="#sec_puconv-6-14-1-2-2" title="Copy heading and permalink for Item 6.1.14.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 6.1.14"><a aria-label="Copy heading and permalink for Exercise 6.1.14" href="#sec_puconv-6-14" title="Copy heading and permalink for Exercise 6.1.14">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 6.1.4"><a aria-label="Copy heading and permalink for Exercises 6.1.4" href="#sec_puconv-6" title="Copy heading and permalink for Exercises 6.1.4">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 6.1: Pointwise and uniform convergence"><a aria-label="Copy heading and permalink for Section 6.1: Pointwise and uniform convergence" href="#sec_puconv" title="Copy heading and permalink for Section 6.1: Pointwise and uniform convergence">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="fs_chapter.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_liminter.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

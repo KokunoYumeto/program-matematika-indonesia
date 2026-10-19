@@ -1,0 +1,301 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Intervals and the size of \R · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_intandsizeR">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Intervals and the size of <span class="process-math">\(\R\)</span></span>
+</h2>
+<div class="para" id="sec_intandsizeR-2">
+<em class="emphasis">Note: 0.5–1 lecture (proof of uncountability of <span class="process-math">\(\R\)</span> can be optional)</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_intandsizeR-3">
+<div class="para">You have surely seen the notation for intervals before, but let us give a formal definition here.  For <span class="process-math">\(a, b \in \R\)</span> such that <span class="process-math">\(a &lt; b\text{,}\)</span> we define</div>
+<div class="displaymath process-math" id="sec_intandsizeR-3-4">
+\begin{equation}
+\begin{aligned}
+&amp; [a,b] \coloneqq \{ x \in \R : a \leq x \leq b \}, \\
+&amp; (a,b) \coloneqq \{ x \in \R : a &lt; x &lt; b \}, \\
+&amp; (a,b] \coloneqq \{ x \in \R : a &lt; x \leq b \}, \\
+&amp; [a,b) \coloneqq \{ x \in \R : a \leq x &lt; b \} .
+\end{aligned}
+\end{equation}
+</div>
+<div class="para">The interval <span class="process-math">\([a,b]\)</span> is called a <em class="emphasis">closed interval</em> and <span class="process-math">\((a,b)\)</span> is called an <em class="emphasis">open interval</em>.  The intervals of the form <span class="process-math">\((a,b]\)</span> and <span class="process-math">\([a,b)\)</span> are called <em class="emphasis">half-open intervals</em>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_intandsizeR-4">
+<div class="para">The intervals above are <em class="emphasis">bounded intervals</em>, since both <span class="process-math">\(a\)</span> and <span class="process-math">\(b\)</span> are real numbers.<details aria-live="polite" class="ptx-footnote" id="sec_intandsizeR-4-5"><summary class="ptx-footnote__number" title="Footnote 1.4.1"><sup> 1 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_intandsizeR-4-5">When we write <span class="process-math">\((a,b)\text{,}\)</span> <span class="process-math">\([a,b]\text{,}\)</span> etc., we will always mean a bounded interval unless we explicitly say that <span class="process-math">\(a\)</span> or <span class="process-math">\(b\)</span> could be <span class="process-math">\(-\infty\)</span> or <span class="process-math">\(\infty\text{.}\)</span>
+</div></details> We define <em class="emphasis">unbounded intervals</em>,</div>
+<div class="displaymath process-math" id="sec_intandsizeR-4-8">
+\begin{equation}
+\begin{aligned}
+&amp; [a,\infty) \coloneqq \{ x \in \R : a \leq x \}, \\
+&amp; (a,\infty) \coloneqq \{ x \in \R : a &lt; x \}, \\
+&amp; (-\infty,b] \coloneqq \{ x \in \R : x \leq b \}, \\
+&amp; (-\infty,b) \coloneqq \{ x \in \R : x &lt; b \} .
+\end{aligned}
+\end{equation}
+</div>
+<div class="para">For completeness, we define <span class="process-math">\((-\infty,\infty) \coloneqq \R\text{.}\)</span> The intervals <span class="process-math">\([a,\infty)\text{,}\)</span> <span class="process-math">\((-\infty,b]\text{,}\)</span> and <span class="process-math">\(\R\)</span> are sometimes called <em class="emphasis">unbounded closed intervals</em>, and <span class="process-math">\((a,\infty)\text{,}\)</span> <span class="process-math">\((-\infty,b)\text{,}\)</span> and <span class="process-math">\(\R\)</span> are sometimes called <em class="emphasis">unbounded open intervals</em>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_intandsizeR-5">The proof of the following proposition is left as an exercise. In short, an interval is a set with at least two points that contains all points between any two points.<details aria-live="polite" class="ptx-footnote" id="sec_intandsizeR-5-1"><summary class="ptx-footnote__number" title="Footnote 1.4.2"><sup> 2 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_intandsizeR-5-1">Sometimes single point sets and the empty set are also called intervals, but in this book, intervals have at least two points. That is, we only defined the bounded intervals if <span class="process-math">\(a &lt; b\text{.}\)</span>
+</div></details><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_intervaldef"><h3 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.4.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="prop_intervaldef-1-1">A set <span class="process-math">\(I \subset \R\)</span> is an interval if and only if <span class="process-math">\(I\)</span> contains at least two points and for all <span class="process-math">\(a,c \in I\)</span> and <span class="process-math">\(b \in \R\)</span> such that <span class="process-math">\(a &lt; b &lt; c\text{,}\)</span> we have <span class="process-math">\(b \in I\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_intervaldef-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 1.4.1"><a aria-label="Copy heading and permalink for Proposition 1.4.1" href="#prop_intervaldef" title="Copy heading and permalink for Proposition 1.4.1">🔗</a></div>
+</article>
+<div class="para" id="sec_intandsizeR-7">We have already seen that every open interval <span class="process-math">\((a,b)\)</span> (where <span class="process-math">\(a &lt; b\)</span> of course) is nonempty.  For example, it contains the number <span class="process-math">\(\frac{a+b}{2}\text{.}\)</span> An unexpected fact is that from a set-theoretic perspective, all intervals have the same “size,” that is, they all have the same cardinality.  For instance, the map <span class="process-math">\(f(x) \coloneqq 2x\)</span> takes the interval <span class="process-math">\([0,1]\)</span> bijectively to the interval <span class="process-math">\([0,2]\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_intandsizeR-8">Perhaps more interestingly, the function <span class="process-math">\(f(x) \coloneqq \tan(x)\)</span> is a bijective map from <span class="process-math">\((-\nicefrac{\pi}{2},\nicefrac{\pi}{2})\)</span> to <span class="process-math">\(\R\text{.}\)</span>  Hence the bounded interval <span class="process-math">\((-\nicefrac{\pi}{2},\nicefrac{\pi}{2})\)</span> has the same cardinality as <span class="process-math">\(\R\text{.}\)</span>  It is not straightforward to construct a bijective map from <span class="process-math">\([0,1]\)</span> to <span class="process-math">\((0,1)\text{,}\)</span> but it is possible.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_intandsizeR-9">And do not worry, there does exist a way to measure the “size” of subsets of real numbers that “sees” the difference between <span class="process-math">\([0,1]\)</span> and <span class="process-math">\([0,2]\text{.}\)</span>  However, its proper definition requires much more machinery than we have right now.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-9" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_intandsizeR-10">Let us say more about the cardinality of intervals and hence about the cardinality of <span class="process-math">\(\R\text{.}\)</span>  We have seen that there exist irrational numbers; that is, <span class="process-math">\(\R \setminus \Q\)</span> is nonempty.  The question is: How many irrational numbers are there?  It turns out there are a lot more irrational numbers than rational numbers.  We have seen that <span class="process-math">\(\Q\)</span> is countable, and we will show that <span class="process-math">\(\R\)</span> is uncountable. In fact, the cardinality of <span class="process-math">\(\R\)</span> is the same as the cardinality of <span class="process-math">\(\sP(\N)\text{,}\)</span> although we will not prove this claim here.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="sec_intandsizeR-11"><h3 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1.4.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Cantor.</span>
+</h3>
+<div class="para" id="sec_intandsizeR-11-3-1">
+<span class="process-math">\(\R\)</span> is uncountable.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-11-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 1.4.2: Cantor"><a aria-label="Copy heading and permalink for Theorem 1.4.2: Cantor" href="#sec_intandsizeR-11" title="Copy heading and permalink for Theorem 1.4.2: Cantor">🔗</a></div>
+</article>
+<div class="para" id="sec_intandsizeR-12">We give a version of Cantor’s original proof from 1874 as this proof requires the least setup.  Normally this proof is stated as a contradiction.  It is, however, easier to understand it as a direct constructive proof that any countably infinite subset must miss some element.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_intandsizeR-13"><h3 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h3>
+<div class="para" id="sec_intandsizeR-13-1">Let <span class="process-math">\(X \subset \R\)</span> be a countably infinite subset such that for every pair of real numbers <span class="process-math">\(a &lt; b\text{,}\)</span> there is an <span class="process-math">\(x \in X\)</span> such that <span class="process-math">\(a &lt; x &lt; b\text{.}\)</span>  Were <span class="process-math">\(\R\)</span> countable, we could take <span class="process-math">\(X = \R\text{.}\)</span>  We will show that <span class="process-math">\(X\)</span> is necessarily a proper subset, and so <span class="process-math">\(X\)</span> cannot equal <span class="process-math">\(\R\text{,}\)</span> and <span class="process-math">\(\R\)</span> must be uncountable.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-13-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_intandsizeR-13-2">As <span class="process-math">\(X\)</span> is countably infinite, there is a bijection from <span class="process-math">\(\N\)</span> to <span class="process-math">\(X\text{.}\)</span>  We write <span class="process-math">\(X\)</span> as a sequence of real numbers <span class="process-math">\(x_1, x_2, x_3,\ldots\text{,}\)</span> such that each number in <span class="process-math">\(X\)</span> is given by <span class="process-math">\(x_n\)</span> for some <span class="process-math">\(n \in \N\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-13-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_intandsizeR-13-3">We inductively construct two sequences of real numbers <span class="process-math">\(a_1,a_2,a_3,\ldots\)</span> and <span class="process-math">\(b_1,b_2,b_3,\ldots\text{.}\)</span>  Let <span class="process-math">\(a_1 \coloneqq x_1\)</span> and <span class="process-math">\(b_1 \coloneqq x_1+1\text{.}\)</span> Note that <span class="process-math">\(a_1 &lt; b_1\)</span> and <span class="process-math">\(x_1 \notin (a_1,b_1)\text{.}\)</span> For some <span class="process-math">\(k &gt; 1\text{,}\)</span> suppose <span class="process-math">\(a_1,a_2,\ldots,a_{k-1}\)</span> and <span class="process-math">\(b_1,b_2,\ldots,b_{k-1}\)</span> have been defined, suppose <span class="process-math">\(a_1 &lt; a_2 &lt; \cdots &lt; a_{k-1} &lt; b_{k-1} &lt; \cdots &lt; b_2 &lt; b_1\text{,}\)</span> and suppose for each <span class="process-math">\(j=1,2,\ldots,k-1\text{,}\)</span> we have <span class="process-math">\(x_\ell \notin (a_{j},b_{j})\)</span> for <span class="process-math">\(\ell=1,2,\ldots,j\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-13-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="sec_intandsizeR-13-4">
+<li id="sec_intandsizeR-13-4-1">
+<div class="para" id="sec_intandsizeR-13-4-1-1">Define <span class="process-math">\(a_k \coloneqq x_n\text{,}\)</span> where <span class="process-math">\(n\)</span> is the smallest <span class="process-math">\(n \in \N\)</span> such that <span class="process-math">\(x_n \in (a_{k-1},b_{k-1})\text{.}\)</span>  Such an <span class="process-math">\(x_n\)</span> exists by our assumption on <span class="process-math">\(X\text{,}\)</span> and <span class="process-math">\(n \geq k\)</span> by the assumption on <span class="process-math">\((a_{k-1},b_{k-1})\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-13-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#sec_intandsizeR-13-4-1" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="sec_intandsizeR-13-4-2">
+<div class="para" id="sec_intandsizeR-13-4-2-1">Next, define <span class="process-math">\(b_k\)</span> to be some real number in <span class="process-math">\((a_{k},b_{k-1})\text{,}\)</span> for example <span class="process-math">\(b_k \coloneqq \frac{a_k+b_{k-1}}{2}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-13-4-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#sec_intandsizeR-13-4-2" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+</ol>
+<div class="para" id="sec_intandsizeR-13-5">Notice that <span class="process-math">\(a_{k-1} &lt; a_k &lt; b_k &lt; b_{k-1}\text{.}\)</span> Also notice that <span class="process-math">\((a_{k},b_{k})\)</span> does not contain <span class="process-math">\(x_k\)</span> and hence does not contain <span class="process-math">\(x_{\ell}\)</span> for <span class="process-math">\(\ell=1,2,\ldots,k\text{.}\)</span> The two sequences are now defined.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-13-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_intandsizeR-13-6">Claim: <em class="emphasis"><span class="process-math">\(a_n &lt; b_m\)</span> for all <span class="process-math">\(n\)</span> and <span class="process-math">\(m\)</span> in <span class="process-math">\(\N\text{.}\)</span></em> Proof: Let us first assume <span class="process-math">\(n &lt; m\text{.}\)</span>  Then <span class="process-math">\(a_n &lt; a_{n+1} &lt; \cdots &lt; a_{m-1} &lt; a_m &lt; b_m\text{.}\)</span> Similarly for <span class="process-math">\(n &gt; m\text{.}\)</span>  The claim follows.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-13-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_intandsizeR-13-7">
+<div class="para">Let <span class="process-math">\(A \coloneqq \{ a_n : n \in \N \}\)</span> and <span class="process-math">\(B \coloneqq \{ b_n : n \in \N \}\text{.}\)</span> By <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_setofreals.html#infsupineq_prop" title="Proposition 1.2.7">Proposition 1.2.7</a> and the claim above,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/infsupineq_prop.html" id="sec_intandsizeR-13-7-4">
+\begin{equation}
+\sup\, A \leq \inf\, B .
+\end{equation}
+</div>
+<div class="para">Define <span class="process-math">\(y \coloneqq \sup\, A\text{.}\)</span>  The number <span class="process-math">\(y\)</span> cannot be a member of <span class="process-math">\(A\text{:}\)</span> If <span class="process-math">\(y = a_n\)</span> for some <span class="process-math">\(n\text{,}\)</span> then <span class="process-math">\(y &lt; a_{n+1}\text{,}\)</span> which is impossible. Similarly, <span class="process-math">\(y\)</span> cannot be a member of <span class="process-math">\(B\text{.}\)</span>  Therefore, <span class="process-math">\(a_n &lt; y\)</span> for all <span class="process-math">\(n\in \N\)</span> and <span class="process-math">\(y &lt; b_n\)</span> for all <span class="process-math">\(n\in \N\text{.}\)</span> In other words, for every <span class="process-math">\(n \in \N\text{,}\)</span> we have <span class="process-math">\(y \in (a_n,b_n)\text{.}\)</span> By the construction of the sequence, <span class="process-math">\(x_n \notin (a_n,b_n)\text{,}\)</span> and so <span class="process-math">\(y \neq x_n\text{.}\)</span>  As <span class="process-math">\(y \neq x_n\)</span> for all <span class="process-math">\(n \in \N\text{,}\)</span> we have that <span class="process-math">\(y
+\notin X\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-13-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_intandsizeR-13-8">We have constructed a real number <span class="process-math">\(y\)</span> that is not in <span class="process-math">\(X\text{,}\)</span> and thus <span class="process-math">\(X\)</span> is a proper subset of <span class="process-math">\(\R\text{.}\)</span> The sequence <span class="process-math">\(x_1,x_2,\ldots\)</span> cannot contain all elements of <span class="process-math">\(\R\text{,}\)</span> and thus <span class="process-math">\(\R\)</span> is uncountable.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-13-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 1.4.1"><a aria-label="Copy heading and permalink for Proof 1.4.1" href="#sec_intandsizeR-13" title="Copy heading and permalink for Proof 1.4.1">🔗</a></div>
+</article>
+<section class="exercises" id="sec_intandsizeR-14">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber"></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_intandsizeR-14-1"><h4 class="heading"><span class="codenumber">1.4.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_intandsizeR-14-1-1-1">For <span class="process-math">\(a &lt; b\text{,}\)</span> construct an explicit bijection from <span class="process-math">\((a,b]\)</span> to <span class="process-math">\((0,1]\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-14-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.4.1"><a aria-label="Copy heading and permalink for Exercise 1.4.1" href="#sec_intandsizeR-14-1" title="Copy heading and permalink for Exercise 1.4.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_intandsizeR-14-2"><h4 class="heading"><span class="codenumber">1.4.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_intandsizeR-14-2-1-1">Suppose <span class="process-math">\(f \colon [0,1] \to (0,1)\)</span> is a bijection. Using <span class="process-math">\(f\text{,}\)</span> construct a bijection from <span class="process-math">\([-1,1]\)</span> to <span class="process-math">\(\R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-14-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.4.2"><a aria-label="Copy heading and permalink for Exercise 1.4.2" href="#sec_intandsizeR-14-2" title="Copy heading and permalink for Exercise 1.4.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_intervaldef"><h4 class="heading"><span class="codenumber">1.4.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_intervaldef-1-1">Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_intandsizeR.html#prop_intervaldef" title="Proposition 1.4.1">Proposition 1.4.1</a>. That is, suppose <span class="process-math">\(I \subset \R\)</span> is a subset with at least two elements such that if <span class="process-math">\(a &lt; b &lt; c\)</span> and <span class="process-math">\(a, c \in I\text{,}\)</span> then <span class="process-math">\(b \in I\text{.}\)</span> Prove that <span class="process-math">\(I\)</span> is one of the nine types of intervals explicitly given in this section. Furthermore, prove that the intervals given in this section all satisfy this property.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_intervaldef-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.4.3"><a aria-label="Copy heading and permalink for Exercise 1.4.3" href="#exercise_intervaldef" title="Copy heading and permalink for Exercise 1.4.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_intandsizeR-14-4"><h4 class="heading"><span class="codenumber">1.4.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_intandsizeR-14-4-1-1">
+<em class="emphasis">(Hard)</em>   Construct an explicit bijection from <span class="process-math">\((0,1]\)</span> to <span class="process-math">\((0,1)\text{.}\)</span> Hint: One approach is as follows: First map <span class="process-math">\((\nicefrac{1}{2},1]\)</span> to <span class="process-math">\((0,\nicefrac{1}{2}]\text{,}\)</span> then map <span class="process-math">\((\nicefrac{1}{4},\nicefrac{1}{2}]\)</span> to <span class="process-math">\((\nicefrac{1}{2},\nicefrac{3}{4}]\text{,}\)</span> etc. Write down the map explicitly, that is, write down an algorithm that tells you exactly what number goes where. Then prove that the map is a bijection.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-14-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.4.4"><a aria-label="Copy heading and permalink for Exercise 1.4.4" href="#sec_intandsizeR-14-4" title="Copy heading and permalink for Exercise 1.4.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_intandsizeR-14-5"><h4 class="heading"><span class="codenumber">1.4.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_intandsizeR-14-5-1-1">
+<em class="emphasis">(Hard)</em>   Construct an explicit bijection from <span class="process-math">\([0,1]\)</span> to <span class="process-math">\((0,1)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-14-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.4.5"><a aria-label="Copy heading and permalink for Exercise 1.4.5" href="#sec_intandsizeR-14-5" title="Copy heading and permalink for Exercise 1.4.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_intandsizeR-14-6"><h4 class="heading"><span class="codenumber">1.4.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_intandsizeR-14-6-1-1"><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-14-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div></div>
+<ol class="lower-alpha ol-marker-3" id="sec_intandsizeR-14-6-1-2">
+<li id="sec_intandsizeR-14-6-1-2-1">
+<div class="para" id="sec_intandsizeR-14-6-1-2-1-1">Show that every closed interval <span class="process-math">\([a,b]\)</span> is the intersection of countably many open intervals.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-14-6-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1.4.6.a"><a aria-label="Copy heading and permalink for Item 1.4.6.a" href="#sec_intandsizeR-14-6-1-2-1" title="Copy heading and permalink for Item 1.4.6.a">🔗</a></div>
+</li>
+<li id="sec_intandsizeR-14-6-1-2-2">
+<div class="para" id="sec_intandsizeR-14-6-1-2-2-1">Show that every open interval <span class="process-math">\((a,b)\)</span> is a countable union of closed intervals.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-14-6-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1.4.6.b"><a aria-label="Copy heading and permalink for Item 1.4.6.b" href="#sec_intandsizeR-14-6-1-2-2" title="Copy heading and permalink for Item 1.4.6.b">🔗</a></div>
+</li>
+<li id="sec_intandsizeR-14-6-1-2-3">
+<div class="para" id="sec_intandsizeR-14-6-1-2-3-1">Show that an intersection of a nonempty and possibly infinite family of bounded closed intervals, <span class="process-math">\(\bigcap\limits_{\lambda \in I} [a_\lambda,b_\lambda]\text{,}\)</span> is either empty, a single point, or a bounded closed interval.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-14-6-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1.4.6.c"><a aria-label="Copy heading and permalink for Item 1.4.6.c" href="#sec_intandsizeR-14-6-1-2-3" title="Copy heading and permalink for Item 1.4.6.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 1.4.6"><a aria-label="Copy heading and permalink for Exercise 1.4.6" href="#sec_intandsizeR-14-6" title="Copy heading and permalink for Exercise 1.4.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_intandsizeR-14-7"><h4 class="heading"><span class="codenumber">1.4.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_intandsizeR-14-7-1-1">Suppose <span class="process-math">\(S\)</span> is a set of disjoint open intervals in <span class="process-math">\(\R\text{.}\)</span>  That is, if <span class="process-math">\((a,b) \in S\)</span> and <span class="process-math">\((c,d) \in S\text{,}\)</span> then either <span class="process-math">\((a,b) = (c,d)\)</span> or <span class="process-math">\((a,b) \cap (c,d) = \emptyset\text{.}\)</span>  Prove <span class="process-math">\(S\)</span> is a countable set.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-14-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.4.7"><a aria-label="Copy heading and permalink for Exercise 1.4.7" href="#sec_intandsizeR-14-7" title="Copy heading and permalink for Exercise 1.4.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_intandsizeR-14-8"><h4 class="heading"><span class="codenumber">1.4.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_intandsizeR-14-8-1-1">Prove that the cardinality of <span class="process-math">\([0,1]\)</span> is the same as the cardinality of <span class="process-math">\((0,1)\)</span> by showing that <span class="process-math">\(\babs{[0,1]} \leq \babs{(0,1)}\)</span> and <span class="process-math">\(\babs{(0,1)} \leq \babs{[0,1]}\text{.}\)</span> See <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicset.html#def_comparecards" title="Definition 0.3.28">Definition 0.3.28</a>. This proof requires the Cantor–Bernstein–Schröder theorem, which we stated without proof.  Note that this proof does not give you an explicit bijection.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-14-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.4.8"><a aria-label="Copy heading and permalink for Exercise 1.4.8" href="#sec_intandsizeR-14-8" title="Copy heading and permalink for Exercise 1.4.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_intandsizeR-14-9"><h4 class="heading"><span class="codenumber">1.4.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_intandsizeR-14-9-1-1">
+<em class="emphasis">(Challenging)</em>   A number <span class="process-math">\(x\)</span> is <em class="emphasis">algebraic</em> if <span class="process-math">\(x\)</span> is a root of a nonzero polynomial with integer coefficients, in other words, <span class="process-math">\(a_n x^n + a_{n-1} x^{n-1} + \cdots
++ a_1 x + a_0 = 0\)</span> where <span class="process-math">\(a_0,a_1,\ldots,a_n \in \Z\text{,}\)</span> but not all zero.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-14-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_intandsizeR-14-9-1-2">
+<li id="sec_intandsizeR-14-9-1-2-1">
+<div class="para" id="sec_intandsizeR-14-9-1-2-1-1">Show that there are only countably many algebraic numbers.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-14-9-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1.4.9.a"><a aria-label="Copy heading and permalink for Item 1.4.9.a" href="#sec_intandsizeR-14-9-1-2-1" title="Copy heading and permalink for Item 1.4.9.a">🔗</a></div>
+</li>
+<li id="sec_intandsizeR-14-9-1-2-2">
+<div class="para" id="sec_intandsizeR-14-9-1-2-2-1">Show that there exist non-algebraic (transcendental) numbers (follow in the footsteps of Cantor, use the uncountability of <span class="process-math">\(\R\)</span>).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-14-9-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1.4.9.b"><a aria-label="Copy heading and permalink for Item 1.4.9.b" href="#sec_intandsizeR-14-9-1-2-2" title="Copy heading and permalink for Item 1.4.9.b">🔗</a></div>
+</li>
+</ol>
+<div class="para" id="sec_intandsizeR-14-9-1-3">Hint: Feel free to use the fact that a nonzero polynomial of degree <span class="process-math">\(n\)</span> has at most <span class="process-math">\(n\)</span> real roots.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-14-9-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.4.9"><a aria-label="Copy heading and permalink for Exercise 1.4.9" href="#sec_intandsizeR-14-9" title="Copy heading and permalink for Exercise 1.4.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_intandsizeR-14-10"><h4 class="heading"><span class="codenumber">1.4.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_intandsizeR-14-10-1-1">
+<em class="emphasis">(Challenging)</em>   Let <span class="process-math">\(F\)</span> be the set of all functions <span class="process-math">\(f \colon \R \to \R\text{.}\)</span> Prove <span class="process-math">\(\sabs{\R} &lt; \sabs{F}\)</span> using Cantor’s <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_basicset.html#cantorspowersetthm" title="Theorem 0.3.34: Cantor">Theorem 0.3.34</a>.<details aria-live="polite" class="ptx-footnote" id="sec_intandsizeR-14-10-1-1-8"><summary class="ptx-footnote__number" title="Footnote 1.4.3"><sup> 3 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_intandsizeR-14-10-1-1-8">Interestingly, if <span class="process-math">\(C\)</span> is the set of continuous functions, then <span class="process-math">\(\sabs{\R} = \sabs{C}\text{.}\)</span>
+</div></details><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_intandsizeR-14-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 1.4.10"><a aria-label="Copy heading and permalink for Exercise 1.4.10" href="#sec_intandsizeR-14-10" title="Copy heading and permalink for Exercise 1.4.10">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 1.4.1"><a aria-label="Copy heading and permalink for Exercises 1.4.1" href="#sec_intandsizeR-14" title="Copy heading and permalink for Exercises 1.4.1">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 1.4: Intervals and the size of \R"><a aria-label="Copy heading and permalink for Section 1.4: Intervals and the size of \R" href="#sec_intandsizeR" title="Copy heading and permalink for Section 1.4: Intervals and the size of \R">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_absval.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_decimals.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

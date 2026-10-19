@@ -1,0 +1,1100 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>More on series · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_moreonseries">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.6</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">More on series</span>
+</h2>
+<section class="introduction" id="sec_moreonseries-2">
+<div class="para" id="sec_moreonseries-2-1">
+<em class="emphasis">Note: up to 2–3 lectures (optional, can safely be skipped or covered partially)</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section>
+<section class="subsection" id="sec_moreonseries-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.6.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Root test</span>
+</h3>
+<div class="para" id="sec_moreonseries-3-2">A test similar to the ratio test is the <em class="emphasis">root test</em>.  The proof of this test is similar. Again, the idea is to generalize what happens for the geometric series.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-3-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_moreonseries-3-3"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.6.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Root test.</span>
+</h4>
+<div class="para logical" id="sec_moreonseries-3-3-2-1">
+<div class="para">Let <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> be a series and let</div>
+<div class="displaymath process-math" id="sec_moreonseries-3-3-2-1-2">
+\begin{equation}
+L \coloneqq \limsup_{n\to\infty} {\sabs{x_n}}^{1/n} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-3-3-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="sec_moreonseries-3-3-2-2">
+<li id="sec_moreonseries-3-3-2-2-1">
+<div class="para" id="sec_moreonseries-3-3-2-2-1-1">If <span class="process-math">\(L &lt; 1\text{,}\)</span> then <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> converges absolutely.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-3-3-2-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#sec_moreonseries-3-3-2-2-1" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="sec_moreonseries-3-3-2-2-2">
+<div class="para" id="sec_moreonseries-3-3-2-2-2-1">If <span class="process-math">\(L &gt; 1\text{,}\)</span> then <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> diverges.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-3-3-2-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#sec_moreonseries-3-3-2-2-2" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Proposition 2.6.1: Root test"><a aria-label="Copy heading and permalink for Proposition 2.6.1: Root test" href="#sec_moreonseries-3-3" title="Copy heading and permalink for Proposition 2.6.1: Root test">🔗</a></div>
+</article>
+<article class="proof" id="sec_moreonseries-3-4"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_moreonseries-3-4-1">If <span class="process-math">\(L &gt; 1\text{,}\)</span> then there exists<details aria-live="polite" class="ptx-footnote" id="sec_moreonseries-3-4-1-2"><summary class="ptx-footnote__number" title="Footnote 2.6.1"><sup> 1 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_moreonseries-3-4-1-2">In case <span class="process-math">\(L=\infty\text{,}\)</span> see <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_bw.html#exercise_extendsubseqlimsupinf" title="Exercise 2.3.20">Exercise 2.3.20</a>. Alternatively, note that if <span class="process-math">\(L=\infty\text{,}\)</span> then <span class="process-math">\(\bigl\{ {\sabs{x_{n}}}^{1/n}
+\bigr\}_{n=1}^\infty\)</span> is unbounded, and thus so is <span class="process-math">\(\{ x_n \}_{n=1}^\infty\text{.}\)</span>
+</div></details> a subsequence <span class="process-math">\(\{ x_{n_k} \}_{k=1}^\infty\)</span> such that <span class="process-math">\(L = \lim_{k\to\infty} {\sabs{x_{n_k}}}^{1/n_k}\text{.}\)</span>  Let <span class="process-math">\(r\)</span> be such that <span class="process-math">\(L &gt; r &gt; 1\text{.}\)</span>  There exists an <span class="process-math">\(M\)</span> such that for all <span class="process-math">\(k \geq M\text{,}\)</span> we have <span class="process-math">\({\sabs{x_{n_k}}}^{1/n_k} &gt; r &gt; 1\text{,}\)</span> or in other words <span class="process-math">\(\sabs{x_{n_k}} &gt; r^{n_k} &gt; 1\text{.}\)</span> The subsequence <span class="process-math">\(\bigl\{ \sabs{x_{n_k}} \bigr\}_{k=1}^\infty\text{,}\)</span> and therefore also <span class="process-math">\(\bigl\{ \sabs{x_{n}} \bigr\}_{n=1}^\infty\text{,}\)</span> cannot possibly converge to zero, and so the series diverges.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-3-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_moreonseries-3-4-2">
+<div class="para">Now suppose <span class="process-math">\(L &lt; 1\text{.}\)</span>  Pick <span class="process-math">\(r\)</span> such that <span class="process-math">\(L &lt; r &lt; 1\text{.}\)</span> By definition of limit supremum, there is an <span class="process-math">\(M\)</span> such that for all <span class="process-math">\(n \geq M\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_moreonseries-3-4-2-6">
+\begin{equation}
+\sup \bigl\{ {\sabs{x_k}}^{1/k} : k \geq n \bigr\} &lt; r .
+\end{equation}
+</div>
+<div class="para">Therefore, for all <span class="process-math">\(n \geq M\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_moreonseries-3-4-2-8">
+\begin{equation}
+{\sabs{x_n}}^{1/n} &lt; r , \qquad \text{or in other words} \qquad \sabs{x_n} &lt; r^n .
+\end{equation}
+</div>
+<div class="para">Let <span class="process-math">\(k &gt; M\text{,}\)</span> and estimate the <span class="process-math">\(k\)</span>th partial sum:</div>
+<div class="displaymath process-math" id="sec_moreonseries-3-4-2-11">
+\begin{equation}
+\sum_{n=1}^k \sabs{x_n} = 
+\left( \sum_{n=1}^M \sabs{x_n} \right) + 
+\left( \sum_{n=M+1}^k \sabs{x_n} \right)
+\leq
+\left( \sum_{n=1}^M \sabs{x_n} \right) + 
+\left( \sum_{n=M+1}^k r^n \right) .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(0 &lt; r &lt; 1\text{,}\)</span> the geometric series <span class="process-math">\(\sum_{n=M+1}^\infty r^n\)</span> converges to <span class="process-math">\(\frac{r^{M+1}}{1-r}\text{.}\)</span>  As everything is positive,</div>
+<div class="displaymath process-math" id="sec_moreonseries-3-4-2-15">
+\begin{equation}
+\sum_{n=1}^k \sabs{x_n} 
+\leq
+\left( \sum_{n=1}^M \sabs{x_n} \right) + 
+\frac{r^{M+1}}{1-r} .
+\end{equation}
+</div>
+<div class="para">Thus the sequence of partial sums of <span class="process-math">\(\sum_{n=1}^\infty \sabs{x_n}\)</span> is bounded, and the series converges.  Therefore, <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> converges absolutely.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-3-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 2.6.1.1"><a aria-label="Copy heading and permalink for Proof 2.6.1.1" href="#sec_moreonseries-3-4" title="Copy heading and permalink for Proof 2.6.1.1">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 2.6.1: Root test"><a aria-label="Copy heading and permalink for Subsection 2.6.1: Root test" href="#sec_moreonseries-3" title="Copy heading and permalink for Subsection 2.6.1: Root test">🔗</a></div>
+</section>
+<section class="subsection" id="sec_moreonseries-4">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.6.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Alternating series test</span>
+</h3>
+<div class="para" id="sec_moreonseries-4-2">The tests we have seen so far only addressed absolute convergence.  The following test gives a large supply of conditionally convergent series.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_moreonseries-4-3"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.6.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Alternating series.</span>
+</h4>
+<div class="para logical" id="sec_moreonseries-4-3-2-1">
+<div class="para">Let <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> be a monotone decreasing sequence of positive real numbers such that <span class="process-math">\(\lim\limits_{n\to\infty} x_n = 0\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" id="sec_moreonseries-4-3-2-1-3">
+\begin{equation}
+\sum_{n=1}^\infty {(-1)}^n x_n \qquad \text{converges.}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-4-3-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 2.6.2: Alternating series"><a aria-label="Copy heading and permalink for Proposition 2.6.2: Alternating series" href="#sec_moreonseries-4-3" title="Copy heading and permalink for Proposition 2.6.2: Alternating series">🔗</a></div>
+</article>
+<article class="proof" id="sec_moreonseries-4-4"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_moreonseries-4-4-1">
+<div class="para">Let <span class="process-math">\(s_m \coloneqq \sum_{n=1}^m {(-1)}^n x_n\)</span> be the <span class="process-math">\(m\)</span>th partial sum.  Then</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_seralternate.html" id="sec_moreonseries-4-4-1-3">
+\begin{equation}
+s_{2k} =
+\sum_{n=1}^{2k} {(-1)}^n x_n
+=
+(-x_1 + x_2) + \cdots + (-x_{2k-1} + x_{2k})
+=
+\sum_{\ell=1}^{k} (-x_{2\ell-1} + x_{2\ell}) .
+\end{equation}
+</div>
+<div class="para">The sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is decreasing, so <span class="process-math">\((-x_{2\ell-1}+x_{2\ell}) \leq 0\)</span> for all <span class="process-math">\(\ell\text{.}\)</span> Thus, the subsequence <span class="process-math">\(\{ s_{2k} \}_{k=1}^\infty\)</span> of partial sums is a decreasing sequence.  Similarly, <span class="process-math">\((x_{2\ell}-x_{2\ell+1}) \geq 0\text{,}\)</span> and so</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_seralternate.html" id="sec_moreonseries-4-4-1-9">
+\begin{equation}
+s_{2k} = - x_1 + ( x_2 - x_3 ) + \cdots + ( x_{2k-2} - x_{2k-1} ) + x_{2k}
+\geq -x_1 .
+\end{equation}
+</div>
+<div class="para">The intuition behind the bound <span class="process-math">\(0 \geq s_{2k} \geq -x_1\)</span> is illustrated in <a class="internal" href="sec_moreonseries.html#fig_seralternate" title="Figure 2.8">Figure 2.8</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-4-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="fig_seralternate"><img alt='A diagram in the plane where the values of a sequence plus minus x sub n are shown for n from 1 to 8. In solid lines starting from the horizontal axis, we see a "graph" of minus x sub 1, x sub 2, minus x sub 3, x sub 4, etc. We can see that each successive solid line is shorter as each successive x sub n is smaller than the last. In dotted lines we also have minus x sub 2, minus x sub 4, etc. The differences minus x sub 1 plus x sub 2, minus x sub 3 plus x sub 4, minus x sub 5 plus x sub 6, and minus x sub 7 plus x sub 8, are shown and correspond to the differences between the corresponding minus x sub 1 and minus x sub 2. We note that these differences take up just part of the total length of the line for minus x sub 1.' class="raimg" role="img" src="figures/ser-alternate-mbx.svg" style="width:294pt; height:159pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Showing that <span class="process-math">\(0 \geq s_{2k} \geq -x_1\)</span> where <span class="process-math">\(k=4\)</span> for an alternating series.<div class="autopermalink" data-description="Figure 2.8"><a aria-label="Copy heading and permalink for Figure 2.8" href="#fig_seralternate" title="Copy heading and permalink for Figure 2.8">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para logical" id="sec_moreonseries-4-4-5">
+<div class="para">As <span class="process-math">\(\{ s_{2k} \}_{k=1}^\infty\)</span> is decreasing and bounded below, it converges. Let <span class="process-math">\(a \coloneqq \lim_{k\to\infty} s_{2k}\text{.}\)</span> We wish to show that <span class="process-math">\(\lim_{m\to\infty} s_m = a\)</span> (and not just for the subsequence). Given <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> pick <span class="process-math">\(M\)</span> such that <span class="process-math">\(\sabs{s_{2k}-a} &lt;
+\nicefrac{\epsilon}{2}\)</span> whenever <span class="process-math">\(k \geq M\text{.}\)</span> Since <span class="process-math">\(\lim_{n\to\infty} x_n = 0\text{,}\)</span> we also make <span class="process-math">\(M\)</span> possibly larger to obtain <span class="process-math">\(x_{2k+1} &lt; \nicefrac{\epsilon}{2}\)</span> whenever <span class="process-math">\(k \geq M\text{.}\)</span> Suppose <span class="process-math">\(m \geq 2M+1\text{.}\)</span>  If <span class="process-math">\(m=2k\text{,}\)</span> then <span class="process-math">\(k \geq M+\nicefrac{1}{2} \geq M\)</span> and <span class="process-math">\(\sabs{s_{m}-a}=\sabs{s_{2k}-a} &lt; \nicefrac{\epsilon}{2} &lt; \epsilon\text{.}\)</span> If <span class="process-math">\(m=2k+1\text{,}\)</span> then also <span class="process-math">\(k \geq M\text{.}\)</span>  Notice <span class="process-math">\(s_{2k+1} = s_{2k} - x_{2k+1}\text{.}\)</span> Thus</div>
+<div class="displaymath process-math" id="sec_moreonseries-4-4-5-19">
+\begin{equation}
+\sabs{s_{m}-a} = 
+\sabs{s_{2k+1}-a} = 
+\sabs{s_{2k}-a - x_{2k+1}} \leq
+\sabs{s_{2k}-a} + x_{2k+1} &lt; 
+\nicefrac{\epsilon}{2}+ \nicefrac{\epsilon}{2} = \epsilon .  \qedhere
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-4-4-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 2.6.2.1"><a aria-label="Copy heading and permalink for Proof 2.6.2.1" href="#sec_moreonseries-4-4" title="Copy heading and permalink for Proof 2.6.2.1">🔗</a></div>
+</article>
+<div class="para logical" id="sec_moreonseries-4-5">
+<div class="para">Notably, there exist conditionally convergent series where the absolute values of the terms go to zero arbitrarily slowly. The series</div>
+<div class="displaymath process-math" id="sec_moreonseries-4-5-1">
+\begin{equation}
+\sum_{n=1}^\infty \frac{{(-1)}^n}{n^p}
+\end{equation}
+</div>
+<div class="para">converges for arbitrarily small <span class="process-math">\(p &gt; 0\text{,}\)</span> but it does not converge absolutely when <span class="process-math">\(p \leq 1\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-4-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 2.6.2: Alternating series test"><a aria-label="Copy heading and permalink for Subsection 2.6.2: Alternating series test" href="#sec_moreonseries-4" title="Copy heading and permalink for Subsection 2.6.2: Alternating series test">🔗</a></div>
+</section>
+<section class="subsection" id="sec_moreonseries-5">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.6.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Rearrangements</span>
+</h3>
+<div class="para" id="sec_moreonseries-5-2">Absolutely convergent series behave as we imagine they should.  For example, absolutely convergent series can be summed in any order whatsoever.  Nothing of the sort holds for conditionally convergent series (see <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_moreonseries.html#example_harmonsumanything" title="Example 2.6.4">Example 2.6.4</a> and <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_moreonseries.html#exercise_seriesconvergestoanything" title="Exercise 2.6.3">Exercise 2.6.3</a>).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-5-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_moreonseries-5-3">
+<div class="para">Consider a series</div>
+<div class="displaymath process-math" id="sec_moreonseries-5-3-1">
+\begin{equation}
+\sum_{n=1}^\infty x_n .
+\end{equation}
+</div>
+<div class="para">Given a bijective function <span class="process-math">\(\sigma \colon \N \to \N\text{,}\)</span> the corresponding rearrangement is the series:</div>
+<div class="displaymath process-math" id="sec_moreonseries-5-3-4">
+\begin{equation}
+\sum_{k=1}^\infty x_{\sigma(k)} .
+\end{equation}
+</div>
+<div class="para">We simply sum the series in a different order.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-5-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_moreonseries-5-4"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.6.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_moreonseries-5-4-1-1">Let <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> be an absolutely convergent series converging to a number <span class="process-math">\(x\text{.}\)</span>  Let <span class="process-math">\(\sigma \colon \N \to \N\)</span> be a bijection.  Then <span class="process-math">\(\sum_{n=1}^\infty x_{\sigma(n)}\)</span> is absolutely convergent and converges to <span class="process-math">\(x\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-5-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 2.6.3"><a aria-label="Copy heading and permalink for Proposition 2.6.3" href="#sec_moreonseries-5-4" title="Copy heading and permalink for Proposition 2.6.3">🔗</a></div>
+</article>
+<div class="para" id="sec_moreonseries-5-5">In other words, a rearrangement of an absolutely convergent series converges (absolutely) to the same number.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-5-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_moreonseries-5-6"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_moreonseries-5-6-1">
+<div class="para">Let <span class="process-math">\(\epsilon &gt; 0\)</span> be given.  As <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> is absolutely convergent, take <span class="process-math">\(M\)</span> such that</div>
+<div class="displaymath process-math" id="sec_moreonseries-5-6-1-4">
+\begin{equation}
+\abs{\left(\sum_{n=1}^M x_n \right) - x} &lt; \frac{\epsilon}{2}
+\qquad \text{and} \qquad
+\sum_{n=M+1}^\infty \sabs{x_n} &lt; \frac{\epsilon}{2} .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(\sigma\)</span> is a bijection, there exists a number <span class="process-math">\(K\)</span> such that for each <span class="process-math">\(n \leq M\text{,}\)</span> there exists <span class="process-math">\(k \leq K\)</span> such that <span class="process-math">\(\sigma(k) = n\text{.}\)</span> In other words <span class="process-math">\(\{ 1,2,\ldots,M \} \subset \sigma\bigl(\{ 1,2,\ldots,K \} \bigr)\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-5-6-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_moreonseries-5-6-2">
+<div class="para">For <span class="process-math">\(N \geq K\text{,}\)</span> let <span class="process-math">\(Q \coloneqq \max \sigma\bigl(\{ 1,2,\ldots,N \}\bigr)\text{.}\)</span> Compute</div>
+<div class="displaymath process-math" id="sec_moreonseries-5-6-2-3">
+\begin{equation}
+\begin{split}
+\abs{\left( \sum_{n=1}^N x_{\sigma(n)} \right) - x}
+&amp; =
+\abs{ \left( \sum_{n=1}^M x_n
++
+\sum_{\substack{n=1\\\sigma(n) &gt; M}}^N x_{\sigma(n)} \right) - x}
+\\
+&amp; \leq
+\abs{ \left( \sum_{n=1}^M x_n \right) - x}
++
+\sum_{\substack{n=1\\\sigma(n) &gt; M}}^N \sabs{x_{\sigma(n)}}
+\\
+&amp; \leq
+\abs{ \left( \sum_{n=1}^M x_n \right) - x}
++
+\sum_{n=M+1}^Q \sabs{x_{n}}
+\\
+&amp; &lt; \nicefrac{\epsilon}{2} + \nicefrac{\epsilon}{2} = \epsilon .
+\end{split}
+\end{equation}
+</div>
+<div class="para">So <span class="process-math">\(\sum_{n=1}^\infty x_{\sigma(n)}\)</span> converges to <span class="process-math">\(x\text{.}\)</span>  To see that the convergence is absolute, we apply the argument above to <span class="process-math">\(\sum_{n=1}^\infty \sabs{x_n}\)</span> to show that <span class="process-math">\(\sum_{n=1}^\infty \sabs{x_{\sigma(n)}}\)</span> converges.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-5-6-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 2.6.3.1"><a aria-label="Copy heading and permalink for Proof 2.6.3.1" href="#sec_moreonseries-5-6" title="Copy heading and permalink for Proof 2.6.3.1">🔗</a></div>
+</article>
+<article class="example example-like" id="example_harmonsumanything"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.6.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="example_harmonsumanything-1-1">
+<div class="para">Let us show that the alternating harmonic series <span class="process-math">\(\sum_{n=1}^\infty \frac{{(-1)}^{n+1}}{n}\text{,}\)</span> which does not converge absolutely, can be rearranged to converge to anything. The odd terms and the even terms diverge to plus infinity and minus infinity, respectively (prove this!):</div>
+<div class="displaymath process-math" id="example_harmonsumanything-1-1-2">
+\begin{equation}
+\sum_{m=1}^\infty \frac{1}{2m-1} = \infty, \qquad \text{and} \qquad
+\sum_{m=1}^\infty \frac{-1}{2m} = -\infty .
+\end{equation}
+</div>
+<div class="para">Let <span class="process-math">\(a_n \coloneqq \frac{{(-1)}^{n+1}}{n}\)</span> for simplicity, let an arbitrary number <span class="process-math">\(L \in \R\)</span> be given, and set <span class="process-math">\(\sigma(1) \coloneqq 1\text{.}\)</span> Suppose we have defined <span class="process-math">\(\sigma(n)\)</span> for all <span class="process-math">\(n \leq N\text{.}\)</span>  If</div>
+<div class="displaymath process-math" id="example_harmonsumanything-1-1-8">
+\begin{equation}
+\sum_{n=1}^N a_{\sigma(n)} \leq L ,
+\end{equation}
+</div>
+<div class="para">then let <span class="process-math">\(\sigma(N+1) \coloneqq k\)</span> be the smallest odd <span class="process-math">\(k \in \N\)</span> that we have not used yet, that is, <span class="process-math">\(\sigma(n) \neq k\)</span> for all <span class="process-math">\(n \leq N\text{.}\)</span> Otherwise, let <span class="process-math">\(\sigma(N+1) \coloneqq k\)</span> be the smallest even <span class="process-math">\(k\)</span> that we have not yet used.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_harmonsumanything-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="example_harmonsumanything-1-2">By construction, <span class="process-math">\(\sigma \colon \N \to \N\)</span> is one-to-one. It is also onto, because if we keep adding either odd (resp. even) terms, eventually we pass <span class="process-math">\(L\)</span> and switch to the evens (resp. odds).  So we switch infinitely many times.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_harmonsumanything-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="example_harmonsumanything-1-3">
+<div class="para">Finally, let <span class="process-math">\(N\)</span> be the <span class="process-math">\(N\)</span> where we just pass <span class="process-math">\(L\)</span> and switch. Suppose we have just switched from odd to even, so we start subtracting. Suppose we keep subtracting until some <span class="process-math">\(N' &gt; N\)</span> and we will switch back from even to odd in the next step. Then</div>
+<div class="displaymath process-math" id="example_harmonsumanything-1-3-5">
+\begin{equation}
+L + \frac{1}{\sigma(N)} \geq \sum_{n=1}^{N} a_{\sigma(n)}
+&gt; \sum_{n=1}^{N'} a_{\sigma(n)} &gt; L- \frac{1}{\sigma(N')}.
+\end{equation}
+</div>
+<div class="para">Similarly for switching in the other direction. Therefore, the sum up to <span class="process-math">\(N'\)</span> is within <span class="process-math">\(\frac{1}{\min \{ \sigma(N), \sigma(N') \}}\)</span> of <span class="process-math">\(L\text{.}\)</span>  As we switch infinitely many times, <span class="process-math">\(\sigma(N) \to \infty\)</span> and <span class="process-math">\(\sigma(N') \to \infty\text{.}\)</span> Hence,</div>
+<div class="displaymath process-math" id="example_harmonsumanything-1-3-11">
+\begin{equation}
+\sum_{n=1}^\infty a_{\sigma(n)} = 
+\sum_{n=1}^\infty \frac{{(-1)}^{\sigma(n)+1}}{\sigma(n)} = L .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_harmonsumanything-1-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="example_harmonsumanything-1-4">
+<div class="para">Here is an example to illustrate the proof.  When <span class="process-math">\(L=1.2\text{,}\)</span> the order is</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_serrearrange.html" id="example_harmonsumanything-1-4-2">
+\begin{equation}
+1+\nicefrac{1}{3}-\nicefrac{1}{2}+\nicefrac{1}{5}+\nicefrac{1}{7}+\nicefrac{1}{9}-\nicefrac{1}{4}+\nicefrac{1}{11}+\nicefrac{1}{13}-\nicefrac{1}{6}
++\nicefrac{1}{15}+\nicefrac{1}{17}+\nicefrac{1}{19} - \nicefrac{1}{8} + \cdots .
+\end{equation}
+</div>
+<div class="para">At this point we are no more than <span class="process-math">\(\nicefrac{1}{8}\)</span> from the limit. See <a class="internal" href="sec_moreonseries.html#fig_serrearrange" title="Figure 2.9">Figure 2.9</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_harmonsumanything-1-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <hr class="rahr"/>
+<figure class="figure figure-like" id="fig_serrearrange"><img alt="A diagram of a sequence given as dots. A horizontal dashed line is shown. The sequence starts below the dashed line, then is above it in the next step. Then it goes below the dashed line again, then it takes a few steps before it is above the dashed line, and the next step is again below the dashed line. And so on and so forth. The steps get shorter and shorter." class="raimg" role="img" src="figures/ser-rearrange-mbx.svg" style="width:217pt; height:145pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>The first 14 partial sums of the rearrangement converging to <span class="process-math">\(1.2\text{.}\)</span><div class="autopermalink" data-description="Figure 2.9"><a aria-label="Copy heading and permalink for Figure 2.9" href="#fig_serrearrange" title="Copy heading and permalink for Figure 2.9">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="autopermalink" data-description="Example 2.6.4"><a aria-label="Copy heading and permalink for Example 2.6.4" href="#example_harmonsumanything" title="Copy heading and permalink for Example 2.6.4">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 2.6.3: Rearrangements"><a aria-label="Copy heading and permalink for Subsection 2.6.3: Rearrangements" href="#sec_moreonseries-5" title="Copy heading and permalink for Subsection 2.6.3: Rearrangements">🔗</a></div>
+</section>
+<section class="subsection" id="sec_moreonseries-6">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.6.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Multiplication of series</span>
+</h3>
+<div class="para" id="sec_moreonseries-6-2">As we have already mentioned, multiplication of series is somewhat harder than addition. If at least one of the series converges absolutely, then we can use the following theorem.  For this result, it is convenient to start the series at 0, rather than at 1.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-6-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="sec_moreonseries-6-3"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.6.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Mertens’ theorem.</span>
+</h4>
+<div class="para logical" id="sec_moreonseries-6-3-2-1">
+<div class="para">
+<details aria-live="polite" class="ptx-footnote" id="sec_moreonseries-6-3-2-1-1"><summary class="ptx-footnote__number" title="Footnote 2.6.2"><sup> 2 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_moreonseries-6-3-2-1-1">Proved by the German mathematician <a class="external" href="https://en.wikipedia.org/wiki/Franz_Mertens" target="_blank">Franz Mertens</a> (1840–1927).
+</div></details> Suppose <span class="process-math">\(\sum_{n=0}^\infty a_n\)</span> and <span class="process-math">\(\sum_{n=0}^\infty b_n\)</span> are two convergent series, converging to <span class="process-math">\(A\)</span> and <span class="process-math">\(B\text{,}\)</span> respectively.  Suppose at least one of the series converges absolutely.  Define</div>
+<div class="displaymath process-math" id="sec_moreonseries-6-3-2-1-6">
+\begin{equation}
+c_n \coloneqq a_0 b_n + a_1 b_{n-1} + \cdots + a_n b_0 = \sum_{i=0}^n a_i b_{n-i} .
+\end{equation}
+</div>
+<div class="para">Then the series <span class="process-math">\(\sum_{n=0}^\infty c_n\)</span> converges to <span class="process-math">\(AB\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-6-3-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 2.6.5: Mertens’ theorem"><a aria-label="Copy heading and permalink for Theorem 2.6.5: Mertens’ theorem" href="#sec_moreonseries-6-3" title="Copy heading and permalink for Theorem 2.6.5: Mertens’ theorem">🔗</a></div>
+</article>
+<div class="para" id="sec_moreonseries-6-4">The series <span class="process-math">\(\sum_{n=0}^\infty c_n\)</span> is called the <em class="emphasis">Cauchy product</em> of <span class="process-math">\(\sum_{n=0}^\infty a_n\)</span> and <span class="process-math">\(\sum_{n=0}^\infty b_n\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-6-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_moreonseries-6-5"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_moreonseries-6-5-1">Suppose <span class="process-math">\(\sum_{n=0}^\infty a_n\)</span> converges absolutely, and let <span class="process-math">\(\epsilon &gt; 0\)</span> be given. In this proof, instead of picking complicated estimates just to make the final estimate come out as less than <span class="process-math">\(\epsilon\text{,}\)</span> let us simply obtain an estimate that depends on <span class="process-math">\(\epsilon\)</span> and can be made arbitrarily small.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-6-5-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_moreonseries-6-5-2">
+<div class="para">Write</div>
+<div class="displaymath process-math" id="sec_moreonseries-6-5-2-1">
+\begin{equation}
+A_m \coloneqq \sum_{n=0}^m a_n , \qquad B_m \coloneqq \sum_{n=0}^m b_n .
+\end{equation}
+</div>
+<div class="para">We rearrange the <span class="process-math">\(m\)</span>th partial sum of <span class="process-math">\(\sum_{n=0}^\infty c_n\text{:}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_moreonseries-6-5-2-4">
+\begin{equation}
+\begin{split}
+\abs{\left(\sum_{n=0}^m c_n \right) - AB}
+&amp; =
+\abs{\left( \sum_{n=0}^m \sum_{i=0}^n a_i b_{n-i} \right) - AB}
+\\
+&amp; =
+\abs{\left( \sum_{n=0}^m
+B_n a_{m-n} \right) - AB}
+\\
+&amp; =
+\abs{\left( \sum_{n=0}^m
+( B_n -  B ) a_{m-n} \right)
++ B A_m - AB}
+\\
+&amp; \leq
+\left(
+\sum_{n=0}^m
+\sabs{ B_n -  B } \sabs{a_{m-n}}
+\right)
++
+\sabs{B}\sabs{A_m - A}
+\end{split}
+\end{equation}
+</div>
+<div class="para">We can surely make the second term on the right-hand side small. The trick is to handle the first term. Pick <span class="process-math">\(K\)</span> such that for all <span class="process-math">\(m \geq K\text{,}\)</span> we have <span class="process-math">\(\sabs{A_m - A} &lt; \epsilon\)</span> and also <span class="process-math">\(\sabs{B_m - B} &lt; \epsilon\text{.}\)</span> As <span class="process-math">\(\sum_{n=0}^\infty a_n\)</span> converges absolutely, there is a <span class="process-math">\(K\)</span> large enough such that for all <span class="process-math">\(m \geq K\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_moreonseries-6-5-2-12">
+\begin{equation}
+\sum_{n=K}^m \sabs{a_n} &lt; \epsilon .
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(\sum_{n=0}^\infty b_n\)</span> converges, <span class="process-math">\(B_{\text{max}} \coloneqq \sup \bigl\{ \sabs{ B_n - B } : n = 0,1,2,\ldots
+\bigr\}\)</span> is finite.  Take <span class="process-math">\(m \geq 2K\text{.}\)</span> In particular, <span class="process-math">\(m-K+1 &gt; K\text{.}\)</span>  So</div>
+<div class="displaymath process-math" id="sec_moreonseries-6-5-2-17">
+\begin{equation}
+\begin{split}
+\sum_{n=0}^m
+\sabs{ B_n -  B } \sabs{a_{m-n}}
+&amp; =
+\left(
+\sum_{n=0}^{m-K}
+\sabs{ B_n -  B } \sabs{a_{m-n}}
+\right)
++
+\left(
+\sum_{n=m-K+1}^m
+\sabs{ B_n -  B } \sabs{a_{m-n}}
+\right)
+\\
+&amp; \leq
+\left(
+\sum_{n=K}^m
+\sabs{a_{n}}
+\right)
+B_{\text{max}}
++
+\left(
+\sum_{n=0}^{K-1}
+\epsilon \sabs{a_{n}}
+\right)
+\\
+&amp; \leq
+\epsilon
+B_{\text{max}}
++
+\epsilon
+\left(
+\sum_{n=0}^\infty \sabs{a_{n}}
+\right) .
+\end{split}
+\end{equation}
+</div>
+<div class="para">Therefore, for <span class="process-math">\(m \geq 2K\text{,}\)</span> we have</div>
+<div class="displaymath process-math" id="sec_moreonseries-6-5-2-19">
+\begin{equation}
+\begin{split}
+\abs{\left(\sum_{n=0}^m c_n \right) - AB}
+&amp; \leq
+\left(
+\sum_{n=0}^m
+\sabs{ B_n -  B } \sabs{a_{m-n}}
+\right)
++
+\sabs{B}\sabs{A_m - A}
+\\
+&amp; \leq
+\epsilon
+B_{\text{max}}
++
+\epsilon
+\left(
+\sum_{n=0}^\infty \sabs{a_{n}}
+\right)
++
+\sabs{B}\epsilon
+=
+\epsilon 
+\left(
+B_{\text{max}}
++
+\left(
+\sum_{n=0}^\infty \sabs{a_{n}}
+\right)
++
+\sabs{B}
+\right) .
+\end{split}
+\end{equation}
+</div>
+<div class="para">The expression in the parentheses on the right-hand side is a fixed number. Hence, we can make the right-hand side arbitrarily small by picking a small enough <span class="process-math">\(\epsilon&gt; 0\text{.}\)</span>  So <span class="process-math">\(\sum_{n=0}^\infty c_n\)</span> converges to <span class="process-math">\(AB\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-6-5-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 2.6.4.1"><a aria-label="Copy heading and permalink for Proof 2.6.4.1" href="#sec_moreonseries-6-5" title="Copy heading and permalink for Proof 2.6.4.1">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_moreonseries-6-6"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.6.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_moreonseries-6-6-1-1">
+<div class="para">If both series are only conditionally convergent, the Cauchy product series need not even converge. Suppose we take <span class="process-math">\(a_n = b_n = {(-1)}^n \frac{1}{\sqrt{n+1}}\text{.}\)</span> The series <span class="process-math">\(\sum_{n=0}^\infty a_n = \sum_{n=0}^\infty b_n\)</span> converges by the alternating series test; however, it does not converge absolutely as can be seen from the <span class="process-math">\(p\)</span>-test.  Let us look at the Cauchy product.</div>
+<div class="displaymath process-math" id="sec_moreonseries-6-6-1-1-4">
+\begin{equation}
+\begin{aligned}
+c_n
+&amp;
+= 
+{(-1)}^n
+\left(
+\frac{1}{\sqrt{n+1}} + 
+\frac{1}{\sqrt{2n}} + 
+\frac{1}{\sqrt{3(n-1)}} + \cdots +
+\frac{1}{\sqrt{n+1}}
+\right)
+\\
+&amp;
+=
+{(-1)}^n
+\sum_{i=0}^n \frac{1}{\sqrt{(i+1)(n-i+1)}} .
+\end{aligned}
+\end{equation}
+</div>
+<div class="para">Therefore,</div>
+<div class="displaymath process-math" id="sec_moreonseries-6-6-1-1-5">
+\begin{equation}
+\sabs{c_n} 
+=
+\sum_{i=0}^n \frac{1}{\sqrt{(i+1)(n-i+1)}} 
+\geq
+\sum_{i=0}^n \frac{1}{\sqrt{(n+1)(n+1)}} 
+= 1 .
+\end{equation}
+</div>
+<div class="para">The terms do not go to zero and hence <span class="process-math">\(\sum_{n=0}^\infty c_n\)</span> cannot converge.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-6-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 2.6.6"><a aria-label="Copy heading and permalink for Example 2.6.6" href="#sec_moreonseries-6-6" title="Copy heading and permalink for Example 2.6.6">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 2.6.4: Multiplication of series"><a aria-label="Copy heading and permalink for Subsection 2.6.4: Multiplication of series" href="#sec_moreonseries-6" title="Copy heading and permalink for Subsection 2.6.4: Multiplication of series">🔗</a></div>
+</section>
+<section class="subsection" id="sec_moreonseries-7">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.6.5</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Power series</span>
+</h3>
+<div class="para logical" id="sec_moreonseries-7-2">
+<div class="para">Fix <span class="process-math">\(x_0 \in \R\text{.}\)</span> A <em class="emphasis">power series</em> about <span class="process-math">\(x_0\)</span> is a series of the form</div>
+<div class="displaymath process-math" id="sec_moreonseries-7-2-4">
+\begin{equation}
+\sum_{n=0}^\infty a_n {(x-x_0)}^n .
+\end{equation}
+</div>
+<div class="para">A power series is really a function of <span class="process-math">\(x\text{,}\)</span> and many important functions in analysis can be written as power series.  We use the convention that <span class="process-math">\(0^0 = 1\)</span> (that is, if <span class="process-math">\(x=x_0\)</span> and <span class="process-math">\(n=0\)</span>).</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-7-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_moreonseries-7-3">A power series is said to be <em class="emphasis">convergent</em> if there is at least one <span class="process-math">\(x \neq x_0\)</span> that makes the series converge. If <span class="process-math">\(x=x_0\text{,}\)</span> then the series always converges since all terms except the first are zero. If the series does not converge for any point <span class="process-math">\(x \neq x_0\text{,}\)</span> we say that the series is <em class="emphasis">divergent</em>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-7-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="ps_expex"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.6.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="ps_expex-1-1">
+<div class="para">The series</div>
+<div class="displaymath process-math" id="ps_expex-1-1-1">
+\begin{equation}
+\sum_{n=0}^\infty \frac{1}{n!} x^n
+\end{equation}
+</div>
+<div class="para">is absolutely convergent for all <span class="process-math">\(x \in \R\)</span> using the ratio test: For any <span class="process-math">\(x \in \R\)</span>
+</div>
+<div class="displaymath process-math" id="ps_expex-1-1-4">
+\begin{equation}
+\lim_{n \to \infty}
+\frac{\bigl(1/(n+1)!\bigr) \, x^{n+1}}{(1/n!) \, x^{n}}
+=
+\lim_{n \to \infty}
+\frac{x}{n+1}
+=
+0.
+\end{equation}
+</div>
+<div class="para">Recall from calculus that this series converges to <span class="process-math">\(e^x\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#ps_expex-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 2.6.7"><a aria-label="Copy heading and permalink for Example 2.6.7" href="#ps_expex" title="Copy heading and permalink for Example 2.6.7">🔗</a></div>
+</article>
+<article class="example example-like" id="ps_1kex"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.6.8</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="ps_1kex-1-1">
+<div class="para">The series</div>
+<div class="displaymath process-math" id="ps_1kex-1-1-1">
+\begin{equation}
+\sum_{n=1}^\infty \frac{1}{n} x^n
+\end{equation}
+</div>
+<div class="para">converges absolutely for all <span class="process-math">\(x \in (-1,1)\)</span> via the ratio test:</div>
+<div class="displaymath process-math" id="ps_1kex-1-1-3">
+\begin{equation}
+\lim_{n \to \infty}
+\abs{
+\frac{\bigl(1/(n+1) \bigr) \, x^{n+1}}{(1/n) \, x^{n}}
+}
+=
+\lim_{n \to \infty}
+\sabs{x} \frac{n}{n+1}
+=
+\sabs{x} &lt; 1 .
+\end{equation}
+</div>
+<div class="para">The series converges at <span class="process-math">\(x=-1\text{,}\)</span> as <span class="process-math">\(\sum_{n=1}^\infty \frac{{(-1)}^n}{n}\)</span> converges by the alternating series test. But the power series does not converge absolutely at <span class="process-math">\(x=-1\text{,}\)</span> because <span class="process-math">\(\sum_{n=1}^\infty \frac{1}{n}\)</span> does not converge. The series diverges at <span class="process-math">\(x=1\text{.}\)</span> When <span class="process-math">\(\sabs{x} &gt; 1\text{,}\)</span> then the series diverges via the ratio test.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#ps_1kex-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 2.6.8"><a aria-label="Copy heading and permalink for Example 2.6.8" href="#ps_1kex" title="Copy heading and permalink for Example 2.6.8">🔗</a></div>
+</article>
+<article class="example example-like" id="ps_divergeex"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.6.9</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="ps_divergeex-1-1">
+<div class="para">The series</div>
+<div class="displaymath process-math" id="ps_divergeex-1-1-1">
+\begin{equation}
+\sum_{n=1}^\infty n^n x^n
+\end{equation}
+</div>
+<div class="para">diverges for all <span class="process-math">\(x \neq 0\text{.}\)</span>  Let us apply the root test</div>
+<div class="displaymath process-math" id="ps_divergeex-1-1-3">
+\begin{equation}
+\limsup_{n\to\infty}
+\,
+\sabs{n^n x^n}^{1/n}
+=
+\limsup_{n\to\infty}
+\,
+n \sabs{x}
+= \infty .
+\end{equation}
+</div>
+<div class="para">Therefore, the series diverges for all <span class="process-math">\(x \neq 0\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#ps_divergeex-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 2.6.9"><a aria-label="Copy heading and permalink for Example 2.6.9" href="#ps_divergeex" title="Copy heading and permalink for Example 2.6.9">🔗</a></div>
+</article>
+<div class="para" id="sec_moreonseries-7-7">Convergence of power series in general works analogously to the three examples above.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-7-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_powerserrealradius"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.6.10</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="prop_powerserrealradius-1-1">Let <span class="process-math">\(\sum_{n=0}^\infty a_n {(x-x_0)}^n\)</span> be a power series. If the series is convergent, then either it converges absolutely at all <span class="process-math">\(x \in \R\text{,}\)</span> or there exists a number <span class="process-math">\(\rho\text{,}\)</span> such that the series converges absolutely on the interval <span class="process-math">\((x_0-\rho,x_0+\rho)\)</span> and diverges when <span class="process-math">\(x &lt; x_0-\rho\)</span> or <span class="process-math">\(x &gt; x_0+\rho\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_powerserrealradius-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 2.6.10"><a aria-label="Copy heading and permalink for Proposition 2.6.10" href="#prop_powerserrealradius" title="Copy heading and permalink for Proposition 2.6.10">🔗</a></div>
+</article>
+<div class="para" id="sec_moreonseries-7-9">The number <span class="process-math">\(\rho\)</span> is called the <em class="emphasis">radius of convergence</em> of the power series.  We write <span class="process-math">\(\rho = \infty\)</span> if the series converges for all <span class="process-math">\(x\text{,}\)</span> and we write <span class="process-math">\(\rho = 0\)</span> if the series is divergent. At the endpoints, that is, if <span class="process-math">\(x = x_0+\rho\)</span> or <span class="process-math">\(x = x_0-\rho\text{,}\)</span> the proposition says nothing, and the series might or might not converge. See <a class="internal" href="sec_moreonseries.html#ps_convfig" title="Figure 2.10">Figure 2.10</a>. In <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_moreonseries.html#ps_1kex" title="Example 2.6.8">Example 2.6.8</a>, the radius of convergence is <span class="process-math">\(\rho=1\text{,}\)</span> in <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_moreonseries.html#ps_expex" title="Example 2.6.7">Example 2.6.7</a>, the radius of convergence is <span class="process-math">\(\rho=\infty\text{,}\)</span> and in <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_moreonseries.html#ps_divergeex" title="Example 2.6.9">Example 2.6.9</a>, the radius of convergence is <span class="process-math">\(\rho=0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-7-9" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<hr class="rahr"/>
+<figure class="figure figure-like" id="ps_convfig"><img alt='A diagra of the real line with three points marked, from left to right, x sub 0 minus rho, x sub 0, and x sub 0 plus rho. The part of the line to the left of x sub 0 minus rho and the part of the line to the right of x sub 0 plus rho is labeled as "diverges". The interval between x sub 0 minus rho and x sub 0 plus rho is shaded and labeled as "converges absolutely". The two points x sub 0 minus rho and x sub 0 plus rho are labeled with question marks.' class="raimg" role="img" src="figures/ps-conv-mbxpdft.svg" style="width:361pt; height:70pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Convergence of a power series.<div class="autopermalink" data-description="Figure 2.10"><a aria-label="Copy heading and permalink for Figure 2.10" href="#ps_convfig" title="Copy heading and permalink for Figure 2.10">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<article class="proof" id="sec_moreonseries-7-13"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_moreonseries-7-13-1">
+<div class="para">Write</div>
+<div class="displaymath process-math" id="sec_moreonseries-7-13-1-1">
+\begin{equation}
+R \coloneqq \limsup_{n\to\infty} {\sabs{a_n}}^{1/n} .
+\end{equation}
+</div>
+<div class="para">We apply the root test,</div>
+<div class="displaymath process-math" id="sec_moreonseries-7-13-1-2">
+\begin{equation}
+L = \limsup_{n\to\infty} {\babs{a_n {(x-x_0)}^n}}^{1/n} 
+=
+\sabs{x-x_0} \limsup_{n\to\infty} {\sabs{a_n}}^{1/n}
+=
+\sabs{x-x_0} R .
+\end{equation}
+</div>
+<div class="para">If <span class="process-math">\(R = \infty\text{,}\)</span> then <span class="process-math">\(L=\infty\)</span> for every <span class="process-math">\(x \neq x_0\text{,}\)</span> and the series diverges by the root test. On the other hand, if <span class="process-math">\(R = 0\text{,}\)</span> then <span class="process-math">\(L=0\)</span> for every <span class="process-math">\(x\text{,}\)</span> and the series converges absolutely for all <span class="process-math">\(x\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-7-13-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_moreonseries-7-13-2">
+<div class="para">Suppose <span class="process-math">\(0 &lt; R &lt; \infty\text{.}\)</span> The series converges absolutely if <span class="process-math">\(1 &gt; L = R \sabs{x-x_0}\text{,}\)</span> that is,</div>
+<div class="displaymath process-math" id="sec_moreonseries-7-13-2-3">
+\begin{equation}
+\sabs{x-x_0} &lt; \nicefrac{1}{R} .
+\end{equation}
+</div>
+<div class="para">The series diverges when <span class="process-math">\(1 &lt; L = R \sabs{x-x_0}\text{,}\)</span> or</div>
+<div class="displaymath process-math" id="sec_moreonseries-7-13-2-5">
+\begin{equation}
+\sabs{x-x_0} &gt; \nicefrac{1}{R} .
+\end{equation}
+</div>
+<div class="para">Letting <span class="process-math">\(\rho \coloneqq \nicefrac{1}{R}\)</span> completes the proof.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-7-13-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 2.6.5.1"><a aria-label="Copy heading and permalink for Proof 2.6.5.1" href="#sec_moreonseries-7-13" title="Copy heading and permalink for Proof 2.6.5.1">🔗</a></div>
+</article>
+<div class="para" id="sec_moreonseries-7-14">It may be useful to restate what we have learned in the proof as a separate proposition.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-7-14" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_moreonseries-7-15"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.6.11</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_moreonseries-7-15-1-1">
+<div class="para">Let <span class="process-math">\(\sum_{n=0}^\infty a_n {(x-x_0)}^n\)</span> be a power series, and let</div>
+<div class="displaymath process-math" id="sec_moreonseries-7-15-1-1-2">
+\begin{equation}
+R \coloneqq \limsup_{n\to\infty} {\sabs{a_n}}^{1/n} .
+\end{equation}
+</div>
+<div class="para">If <span class="process-math">\(R = \infty\text{,}\)</span> the power series is divergent.  If <span class="process-math">\(R=0\text{,}\)</span> then the power series converges everywhere.   Otherwise, the radius of convergence <span class="process-math">\(\rho = \nicefrac{1}{R}\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-7-15-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 2.6.11"><a aria-label="Copy heading and permalink for Proposition 2.6.11" href="#sec_moreonseries-7-15" title="Copy heading and permalink for Proposition 2.6.11">🔗</a></div>
+</article>
+<div class="para" id="sec_moreonseries-7-16">Often, the radius of convergence is written as <span class="process-math">\(\rho = \nicefrac{1}{R}\)</span> in all three cases, with the understanding of what <span class="process-math">\(\rho\)</span> should be if <span class="process-math">\(R = 0\)</span> or <span class="process-math">\(R =
+\infty\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-7-16" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_moreonseries-7-17">Convergent power series can be added and multiplied together, and multiplied by constants. The proposition has a straightforward proof using what we know about series in general, and power series in particular.  We leave the proof to the reader.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-7-17" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_moreonseries-7-18"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.6.12</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_moreonseries-7-18-1-1">
+<div class="para">Let <span class="process-math">\(\sum_{n=0}^\infty a_n {(x-x_0)}^n\)</span> and <span class="process-math">\(\sum_{n=0}^\infty b_n {(x-x_0)}^n\)</span> be two convergent power series with radius of convergence at least <span class="process-math">\(\rho &gt; 0\)</span> and <span class="process-math">\(\alpha \in \R\text{.}\)</span>  Then for all <span class="process-math">\(x\)</span> such that <span class="process-math">\(\sabs{x-x_0} &lt; \rho\text{,}\)</span> we have</div>
+<div class="displaymath process-math" id="sec_moreonseries-7-18-1-1-7">
+\begin{equation}
+\left(\sum_{n=0}^\infty a_n {(x-x_0)}^n\right)
++
+\left(\sum_{n=0}^\infty b_n {(x-x_0)}^n\right)
+=
+\sum_{n=0}^\infty (a_n+b_n) {(x-x_0)}^n ,
+\end{equation}
+</div>
+<div class="displaymath process-math" id="sec_moreonseries-7-18-1-1-8">
+\begin{equation}
+\alpha
+\left(\sum_{n=0}^\infty a_n {(x-x_0)}^n\right)
+=
+\sum_{n=0}^\infty \alpha a_n {(x-x_0)}^n ,
+\end{equation}
+</div>
+<div class="para">and</div>
+<div class="displaymath process-math" id="sec_moreonseries-7-18-1-1-9">
+\begin{equation}
+\left(\sum_{n=0}^\infty a_n {(x-x_0)}^n\right)
+\,
+\left(\sum_{n=0}^\infty b_n {(x-x_0)}^n\right)
+=
+\sum_{n=0}^\infty c_n {(x-x_0)}^n ,
+\end{equation}
+</div>
+<div class="para">where <span class="process-math">\(c_n = a_0b_n + a_1 b_{n-1} + \cdots + a_n b_0\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-7-18-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 2.6.12"><a aria-label="Copy heading and permalink for Proposition 2.6.12" href="#sec_moreonseries-7-18" title="Copy heading and permalink for Proposition 2.6.12">🔗</a></div>
+</article>
+<div class="para" id="sec_moreonseries-7-19">For all <span class="process-math">\(x\)</span> with <span class="process-math">\(\sabs{x-x_0} &lt; \rho\text{,}\)</span> we have two convergent series, so their term-by-term addition and multiplication by constants follows by the previous section. As for such <span class="process-math">\(x\)</span> the series converges absolutely, we can apply Mertens’ theorem to find the product of two series. Consequently, after performing the algebraic operations, the radius of convergence of the resulting series is at least <span class="process-math">\(\rho\text{.}\)</span> The radius of convergence of the result could be strictly larger than the radius of convergence of either of the series we started with. See the exercises.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-7-19" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_moreonseries-7-20">
+<div class="para">Let us look at some examples of power series. Polynomials are simply finite power series:  A polynomial is a power series where the <span class="process-math">\(a_n\)</span> are zero for all <span class="process-math">\(n\)</span> large enough.  We expand a polynomial as a power series about any point <span class="process-math">\(x_0\)</span> by writing the polynomial as a polynomial in <span class="process-math">\((x-x_0)\text{.}\)</span>  For example, <span class="process-math">\(2x^2-3x+4\)</span> as a power series around <span class="process-math">\(x_0 = 1\)</span> is</div>
+<div class="displaymath process-math" id="sec_moreonseries-7-20-7">
+\begin{equation}
+2x^2-3x+4 = 3 + (x-1) + 2{(x-1)}^2 .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-7-20" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_moreonseries-7-21">
+<div class="para">We can also expand <em class="emphasis">rational functions</em> (that is, ratios of polynomials) as power series, although we will not completely prove this fact here. Notice that a series for a rational function only defines the function on an interval even if the function is defined elsewhere.  For example, for the <em class="emphasis">geometric series</em>, we have that for <span class="process-math">\(x \in (-1,1)\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_moreonseries-7-21-4">
+\begin{equation}
+\frac{1}{1-x} =
+\sum_{n=0}^\infty x^n .
+\end{equation}
+</div>
+<div class="para">The series diverges when <span class="process-math">\(\sabs{x} &gt; 1\text{,}\)</span> even though <span class="process-math">\(\frac{1}{1-x}\)</span> is defined for all <span class="process-math">\(x \neq 1\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-7-21" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_moreonseries-7-22">We can use the geometric series together with rules for addition and multiplication of power series to expand rational functions as power series around <span class="process-math">\(x_0\text{,}\)</span> as long as the denominator is not zero at <span class="process-math">\(x_0\text{.}\)</span>  We state without proof that this is always possible, and we give an example of such a computation using the geometric series.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-7-22" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_moreonseries-7-23"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.6.13</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_moreonseries-7-23-1-1">Let us expand <span class="process-math">\(\frac{x}{1+2x+x^2}\)</span> as a power series around the origin (<span class="process-math">\(x_0 = 0\)</span>) and find the radius of convergence.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-7-23-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_moreonseries-7-23-1-2">
+<div class="para">Write <span class="process-math">\(1+2x+x^2 = {(1+x)}^2 = {\bigl(1-(-x)\bigr)}^2\text{,}\)</span> and suppose <span class="process-math">\(\sabs{x} &lt; 1\text{.}\)</span>  Compute</div>
+<div class="displaymath process-math" id="sec_moreonseries-7-23-1-2-3">
+\begin{equation}
+\begin{split}
+\frac{x}{1+2x+x^2}
+&amp;=
+x \,
+{\left(
+\frac{1}{1-(-x)}
+\right)}^2
+\\
+&amp;=
+x \,
+{\left( 
+\sum_{n=0}^\infty {(-1)}^n x^n 
+\right)}^2
+\\
+&amp;=
+x \,
+\left(
+\sum_{n=0}^\infty c_n x^n 
+\right)
+\\
+&amp;=
+\sum_{n=0}^\infty c_n x^{n+1} .
+\end{split}
+\end{equation}
+</div>
+<div class="para">Using the formula for the product of series, we obtain <span class="process-math">\(c_0 = 1\text{,}\)</span> <span class="process-math">\(c_1 = -1 -1 = -2\text{,}\)</span> <span class="process-math">\(c_2 = 1+1+1 = 3\text{,}\)</span> etc. Hence, for <span class="process-math">\(\sabs{x} &lt; 1\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_moreonseries-7-23-1-2-8">
+\begin{equation}
+\frac{x}{1+2x+x^2}
+=
+\sum_{n=1}^\infty {(-1)}^{n+1} n x^n .
+\end{equation}
+</div>
+<div class="para">The radius of convergence is at least 1.  We leave it to the reader to verify that the radius of convergence is exactly equal to 1.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-7-23-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 2.6.13"><a aria-label="Copy heading and permalink for Example 2.6.13" href="#sec_moreonseries-7-23" title="Copy heading and permalink for Example 2.6.13">🔗</a></div>
+</article>
+<div class="para logical" id="sec_moreonseries-7-24">
+<div class="para">You can use the method of partial fractions you know from calculus. For example, to find the power series for <span class="process-math">\(\frac{x^3+x}{x^2-1}\)</span> at 0, write</div>
+<div class="displaymath process-math" id="sec_moreonseries-7-24-2">
+\begin{equation}
+\frac{x^3+x}{x^2-1}
+=
+x + \frac{1}{1+x} - \frac{1}{1-x}
+=
+x + \sum_{n=0}^\infty {(-1)}^n x^n - \sum_{n=0}^\infty x^n .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-7-24" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 2.6.5: Power series"><a aria-label="Copy heading and permalink for Subsection 2.6.5: Power series" href="#sec_moreonseries-7" title="Copy heading and permalink for Subsection 2.6.5: Power series">🔗</a></div>
+</section>
+<section class="exercises" id="sec_moreonseries-8">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.6.6</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_moreonseries-8-1"><h4 class="heading"><span class="codenumber">2.6.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_moreonseries-8-1-1-1">Decide the convergence or divergence of the following series.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-8-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_moreonseries-8-1-1-2">a) <span class="process-math">\(\displaystyle \sum_{n=1}^\infty \frac{1}{2^{2n+1}}\)</span>        b) <span class="process-math">\(\displaystyle \sum_{n=1}^\infty \frac{{(-1)}^{n}(n-1)}{n}\)</span>        c) <span class="process-math">\(\displaystyle \sum_{n=1}^\infty \frac{{(-1)}^n}{n^{1/10}}\)</span>        d) <span class="process-math">\(\displaystyle \sum_{n=1}^\infty \frac{n^n}{{(n+1)}^{2n}}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-8-1-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.6.1"><a aria-label="Copy heading and permalink for Exercise 2.6.1" href="#sec_moreonseries-8-1" title="Copy heading and permalink for Exercise 2.6.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_moreonseries-8-2"><h4 class="heading"><span class="codenumber">2.6.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_moreonseries-8-2-1-1">Suppose both <span class="process-math">\(\sum_{n=0}^\infty a_n\)</span> and <span class="process-math">\(\sum_{n=0}^\infty b_n\)</span> converge absolutely. Show that the product series, <span class="process-math">\(\sum_{n=0}^\infty c_n\)</span> where <span class="process-math">\(c_n = a_0 b_n + a_1 b_{n-1} + \cdots + a_n b_0\text{,}\)</span> also converges absolutely.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-8-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.6.2"><a aria-label="Copy heading and permalink for Exercise 2.6.2" href="#sec_moreonseries-8-2" title="Copy heading and permalink for Exercise 2.6.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_seriesconvergestoanything"><h4 class="heading"><span class="codenumber">2.6.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_seriesconvergestoanything-1-1">
+<em class="emphasis">(Challenging)</em>   Let <span class="process-math">\(\sum_{n=1}^\infty a_n\)</span> be conditionally convergent. Show that given an arbitrary <span class="process-math">\(x \in \R\)</span> there exists a rearrangement of <span class="process-math">\(\sum_{n=1}^\infty a_n\)</span> such that the rearranged series converges to <span class="process-math">\(x\text{.}\)</span> Hint: See <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_moreonseries.html#example_harmonsumanything" title="Example 2.6.4">Example 2.6.4</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_seriesconvergestoanything-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.6.3"><a aria-label="Copy heading and permalink for Exercise 2.6.3" href="#exercise_seriesconvergestoanything" title="Copy heading and permalink for Exercise 2.6.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_moreonseries-8-4"><h4 class="heading"><span class="codenumber">2.6.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_moreonseries-8-4-1-1"><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-8-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div></div>
+<ol class="lower-alpha ol-marker-3" id="sec_moreonseries-8-4-1-2">
+<li id="sec_moreonseries-8-4-1-2-1">
+<div class="para" id="sec_moreonseries-8-4-1-2-1-1">Show that the alternating harmonic series <span class="process-math">\(\sum_{n=1}^\infty \frac{{(-1)}^{n+1}}{n}\)</span> has a rearrangement such that for every interval <span class="process-math">\((x,y)\text{,}\)</span> there exists a partial sum <span class="process-math">\(s_n\)</span> of the rearranged series such that <span class="process-math">\(s_n \in (x,y)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-8-4-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2.6.4.a"><a aria-label="Copy heading and permalink for Item 2.6.4.a" href="#sec_moreonseries-8-4-1-2-1" title="Copy heading and permalink for Item 2.6.4.a">🔗</a></div>
+</li>
+<li id="sec_moreonseries-8-4-1-2-2">
+<div class="para" id="sec_moreonseries-8-4-1-2-2-1">Show that the rearrangement you found does not converge. See <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_moreonseries.html#example_harmonsumanything" title="Example 2.6.4">Example 2.6.4</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-8-4-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2.6.4.b"><a aria-label="Copy heading and permalink for Item 2.6.4.b" href="#sec_moreonseries-8-4-1-2-2" title="Copy heading and permalink for Item 2.6.4.b">🔗</a></div>
+</li>
+<li id="sec_moreonseries-8-4-1-2-3">
+<div class="para" id="sec_moreonseries-8-4-1-2-3-1">Show that for every <span class="process-math">\(x \in \R\text{,}\)</span> there exists a subsequence of partial sums <span class="process-math">\(\{ s_{n_k} \}_{k=1}^\infty\)</span> of your rearrangement such that <span class="process-math">\(\lim\limits_{k\to\infty} s_{n_k} = x\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-8-4-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2.6.4.c"><a aria-label="Copy heading and permalink for Item 2.6.4.c" href="#sec_moreonseries-8-4-1-2-3" title="Copy heading and permalink for Item 2.6.4.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 2.6.4"><a aria-label="Copy heading and permalink for Exercise 2.6.4" href="#sec_moreonseries-8-4" title="Copy heading and permalink for Exercise 2.6.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_moreonseries-8-5"><h4 class="heading"><span class="codenumber">2.6.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_moreonseries-8-5-1-1">For the following power series, find if they are convergent or not, and if so find their radius of convergence. In part f), do note the factorial in the exponent.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-8-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_moreonseries-8-5-1-2">a) <span class="process-math">\(\displaystyle \sum_{n=0}^\infty 2^n x^n\)</span>        b) <span class="process-math">\(\displaystyle \sum_{n=0}^\infty n x^n\)</span>        c) <span class="process-math">\(\displaystyle \sum_{n=0}^\infty n! \, x^n\)</span> <br/> d) <span class="process-math">\(\displaystyle \sum_{n=0}^\infty \frac{1}{(2n)!} {(x-10)}^n\)</span>        e) <span class="process-math">\(\displaystyle \sum_{n=0}^\infty x^{2n}\)</span>        f) <span class="process-math">\(\displaystyle \sum_{n=0}^\infty n! \, x^{n!}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-8-5-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.6.5"><a aria-label="Copy heading and permalink for Exercise 2.6.5" href="#sec_moreonseries-8-5" title="Copy heading and permalink for Exercise 2.6.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_moreonseries-8-6"><h4 class="heading"><span class="codenumber">2.6.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_moreonseries-8-6-1-1">Suppose <span class="process-math">\(\sum_{n=0}^\infty a_n x^n\)</span> converges for <span class="process-math">\(x=1\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-8-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_moreonseries-8-6-1-2">
+<li id="sec_moreonseries-8-6-1-2-1">
+<div class="para" id="sec_moreonseries-8-6-1-2-1-1">What can you say about the radius of convergence?<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-8-6-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2.6.6.a"><a aria-label="Copy heading and permalink for Item 2.6.6.a" href="#sec_moreonseries-8-6-1-2-1" title="Copy heading and permalink for Item 2.6.6.a">🔗</a></div>
+</li>
+<li id="sec_moreonseries-8-6-1-2-2">
+<div class="para" id="sec_moreonseries-8-6-1-2-2-1">If you further know that at <span class="process-math">\(x=1\)</span> the convergence is not absolute, what can you say?<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-8-6-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2.6.6.b"><a aria-label="Copy heading and permalink for Item 2.6.6.b" href="#sec_moreonseries-8-6-1-2-2" title="Copy heading and permalink for Item 2.6.6.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 2.6.6"><a aria-label="Copy heading and permalink for Exercise 2.6.6" href="#sec_moreonseries-8-6" title="Copy heading and permalink for Exercise 2.6.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_moreonseries-8-7"><h4 class="heading"><span class="codenumber">2.6.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_moreonseries-8-7-1-1">Expand <span class="process-math">\(\dfrac{x}{4-x^2}\)</span> as a power series around <span class="process-math">\(x_0 = 0\text{,}\)</span> and compute its radius of convergence.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-8-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.6.7"><a aria-label="Copy heading and permalink for Exercise 2.6.7" href="#sec_moreonseries-8-7" title="Copy heading and permalink for Exercise 2.6.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_moreonseries-8-8"><h4 class="heading"><span class="codenumber">2.6.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_moreonseries-8-8-1-1"><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-8-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div></div>
+<ol class="lower-alpha ol-marker-3" id="sec_moreonseries-8-8-1-2">
+<li id="sec_moreonseries-8-8-1-2-1">
+<div class="para" id="sec_moreonseries-8-8-1-2-1-1">Find an example where the radii of convergence of <span class="process-math">\(\sum_{n=0}^\infty a_n x^n\)</span> and <span class="process-math">\(\sum_{n=0}^\infty b_n x^n\)</span> are both 1, but the radius of convergence of the sum of the two series is infinite.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-8-8-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2.6.8.a"><a aria-label="Copy heading and permalink for Item 2.6.8.a" href="#sec_moreonseries-8-8-1-2-1" title="Copy heading and permalink for Item 2.6.8.a">🔗</a></div>
+</li>
+<li id="sec_moreonseries-8-8-1-2-2">
+<div class="para" id="sec_moreonseries-8-8-1-2-2-1">(Trickier) Find an example where the radii of convergence of <span class="process-math">\(\sum_{n=0}^\infty a_n x^n\)</span> and <span class="process-math">\(\sum_{n=0}^\infty b_n x^n\)</span> are both 1, but the radius of convergence of the product of the two series is infinite.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-8-8-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2.6.8.b"><a aria-label="Copy heading and permalink for Item 2.6.8.b" href="#sec_moreonseries-8-8-1-2-2" title="Copy heading and permalink for Item 2.6.8.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 2.6.8"><a aria-label="Copy heading and permalink for Exercise 2.6.8" href="#sec_moreonseries-8-8" title="Copy heading and permalink for Exercise 2.6.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_moreonseries-8-9"><h4 class="heading"><span class="codenumber">2.6.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_moreonseries-8-9-1-1">Figure out how to compute the radius of convergence using the ratio test. That is, suppose <span class="process-math">\(\sum_{n=0}^\infty a_n x^n\)</span> is a power series and <span class="process-math">\(R \coloneqq \lim_{n\to\infty} \frac{\sabs{a_{n+1}}}{\sabs{a_n}}\)</span> exists or is <span class="process-math">\(\infty\text{.}\)</span> Find the radius of convergence and prove your claim.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-8-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.6.9"><a aria-label="Copy heading and permalink for Exercise 2.6.9" href="#sec_moreonseries-8-9" title="Copy heading and permalink for Exercise 2.6.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_moreonseries-8-10"><h4 class="heading"><span class="codenumber">2.6.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_moreonseries-8-10-1-1"><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-8-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div></div>
+<ol class="lower-alpha ol-marker-3" id="sec_moreonseries-8-10-1-2">
+<li id="sec_moreonseries-8-10-1-2-1">
+<div class="para" id="sec_moreonseries-8-10-1-2-1-1">Prove that <span class="process-math">\(\lim_{n\to\infty} n^{1/n} = 1\)</span> using the following procedure:  Write <span class="process-math">\(n^{1/n} = 1+b_n\)</span> and note <span class="process-math">\(b_n &gt; 0\)</span> when <span class="process-math">\(n &gt; 1\text{.}\)</span>  Then show that <span class="process-math">\({(1+b_n)}^n \geq 
+\frac{n(n-1)}{2}b_n^2\)</span> and use this to show that <span class="process-math">\(\lim\limits_{n\to\infty} b_n = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-8-10-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2.6.10.a"><a aria-label="Copy heading and permalink for Item 2.6.10.a" href="#sec_moreonseries-8-10-1-2-1" title="Copy heading and permalink for Item 2.6.10.a">🔗</a></div>
+</li>
+<li id="sec_moreonseries-8-10-1-2-2">
+<div class="para" id="sec_moreonseries-8-10-1-2-2-1">Use the result of part a) to show that if <span class="process-math">\(\sum_{n=0}^\infty a_n x^n\)</span> is a convergent power series with radius of convergence <span class="process-math">\(R\text{,}\)</span> then <span class="process-math">\(\sum_{n=0}^\infty n a_n x^n\)</span> is also convergent with the same radius of convergence.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-8-10-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2.6.10.b"><a aria-label="Copy heading and permalink for Item 2.6.10.b" href="#sec_moreonseries-8-10-1-2-2" title="Copy heading and permalink for Item 2.6.10.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 2.6.10"><a aria-label="Copy heading and permalink for Exercise 2.6.10" href="#sec_moreonseries-8-10" title="Copy heading and permalink for Exercise 2.6.10">🔗</a></div>
+</article>
+<div class="para logical" id="sec_moreonseries-8-11">
+<div class="para">There are different notions of summability (convergence) of a series than just the one we have seen. A common one is <em class="emphasis">Cesàro summability</em><details aria-live="polite" class="ptx-footnote" id="sec_moreonseries-8-11-2"><summary class="ptx-footnote__number" title="Footnote 2.6.3"><sup> 3 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_moreonseries-8-11-2">Named for the Italian mathematician <a class="external" href="https://en.wikipedia.org/wiki/Ernesto_Ces\%C3\%A0ro" target="_blank">Ernesto Cesàro</a> (1859–1906).
+</div></details>.  Let <span class="process-math">\(\sum_{n=1}^\infty a_n\)</span> be a series and let <span class="process-math">\(s_n\)</span> be the <span class="process-math">\(n\)</span>th partial sum.  The series is said to be Cesàro summable to <span class="process-math">\(a\)</span> if</div>
+<div class="displaymath process-math" id="sec_moreonseries-8-11-7">
+\begin{equation}
+a = \lim_{n\to \infty} \frac{s_1 + s_2 + \cdots + s_n}{n} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-8-11" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="exercise exercise-like" id="sec_moreonseries-8-12"><h4 class="heading"><span class="codenumber">2.6.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_moreonseries-8-12-1-1">
+<em class="emphasis">(Challenging)</em>  <div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-8-12-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_moreonseries-8-12-1-2">
+<li id="sec_moreonseries-8-12-1-2-1">
+<div class="para" id="sec_moreonseries-8-12-1-2-1-1">If <span class="process-math">\(\sum_{n=1}^\infty a_n\)</span> is convergent to <span class="process-math">\(a\)</span> (in the usual sense), show that <span class="process-math">\(\sum_{n=1}^\infty a_n\)</span> is Cesàro summable (see above) to <span class="process-math">\(a\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-8-12-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2.6.11.a"><a aria-label="Copy heading and permalink for Item 2.6.11.a" href="#sec_moreonseries-8-12-1-2-1" title="Copy heading and permalink for Item 2.6.11.a">🔗</a></div>
+</li>
+<li id="sec_moreonseries-8-12-1-2-2">
+<div class="para" id="sec_moreonseries-8-12-1-2-2-1">Show that in the sense of Cesàro <span class="process-math">\(\sum_{n=1}^\infty {(-1)}^n\)</span> is summable to <span class="process-math">\(\nicefrac{-1}{2}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-8-12-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2.6.11.b"><a aria-label="Copy heading and permalink for Item 2.6.11.b" href="#sec_moreonseries-8-12-1-2-2" title="Copy heading and permalink for Item 2.6.11.b">🔗</a></div>
+</li>
+<li id="sec_moreonseries-8-12-1-2-3">
+<div class="para" id="sec_moreonseries-8-12-1-2-3-1">Let <span class="process-math">\(a_n \coloneqq k\)</span> when <span class="process-math">\(n = k^3\)</span> for some <span class="process-math">\(k \in \N\text{,}\)</span> <span class="process-math">\(a_n \coloneqq -k\)</span> when <span class="process-math">\(n = k^3+1\)</span> for some <span class="process-math">\(k \in \N\text{,}\)</span> otherwise let <span class="process-math">\(a_n \coloneqq 0\text{.}\)</span>  Show that <span class="process-math">\(\sum_{n=1}^\infty a_n\)</span> diverges in the usual sense (in fact, both the sequence of terms and the partial sums are unbounded), but it is Cesàro summable to 0 (seems a little paradoxical at first sight).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-8-12-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2.6.11.c"><a aria-label="Copy heading and permalink for Item 2.6.11.c" href="#sec_moreonseries-8-12-1-2-3" title="Copy heading and permalink for Item 2.6.11.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 2.6.11"><a aria-label="Copy heading and permalink for Exercise 2.6.11" href="#sec_moreonseries-8-12" title="Copy heading and permalink for Exercise 2.6.11">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_moreonseries-8-13"><h4 class="heading"><span class="codenumber">2.6.12<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_moreonseries-8-13-1-1">
+<em class="emphasis">(Challenging)</em>   Show that the monotonicity in the alternating series test is necessary.  That is, find a sequence of positive real numbers <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> with <span class="process-math">\(\lim_{n\to\infty} x_n = 0\)</span> but such that <span class="process-math">\(\sum_{n=1}^\infty {(-1)}^n x_n\)</span> diverges.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-8-13-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.6.12"><a aria-label="Copy heading and permalink for Exercise 2.6.12" href="#sec_moreonseries-8-13" title="Copy heading and permalink for Exercise 2.6.12">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_moreonseries-8-14"><h4 class="heading"><span class="codenumber">2.6.13<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_moreonseries-8-14-1-1">Find a series <span class="process-math">\(\sum_{n=1}^\infty x_n\)</span> that converges, but <span class="process-math">\(\sum_{n=1}^\infty x_n^2\)</span> diverges. Hint: Compare <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_series.html#exercise_squareseriesconv" title="Exercise 2.5.14">Exercise 2.5.14</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-8-14-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.6.13"><a aria-label="Copy heading and permalink for Exercise 2.6.13" href="#sec_moreonseries-8-14" title="Copy heading and permalink for Exercise 2.6.13">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_moreonseries-8-15"><h4 class="heading"><span class="codenumber">2.6.14<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_moreonseries-8-15-1-1">
+<div class="para">Suppose <span class="process-math">\(\{ c_n \}_{n=1}^\infty\)</span> is a sequence.  Prove that for every <span class="process-math">\(r \in (0,1)\text{,}\)</span> there exists a strictly increasing sequence <span class="process-math">\(\{ n_k \}_{k=1}^\infty\)</span> of natural numbers (<span class="process-math">\(n_{k+1} &gt; n_k\)</span>) such that</div>
+<div class="displaymath process-math" id="sec_moreonseries-8-15-1-1-5">
+\begin{equation}
+\sum_{k=1}^\infty c_k x^{n_k}
+\end{equation}
+</div>
+<div class="para">converges absolutely for all <span class="process-math">\(x \in [-r,r]\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_moreonseries-8-15-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.6.14"><a aria-label="Copy heading and permalink for Exercise 2.6.14" href="#sec_moreonseries-8-15" title="Copy heading and permalink for Exercise 2.6.14">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_tonellifubiniforsums"><h4 class="heading"><span class="codenumber">2.6.15<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="exercise_tonellifubiniforsums-1-1">
+<div class="para">
+<em class="emphasis">(Tonelli/Fubini for sums, challenging)</em>   Let <span class="process-math">\(\{ x_{k,\ell} \}_{k=1,\ell=1}^\infty\)</span> denote a doubly indexed sequence and let <span class="process-math">\(\sigma \colon \N \to \N^2\)</span> be a bijection. Consider the series</div>
+<div class="displaymath process-math" id="exercise_tonellifubiniforsums-1-1-8">
+\begin{equation}
+\text{i)}~\sum_{i=1}^\infty x_{\sigma(i)},
+\qquad
+\text{ii)}~\sum_{k=1}^\infty \left( \sum_{\ell=1}^\infty x_{k,\ell} \right),
+\qquad
+\text{iii)}~\sum_{\ell=1}^\infty \left( \sum_{k=1}^\infty x_{k,\ell} \right) .
+\end{equation}
+</div>
+<div class="para">The expressions ii) and iii) are series of series and so we say they converge if the inner series always converges and the outer series then also converges.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_tonellifubiniforsums-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="exercise_tonellifubiniforsums-1-2">
+<li id="exercise_tonellifubiniforsums-1-2-1">
+<div class="para" id="exercise_tonellifubiniforsums-1-2-1-1">(Tonelli) Suppose <span class="process-math">\(x_{k,\ell} \geq 0\)</span> for all <span class="process-math">\(k,\ell\text{.}\)</span> Show that the three series i), ii), iii) either all diverge (to <span class="process-math">\(\infty\)</span>) or they all converge to the same number. In the case of divergence, some of the “inner” series might be infinity in which case we consider the entire sum to diverge.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_tonellifubiniforsums-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2.6.15.a"><a aria-label="Copy heading and permalink for Item 2.6.15.a" href="#exercise_tonellifubiniforsums-1-2-1" title="Copy heading and permalink for Item 2.6.15.a">🔗</a></div>
+</li>
+<li id="exercise_tonellifubiniforsums-1-2-2">
+<div class="para" id="exercise_tonellifubiniforsums-1-2-2-1">(Fubini) Suppose i) converges absolutely.  Show that ii) and iii) converge and they both converge to the same number as i).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_tonellifubiniforsums-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2.6.15.b"><a aria-label="Copy heading and permalink for Item 2.6.15.b" href="#exercise_tonellifubiniforsums-1-2-2" title="Copy heading and permalink for Item 2.6.15.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 2.6.15"><a aria-label="Copy heading and permalink for Exercise 2.6.15" href="#exercise_tonellifubiniforsums" title="Copy heading and permalink for Exercise 2.6.15">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 2.6.6"><a aria-label="Copy heading and permalink for Exercises 2.6.6" href="#sec_moreonseries-8" title="Copy heading and permalink for Exercises 2.6.6">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 2.6: More on series"><a aria-label="Copy heading and permalink for Section 2.6: More on series" href="#sec_moreonseries" title="Copy heading and permalink for Section 2.6: More on series">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_series.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="lim_chapter.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

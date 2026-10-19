@@ -1,0 +1,566 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Continuity and the derivative · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_svthedercont">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Continuity and the derivative</span>
+</h2>
+<section class="introduction" id="sec_svthedercont-2">
+<div class="para" id="sec_svthedercont-2-1">
+<em class="emphasis">Note: 1–2 lectures</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section>
+<section class="subsection" id="sec_svthedercont-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.4.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Bounding the derivative</span>
+</h3>
+<div class="para" id="sec_svthedercont-3-2">Let us prove a “mean value theorem” for vector-valued functions.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-3-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="lemma theorem-like" id="lemma_mvtmv"><h4 class="heading">
+<span class="type">Lemma</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.4.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="lemma_mvtmv-1-1">
+<div class="para">If <span class="process-math">\(\varphi \colon [a,b] \to \R^n\)</span> is differentiable on <span class="process-math">\((a,b)\)</span> and continuous on <span class="process-math">\([a,b]\text{,}\)</span> then there exists a <span class="process-math">\(t_0 \in (a,b)\)</span> such that</div>
+<div class="displaymath process-math" id="lemma_mvtmv-1-1-5">
+\begin{equation}
+\bnorm{\varphi(b)-\varphi(a)} \leq (b-a) \bnorm{\varphi'(t_0)} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#lemma_mvtmv-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Lemma 8.4.1"><a aria-label="Copy heading and permalink for Lemma 8.4.1" href="#lemma_mvtmv" title="Copy heading and permalink for Lemma 8.4.1">🔗</a></div>
+</article>
+<article class="proof" id="sec_svthedercont-3-4"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_svthedercont-3-4-1">
+<div class="para">By the mean value theorem on the scalar-valued function <span class="process-math">\(t \mapsto \bigl(\varphi(b)-\varphi(a) \bigr) \cdot \varphi(t)\text{,}\)</span> where the dot is the dot product, we obtain a <span class="process-math">\(t_0 \in (a,b)\)</span> such that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_normonedim.html" id="sec_svthedercont-3-4-1-3">
+\begin{equation}
+\begin{split}
+\bnorm{\varphi(b)-\varphi(a)}^2
+&amp; =
+\bigl( \varphi(b)-\varphi(a) \bigr)
+\cdot
+\bigl( \varphi(b)-\varphi(a) \bigr)
+\\
+&amp; =
+\bigl(\varphi(b)-\varphi(a) \bigr) \cdot \varphi(b) - 
+\bigl(\varphi(b)-\varphi(a) \bigr) \cdot \varphi(a)
+\\
+&amp; = 
+(b-a)
+\bigl(\varphi(b)-\varphi(a) \bigr) \cdot \varphi'(t_0) ,
+\end{split}
+\end{equation}
+</div>
+<div class="para">where we treat <span class="process-math">\(\varphi'\)</span> as a vector in <span class="process-math">\(\R^n\)</span> by the abuse of notation we mentioned in the previous section. If we think of <span class="process-math">\(\varphi'(t)\)</span> as a vector, then by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_normsmatsdets.html#exercise_normonedim" title="Exercise 8.2.6">Exercise 8.2.6</a>, <span class="process-math">\(\bnorm{\varphi'(t)}_{L(\R,\R^n)} = \bnorm{\varphi'(t)}_{\R^n}\text{.}\)</span> That is, the euclidean norm of the vector is the same as the operator norm of <span class="process-math">\(\varphi'(t)\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-3-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_svthedercont-3-4-2">
+<div class="para">By the Cauchy–Schwarz inequality</div>
+<div class="displaymath process-math" id="sec_svthedercont-3-4-2-1">
+\begin{equation}
+\bnorm{\varphi(b)-\varphi(a)}^2
+=
+(b-a)\bigl(\varphi(b)-\varphi(a) \bigr) \cdot \varphi'(t_0)
+\leq
+(b-a)
+\bnorm{\varphi(b)-\varphi(a)} \, \bnorm{\varphi'(t_0)} . \qedhere
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-3-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 8.4.1.1"><a aria-label="Copy heading and permalink for Proof 8.4.1.1" href="#sec_svthedercont-3-4" title="Copy heading and permalink for Proof 8.4.1.1">🔗</a></div>
+</article>
+<div class="para" id="sec_svthedercont-3-5">Recall that a set <span class="process-math">\(U\)</span> is convex if whenever <span class="process-math">\(p,q \in U\text{,}\)</span> the line segment from <span class="process-math">\(p\)</span> to <span class="process-math">\(q\)</span> lies in <span class="process-math">\(U\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-3-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="mv_prop_convexlip"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.4.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="mv_prop_convexlip-1-1">
+<div class="para">Let <span class="process-math">\(U \subset \R^n\)</span> be a convex open set, <span class="process-math">\(f \colon U \to \R^m\)</span> be a differentiable function, and <span class="process-math">\(M\)</span> be such that</div>
+<div class="displaymath process-math" id="mv_prop_convexlip-1-1-4">
+\begin{equation}
+\bnorm{f'(p)} \leq M
+\qquad \text{for all } p \in U.
+\end{equation}
+</div>
+<div class="para">Then <span class="process-math">\(f\)</span> is Lipschitz with constant <span class="process-math">\(M\text{,}\)</span> that is,</div>
+<div class="displaymath process-math" id="mv_prop_convexlip-1-1-7">
+\begin{equation}
+\bnorm{f(p)-f(q)} \leq M \snorm{p-q}
+\qquad
+\text{for all } p,q \in U.
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_prop_convexlip-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 8.4.2"><a aria-label="Copy heading and permalink for Proposition 8.4.2" href="#mv_prop_convexlip" title="Copy heading and permalink for Proposition 8.4.2">🔗</a></div>
+</article>
+<article class="proof" id="sec_svthedercont-3-7"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_svthedercont-3-7-1">
+<div class="para">Fix <span class="process-math">\(p\)</span> and <span class="process-math">\(q\)</span> in <span class="process-math">\(U\)</span> and note that <span class="process-math">\((1-t)p+tq \in U\)</span> for all <span class="process-math">\(t \in [0,1]\)</span> by convexity. Next</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/lemma_mvtmv.html" id="sec_svthedercont-3-7-1-6">
+\begin{equation}
+\frac{d}{dt} \Bigl[f\bigl((1-t)p+tq\bigr)\Bigr]
+=
+f'\bigl((1-t)p+tq\bigr) (q-p) .
+\end{equation}
+</div>
+<div class="para">By <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_svthedercont.html#lemma_mvtmv" title="Lemma 8.4.1">Lemma 8.4.1</a>, there is some <span class="process-math">\(t_0 \in (0,1)\)</span> such that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/lemma_mvtmv.html" id="sec_svthedercont-3-7-1-9">
+\begin{equation}
+\begin{split}
+\bnorm{f(p)-f(q)} &amp; \leq
+\norm{\frac{d}{dt} \Big|_{t=t_0} \Bigl[ f\bigl((1-t)p+tq\bigr) \Bigr] }
+\\
+&amp; \leq
+\norm{f'\bigl((1-t_0)p+t_0q\bigr)} \, \snorm{q-p} \leq
+M \snorm{q-p} . \qedhere
+\end{split}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-3-7-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 8.4.1.2"><a aria-label="Copy heading and permalink for Proof 8.4.1.2" href="#sec_svthedercont-3-7" title="Copy heading and permalink for Proof 8.4.1.2">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_svthedercont-3-8"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.4.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_svthedercont-3-8-1-1">
+<div class="para">If <span class="process-math">\(U\)</span> is not convex, the proposition is not true: Consider the set</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/mv_fignonlip.html" id="sec_svthedercont-3-8-1-1-2">
+\begin{equation}
+U \coloneqq \bigl\{ (x,y) : 0.5 &lt; x^2+y^2 &lt; 2 \bigr\}
+\setminus \bigl\{ (x,0) : x &lt; 0 \bigr\} .
+\end{equation}
+</div>
+<div class="para">For <span class="process-math">\((x,y) \in U\text{,}\)</span> let <span class="process-math">\(f(x,y)\)</span> be the angle that the line from the origin to <span class="process-math">\((x,y)\)</span> makes with the positive <span class="process-math">\(x\)</span> axis.  We even have a formula for <span class="process-math">\(f\text{:}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/mv_fignonlip.html" id="sec_svthedercont-3-8-1-1-8">
+\begin{equation}
+f(x,y) = 2 \operatorname{arctan}\left( \frac{y}{x+\sqrt{x^2+y^2}}\right) .
+\end{equation}
+</div>
+<div class="para">Think of a spiral staircase with room in the middle.  See <a class="internal" href="sec_svthedercont.html#mv_fignonlip" title="Figure 8.10">Figure 8.10</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-3-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <hr class="rahr"/>
+<figure class="figure figure-like" id="mv_fignonlip"><img alt="On the left, there is a diagram in the xy-plane which is a shaded washer (the space between two circles) centered at the origin that is cut along the negative x axis. A point (x,y) is labeled in the washer and a line from this point to the origin is drawn, the angle from the positive x-axis to this line is labeled as theta equals f of x, y. On the right, there is a graph of this function which is rising spiral that starts below the xy-plane when we start walking along the washer from the cut counterclockwise and then it will get up to the xy-plane when we get to the positive x axis and it will be above the xy-plane when we get to the cut from the other side." class="raimg" role="img" src="figures/nonlip_full-mbxpdft.svg" style="width:404pt; height:172pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>A non-Lipschitz function with uniformly bounded derivative.<div class="autopermalink" data-description="Figure 8.10"><a aria-label="Copy heading and permalink for Figure 8.10" href="#mv_fignonlip" title="Copy heading and permalink for Figure 8.10">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para" id="sec_svthedercont-3-8-1-5">The function is differentiable, and the derivative is bounded on <span class="process-math">\(U\text{,}\)</span> which is not hard to see.   Now think of what happens near where the negative <span class="process-math">\(x\)</span>-axis cuts the annulus in half. As we approach this cut from positive <span class="process-math">\(y\text{,}\)</span> <span class="process-math">\(f(x,y)\)</span> approaches <span class="process-math">\(\pi\text{.}\)</span> From negative <span class="process-math">\(y\text{,}\)</span> <span class="process-math">\(f(x,y)\)</span> approaches <span class="process-math">\(-\pi\text{.}\)</span> So for small <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> <span class="process-math">\(\babs{f(-1,\epsilon)-f(-1,-\epsilon)}\)</span> approaches <span class="process-math">\(2\pi\text{,}\)</span> but <span class="process-math">\(\bnorm{(-1,\epsilon)-(-1,-\epsilon)} = 2\epsilon\text{,}\)</span> which is arbitrarily small.  The conclusion of the proposition does not hold for this nonconvex <span class="process-math">\(U\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-3-8-1-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 8.4.3"><a aria-label="Copy heading and permalink for Example 8.4.3" href="#sec_svthedercont-3-8" title="Copy heading and permalink for Example 8.4.3">🔗</a></div>
+</article>
+<div class="para" id="sec_svthedercont-3-9">Let us solve the differential equation <span class="process-math">\(f' = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-3-9" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="corollary theorem-like" id="sec_svthedercont-3-10"><h4 class="heading">
+<span class="type">Corollary</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.4.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_svthedercont-3-10-1-1">If <span class="process-math">\(U \subset \R^n\)</span> is open and connected, <span class="process-math">\(f \colon U \to \R^m\)</span> is differentiable, and <span class="process-math">\(f'(x) = 0\)</span> for all <span class="process-math">\(x \in U\text{,}\)</span> then <span class="process-math">\(f\)</span> is constant.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-3-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Corollary 8.4.4"><a aria-label="Copy heading and permalink for Corollary 8.4.4" href="#sec_svthedercont-3-10" title="Copy heading and permalink for Corollary 8.4.4">🔗</a></div>
+</article>
+<article class="proof" id="sec_svthedercont-3-11"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_svthedercont-3-11-1">For any given <span class="process-math">\(x \in U\text{,}\)</span> there is a ball <span class="process-math">\(B(x,\delta) \subset U\text{.}\)</span>  The ball <span class="process-math">\(B(x,\delta)\)</span> is convex.  Since <span class="process-math">\(\bnorm{f'(y)} \leq 0\)</span> for all <span class="process-math">\(y \in B(x,\delta)\text{,}\)</span> then by the proposition, <span class="process-math">\(\bnorm{f(x)-f(y)} \leq 0 \snorm{x-y} = 0\text{.}\)</span>  So <span class="process-math">\(f(x) = f(y)\)</span> for all <span class="process-math">\(y \in
+B(x,\delta)\text{.}\)</span> Therefore, <span class="process-math">\(f^{-1}(c)\)</span> is open for all <span class="process-math">\(c \in \R^m\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-3-11-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_svthedercont-3-11-2">
+<div class="para">Suppose <span class="process-math">\(c_0 \in \R^m\)</span> is such that <span class="process-math">\(f^{-1}(c_0) \neq \emptyset\text{.}\)</span> As <span class="process-math">\(f\)</span> is also continuous, the two sets</div>
+<div class="displaymath process-math" id="sec_svthedercont-3-11-2-4">
+\begin{equation}
+U' = f^{-1}(c_0), \qquad U'' = f^{-1}\bigl(\R^m\setminus\{c_0\}\bigr)
+\end{equation}
+</div>
+<div class="para">are open and disjoint, and further <span class="process-math">\(U = U' \cup U''\text{.}\)</span>  As <span class="process-math">\(U'\)</span> is nonempty and <span class="process-math">\(U\)</span> is connected, then <span class="process-math">\(U'' = \emptyset\text{.}\)</span>  So <span class="process-math">\(f(x) = c_0\)</span> for all <span class="process-math">\(x \in U\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-3-11-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 8.4.1.3"><a aria-label="Copy heading and permalink for Proof 8.4.1.3" href="#sec_svthedercont-3-11" title="Copy heading and permalink for Proof 8.4.1.3">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 8.4.1: Bounding the derivative"><a aria-label="Copy heading and permalink for Subsection 8.4.1: Bounding the derivative" href="#sec_svthedercont-3" title="Copy heading and permalink for Subsection 8.4.1: Bounding the derivative">🔗</a></div>
+</section>
+<section class="subsection" id="sec_svthedercont-4">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.4.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Continuously differentiable functions</span>
+</h3>
+<article class="definition definition-like" id="sec_svthedercont-4-2"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.4.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_svthedercont-4-2-1-1">Let <span class="process-math">\(U \subset \R^n\)</span> be open. We say <span class="process-math">\(f \colon U \to \R^m\)</span> is <em class="emphasis">continuously differentiable</em>, or <span class="process-math">\(C^1(U)\text{,}\)</span> if <span class="process-math">\(f\)</span> is differentiable and <span class="process-math">\(f' \colon U \to L(\R^n,\R^m)\)</span> is continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-4-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 8.4.5"><a aria-label="Copy heading and permalink for Definition 8.4.5" href="#sec_svthedercont-4-2" title="Copy heading and permalink for Definition 8.4.5">🔗</a></div>
+</article>
+<article class="proposition theorem-like" id="mv_prop_contdiffpartials"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.4.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="mv_prop_contdiffpartials-1-1">Let <span class="process-math">\(U \subset \R^n\)</span> be open and <span class="process-math">\(f \colon U \to \R^m\text{.}\)</span>  The function <span class="process-math">\(f\)</span> is continuously differentiable if and only if the partial derivatives <span class="process-math">\(\frac{\partial f_k}{\partial x_j}\)</span> exist for all <span class="process-math">\(k\)</span> and <span class="process-math">\(j\)</span> and are continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#mv_prop_contdiffpartials-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 8.4.6"><a aria-label="Copy heading and permalink for Proposition 8.4.6" href="#mv_prop_contdiffpartials" title="Copy heading and permalink for Proposition 8.4.6">🔗</a></div>
+</article>
+<div class="para" id="sec_svthedercont-4-4">Without continuity, the theorem does not hold.  Just because partial derivatives exist does not mean that <span class="process-math">\(f\)</span> is differentiable; in fact, <span class="process-math">\(f\)</span> may not even be continuous.  See the exercises for the last section and also for this section.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-4-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_svthedercont-4-5"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_svthedercont-4-5-1">We proved that if <span class="process-math">\(f\)</span> is differentiable, then the partial derivatives exist.  The partial derivatives are the entries of the matrix representing <span class="process-math">\(f'(x)\text{.}\)</span>  If <span class="process-math">\(f' \colon U \to L(\R^n,\R^m)\)</span> is continuous, then the entries are continuous, and hence the partial derivatives are continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-4-5-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_svthedercont-4-5-2">To prove the opposite direction, suppose the partial derivatives exist and are continuous. Fix <span class="process-math">\(x \in U\text{.}\)</span>  If we show that <span class="process-math">\(f'(x)\)</span> exists, we are done, because the entries of the matrix representing <span class="process-math">\(f'(x)\)</span> are the partial derivatives and if the entries are continuous functions, the matrix-valued function <span class="process-math">\(f'\)</span> is continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-4-5-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_svthedercont-4-5-3">We do induction on dimension.  First, the conclusion is true when <span class="process-math">\(n=1\)</span> (exercise, note that <span class="process-math">\(f\)</span> is vector-valued). In this case, <span class="process-math">\(f'(x)\)</span> is essentially the derivative of <a class="internal" href="der_chapter.html" title="Chapter 4: The Derivative">Chapter 4</a>. Suppose the conclusion is true for <span class="process-math">\(\R^{n-1}\text{.}\)</span> That is, if we restrict to the first <span class="process-math">\(n-1\)</span> variables, the function is differentiable. When taking the partial derivatives in <span class="process-math">\(x_1\)</span> through <span class="process-math">\(x_{n-1}\text{,}\)</span> it does not matter if we consider <span class="process-math">\(f\)</span> or <span class="process-math">\(f\)</span> restricted to the set where <span class="process-math">\(x_n\)</span> is fixed. In the following, by a slight abuse of notation, we think of <span class="process-math">\(\R^{n-1}\)</span> as a subset of <span class="process-math">\(\R^n\text{,}\)</span> that is, the set in <span class="process-math">\(\R^n\)</span> where <span class="process-math">\(x_n = 0\text{.}\)</span> In other words, we identify the vectors <span class="process-math">\((x_1,x_2,\ldots,x_{n-1})\)</span> and <span class="process-math">\((x_1,x_2,\ldots,x_{n-1},0)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-4-5-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_svthedercont-4-5-4">
+<div class="para">Fix <span class="process-math">\(p \in U\)</span> and let</div>
+<div class="displaymath process-math" id="sec_svthedercont-4-5-4-2">
+\begin{equation}
+A \coloneqq 
+\begin{bmatrix}
+\frac{\partial f_1}{\partial x_1}(p)
+&amp; \ldots &amp;
+\frac{\partial f_1}{\partial x_n}(p)
+\\
+\vdots &amp; \ddots &amp; \vdots
+\\
+\frac{\partial f_m}{\partial x_1}(p)
+&amp; \ldots &amp;
+\frac{\partial f_m}{\partial x_n}(p)
+\end{bmatrix} ,
+\quad
+A' \coloneqq 
+\begin{bmatrix}
+\frac{\partial f_1}{\partial x_1}(p)
+&amp; \ldots &amp;
+\frac{\partial f_1}{\partial x_{n-1}}(p)
+\\
+\vdots &amp; \ddots &amp; \vdots
+\\
+\frac{\partial f_m}{\partial x_1}(p)
+&amp; \ldots &amp;
+\frac{\partial f_m}{\partial x_{n-1}}(p)
+\end{bmatrix} ,
+\quad
+v \coloneqq 
+\begin{bmatrix}
+\frac{\partial f_1}{\partial x_n}(p)
+\\
+\vdots
+\\
+\frac{\partial f_m}{\partial x_n}(p)
+\end{bmatrix} .
+\end{equation}
+</div>
+<div class="para">Let <span class="process-math">\(\epsilon &gt; 0\)</span> be given.  By the induction hypothesis, there is a <span class="process-math">\(\delta &gt; 0\)</span> such that for every <span class="process-math">\(h' \in \R^{n-1}\)</span> with <span class="process-math">\(\snorm{h'} &lt; \delta\text{,}\)</span> we have</div>
+<div class="displaymath process-math" id="sec_svthedercont-4-5-4-7">
+\begin{equation}
+\frac{\bnorm{f(p+h') - f(p) - A' h'}}{\snorm{h'}} &lt; \epsilon .
+\end{equation}
+</div>
+<div class="para">By continuity of the partial derivatives, suppose <span class="process-math">\(\delta\)</span> is small enough so that</div>
+<div class="displaymath process-math" id="sec_svthedercont-4-5-4-9">
+\begin{equation}
+\abs{\frac{\partial f_k}{\partial x_n}(p+h)
+- \frac{\partial f_k}{\partial x_n}(p)} &lt; \epsilon
+\end{equation}
+</div>
+<div class="para">for all <span class="process-math">\(k\)</span> and all <span class="process-math">\(h \in \R^n\)</span> with <span class="process-math">\(\snorm{h} &lt; \delta\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-4-5-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_svthedercont-4-5-5">
+<div class="para">Suppose <span class="process-math">\(h = h' + t e_n\)</span> is a vector in <span class="process-math">\(\R^n\text{,}\)</span> where <span class="process-math">\(h' \in \R^{n-1}\text{,}\)</span> <span class="process-math">\(t \in \R\text{,}\)</span> such that <span class="process-math">\(\snorm{h} &lt; \delta\text{.}\)</span>  Then <span class="process-math">\(\snorm{h'} \leq \snorm{h} &lt; \delta\text{.}\)</span> Note that <span class="process-math">\(Ah = A' h' + tv\text{.}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_svthedercont-4-5-5-8">
+\begin{equation}
+\begin{split}
+&amp;
+\bnorm{f(p+h) - f(p) - Ah}
+\\
+&amp; \qquad \qquad
+= \bnorm{f(p+h' + t e_n) - f(p+h') - tv + f(p+h') - f(p) - A' h'}
+\\
+&amp;
+\qquad \qquad
+\leq \bnorm{f(p+h' + t e_n) - f(p+h') -tv} + \bnorm{f(p+h') - f(p) -
+A' h'}
+\\
+&amp;
+\qquad \qquad
+\leq \bnorm{f(p+h' + t e_n) - f(p+h') -tv} + \epsilon \snorm{h'} .
+\end{split}
+\end{equation}
+</div>
+<div class="para">As all the partial derivatives exist, by the mean value theorem, for each <span class="process-math">\(k\)</span> there is some <span class="process-math">\(\theta_k \in [0,t]\)</span> (or <span class="process-math">\([t,0]\)</span> if <span class="process-math">\(t &lt; 0\)</span>), such that</div>
+<div class="displaymath process-math" id="sec_svthedercont-4-5-5-13">
+\begin{equation}
+f_k(p+h' + t e_n) - f_k(p+h') =
+t \frac{\partial f_k}{\partial x_n}(p+h'+\theta_k e_n).
+\end{equation}
+</div>
+<div class="para">We have <span class="process-math">\(\snorm{h'+\theta_k e_n} \leq \snorm{h} &lt; \delta\text{,}\)</span> and so we can finish the estimate</div>
+<div class="displaymath process-math" id="sec_svthedercont-4-5-5-15">
+\begin{equation}
+\begin{split}
+\bnorm{f(p+h) - f(p) - Ah}
+&amp; \leq \bnorm{f(p+h' + t e_n) - f(p+h') -tv} + \epsilon \snorm{h'}
+\\
+&amp; \leq \sqrt{\sum_{k=1}^m {\left(t\frac{\partial f_k}{\partial x_n}(p+h'+\theta_k e_n) -
+t \frac{\partial f_k}{\partial x_n}(p)\right)}^2} + \epsilon \snorm{h'}
+\\
+&amp; \leq \sqrt{m}\, \epsilon \sabs{t} + \epsilon \snorm{h'}
+\\
+&amp; \leq (\sqrt{m}+1)\epsilon \snorm{h} . \qedhere
+\end{split}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-4-5-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 8.4.2.1"><a aria-label="Copy heading and permalink for Proof 8.4.2.1" href="#sec_svthedercont-4-5" title="Copy heading and permalink for Proof 8.4.2.1">🔗</a></div>
+</article>
+<div class="para" id="sec_svthedercont-4-6">A common application is to prove that a certain function is differentiable.  For example, we can show that all polynomials are differentiable, and in fact continuously differentiable, by computing the partial derivatives.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-4-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="corollary theorem-like" id="sec_svthedercont-4-7"><h4 class="heading">
+<span class="type">Corollary</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.4.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_svthedercont-4-7-1-1">
+<div class="para">A polynomial <span class="process-math">\(p \colon \R^n \to \R\)</span> in several variables</div>
+<div class="displaymath process-math" id="sec_svthedercont-4-7-1-1-2">
+\begin{equation}
+p(x_1,x_2,\ldots,x_n)
+=
+\sum_{0 \leq j_1+j_2+\cdots+j_n \leq d}
+c_{j_1,j_2,\ldots,j_n}
+\,
+x_1^{j_1}
+x_2^{j_2}
+\cdots
+x_n^{j_n}
+\end{equation}
+</div>
+<div class="para">is continuously differentiable.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-4-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Corollary 8.4.7"><a aria-label="Copy heading and permalink for Corollary 8.4.7" href="#sec_svthedercont-4-7" title="Copy heading and permalink for Corollary 8.4.7">🔗</a></div>
+</article>
+<article class="proof" id="sec_svthedercont-4-8"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_svthedercont-4-8-1">
+<div class="para">Consider the partial derivative of <span class="process-math">\(p\)</span> in the <span class="process-math">\(x_n\)</span> variable. Write <span class="process-math">\(p\)</span> as</div>
+<div class="displaymath process-math" id="sec_svthedercont-4-8-1-4">
+\begin{equation}
+p(x) = \sum_{j=0}^d p_j(x_1,\ldots,x_{n-1}) \, x_n^j ,
+\end{equation}
+</div>
+<div class="para">where <span class="process-math">\(p_j\)</span> are polynomials in one less variable. Then</div>
+<div class="displaymath process-math" id="sec_svthedercont-4-8-1-6">
+\begin{equation}
+\frac{\partial p}{\partial x_n}(x)
+= \sum_{j=1}^d p_j(x_1,\ldots,x_{n-1}) \, j x_n^{j-1} ,
+\end{equation}
+</div>
+<div class="para">which is again a polynomial. So the partial derivatives of polynomials exist and are again polynomials. By the continuity of algebraic operations, polynomials are continuous functions. Therefore <span class="process-math">\(p\)</span> is continuously differentiable.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-4-8-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 8.4.2.2"><a aria-label="Copy heading and permalink for Proof 8.4.2.2" href="#sec_svthedercont-4-8" title="Copy heading and permalink for Proof 8.4.2.2">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 8.4.2: Continuously differentiable functions"><a aria-label="Copy heading and permalink for Subsection 8.4.2: Continuously differentiable functions" href="#sec_svthedercont-4" title="Copy heading and permalink for Subsection 8.4.2: Continuously differentiable functions">🔗</a></div>
+</section>
+<section class="exercises" id="sec_svthedercont-5">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">8.4.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_svthedercont-5-1"><h4 class="heading"><span class="codenumber">8.4.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_svthedercont-5-1-1-1">
+<div class="para">Define <span class="process-math">\(f \colon \R^2 \to \R\)</span> as</div>
+<div class="displaymath process-math" id="sec_svthedercont-5-1-1-1-2">
+\begin{equation}
+f(x,y) \coloneqq
+\begin{cases}
+(x^2+y^2)\sin\bigl({(x^2+y^2)}^{-1}\bigr) &amp; \text{if } (x,y) \neq (0,0), \\
+0                                         &amp; \text{if } (x,y) = (0,0).
+\end{cases}
+\end{equation}
+</div>
+<div class="para">Show that <span class="process-math">\(f\)</span> is differentiable at the origin, but that it is not continuously differentiable. <br/> Note: Feel free to use what you know about sine and cosine from calculus.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-5-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.4.1"><a aria-label="Copy heading and permalink for Exercise 8.4.1" href="#sec_svthedercont-5-1" title="Copy heading and permalink for Exercise 8.4.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_svthedercont-5-2"><h4 class="heading"><span class="codenumber">8.4.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_svthedercont-5-2-1-1">
+<div class="para">Let <span class="process-math">\(f \colon \R^2 \to \R\)</span> be the function from <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_svtheder.html#exercise_noncontpartialsexist" title="Exercise 8.3.5">Exercise 8.3.5</a>, that is,</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/exercise_noncontpartialsexist.html" id="sec_svthedercont-5-2-1-1-3">
+\begin{equation}
+f(x,y)
+\coloneqq
+\begin{cases}
+\frac{xy}{x^2+y^2} &amp; \text{if } (x,y) \neq (0,0), \\
+0                  &amp; \text{if } (x,y) = (0,0).
+\end{cases}
+\end{equation}
+</div>
+<div class="para">Compute the partial derivatives <span class="process-math">\(\frac{\partial f}{\partial x}\)</span> and <span class="process-math">\(\frac{\partial f}{\partial y}\)</span> at all points and show that these are not continuous functions.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-5-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.4.2"><a aria-label="Copy heading and permalink for Exercise 8.4.2" href="#sec_svthedercont-5-2" title="Copy heading and permalink for Exercise 8.4.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_svthedercont-5-3"><h4 class="heading"><span class="codenumber">8.4.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_svthedercont-5-3-1-1">Let <span class="process-math">\(B(0,1) \subset \R^2\)</span> be the unit ball, that is, the set given by <span class="process-math">\(x^2 + y^2 &lt; 1\text{.}\)</span> Suppose <span class="process-math">\(f \colon B(0,1) \to \R\)</span> is a differentiable function such that <span class="process-math">\(\babs{f(0,0)} \leq 1\text{,}\)</span> and <span class="process-math">\(\babs{\frac{\partial f}{\partial x}} \leq 1\)</span> and <span class="process-math">\(\babs{\frac{\partial f}{\partial y}} \leq 1\)</span> for all points in <span class="process-math">\(B(0,1)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-5-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_svthedercont-5-3-1-2">
+<li id="sec_svthedercont-5-3-1-2-1">
+<div class="para" id="sec_svthedercont-5-3-1-2-1-1">Find an <span class="process-math">\(M \in \R\)</span> such that <span class="process-math">\(\bnorm{f'(x,y)} \leq M\)</span> for all <span class="process-math">\((x,y) \in
+B(0,1)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-5-3-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.4.3.a"><a aria-label="Copy heading and permalink for Item 8.4.3.a" href="#sec_svthedercont-5-3-1-2-1" title="Copy heading and permalink for Item 8.4.3.a">🔗</a></div>
+</li>
+<li id="sec_svthedercont-5-3-1-2-2">
+<div class="para" id="sec_svthedercont-5-3-1-2-2-1">Find a <span class="process-math">\(B \in \R\)</span> such that <span class="process-math">\(\babs{f(x,y)} \leq B\)</span> for all <span class="process-math">\((x,y) \in
+B(0,1)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-5-3-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.4.3.b"><a aria-label="Copy heading and permalink for Item 8.4.3.b" href="#sec_svthedercont-5-3-1-2-2" title="Copy heading and permalink for Item 8.4.3.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 8.4.3"><a aria-label="Copy heading and permalink for Exercise 8.4.3" href="#sec_svthedercont-5-3" title="Copy heading and permalink for Exercise 8.4.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_svthedercont-5-4"><h4 class="heading"><span class="codenumber">8.4.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_svthedercont-5-4-1-1">Define <span class="process-math">\(\varphi \colon [0,2\pi] \to \R^2\)</span> by <span class="process-math">\(\varphi(t) =
+\bigl(\sin(t),\cos(t)\bigr)\text{.}\)</span>  Compute <span class="process-math">\(\varphi'(t)\)</span> for all <span class="process-math">\(t\text{.}\)</span>  Compute <span class="process-math">\(\bnorm{\varphi'(t)}\)</span> for all <span class="process-math">\(t\text{.}\)</span>  Notice that <span class="process-math">\(\varphi'(t)\)</span> is never zero, yet <span class="process-math">\(\varphi(0) = \varphi(2\pi)\text{.}\)</span>  Therefore, Rolle’s theorem is not true for vector-valued functions.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-5-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.4.4"><a aria-label="Copy heading and permalink for Exercise 8.4.4" href="#sec_svthedercont-5-4" title="Copy heading and permalink for Exercise 8.4.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_svthedercont-5-5"><h4 class="heading"><span class="codenumber">8.4.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_svthedercont-5-5-1-1">Let <span class="process-math">\(f \colon \R^2 \to \R\)</span> be a function such that <span class="process-math">\(\frac{\partial f}{\partial x}\)</span> and <span class="process-math">\(\frac{\partial f}{\partial y}\)</span> exist at all points and there exists an <span class="process-math">\(M
+\in \R\)</span> such that <span class="process-math">\(\babs{\frac{\partial f}{\partial x}} \leq M\)</span> and <span class="process-math">\(\babs{\frac{\partial f}{\partial y}} \leq M\)</span> at all points.  Show that <span class="process-math">\(f\)</span> is continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-5-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.4.5"><a aria-label="Copy heading and permalink for Exercise 8.4.5" href="#sec_svthedercont-5-5" title="Copy heading and permalink for Exercise 8.4.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_svthedercont-5-6"><h4 class="heading"><span class="codenumber">8.4.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_svthedercont-5-6-1-1">Let <span class="process-math">\(f \colon \R^2 \to \R\)</span> be a function and <span class="process-math">\(M \in \R\text{,}\)</span> such that for every <span class="process-math">\((x,y) \in \R^2\)</span> with <span class="process-math">\(x^2+y^2=1\text{,}\)</span> the function <span class="process-math">\(g(t) \coloneqq f(xt,yt)\)</span> is differentiable and <span class="process-math">\(\babs{g'(t)} \leq M\)</span> for all <span class="process-math">\(t\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-5-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_svthedercont-5-6-1-2">
+<li id="sec_svthedercont-5-6-1-2-1">
+<div class="para" id="sec_svthedercont-5-6-1-2-1-1">Show that <span class="process-math">\(f\)</span> is continuous at <span class="process-math">\((0,0)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-5-6-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.4.6.a"><a aria-label="Copy heading and permalink for Item 8.4.6.a" href="#sec_svthedercont-5-6-1-2-1" title="Copy heading and permalink for Item 8.4.6.a">🔗</a></div>
+</li>
+<li id="sec_svthedercont-5-6-1-2-2">
+<div class="para" id="sec_svthedercont-5-6-1-2-2-1">Find an example of such an <span class="process-math">\(f\)</span> that is discontinuous at every other point of <span class="process-math">\(\R^2\text{.}\)</span><br/> Hint: Think back to how we constructed a nowhere continuous function on <span class="process-math">\([0,1]\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-5-6-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 8.4.6.b"><a aria-label="Copy heading and permalink for Item 8.4.6.b" href="#sec_svthedercont-5-6-1-2-2" title="Copy heading and permalink for Item 8.4.6.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 8.4.6"><a aria-label="Copy heading and permalink for Exercise 8.4.6" href="#sec_svthedercont-5-6" title="Copy heading and permalink for Exercise 8.4.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_svthedercont-5-7"><h4 class="heading"><span class="codenumber">8.4.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_svthedercont-5-7-1-1">Suppose <span class="process-math">\(r \colon \R^n \setminus X \to \R\)</span> is a rational function, that is, <span class="process-math">\(p \colon \R^n \to \R\)</span> and <span class="process-math">\(q \colon \R^n \to \R\)</span> are polynomials, <span class="process-math">\(q\)</span> is not identically zero, <span class="process-math">\(X = q^{-1}(0)\text{,}\)</span> and <span class="process-math">\(r = \frac{p}{q}\text{.}\)</span> Show that <span class="process-math">\(r\)</span> is continuously differentiable.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-5-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.4.7"><a aria-label="Copy heading and permalink for Exercise 8.4.7" href="#sec_svthedercont-5-7" title="Copy heading and permalink for Exercise 8.4.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_svthedercont-5-8"><h4 class="heading"><span class="codenumber">8.4.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_svthedercont-5-8-1-1">Suppose <span class="process-math">\(f \colon \R^n \to \R\)</span> and <span class="process-math">\(h \colon \R^n \to \R\)</span> are two differentiable functions such that <span class="process-math">\(f'(x) = h'(x)\)</span> for all <span class="process-math">\(x \in \R^n\text{.}\)</span> Prove that if <span class="process-math">\(f(0) = h(0)\text{,}\)</span> then <span class="process-math">\(f(x) = h(x)\)</span> for all <span class="process-math">\(x \in \R^n\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-5-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.4.8"><a aria-label="Copy heading and permalink for Exercise 8.4.8" href="#sec_svthedercont-5-8" title="Copy heading and permalink for Exercise 8.4.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_svthedercont-5-9"><h4 class="heading"><span class="codenumber">8.4.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_svthedercont-5-9-1-1">Prove the base case in <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_svthedercont.html#mv_prop_contdiffpartials" title="Proposition 8.4.6">Proposition 8.4.6</a>.  That is, prove that if <span class="process-math">\(n=1\)</span> and “the partials exist and are continuous,” then the function is continuously differentiable.  Note that <span class="process-math">\(f\)</span> is vector-valued.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-5-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.4.9"><a aria-label="Copy heading and permalink for Exercise 8.4.9" href="#sec_svthedercont-5-9" title="Copy heading and permalink for Exercise 8.4.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_svthedercont-5-10"><h4 class="heading"><span class="codenumber">8.4.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_svthedercont-5-10-1-1">Suppose that <span class="process-math">\(U \subset \R^n\)</span> is open, <span class="process-math">\(f \colon U \to \R^m\)</span> is differentiable, there is an <span class="process-math">\(M\)</span> such that <span class="process-math">\(\bnorm{f'(p)} \leq M\)</span> for all <span class="process-math">\(p \in U\text{,}\)</span> and <span class="process-math">\(K \subset U\)</span> is a compact set.  Prove that there exists an <span class="process-math">\(M'\)</span> (where <span class="process-math">\(M' \geq M\)</span>), such that for all <span class="process-math">\(p,q \in K\)</span> we have <span class="process-math">\(\bnorm{f(p)-f(q)} \leq M' \snorm{p-q}\text{.}\)</span> Compare to <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_svthedercont.html#mv_prop_convexlip" title="Proposition 8.4.2">Proposition 8.4.2</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_svthedercont-5-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 8.4.10"><a aria-label="Copy heading and permalink for Exercise 8.4.10" href="#sec_svthedercont-5-10" title="Copy heading and permalink for Exercise 8.4.10">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 8.4.3"><a aria-label="Copy heading and permalink for Exercises 8.4.3" href="#sec_svthedercont-5" title="Copy heading and permalink for Exercises 8.4.3">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 8.4: Continuity and the derivative"><a aria-label="Copy heading and permalink for Section 8.4: Continuity and the derivative" href="#sec_svthedercont" title="Copy heading and permalink for Section 8.4: Continuity and the derivative">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_svtheder.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_svinvfuncthm.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

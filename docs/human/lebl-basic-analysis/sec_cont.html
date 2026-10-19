@@ -1,0 +1,641 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Continuous functions · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_cont">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Continuous functions</span>
+</h2>
+<section class="introduction" id="sec_cont-2">
+<div class="para" id="sec_cont-2-1">
+<em class="emphasis">Note: 2–2.5 lectures</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_cont-2-2">A high-school criterion for the concept of continuity is that a function is continuous if we can draw its graph without lifting the pen from the paper.  While that intuitive concept may be useful in simple situations, we require rigor.  The following definition took three great mathematicians (Bolzano, Cauchy, and finally Weierstrass) to formulate correctly and its final form dates only to the late 1800s.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-2-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section>
+<section class="subsection" id="sec_cont-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.2.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Definition and basic properties</span>
+</h3>
+<article class="definition definition-like" id="sec_cont-3-2"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.2.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_cont-3-2-1-1">Suppose <span class="process-math">\(S \subset \R\)</span> and <span class="process-math">\(c \in S\text{.}\)</span> We say <span class="process-math">\(f \colon S \to \R\)</span> is <em class="emphasis">continuous at <span class="process-math">\(c\)</span></em> if for every <span class="process-math">\(\epsilon &gt; 0\)</span> there is a <span class="process-math">\(\delta &gt; 0\)</span> such that whenever <span class="process-math">\(x \in S\)</span> and <span class="process-math">\(\sabs{x-c} &lt;
+\delta\text{,}\)</span> we have <span class="process-math">\(\babs{f(x)-f(c)} &lt; \epsilon\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-3-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_cont-3-2-1-2">When <span class="process-math">\(f \colon S \to \R\)</span> is continuous at all <span class="process-math">\(c \in S\text{,}\)</span> then we simply say <span class="process-math">\(f\)</span> is a <em class="emphasis">continuous function</em>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-3-2-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 3.2.1"><a aria-label="Copy heading and permalink for Definition 3.2.1" href="#sec_cont-3-2" title="Copy heading and permalink for Definition 3.2.1">🔗</a></div>
+</article><hr class="rahr"/>
+<figure class="figure figure-like" id="fig_contigr"><img alt="A diagram of the graph of a function y equals f of x, near a point x equals c. The graph is shown and the strip within delta of c is shown and a strip within epsilon of f of c is shown. The box that fits within both strips is shaded, and within this range the graph fits within the vertical range." class="raimg" role="img" src="figures/contigr-mbxpdft.svg" style="width:194pt; height:84pt; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>For <span class="process-math">\(\sabs{x-c} &lt; \delta\text{,}\)</span> the graph of <span class="process-math">\(f(x)\)</span> should be within the gray region.<div class="autopermalink" data-description="Figure 3.3"><a aria-label="Copy heading and permalink for Figure 3.3" href="#fig_contigr" title="Copy heading and permalink for Figure 3.3">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para" id="sec_cont-3-6">If <span class="process-math">\(f\)</span> is continuous for all <span class="process-math">\(c \in A\text{,}\)</span> we say <span class="process-math">\(f\)</span> is <em class="emphasis">continuous on <span class="process-math">\(A \subset S\)</span></em>.  A straightforward exercise (<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_cont.html#exercise_restrictioncontinuous" title="Exercise 3.2.7">Exercise 3.2.7</a>) shows that this implies that <span class="process-math">\(f|_A\)</span> is continuous, although the converse does not hold (as we will see in <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_cont.html#example_removablediscont" title="Example 3.2.13">Example 3.2.13</a>).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-3-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_cont-3-7">Continuity may be the most important definition to understand in analysis, and it is not an easy one.  See <a class="internal" href="sec_cont.html#fig_contigr" title="Figure 3.3">Figure 3.3</a>. Note that <span class="process-math">\(\delta\)</span> depends not only on <span class="process-math">\(\epsilon\text{,}\)</span> but also on <span class="process-math">\(c\text{;}\)</span>  we need not pick one <span class="process-math">\(\delta\)</span> for all <span class="process-math">\(c \in S\text{.}\)</span> It is no accident that the definition of continuity is similar to the definition of a limit of a function.  The main feature of continuous functions is that these are precisely the functions that behave nicely with limits.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-3-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="contbasic_prop"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.2.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="contbasic_prop-1-1">Consider a function <span class="process-math">\(f \colon S \to \R\)</span> defined on a set  <span class="process-math">\(S \subset \R\)</span> and let <span class="process-math">\(c \in S\text{.}\)</span> Then:<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#contbasic_prop-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="contbasic_prop-1-2">
+<li id="contbasic_prop_i">
+<div class="para" id="contbasic_prop_i-1">If <span class="process-math">\(c\)</span> is not a cluster point of <span class="process-math">\(S\text{,}\)</span> then <span class="process-math">\(f\)</span> is continuous at <span class="process-math">\(c\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#contbasic_prop_i-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#contbasic_prop_i" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="contbasic_prop_ii">
+<div class="para logical" id="contbasic_prop_ii-1">
+<div class="para">If <span class="process-math">\(c\)</span> is a cluster point of <span class="process-math">\(S\text{,}\)</span> then <span class="process-math">\(f\)</span> is continuous at <span class="process-math">\(c\)</span> if and only if the limit of <span class="process-math">\(f(x)\)</span> as <span class="process-math">\(x \to c\)</span> exists and</div>
+<div class="displaymath process-math" id="contbasic_prop_ii-1-7">
+\begin{equation}
+\lim_{x\to c} f(x) = f(c) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#contbasic_prop_ii-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#contbasic_prop_ii" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+<li id="contbasic_prop_iii">
+<div class="para" id="contbasic_prop_iii-1">The function <span class="process-math">\(f\)</span> is continuous at <span class="process-math">\(c\)</span> if and only if for every sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> where <span class="process-math">\(x_n \in S\)</span> and <span class="process-math">\(\lim\limits_{n\to\infty} x_n = c\text{,}\)</span> the sequence <span class="process-math">\(\bigl\{ f(x_n) \bigr\}_{n=1}^\infty\)</span> converges to <span class="process-math">\(f(c)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#contbasic_prop_iii-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iii"><a aria-label="Copy heading and permalink for Item iii" href="#contbasic_prop_iii" title="Copy heading and permalink for Item iii">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Proposition 3.2.2"><a aria-label="Copy heading and permalink for Proposition 3.2.2" href="#contbasic_prop" title="Copy heading and permalink for Proposition 3.2.2">🔗</a></div>
+</article>
+<article class="proof" id="sec_cont-3-9"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_cont-3-9-1">We start with <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_cont.html#contbasic_prop_i" title="Item i">i</a>.  Suppose <span class="process-math">\(c\)</span> is not a cluster point of <span class="process-math">\(S\text{.}\)</span>  Then there exists a <span class="process-math">\(\delta &gt; 0\)</span> such that <span class="process-math">\(S \cap (c-\delta,c+\delta) = \{ c \}\text{.}\)</span> For any <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> simply pick this given <span class="process-math">\(\delta\text{.}\)</span> The only <span class="process-math">\(x \in S\)</span> such that <span class="process-math">\(\sabs{x-c} &lt; \delta\)</span> is <span class="process-math">\(x=c\text{.}\)</span>  Then <span class="process-math">\(\babs{f(x)-f(c)} = \babs{f(c)-f(c)} = 0 &lt; \epsilon\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-3-9-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_cont-3-9-2">Let us move to <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_cont.html#contbasic_prop_ii" title="Item ii">ii</a>. Suppose <span class="process-math">\(c\)</span> is a cluster point of <span class="process-math">\(S\text{.}\)</span>  Let us first suppose that <span class="process-math">\(\lim_{x\to c} f(x) = f(c)\text{.}\)</span>  Then for every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there is a <span class="process-math">\(\delta &gt; 0\)</span> such that if <span class="process-math">\(x \in S \setminus \{ c \}\)</span> and <span class="process-math">\(\sabs{x-c} &lt; \delta\text{,}\)</span> then <span class="process-math">\(\babs{f(x)-f(c)} &lt; \epsilon\text{.}\)</span> Also <span class="process-math">\(\babs{f(c)-f(c)} = 0 &lt; \epsilon\text{,}\)</span> so the definition of continuity at <span class="process-math">\(c\)</span> is satisfied.  On the other hand, suppose <span class="process-math">\(f\)</span> is continuous at <span class="process-math">\(c\text{.}\)</span>  For every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there exists a <span class="process-math">\(\delta &gt; 0\)</span> such that for <span class="process-math">\(x \in S\)</span> where <span class="process-math">\(\sabs{x-c} &lt; \delta\text{,}\)</span> we have <span class="process-math">\(\babs{f(x)-f(c)} &lt; \epsilon\text{.}\)</span>  Then the statement is, of course, still true if <span class="process-math">\(x \in S \setminus \{ c \} \subset S\text{.}\)</span>  Therefore, <span class="process-math">\(\lim_{x\to c} f(x) =
+f(c)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-3-9-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_cont-3-9-3">For <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_cont.html#contbasic_prop_iii" title="Item iii">iii</a>, first suppose <span class="process-math">\(f\)</span> is continuous at <span class="process-math">\(c\text{.}\)</span> Let <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> be a sequence such that <span class="process-math">\(x_n \in S\)</span> and <span class="process-math">\(\lim_{n\to\infty} x_n = c\text{.}\)</span>  Let <span class="process-math">\(\epsilon &gt; 0\)</span> be given.  Find a <span class="process-math">\(\delta &gt; 0\)</span> such that <span class="process-math">\(\babs{f(x)-f(c)} &lt; \epsilon\)</span> for all <span class="process-math">\(x \in S\)</span> where <span class="process-math">\(\sabs{x-c} &lt; \delta\text{.}\)</span>  Find an <span class="process-math">\(M \in \N\)</span> such that for <span class="process-math">\(n \geq M\text{,}\)</span> we have <span class="process-math">\(\sabs{x_n-c} &lt; \delta\text{.}\)</span>  Then for <span class="process-math">\(n \geq M\text{,}\)</span> we have that <span class="process-math">\(\babs{f(x_n)-f(c)} &lt; \epsilon\text{,}\)</span> so <span class="process-math">\(\bigl\{ f(x_n) \bigr\}_{n=1}^\infty\)</span> converges to <span class="process-math">\(f(c)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-3-9-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_cont-3-9-4">We prove the other direction of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_cont.html#contbasic_prop_iii" title="Item iii">iii</a> by contrapositive. Suppose <span class="process-math">\(f\)</span> is not continuous at <span class="process-math">\(c\text{.}\)</span>  Then there exists an <span class="process-math">\(\epsilon &gt; 0\)</span> such that for every <span class="process-math">\(\delta &gt; 0\text{,}\)</span> there exists an <span class="process-math">\(x \in S\)</span> such that <span class="process-math">\(\sabs{x-c} &lt; \delta\)</span> and <span class="process-math">\(\babs{f(x)-f(c)} \geq \epsilon\text{.}\)</span> Define a sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> as follows. Let <span class="process-math">\(x_n \in S\)</span> be such that <span class="process-math">\(\sabs{x_n-c} &lt; \nicefrac{1}{n}\)</span> and <span class="process-math">\(\babs{f(x_n)-f(c)} \geq \epsilon\text{.}\)</span> Now <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> is a sequence in <span class="process-math">\(S\)</span> such that <span class="process-math">\(\lim_{n\to\infty} x_n = c\)</span> and such that <span class="process-math">\(\babs{f(x_n)-f(c)} \geq \epsilon\)</span> for all <span class="process-math">\(n \in \N\text{.}\)</span> Thus <span class="process-math">\(\bigl\{ f(x_n) \bigr\}_{n=1}^\infty\)</span> does not converge to <span class="process-math">\(f(c)\text{.}\)</span>  It may or may not converge, but it definitely does not converge to <span class="process-math">\(f(c)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-3-9-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 3.2.1.1"><a aria-label="Copy heading and permalink for Proof 3.2.1.1" href="#sec_cont-3-9" title="Copy heading and permalink for Proof 3.2.1.1">🔗</a></div>
+</article>
+<div class="para" id="sec_cont-3-10">The last item in the proposition is particularly powerful.  It allows us to quickly apply what we know about limits of sequences to continuous functions and even to prove that certain functions are continuous. It can also be strengthened (see <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_cont.html#exercise_contseqalt" title="Exercise 3.2.13">Exercise 3.2.13</a>).<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-3-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_cont-3-11"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.2.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_cont-3-11-1-1">The function <span class="process-math">\(f \colon (0,\infty) \to \R\)</span> defined by <span class="process-math">\(f(x) \coloneqq \nicefrac{1}{x}\)</span> is continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-3-11-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_cont-3-11-1-2">
+<div class="para">Proof: Fix <span class="process-math">\(c \in (0,\infty)\text{.}\)</span> Let <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> be a sequence in <span class="process-math">\((0,\infty)\)</span> such that <span class="process-math">\(\lim_{n\to\infty} x_n = c\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" id="sec_cont-3-11-1-2-5">
+\begin{equation}
+f(c) = \frac{1}{c}
+=
+\frac{1}{\lim_{n\to\infty} x_n}
+=
+\lim_{n \to \infty} \frac{1}{x_n}
+=
+\lim_{n \to \infty} f(x_n) .
+\end{equation}
+</div>
+<div class="para">Thus <span class="process-math">\(f\)</span> is continuous at <span class="process-math">\(c\text{.}\)</span>  As <span class="process-math">\(f\)</span> is continuous at all <span class="process-math">\(c \in
+(0,\infty)\text{,}\)</span> <span class="process-math">\(f\)</span> is continuous.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-3-11-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 3.2.3"><a aria-label="Copy heading and permalink for Example 3.2.3" href="#sec_cont-3-11" title="Copy heading and permalink for Example 3.2.3">🔗</a></div>
+</article>
+<div class="para" id="sec_cont-3-12">We have previously shown <span class="process-math">\(\lim_{x \to c} x^2 = c^2\)</span> directly.  Therefore, the function <span class="process-math">\(x^2\)</span> is continuous.  The last item of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_cont.html#contbasic_prop" title="Proposition 3.2.2">Proposition 3.2.2</a> and the continuity of algebraic operations with respect to limits of sequences, <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_factslimsseqs.html#prop_contalg" title="Proposition 2.2.5">Proposition 2.2.5</a>, give a quick proof of a much more general result.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-3-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_cont-3-13"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.2.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_cont-3-13-1-1">
+<div class="para">Let <span class="process-math">\(f \colon \R \to \R\)</span> be a <em class="emphasis">polynomial</em>.  That is,</div>
+<div class="displaymath process-math" id="sec_cont-3-13-1-1-3">
+\begin{equation}
+f(x) = a_d x^d + a_{d-1} x^{d-1} + \cdots + a_1 x + a_0 ,
+\end{equation}
+</div>
+<div class="para">for some constants <span class="process-math">\(a_0, a_1, \ldots, a_d\text{.}\)</span> Then <span class="process-math">\(f\)</span> is continuous.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-3-13-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 3.2.4"><a aria-label="Copy heading and permalink for Proposition 3.2.4" href="#sec_cont-3-13" title="Copy heading and permalink for Proposition 3.2.4">🔗</a></div>
+</article>
+<article class="proof" id="sec_cont-3-14"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_cont-3-14-1">
+<div class="para">Fix <span class="process-math">\(c \in \R\text{.}\)</span> Let <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> be a sequence such that <span class="process-math">\(\lim_{n\to\infty} x_n = c\text{.}\)</span>  Then</div>
+<div class="displaymath process-math" id="sec_cont-3-14-1-4">
+\begin{equation}
+\begin{split}
+f(c) &amp;=
+a_d c^d + a_{d-1} c^{d-1} + \cdots + a_1 c + a_0 
+\\
+&amp;= 
+a_d {\left(\lim_{n\to\infty} x_n\right)}^d
++ a_{d-1} {\left(\lim_{n\to\infty} x_n\right)}^{d-1}
++ \cdots
++ a_1 \left(\lim_{n\to\infty} x_n\right) + a_0 
+\\
+&amp; =
+\lim_{n \to \infty}
+\left(
+a_d x_n^d + a_{d-1} x_n^{d-1} + \cdots + a_1 x_n + a_0 
+\right)
+=
+\lim_{n \to \infty}
+f(x_n) .
+\end{split}
+\end{equation}
+</div>
+<div class="para">Thus <span class="process-math">\(f\)</span> is continuous at <span class="process-math">\(c\text{.}\)</span>  As <span class="process-math">\(f\)</span> is continuous at all <span class="process-math">\(c \in \R\text{,}\)</span> <span class="process-math">\(f\)</span> is continuous.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-3-14-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 3.2.1.2"><a aria-label="Copy heading and permalink for Proof 3.2.1.2" href="#sec_cont-3-14" title="Copy heading and permalink for Proof 3.2.1.2">🔗</a></div>
+</article>
+<div class="para" id="sec_cont-3-15">By similar reasoning, or by appealing to <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_limoffunc.html#falg_cor" title="Corollary 3.1.12">Corollary 3.1.12</a>, we can prove the following proposition.  The proof is left as an exercise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-3-15" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="contalg_prop"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.2.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="contalg_prop-1-1">Let <span class="process-math">\(f \colon S \to \R\)</span> and <span class="process-math">\(g \colon S \to \R\)</span> be functions continuous at <span class="process-math">\(c \in S\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#contalg_prop-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-roman ol-marker-2" id="contalg_prop-1-2">
+<li id="contalg_prop-1-2-1">
+<div class="para" id="contalg_prop-1-2-1-1">The function <span class="process-math">\(h \colon S \to \R\)</span> defined by <span class="process-math">\(h(x) \coloneqq f(x)+g(x)\)</span> is continuous at <span class="process-math">\(c\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#contalg_prop-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item i"><a aria-label="Copy heading and permalink for Item i" href="#contalg_prop-1-2-1" title="Copy heading and permalink for Item i">🔗</a></div>
+</li>
+<li id="contalg_prop-1-2-2">
+<div class="para" id="contalg_prop-1-2-2-1">The function <span class="process-math">\(h \colon S \to \R\)</span> defined by <span class="process-math">\(h(x) \coloneqq f(x)-g(x)\)</span> is continuous at <span class="process-math">\(c\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#contalg_prop-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item ii"><a aria-label="Copy heading and permalink for Item ii" href="#contalg_prop-1-2-2" title="Copy heading and permalink for Item ii">🔗</a></div>
+</li>
+<li id="contalg_prop-1-2-3">
+<div class="para" id="contalg_prop-1-2-3-1">The function <span class="process-math">\(h \colon S \to \R\)</span> defined by <span class="process-math">\(h(x) \coloneqq f(x)g(x)\)</span> is continuous at <span class="process-math">\(c\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#contalg_prop-1-2-3-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iii"><a aria-label="Copy heading and permalink for Item iii" href="#contalg_prop-1-2-3" title="Copy heading and permalink for Item iii">🔗</a></div>
+</li>
+<li id="contalg_prop-1-2-4">
+<div class="para" id="contalg_prop-1-2-4-1">If <span class="process-math">\(g(x) \neq 0\)</span> for all <span class="process-math">\(x \in S\text{,}\)</span> the function <span class="process-math">\(h \colon S \to \R\)</span> given by <span class="process-math">\(h(x) \coloneqq \frac{f(x)}{g(x)}\)</span> is continuous at <span class="process-math">\(c\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#contalg_prop-1-2-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item iv"><a aria-label="Copy heading and permalink for Item iv" href="#contalg_prop-1-2-4" title="Copy heading and permalink for Item iv">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Proposition 3.2.5"><a aria-label="Copy heading and permalink for Proposition 3.2.5" href="#contalg_prop" title="Copy heading and permalink for Proposition 3.2.5">🔗</a></div>
+</article>
+<article class="example example-like" id="sincos_example"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.2.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sincos_example-1-1">
+<div class="para">The functions <span class="process-math">\(\sin(x)\)</span> and <span class="process-math">\(\cos(x)\)</span> are continuous. In the following computations we use the sum-to-product trigonometric identities.  We also use the simple facts that <span class="process-math">\(\babs{\sin(x)} \leq \sabs{x}\text{,}\)</span> <span class="process-math">\(\babs{\cos(x)} \leq 1\text{,}\)</span> and <span class="process-math">\(\babs{\sin(x)} \leq 1\text{.}\)</span>
+</div>
+<div class="displaymath process-math" id="sincos_example-1-1-6">
+\begin{equation}
+\begin{split}
+\babs{\sin(x)-\sin(c)} &amp; =
+\abs{
+2 \sin \left( \frac{x-c}{2} \right) \cos \left( \frac{x+c}{2} \right)
+}
+\\
+&amp; =
+2
+\abs{ \sin \left( \frac{x-c}{2} \right) }
+\abs{ \cos \left( \frac{x+c}{2} \right) }
+\\
+&amp; \leq
+2
+\abs{ \sin \left( \frac{x-c}{2} \right) }
+\\
+&amp; \leq
+2
+\abs{ \frac{x-c}{2} }
+= \sabs{x-c}
+\end{split}
+\end{equation}
+</div>
+<div class="displaymath process-math" id="sincos_example-1-1-7">
+\begin{equation}
+\begin{split}
+\babs{\cos(x)-\cos(c)} &amp; =
+\abs{
+-2 \sin \left( \frac{x-c}{2} \right) \sin \left( \frac{x+c}{2} \right)
+}
+\\
+&amp; =
+2
+\abs{ \sin \left( \frac{x-c}{2} \right) }
+\abs{ \sin \left( \frac{x+c}{2} \right) }
+\\
+&amp; \leq
+2
+\abs{ \sin \left( \frac{x-c}{2} \right) }
+\\
+&amp; \leq
+2
+\abs{ \frac{x-c}{2} }
+= \sabs{x-c}
+\end{split}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sincos_example-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sincos_example-1-2">The claim that <span class="process-math">\(\sin\)</span> and <span class="process-math">\(\cos\)</span> are continuous follows by taking an arbitrary sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> converging to <span class="process-math">\(c\text{,}\)</span> or by applying the definition of continuity directly.  Details are left to the reader.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sincos_example-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 3.2.6"><a aria-label="Copy heading and permalink for Example 3.2.6" href="#sincos_example" title="Copy heading and permalink for Example 3.2.6">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 3.2.1: Definition and basic properties"><a aria-label="Copy heading and permalink for Subsection 3.2.1: Definition and basic properties" href="#sec_cont-3" title="Copy heading and permalink for Subsection 3.2.1: Definition and basic properties">🔗</a></div>
+</section>
+<section class="subsection" id="sec_cont-4">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.2.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Composition of continuous functions</span>
+</h3>
+<div class="para" id="sec_cont-4-2">You probably already realized that one of the basic tools in constructing complicated functions out of simple ones is composition. Recall that for two functions <span class="process-math">\(f\)</span> and <span class="process-math">\(g\text{,}\)</span> the composition <span class="process-math">\(f \circ g\)</span> is defined by <span class="process-math">\((f \circ g)(x) \coloneqq f\bigl(g(x)\bigr)\text{.}\)</span> A composition of continuous functions is again continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-4-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_compositioncont"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.2.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="prop_compositioncont-1-1">Let <span class="process-math">\(A, B \subset \R\)</span> and <span class="process-math">\(f \colon B \to \R\)</span> and <span class="process-math">\(g \colon A \to B\)</span> be functions.  If <span class="process-math">\(g\)</span> is continuous at <span class="process-math">\(c \in A\)</span> and <span class="process-math">\(f\)</span> is continuous at <span class="process-math">\(g(c)\text{,}\)</span> then <span class="process-math">\(f \circ g \colon A \to \R\)</span> is continuous at <span class="process-math">\(c\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_compositioncont-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 3.2.7"><a aria-label="Copy heading and permalink for Proposition 3.2.7" href="#prop_compositioncont" title="Copy heading and permalink for Proposition 3.2.7">🔗</a></div>
+</article>
+<article class="proof" id="sec_cont-4-4"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_cont-4-4-1">Let <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> be a sequence in <span class="process-math">\(A\)</span> such that <span class="process-math">\(\lim_{n\to\infty} x_n = c\text{.}\)</span> As <span class="process-math">\(g\)</span> is continuous at <span class="process-math">\(c\text{,}\)</span> we have  that<span class="process-math">\(\bigl\{ g(x_n) \bigr\}_{n=1}^\infty\)</span> converges to <span class="process-math">\(g(c)\text{.}\)</span> As <span class="process-math">\(f\)</span> is continuous at <span class="process-math">\(g(c)\text{,}\)</span> we have that <span class="process-math">\(\bigl\{ f\bigl(g(x_n)\bigr)
+\bigr\}_{n=1}^\infty\)</span> converges to <span class="process-math">\(f\bigl(g(c)\bigr)\text{.}\)</span> Thus <span class="process-math">\(f \circ g\)</span> is continuous at <span class="process-math">\(c\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-4-4-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 3.2.2.1"><a aria-label="Copy heading and permalink for Proof 3.2.2.1" href="#sec_cont-4-4" title="Copy heading and permalink for Proof 3.2.2.1">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_cont-4-5"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.2.8</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_cont-4-5-1-1">Claim: <em class="emphasis"><span class="process-math">\({\bigl(\sin(\nicefrac{1}{x})\bigr)}^2\)</span> is a continuous function on <span class="process-math">\((0,\infty)\text{.}\)</span></em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-4-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_cont-4-5-1-2">Proof: The function <span class="process-math">\(\nicefrac{1}{x}\)</span> is continuous on <span class="process-math">\((0,\infty)\)</span> and <span class="process-math">\(\sin(x)\)</span> is continuous on <span class="process-math">\((0,\infty)\)</span> (actually on <span class="process-math">\(\R\text{,}\)</span> but <span class="process-math">\((0,\infty)\)</span> is the range for <span class="process-math">\(\nicefrac{1}{x}\)</span>). Hence, the composition <span class="process-math">\(\sin(\nicefrac{1}{x})\)</span> is continuous.  Also, <span class="process-math">\(x^2\)</span> is continuous on the interval <span class="process-math">\([-1,1]\)</span> (the range of <span class="process-math">\(\sin\)</span>). Thus, the composition <span class="process-math">\({\bigl(\sin(\nicefrac{1}{x})\bigr)}^2\)</span> is continuous on <span class="process-math">\((0,\infty)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-4-5-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 3.2.8"><a aria-label="Copy heading and permalink for Example 3.2.8" href="#sec_cont-4-5" title="Copy heading and permalink for Example 3.2.8">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 3.2.2: Composition of continuous functions"><a aria-label="Copy heading and permalink for Subsection 3.2.2: Composition of continuous functions" href="#sec_cont-4" title="Copy heading and permalink for Subsection 3.2.2: Composition of continuous functions">🔗</a></div>
+</section>
+<section class="subsection" id="sec_cont-5">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.2.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Discontinuous functions</span>
+</h3>
+<div class="para" id="sec_cont-5-2">When <span class="process-math">\(f\)</span> is not continuous at <span class="process-math">\(c\text{,}\)</span> we say <span class="process-math">\(f\)</span> is <em class="emphasis">discontinuous</em> at <span class="process-math">\(c\text{,}\)</span> or that it has a <em class="emphasis">discontinuity</em> at <span class="process-math">\(c\text{.}\)</span> The following proposition is a useful test and follows immediately from the third item of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_cont.html#contbasic_prop" title="Proposition 3.2.2">Proposition 3.2.2</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-5-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="sec_cont-5-3"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.2.9</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_cont-5-3-1-1">Let <span class="process-math">\(f \colon S \to \R\)</span> be a function and <span class="process-math">\(c \in S\text{.}\)</span>  Suppose there exists a sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\text{,}\)</span> <span class="process-math">\(x_n \in S\)</span> for all <span class="process-math">\(n\text{,}\)</span> and <span class="process-math">\(\lim_{n\to\infty} x_n = c\)</span> such that <span class="process-math">\(\bigl\{ f(x_n) \bigr\}_{n=1}^\infty\)</span> does not converge to <span class="process-math">\(f(c)\text{.}\)</span> Then <span class="process-math">\(f\)</span> is discontinuous at <span class="process-math">\(c\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-5-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 3.2.9"><a aria-label="Copy heading and permalink for Proposition 3.2.9" href="#sec_cont-5-3" title="Copy heading and permalink for Proposition 3.2.9">🔗</a></div>
+</article>
+<div class="para" id="sec_cont-5-4">Again, saying that <span class="process-math">\(\bigl\{ f(x_n) \bigr\}_{n=1}^\infty\)</span> does not converge to <span class="process-math">\(f(c)\)</span> means that it either does not converge at all, or it converges to something other than <span class="process-math">\(f(c)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-5-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="example_jumpdiscont"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.2.10</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="example_jumpdiscont-1-1">
+<div class="para">The function <span class="process-math">\(f \colon \R \to \R\)</span> defined by</div>
+<div class="displaymath process-math" id="example_jumpdiscont-1-1-2">
+\begin{equation}
+f(x) \coloneqq 
+\begin{cases}
+-1 &amp; \text{if } x &lt; 0, \\
+1 &amp; \text{if } x \geq 0
+\end{cases}
+\end{equation}
+</div>
+<div class="para">is not continuous at 0.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_jumpdiscont-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="example_jumpdiscont-1-2">Proof: Consider <span class="process-math">\(\{ \nicefrac{-1}{n} \}_{n=1}^\infty\text{,}\)</span> which converges to 0.  Then <span class="process-math">\(f(\nicefrac{-1}{n}) = -1\)</span> for every <span class="process-math">\(n\text{,}\)</span> and so <span class="process-math">\(\lim_{n\to\infty} f(\nicefrac{-1}{n}) = -1\text{,}\)</span> but <span class="process-math">\(f(0) = 1\text{.}\)</span>  Thus the function is not continuous at 0.  See <a class="internal" href="sec_cont.html#fig_jumpdiscont" title="Figure 3.4">Figure 3.4</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_jumpdiscont-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <hr class="rahr"/>
+<figure class="figure figure-like" id="fig_jumpdiscont"><img alt="A graph of a function that is minus 1 for negative x and 1 for nonnegative x. The points minus 1, minus a half, minus a third, etc. are marked on the x-axis and the corresponding values on the graph are marked with dots." class="raimg" role="img" src="figures/jumpdiscont-mbx.svg" style="width:252pt; height:73pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Jump discontinuity.  The values of <span class="process-math">\(f(\nicefrac{-1}{n})\)</span> and <span class="process-math">\(f(0)\)</span> are marked as black dots.<div class="autopermalink" data-description="Figure 3.4"><a aria-label="Copy heading and permalink for Figure 3.4" href="#fig_jumpdiscont" title="Copy heading and permalink for Figure 3.4">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para" id="example_jumpdiscont-1-6">Notice that <span class="process-math">\(f(\nicefrac{1}{n}) = 1\)</span> for all <span class="process-math">\(n \in \N\text{.}\)</span> Hence, <span class="process-math">\(\lim_{n\to\infty} f(\nicefrac{1}{n}) = f(0) = 1\text{.}\)</span>  So <span class="process-math">\(\bigl\{ f(x_n) \bigr\}_{n=1}^\infty\)</span> may converge to <span class="process-math">\(f(0)\)</span> for some specific sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> going to 0, despite the function being discontinuous at 0.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_jumpdiscont-1-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="example_jumpdiscont-1-7">Finally, consider <span class="process-math">\(f\Bigl(\frac{{(-1)}^n}{n}\Bigr) = {(-1)}^n\text{.}\)</span> This sequence diverges.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_jumpdiscont-1-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 3.2.10"><a aria-label="Copy heading and permalink for Example 3.2.10" href="#example_jumpdiscont" title="Copy heading and permalink for Example 3.2.10">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_cont-5-6"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.2.11</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_cont-5-6-1-1">
+<div class="para">For an extreme example, consider the <em class="emphasis">Dirichlet function</em><details aria-live="polite" class="ptx-footnote" id="sec_cont-5-6-1-1-2"><summary class="ptx-footnote__number" title="Footnote 3.2.1"><sup> 1 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_cont-5-6-1-1-2">Named after the German mathematician <a class="external" href="https://en.wikipedia.org/wiki/Peter_Gustav_Lejeune_Dirichlet" target="_blank">Johann Peter Gustav Lejeune Dirichlet</a> (1805–1859).
+</div></details>.</div>
+<div class="displaymath process-math" id="sec_cont-5-6-1-1-3">
+\begin{equation}
+f(x) \coloneqq
+\begin{cases}
+1 &amp; \text{if } x \text{ is rational,} \\
+0 &amp; \text{if } x \text{ is irrational.}
+\end{cases}
+\end{equation}
+</div>
+<div class="para">The function <span class="process-math">\(f\)</span> is discontinuous at all <span class="process-math">\(c \in \R\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-5-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_cont-5-6-1-2">Proof: If <span class="process-math">\(c\)</span> is rational, take a sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> of irrational numbers in <span class="process-math">\((0,1)\)</span> such that <span class="process-math">\(\lim_{n\to\infty} x_n = c\)</span> (why can we?).  Then <span class="process-math">\(f(x_n) = 0\)</span> and so <span class="process-math">\(\lim_{n\to\infty} f(x_n) = 0\text{,}\)</span> but <span class="process-math">\(f(c) = 1\text{.}\)</span> If <span class="process-math">\(c\)</span> is irrational, take a sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> of rational numbers in <span class="process-math">\((0,1)\)</span> that converges to <span class="process-math">\(c\)</span> (why can we?).  Then <span class="process-math">\(\lim_{n\to\infty} f(x_n) = 1\text{,}\)</span> but <span class="process-math">\(f(c) = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-5-6-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 3.2.11"><a aria-label="Copy heading and permalink for Example 3.2.11" href="#sec_cont-5-6" title="Copy heading and permalink for Example 3.2.11">🔗</a></div>
+</article>
+<div class="para" id="sec_cont-5-7">Let us test the limits of our intuition.  Can there exist a function continuous at all irrational numbers, but discontinuous at all rational numbers?  There are rational numbers arbitrarily close to any irrational number.  Perhaps strangely, the answer is yes, such a function exists.  The following example is called the <em class="emphasis">Thomae function</em><details aria-live="polite" class="ptx-footnote" id="sec_cont-5-7-2"><summary class="ptx-footnote__number" title="Footnote 3.2.2"><sup> 2 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_cont-5-7-2">Named after the German mathematician <a class="external" href="https://en.wikipedia.org/wiki/Carl_Johannes_Thomae" target="_blank">Carl Johannes Thomae</a> (1840–1921).
+</div></details> or the <em class="emphasis">popcorn function</em>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-5-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="popcornfunction_example"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.2.12</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="popcornfunction_example-1-1">
+<div class="para">Define <span class="process-math">\(f \colon (0,1) \to \R\)</span> as</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/popcornfig.html" id="popcornfunction_example-1-1-2">
+\begin{equation}
+f(x) \coloneqq 
+\begin{cases}
+\nicefrac{1}{k} &amp; \text{if } x=\nicefrac{m}{k}, \text{ where } m,k \in \N
+\text{ and have no common divisors (lowest terms),} \\
+0 &amp; \text{if } x \text{ is irrational.}
+\end{cases}
+\end{equation}
+</div>
+<div class="para">See the graph of <span class="process-math">\(f\)</span> in <a class="internal" href="sec_cont.html#popcornfig" title="Figure 3.5">Figure 3.5</a>. We claim that <span class="process-math">\(f\)</span> is continuous at all irrational <span class="process-math">\(c\)</span> and discontinuous at all rational <span class="process-math">\(c\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#popcornfunction_example-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <hr class="rahr"/>
+<figure class="figure figure-like" id="popcornfig"><img alt="A graph of a function that is composed of dots. These dots seem arranged in what seems like various triangles, but it is clear this function is discontinuous at all those points, and there are more and more of such points the closer we get to the x-axis." class="raimg" role="img" src="figures/popcornfig-mbx.svg" style="width:149pt; height:76pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Graph of the “popcorn function.”<div class="autopermalink" data-description="Figure 3.5"><a aria-label="Copy heading and permalink for Figure 3.5" href="#popcornfig" title="Copy heading and permalink for Figure 3.5">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para" id="popcornfunction_example-1-5">Proof: Let <span class="process-math">\(c = \nicefrac{m}{k}\)</span> be rational and in lowest terms.  Take a sequence of irrational numbers <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> such that <span class="process-math">\(\lim_{n\to\infty} x_n = c\text{.}\)</span>  Then <span class="process-math">\(\lim_{n\to\infty} f(x_n) = \lim_{n\to\infty} 0 = 0\text{,}\)</span> but <span class="process-math">\(f(c) = \nicefrac{1}{k} \neq 0\text{.}\)</span>  So <span class="process-math">\(f\)</span> is discontinuous at <span class="process-math">\(c\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#popcornfunction_example-1-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="popcornfunction_example-1-6">
+<div class="para">Now let <span class="process-math">\(c\)</span> be irrational, so <span class="process-math">\(f(c) = 0\text{.}\)</span>  Take a sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> in <span class="process-math">\((0,1)\)</span> such that <span class="process-math">\(\lim_{n\to\infty} x_n = c\text{.}\)</span> Given <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> find <span class="process-math">\(K \in \N\)</span> such that <span class="process-math">\(\nicefrac{1}{K} &lt; \epsilon\)</span> by the <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_setofreals.html#thm_arch_i" title="Item i">Archimedean property</a>. If <span class="process-math">\(\nicefrac{m}{k} \in (0,1)\)</span> and <span class="process-math">\(m,k \in \N\text{,}\)</span> then <span class="process-math">\(0 &lt; m &lt; k\text{.}\)</span> So there are only finitely many rational numbers in <span class="process-math">\((0,1)\)</span> whose denominator <span class="process-math">\(k\)</span> in lowest terms is less than <span class="process-math">\(K\text{.}\)</span> As <span class="process-math">\(\lim_{n\to\infty} x_n = c\text{,}\)</span> every number not equal to <span class="process-math">\(c\)</span> can appear at most finitely many times in <span class="process-math">\(\{ x_n \}_{n=1}^\infty\text{.}\)</span> Hence, there is an <span class="process-math">\(M\)</span> such that for <span class="process-math">\(n \geq M\text{,}\)</span> all the numbers <span class="process-math">\(x_n\)</span> that are rational have a denominator larger than or equal to <span class="process-math">\(K\text{.}\)</span>  Thus for <span class="process-math">\(n \geq M\text{,}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_arch_i.html" id="popcornfunction_example-1-6-24">
+\begin{equation}
+\babs{f(x_n) - 0} = f(x_n) \leq \nicefrac{1}{K} &lt; \epsilon .
+\end{equation}
+</div>
+<div class="para">Therefore, <span class="process-math">\(f\)</span> is continuous at irrational <span class="process-math">\(c\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#popcornfunction_example-1-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 3.2.12"><a aria-label="Copy heading and permalink for Example 3.2.12" href="#popcornfunction_example" title="Copy heading and permalink for Example 3.2.12">🔗</a></div>
+</article>
+<div class="para" id="sec_cont-5-9">Let us end on an easier example.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-5-9" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="example_removablediscont"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.2.13</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="example_removablediscont-1-1">Define <span class="process-math">\(g \colon \R \to \R\)</span> by <span class="process-math">\(g(x) \coloneqq 0\)</span> if <span class="process-math">\(x \neq 0\)</span> and <span class="process-math">\(g(0) \coloneqq 1\text{.}\)</span>  Then <span class="process-math">\(g\)</span> is not continuous at zero, but continuous everywhere else (why?). The point <span class="process-math">\(x=0\)</span> is called a <em class="emphasis">removable discontinuity</em>.  That is because if we would change the definition of <span class="process-math">\(g\text{,}\)</span> by insisting that <span class="process-math">\(g(0)\)</span> be <span class="process-math">\(0\text{,}\)</span> we would obtain a continuous function.  On the other hand, let <span class="process-math">\(f\)</span> be the function of <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_cont.html#example_jumpdiscont" title="Example 3.2.10">Example 3.2.10</a>. Then <span class="process-math">\(f\)</span> does not have a removable discontinuity at <span class="process-math">\(0\text{.}\)</span>  No matter how we would define <span class="process-math">\(f(0)\text{,}\)</span> the function would still fail to be continuous.  The difference is that <span class="process-math">\(\lim_{x\to 0} g(x)\)</span> exists while <span class="process-math">\(\lim_{x\to 0} f(x)\)</span> does not.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_removablediscont-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="example_removablediscont-1-2">We stay with this example to show another phenomenon. Let <span class="process-math">\(A \coloneqq \{ 0 \}\text{,}\)</span> then <span class="process-math">\(g|_A\)</span> is continuous (why?), while <span class="process-math">\(g\)</span> is not continuous on <span class="process-math">\(A\text{.}\)</span> Similarly, if <span class="process-math">\(B \coloneqq \R \setminus \{0 \}\text{,}\)</span> then <span class="process-math">\(g|_B\)</span> is also continuous, and <span class="process-math">\(g\)</span> is in fact continuous on <span class="process-math">\(B\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_removablediscont-1-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 3.2.13"><a aria-label="Copy heading and permalink for Example 3.2.13" href="#example_removablediscont" title="Copy heading and permalink for Example 3.2.13">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 3.2.3: Discontinuous functions"><a aria-label="Copy heading and permalink for Subsection 3.2.3: Discontinuous functions" href="#sec_cont-5" title="Copy heading and permalink for Subsection 3.2.3: Discontinuous functions">🔗</a></div>
+</section>
+<section class="exercises" id="sec_cont-6">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.2.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_cont-6-1"><h4 class="heading"><span class="codenumber">3.2.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_cont-6-1-1-1">Using the definition of continuity directly, prove that <span class="process-math">\(f \colon \R \to \R\)</span> defined by <span class="process-math">\(f(x) \coloneqq x^2\)</span> is continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-6-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.1"><a aria-label="Copy heading and permalink for Exercise 3.2.1" href="#sec_cont-6-1" title="Copy heading and permalink for Exercise 3.2.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_cont-6-2"><h4 class="heading"><span class="codenumber">3.2.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_cont-6-2-1-1">Using the definition of continuity directly, prove that <span class="process-math">\(f \colon (0,\infty) \to \R\)</span> defined by <span class="process-math">\(f(x) \coloneqq \nicefrac{1}{x}\)</span> is continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-6-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.2"><a aria-label="Copy heading and permalink for Exercise 3.2.2" href="#sec_cont-6-2" title="Copy heading and permalink for Exercise 3.2.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_cont-6-3"><h4 class="heading"><span class="codenumber">3.2.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_cont-6-3-1-1">
+<div class="para">Define <span class="process-math">\(f \colon \R \to \R\)</span> by</div>
+<div class="displaymath process-math" id="sec_cont-6-3-1-1-2">
+\begin{equation}
+f(x) \coloneqq
+\begin{cases}
+x &amp; \text{if } x \text{ is rational,} \\
+x^2 &amp; \text{if } x \text{ is irrational.}
+\end{cases}
+\end{equation}
+</div>
+<div class="para">Using the definition of continuity directly, prove that <span class="process-math">\(f\)</span> is continuous at <span class="process-math">\(1\)</span> and discontinuous at <span class="process-math">\(2\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-6-3-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.3"><a aria-label="Copy heading and permalink for Exercise 3.2.3" href="#sec_cont-6-3" title="Copy heading and permalink for Exercise 3.2.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_cont-6-4"><h4 class="heading"><span class="codenumber">3.2.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_cont-6-4-1-1">
+<div class="para">Define <span class="process-math">\(f \colon \R \to \R\)</span> by</div>
+<div class="displaymath process-math" id="sec_cont-6-4-1-1-2">
+\begin{equation}
+f(x) \coloneqq
+\begin{cases}
+\sin(\nicefrac{1}{x}) &amp; \text{if } x \neq 0, \\
+0 &amp; \text{if } x=0.
+\end{cases}
+\end{equation}
+</div>
+<div class="para">Is <span class="process-math">\(f\)</span> continuous?  Prove your assertion.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-6-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.4"><a aria-label="Copy heading and permalink for Exercise 3.2.4" href="#sec_cont-6-4" title="Copy heading and permalink for Exercise 3.2.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_cont-6-5"><h4 class="heading"><span class="codenumber">3.2.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_cont-6-5-1-1">
+<div class="para">Define <span class="process-math">\(f \colon \R \to \R\)</span> by</div>
+<div class="displaymath process-math" id="sec_cont-6-5-1-1-2">
+\begin{equation}
+f(x) \coloneqq
+\begin{cases}
+x \sin(\nicefrac{1}{x}) &amp; \text{if } x \neq 0, \\
+0 &amp; \text{if } x=0.
+\end{cases}
+\end{equation}
+</div>
+<div class="para">Is <span class="process-math">\(f\)</span> continuous?  Prove your assertion.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-6-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.5"><a aria-label="Copy heading and permalink for Exercise 3.2.5" href="#sec_cont-6-5" title="Copy heading and permalink for Exercise 3.2.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_cont-6-6"><h4 class="heading"><span class="codenumber">3.2.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_cont-6-6-1-1">Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_cont.html#contalg_prop" title="Proposition 3.2.5">Proposition 3.2.5</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-6-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.6"><a aria-label="Copy heading and permalink for Exercise 3.2.6" href="#sec_cont-6-6" title="Copy heading and permalink for Exercise 3.2.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_restrictioncontinuous"><h4 class="heading"><span class="codenumber">3.2.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_restrictioncontinuous-1-1">Let <span class="process-math">\(S \subset \R\)</span> and <span class="process-math">\(A \subset S\text{.}\)</span>  Let <span class="process-math">\(f \colon S \to \R\)</span> be a continuous function. Prove that the restriction <span class="process-math">\(f|_A\)</span> is continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_restrictioncontinuous-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.7"><a aria-label="Copy heading and permalink for Exercise 3.2.7" href="#exercise_restrictioncontinuous" title="Copy heading and permalink for Exercise 3.2.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_cont-6-8"><h4 class="heading"><span class="codenumber">3.2.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_cont-6-8-1-1">Suppose <span class="process-math">\(S \subset \R\)</span> such that <span class="process-math">\((c-\alpha,c+\alpha) \subset S\)</span> for some <span class="process-math">\(c \in \R\)</span> and <span class="process-math">\(\alpha &gt; 0\text{.}\)</span> Let <span class="process-math">\(f \colon S \to \R\)</span> be a function and <span class="process-math">\(A \coloneqq (c-\alpha,c+\alpha)\text{.}\)</span>  Prove that if <span class="process-math">\(f|_A\)</span> is continuous at <span class="process-math">\(c\text{,}\)</span> then <span class="process-math">\(f\)</span> is continuous at <span class="process-math">\(c\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-6-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.8"><a aria-label="Copy heading and permalink for Exercise 3.2.8" href="#sec_cont-6-8" title="Copy heading and permalink for Exercise 3.2.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_cont-6-9"><h4 class="heading"><span class="codenumber">3.2.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_cont-6-9-1-1">Give an example of functions <span class="process-math">\(f \colon \R \to \R\)</span> and <span class="process-math">\(g \colon \R \to \R\)</span> such that the function <span class="process-math">\(h\text{,}\)</span> defined by <span class="process-math">\(h(x) \coloneqq f(x) + g(x)\text{,}\)</span> is continuous, but <span class="process-math">\(f\)</span> and <span class="process-math">\(g\)</span> are not continuous.  Can you find <span class="process-math">\(f\)</span> and <span class="process-math">\(g\)</span> that are nowhere continuous, but <span class="process-math">\(h\)</span> is a continuous function?<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-6-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.9"><a aria-label="Copy heading and permalink for Exercise 3.2.9" href="#sec_cont-6-9" title="Copy heading and permalink for Exercise 3.2.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_cont-6-10"><h4 class="heading"><span class="codenumber">3.2.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_cont-6-10-1-1">Let <span class="process-math">\(f \colon \R \to \R\)</span> and <span class="process-math">\(g \colon \R \to \R\)</span> be continuous functions.  Suppose that <span class="process-math">\(f(r) = g(r)\)</span> for all <span class="process-math">\(r \in \Q\text{.}\)</span> Show that <span class="process-math">\(f(x) = g(x)\)</span> for all <span class="process-math">\(x \in \R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-6-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.10"><a aria-label="Copy heading and permalink for Exercise 3.2.10" href="#sec_cont-6-10" title="Copy heading and permalink for Exercise 3.2.10">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_positivecontneigh"><h4 class="heading"><span class="codenumber">3.2.11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_positivecontneigh-1-1">Let <span class="process-math">\(f \colon \R \to \R\)</span> be continuous.  Suppose <span class="process-math">\(f(c) &gt; 0\text{.}\)</span>  Show that there exists an <span class="process-math">\(\alpha &gt; 0\)</span> such that for all <span class="process-math">\(x \in (c-\alpha,c+\alpha)\text{,}\)</span> we have <span class="process-math">\(f(x) &gt; 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_positivecontneigh-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.11"><a aria-label="Copy heading and permalink for Exercise 3.2.11" href="#exercise_positivecontneigh" title="Copy heading and permalink for Exercise 3.2.11">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_cont-6-12"><h4 class="heading"><span class="codenumber">3.2.12<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_cont-6-12-1-1">Let <span class="process-math">\(f \colon \Z \to \R\)</span> be a function.  Show that <span class="process-math">\(f\)</span> is continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-6-12-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.12"><a aria-label="Copy heading and permalink for Exercise 3.2.12" href="#sec_cont-6-12" title="Copy heading and permalink for Exercise 3.2.12">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_contseqalt"><h4 class="heading"><span class="codenumber">3.2.13<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_contseqalt-1-1">Let <span class="process-math">\(f \colon S \to \R\)</span> be a function and <span class="process-math">\(c \in S\)</span> such that for every sequence <span class="process-math">\(\{ x_n \}_{n=1}^\infty\)</span> in <span class="process-math">\(S\)</span> with <span class="process-math">\(\lim_{n\to\infty} x_n = c\text{,}\)</span> the sequence <span class="process-math">\(\bigl\{ f(x_n) \bigr\}_{n=1}^\infty\)</span> converges.  Show that <span class="process-math">\(f\)</span> is continuous at <span class="process-math">\(c\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_contseqalt-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.13"><a aria-label="Copy heading and permalink for Exercise 3.2.13" href="#exercise_contseqalt" title="Copy heading and permalink for Exercise 3.2.13">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_cont-6-14"><h4 class="heading"><span class="codenumber">3.2.14<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_cont-6-14-1-1">Suppose <span class="process-math">\(f \colon [-1,0] \to \R\)</span> and <span class="process-math">\(g \colon [0,1] \to \R\)</span> are continuous and <span class="process-math">\(f(0) = g(0)\text{.}\)</span>  Define <span class="process-math">\(h \colon [-1,1] \to \R\)</span> by <span class="process-math">\(h(x) \coloneqq f(x)\)</span> if <span class="process-math">\(x \leq 0\)</span> and <span class="process-math">\(h(x) \coloneqq g(x)\)</span> if <span class="process-math">\(x &gt; 0\text{.}\)</span>  Show that <span class="process-math">\(h\)</span> is continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-6-14-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.14"><a aria-label="Copy heading and permalink for Exercise 3.2.14" href="#sec_cont-6-14" title="Copy heading and permalink for Exercise 3.2.14">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_cont-6-15"><h4 class="heading"><span class="codenumber">3.2.15<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_cont-6-15-1-1">Suppose <span class="process-math">\(g \colon \R \to \R\)</span> is a continuous function such that <span class="process-math">\(g(0) = 0\text{,}\)</span> and suppose <span class="process-math">\(f \colon \R \to \R\)</span> is such that <span class="process-math">\(\babs{f(x)-f(y)} \leq g(x-y)\)</span> for all <span class="process-math">\(x\)</span> and <span class="process-math">\(y\text{.}\)</span>  Show that <span class="process-math">\(f\)</span> is continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-6-15-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.15"><a aria-label="Copy heading and permalink for Exercise 3.2.15" href="#sec_cont-6-15" title="Copy heading and permalink for Exercise 3.2.15">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_cont-6-16"><h4 class="heading"><span class="codenumber">3.2.16<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_cont-6-16-1-1">
+<em class="emphasis">(Challenging)</em>   Suppose <span class="process-math">\(f \colon \R \to \R\)</span> is continuous at <span class="process-math">\(0\)</span> and such that <span class="process-math">\(f(x+y) = f(x) + f(y)\)</span> for every <span class="process-math">\(x\)</span> and <span class="process-math">\(y\text{.}\)</span> Show that <span class="process-math">\(f(x) = ax\)</span> for some <span class="process-math">\(a \in \R\text{.}\)</span> Hint: Show that <span class="process-math">\(f(nx) = nf(x)\text{,}\)</span> then show <span class="process-math">\(f\)</span> is continuous on <span class="process-math">\(\R\text{.}\)</span> Then show that <span class="process-math">\(\nicefrac{f(x)}{x} = f(1)\)</span> for all rational <span class="process-math">\(x \neq 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-6-16-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.16"><a aria-label="Copy heading and permalink for Exercise 3.2.16" href="#sec_cont-6-16" title="Copy heading and permalink for Exercise 3.2.16">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_minmaxcont"><h4 class="heading"><span class="codenumber">3.2.17<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_minmaxcont-1-1">Suppose <span class="process-math">\(S \subset \R\)</span> and let <span class="process-math">\(f \colon S \to \R\)</span> and <span class="process-math">\(g \colon S \to \R\)</span> be continuous functions. Define <span class="process-math">\(p \colon S \to \R\)</span> by <span class="process-math">\(p(x) \coloneqq \max \bigl\{ f(x) , g(x) \bigr\}\)</span> and <span class="process-math">\(q \colon S \to \R\)</span> by <span class="process-math">\(q(x) \coloneqq \min \bigl\{ f(x) , g(x) \bigr\}\text{.}\)</span>  Prove that <span class="process-math">\(p\)</span> and <span class="process-math">\(q\)</span> are continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_minmaxcont-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.17"><a aria-label="Copy heading and permalink for Exercise 3.2.17" href="#exercise_minmaxcont" title="Copy heading and permalink for Exercise 3.2.17">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_cont-6-18"><h4 class="heading"><span class="codenumber">3.2.18<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_cont-6-18-1-1">Suppose <span class="process-math">\(f \colon [-1,1] \to \R\)</span> is a function continuous at all <span class="process-math">\(x \in
+[-1,1] \setminus \{ 0 \}\text{.}\)</span>  Show that for every <span class="process-math">\(\epsilon\)</span> such that <span class="process-math">\(0 &lt; \epsilon &lt; 1\text{,}\)</span> there exists a function <span class="process-math">\(g \colon [-1,1] \to \R\)</span> continuous on all of <span class="process-math">\([-1,1]\)</span> such that <span class="process-math">\(f(x) = g(x)\)</span> for all <span class="process-math">\(x \in [-1,-\epsilon] \cup [\epsilon,1]\text{,}\)</span> and <span class="process-math">\(\babs{g(x)} \leq \babs{f(x)}\)</span> for all <span class="process-math">\(x \in [-1,1]\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-6-18-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.18"><a aria-label="Copy heading and permalink for Exercise 3.2.18" href="#sec_cont-6-18" title="Copy heading and permalink for Exercise 3.2.18">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_cont-6-19"><h4 class="heading"><span class="codenumber">3.2.19<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_cont-6-19-1-1">
+<em class="emphasis">(Challenging)</em>   A function <span class="process-math">\(f \colon I \to \R\)</span> is <em class="emphasis">convex</em> if whenever <span class="process-math">\(a \leq x \leq b\)</span> for <span class="process-math">\(a,x,b\)</span> in <span class="process-math">\(I\text{,}\)</span> we have <span class="process-math">\(f(x) \leq f(a) \frac{b-x}{b-a} + f(b) \frac{x-a}{b-a}\text{.}\)</span>  In other words, the line drawn between <span class="process-math">\(\bigl(a,f(a)\bigr)\)</span> and <span class="process-math">\(\bigl(b,f(b)\bigr)\)</span> is above the graph of <span class="process-math">\(f\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-6-19-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<ol class="lower-alpha ol-marker-3" id="sec_cont-6-19-1-2">
+<li id="sec_cont-6-19-1-2-1">
+<div class="para" id="sec_cont-6-19-1-2-1-1">Prove that if <span class="process-math">\(I = (\alpha,\beta)\)</span> an open interval and <span class="process-math">\(f \colon I \to \R\)</span> is convex, then <span class="process-math">\(f\)</span> is continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-6-19-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 3.2.19.a"><a aria-label="Copy heading and permalink for Item 3.2.19.a" href="#sec_cont-6-19-1-2-1" title="Copy heading and permalink for Item 3.2.19.a">🔗</a></div>
+</li>
+<li id="sec_cont-6-19-1-2-2">
+<div class="para" id="sec_cont-6-19-1-2-2-1">Find an example of a convex <span class="process-math">\(f \colon [0,1] \to \R\)</span> that is not continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_cont-6-19-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 3.2.19.b"><a aria-label="Copy heading and permalink for Item 3.2.19.b" href="#sec_cont-6-19-1-2-2" title="Copy heading and permalink for Item 3.2.19.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 3.2.19"><a aria-label="Copy heading and permalink for Exercise 3.2.19" href="#sec_cont-6-19" title="Copy heading and permalink for Exercise 3.2.19">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 3.2.4"><a aria-label="Copy heading and permalink for Exercises 3.2.4" href="#sec_cont-6" title="Copy heading and permalink for Exercises 3.2.4">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 3.2: Continuous functions"><a aria-label="Copy heading and permalink for Section 3.2: Continuous functions" href="#sec_cont" title="Copy heading and permalink for Section 3.2: Continuous functions">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_limoffunc.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_minmaxint.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>

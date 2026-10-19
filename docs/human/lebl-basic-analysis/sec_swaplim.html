@@ -1,0 +1,807 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Swapping limits · Basic Analysis · Mathematics Program</title><link rel="stylesheet" href="core.css"><link rel="stylesheet" href="reader.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true,tags:'none',macros:{knowl:['#2',2]}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'process-math'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml-full.js"></script></head><body class="no-math"><header class="book-navigation"><a href="../../en/#course-C10">Mathematics Program</a> · <a href="../../en/#course-C20">Real Analysis II</a> · <a href="index.html">Basic Analysis I &amp; II</a> · <a href="ATTRIBUTION.html">Jiří Lebl · sources and attribution</a></header><div class="author-macros" aria-hidden="true"><span class="process-math">\(\require{cancel}\require{mathtools}\newcommand{\avoidbreak}{\postdisplaypenalty=100}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\ann}{\operatorname{ann}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\hol}{\operatorname{hol}}
+\newcommand{\aut}{\operatorname{aut}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\sing}{\operatorname{sing}}
+\newcommand{\esssup}{\operatorname{ess~sup}}
+\newcommand{\essran}{\operatorname{essran}}
+\newcommand{\innprod}[2]{\langle #1 | #2 \rangle}
+\newcommand{\linnprod}[2]{\langle #1 , #2 \rangle}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Nul}{\operatorname{Nul}}
+\newcommand{\Ran}{\operatorname{Ran}}
+\newcommand{\sabs}[1]{\lvert {#1} \rvert}
+\newcommand{\snorm}[1]{\lVert {#1} \rVert}
+\newcommand{\abs}[1]{\left\lvert {#1} \right\rvert}
+\newcommand{\norm}[1]{\left\lVert {#1} \right\rVert}
+\newcommand{\babs}[1]{\bigl\lvert {#1} \bigr\rvert}
+\newcommand{\bnorm}[1]{\bigl\lVert {#1} \bigr\rVert}
+\newcommand{\Babs}[1]{\Bigl\lvert {#1} \Bigr\rvert}
+\newcommand{\Bnorm}[1]{\Bigl\lVert {#1} \Bigr\rVert}
+\newcommand{\bbabs}[1]{\biggl\lvert {#1} \biggr\rvert}
+\newcommand{\bbnorm}[1]{\biggl\lVert {#1} \biggr\rVert}
+\newcommand{\BBabs}[1]{\Biggl\lvert {#1} \Biggr\rvert}
+\newcommand{\BBnorm}[1]{\Biggl\lVert {#1} \Biggr\rVert}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\D}{{\mathbb{D}}}
+\newcommand{\F}{{\mathbb{F}}}
+\newcommand{\bB}{{\mathbb{B}}}
+\newcommand{\bC}{{\mathbb{C}}}
+\newcommand{\bR}{{\mathbb{R}}}
+\newcommand{\bZ}{{\mathbb{Z}}}
+\newcommand{\bN}{{\mathbb{N}}}
+\newcommand{\bQ}{{\mathbb{Q}}}
+\newcommand{\bD}{{\mathbb{D}}}
+\newcommand{\bF}{{\mathbb{F}}}
+\newcommand{\bH}{{\mathbb{H}}}
+\newcommand{\bO}{{\mathbb{O}}}
+\newcommand{\bP}{{\mathbb{P}}}
+\newcommand{\bK}{{\mathbb{K}}}
+\newcommand{\bV}{{\mathbb{V}}}
+\newcommand{\CP}{{\mathbb{CP}}}
+\newcommand{\RP}{{\mathbb{RP}}}
+\newcommand{\HP}{{\mathbb{HP}}}
+\newcommand{\OP}{{\mathbb{OP}}}
+\newcommand{\sA}{{\mathscr{A}}}
+\newcommand{\sB}{{\mathscr{B}}}
+\newcommand{\sC}{{\mathscr{C}}}
+\newcommand{\sF}{{\mathscr{F}}}
+\newcommand{\sG}{{\mathscr{G}}}
+\newcommand{\sH}{{\mathscr{H}}}
+\newcommand{\sM}{{\mathscr{M}}}
+\newcommand{\sO}{{\mathscr{O}}}
+\newcommand{\sP}{{\mathscr{P}}}
+\newcommand{\sQ}{{\mathscr{Q}}}
+\newcommand{\sR}{{\mathscr{R}}}
+\newcommand{\sS}{{\mathscr{S}}}
+\newcommand{\sI}{{\mathscr{I}}}
+\newcommand{\sL}{{\mathscr{L}}}
+\newcommand{\sK}{{\mathscr{K}}}
+\newcommand{\sU}{{\mathscr{U}}}
+\newcommand{\sV}{{\mathscr{V}}}
+\newcommand{\sX}{{\mathscr{X}}}
+\newcommand{\sY}{{\mathscr{Y}}}
+\newcommand{\sZ}{{\mathscr{Z}}}
+\newcommand{\fS}{{\mathfrak{S}}}
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\id}{\textit{id}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Tor}{\operatorname{Tor}}
+\newcommand{\Torsion}{\operatorname{Torsion}}
+\newcommand{\Ext}{\operatorname{Ext}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\from}{\ensuremath{\leftarrow}}
+\newcommand{\dhat}[1]{\hat{\hat{#1}}}
+\newcommand{\spn}{\operatorname{span}}
+\newcommand{\myincludegraphics}[3][]{\includegraphics[#1]{figures/#2}}
+\newcommand{\myincludepdft}[2]{\subimport*{figures/}{#1.pdf_t}}
+\newcommand{\nicefrac}[2]{{}^{#1}\!/\!{}_{#2}}
+\newcommand{\qedhere}{}
+\newcommand{\widebar}[1]{\overline{#1}}
+\newcommand{\allowbreak}{}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div><main class="ptx-main"><div class="ptx-content" id="ptx-content">
+<section class="section" id="sec_swaplim">
+<h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Swapping limits</span>
+</h2>
+<section class="introduction" id="sec_swaplim-2">
+<div class="para" id="sec_swaplim-2-1">
+<em class="emphasis">Note: 2 lectures</em><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section>
+<section class="subsection" id="sec_swaplim-3">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Continuity</span>
+</h3>
+<div class="para logical" id="sec_swaplim-3-2">
+<div class="para">Let us get back to swapping limits and expand on <a class="internal" href="fs_chapter.html" title="Chapter 6: Sequences of Functions">Chapter 6</a>. Let <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> be a sequence of functions <span class="process-math">\(f_n \colon X \to Y\)</span> for a set <span class="process-math">\(X\)</span> and a metric space <span class="process-math">\(Y\text{.}\)</span> Let <span class="process-math">\(f \colon X \to Y\)</span> be a function and for every <span class="process-math">\(x \in X\text{,}\)</span> suppose</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fs_chapter.html" id="sec_swaplim-3-2-8">
+\begin{equation}
+f(x) = \lim_{n\to \infty} f_n(x) .
+\end{equation}
+</div>
+<div class="para">We say the sequence <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> <em class="emphasis">converges pointwise</em> to <span class="process-math">\(f\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-3-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_swaplim-3-3">
+<div class="para">For <span class="process-math">\(Y=\C\text{,}\)</span> a series of functions <em class="emphasis">converges pointwise</em> to <span class="process-math">\(f\)</span> if for every <span class="process-math">\(x \in X\text{,}\)</span> we have</div>
+<div class="displaymath process-math" id="sec_swaplim-3-3-7">
+\begin{equation}
+f(x) = \lim_{n\to \infty} \sum_{k=1}^n f_k(x) =
+\sum_{k=1}^\infty f_k(x) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-3-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_swaplim-3-4">
+<div class="para">The question is: If <span class="process-math">\(f_n\)</span> are all continuous, is <span class="process-math">\(f\)</span> continuous?  Differentiable? Integrable?  What are the derivatives or integrals of <span class="process-math">\(f\text{?}\)</span> For example, for continuity of the pointwise limit of a sequence of functions <span class="process-math">\(\{ f_n \}_{n=1}^\infty\text{,}\)</span> we are asking if</div>
+<div class="displaymath process-math" id="sec_swaplim-3-4-5">
+\begin{equation}
+\lim_{x\to x_0} \lim_{n\to\infty} f_n(x)
+\overset{?}{=}
+\lim_{n\to\infty} \lim_{x\to x_0} f_n(x) .
+\end{equation}
+</div>
+<div class="para">A priori, we do not even know if both sides exist, let alone if they equal each other.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-3-4" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_swaplim-3-5"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_swaplim-3-5-1-1">
+<div class="para">The functions <span class="process-math">\(f_n \colon \R \to \R\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_swaplim-3-5-1-1-2">
+\begin{equation}
+f_n(x) \coloneqq \frac{1}{1+nx^2},
+\end{equation}
+</div>
+<div class="para">are continuous and converge pointwise to the discontinuous function</div>
+<div class="displaymath process-math" id="sec_swaplim-3-5-1-1-3">
+\begin{equation}
+f(x) \coloneqq 
+\begin{cases}
+1 &amp; \text{if } x=0, \\
+0 &amp; \text{else.}
+\end{cases}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-3-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 11.2.1"><a aria-label="Copy heading and permalink for Example 11.2.1" href="#sec_swaplim-3-5" title="Copy heading and permalink for Example 11.2.1">🔗</a></div>
+</article>
+<div class="para logical" id="sec_swaplim-3-6">
+<div class="para">So pointwise convergence is not enough to preserve continuity (nor even boundedness).  For that, we need uniform convergence. Let <span class="process-math">\(f_n \colon X \to Y\)</span> be functions.  Then <span class="process-math">\(\{f_n\}_{n=1}^\infty\)</span> <em class="emphasis">converges uniformly</em> to <span class="process-math">\(f\)</span> if for every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there exists an <span class="process-math">\(M\)</span> such that for all <span class="process-math">\(n \geq M\)</span> and all <span class="process-math">\(x \in X\text{,}\)</span> we have</div>
+<div class="displaymath process-math" id="sec_swaplim-3-6-10">
+\begin{equation}
+d\bigl(f_n(x),f(x)\bigr) &lt; \epsilon .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-3-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_swaplim-3-7">
+<div class="para">A series <span class="process-math">\(\sum_{n=1}^\infty f_n\)</span> of complex-valued functions converges uniformly to <span class="process-math">\(f\)</span> if the sequence of partial sums converges uniformly, that is, if for every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there exists an <span class="process-math">\(M\)</span> such that for all <span class="process-math">\(n \geq M\)</span> and all <span class="process-math">\(x \in X\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_swaplim-3-7-7">
+\begin{equation}
+\abs{\left(\sum_{k=1}^n f_k(x)\right)-f(x)} &lt; \epsilon .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-3-7" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_swaplim-3-8">The simplest property preserved by uniform convergence is boundedness.  We leave the proof of the following proposition as an exercise.  It is almost identical to the proof for real-valued functions.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-3-8" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_uniformconvbounded"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="prop_uniformconvbounded-1-1">Let <span class="process-math">\(X\)</span> be a set and <span class="process-math">\((Y,d)\)</span> a metric space. If <span class="process-math">\(f_n \colon X \to Y\)</span> are bounded functions and converge uniformly to <span class="process-math">\(f
+\colon X \to Y\text{,}\)</span> then <span class="process-math">\(f\)</span> is bounded.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_uniformconvbounded-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 11.2.2"><a aria-label="Copy heading and permalink for Proposition 11.2.2" href="#prop_uniformconvbounded" title="Copy heading and permalink for Proposition 11.2.2">🔗</a></div>
+</article>
+<div class="para logical" id="sec_swaplim-3-10">
+<div class="para">If <span class="process-math">\(X\)</span> is a set and <span class="process-math">\((Y,d)\)</span> is a metric space, then a sequence <span class="process-math">\(f_n \colon X
+\to Y\)</span> is <em class="emphasis">uniformly Cauchy</em> if for every <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> there is an <span class="process-math">\(M\)</span> such that for all <span class="process-math">\(n, m \geq M\)</span> and all <span class="process-math">\(x \in X\text{,}\)</span> we have</div>
+<div class="displaymath process-math" id="sec_swaplim-3-10-9">
+\begin{equation}
+d\bigl(f_n(x),f_m(x)\bigr) &lt; \epsilon .
+\end{equation}
+</div>
+<div class="para">The notion is the same as for real-valued functions. The proof of the following proposition is again essentially the same as in that setting and is left as an exercise.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-3-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_unifcauchymetric"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="prop_unifcauchymetric-1-1">Let <span class="process-math">\(X\)</span> be a set, <span class="process-math">\((Y,d)\)</span> be a metric space, and <span class="process-math">\(f_n \colon X \to Y\)</span> be functions. If <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> converges uniformly, then <span class="process-math">\(\{f_n\}_{n=1}^\infty\)</span> is uniformly Cauchy.  Conversely, if <span class="process-math">\(\{f_n\}_{n=1}^\infty\)</span> is uniformly Cauchy and <span class="process-math">\((Y,d)\)</span> is Cauchy-complete, then <span class="process-math">\(\{f_n\}_{n=1}^\infty\)</span> converges uniformly.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_unifcauchymetric-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 11.2.3"><a aria-label="Copy heading and permalink for Proposition 11.2.3" href="#prop_unifcauchymetric" title="Copy heading and permalink for Proposition 11.2.3">🔗</a></div>
+</article>
+<div class="para logical" id="sec_swaplim-3-12">
+<div class="para">For <span class="process-math">\(f \colon X \to \C\text{,}\)</span> we write</div>
+<div class="displaymath process-math" id="sec_swaplim-3-12-2">
+\begin{equation}
+\snorm{f}_X \coloneqq \sup_{x \in X} \babs{f(x)} .
+\end{equation}
+</div>
+<div class="para">We call <span class="process-math">\(\snorm{\cdot}_X\)</span> the <em class="emphasis">supremum norm</em> or <em class="emphasis">uniform norm</em>, and the subscript denotes the set over which the supremum is taken. Then a sequence of functions <span class="process-math">\(f_n \colon X \to \C\)</span> converges uniformly to <span class="process-math">\(f \colon X \to \C\)</span> if and only if</div>
+<div class="displaymath process-math" id="sec_swaplim-3-12-8">
+\begin{equation}
+\lim_{n\to \infty} \snorm{f_n-f}_X = 0 .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-3-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_swaplim-3-13">
+<div class="para">The supremum norm satisfies the triangle inequality: For every <span class="process-math">\(x \in X\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_swaplim-3-13-2">
+\begin{equation}
+\babs{f(x)+g(x)} \leq
+\babs{f(x)}+\babs{g(x)} \leq
+\snorm{f}_X+\snorm{g}_X .
+\end{equation}
+</div>
+<div class="para">Take a supremum on the left to get</div>
+<div class="displaymath process-math" id="sec_swaplim-3-13-3">
+\begin{equation}
+\snorm{f+g}_X \leq
+\snorm{f}_X+\snorm{g}_X .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-3-13" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_swaplim-3-14">For a compact metric space <span class="process-math">\(X\text{,}\)</span> the uniform norm is a norm on the vector space <span class="process-math">\(C(X,\C)\text{.}\)</span> We leave it as an exercise. While we will not need it, <span class="process-math">\(C(X,\C)\)</span> is in fact a complex vector space, that is, in the definition of a vector space we can replace <span class="process-math">\(\R\)</span> with <span class="process-math">\(\C\text{.}\)</span> Convergence in the metric space <span class="process-math">\(C(X,\C)\)</span> is uniform convergence.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-3-14" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_swaplim-3-15">We will study a couple of types of series of functions, and a useful test for uniform convergence of a series is the <em class="emphasis">Weierstrass <span class="process-math">\(M\)</span>-test</em>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-3-15" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="thm_weiermtest"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Weierstrass <span class="process-math">\(M\)</span>-test.</span>
+</h4>
+<div class="para logical" id="thm_weiermtest-2-1">
+<div class="para">Let <span class="process-math">\(X\)</span> be a set. Suppose <span class="process-math">\(f_n \colon X \to \C\)</span> are functions and <span class="process-math">\(M_n &gt; 0\)</span> numbers such that</div>
+<div class="displaymath process-math" id="thm_weiermtest-2-1-4">
+\begin{equation}
+\babs{f_n(x)}\leq M_n \quad \text{for all } x \in X,
+\qquad \text{and} \qquad
+\sum_{n=1}^\infty M_n
+\quad \text{converges}.
+\end{equation}
+</div>
+<div class="para">Then</div>
+<div class="displaymath process-math" id="thm_weiermtest-2-1-5">
+\begin{equation}
+\sum_{n=1}^\infty f_n(x)
+\quad \text{converges uniformly}.
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#thm_weiermtest-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 11.2.4: Weierstrass M-test"><a aria-label="Copy heading and permalink for Theorem 11.2.4: Weierstrass M-test" href="#thm_weiermtest" title="Copy heading and permalink for Theorem 11.2.4: Weierstrass M-test">🔗</a></div>
+</article>
+<div class="para" id="sec_swaplim-3-17">Another way to state the theorem is to say that if <span class="process-math">\(\sum_{n=1}^\infty \snorm{f_n}_X\)</span> converges, then <span class="process-math">\(\sum_{n=1}^\infty f_n\)</span> converges uniformly. Note that the converse of this theorem is not true. Applying the theorem to <span class="process-math">\(\sum_{n=1}^\infty \babs{f_n(x)}\text{,}\)</span> we see that this series also converges uniformly.  So the series converges both absolutely and uniformly.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-3-17" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_swaplim-3-18"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_swaplim-3-18-1">
+<div class="para">Suppose <span class="process-math">\(\sum_{n=1}^\infty M_n\)</span> converges.  Given <span class="process-math">\(\epsilon &gt; 0\text{,}\)</span> we have that the partial sums of <span class="process-math">\(\sum_{n=1}^\infty M_n\)</span> are Cauchy so there is an <span class="process-math">\(N\)</span> such that for all <span class="process-math">\(m, n \geq N\)</span> with <span class="process-math">\(m &gt; n\text{,}\)</span> we have</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_cachysercomplex.html" id="sec_swaplim-3-18-1-7">
+\begin{equation}
+\sum_{k=n+1}^m M_k &lt; \epsilon .
+\end{equation}
+</div>
+<div class="para">We estimate a Cauchy difference of the partial sums of the functions:</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_cachysercomplex.html" id="sec_swaplim-3-18-1-8">
+\begin{equation}
+\abs{\sum_{k=n+1}^m f_k(x)} \leq
+\sum_{k=n+1}^m \babs{f_k(x)} \leq
+\sum_{k=n+1}^m M_k &lt; \epsilon .
+\end{equation}
+</div>
+<div class="para">The series converges by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_complexnums.html#prop_cachysercomplex" title="Proposition 11.1.4">Proposition 11.1.4</a>. The convergence is uniform, as <span class="process-math">\(N\)</span> does not depend on <span class="process-math">\(x\text{.}\)</span> Indeed, for all <span class="process-math">\(n \geq N\text{,}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/prop_cachysercomplex.html" id="sec_swaplim-3-18-1-13">
+\begin{equation}
+\abs{\sum_{k=1}^\infty f_k(x) - \sum_{k=1}^n f_k(x)} \leq
+\abs{\sum_{k=n+1}^\infty f_k(x)} \leq \epsilon .
+\qedhere
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-3-18-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 11.2.1.1"><a aria-label="Copy heading and permalink for Proof 11.2.1.1" href="#sec_swaplim-3-18" title="Copy heading and permalink for Proof 11.2.1.1">🔗</a></div>
+</article>
+<article class="example example-like" id="example_sinnsqfourier"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="example_sinnsqfourier-1-1">
+<div class="para">The series</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_fouriersern2.html" id="example_sinnsqfourier-1-1-1">
+\begin{equation}
+\sum_{n=1}^\infty \frac{\sin(nx)}{n^2}
+\end{equation}
+</div>
+<div class="para">converges uniformly on <span class="process-math">\(\R\text{.}\)</span>  See <a class="internal" href="sec_swaplim.html#fig_fouriersern2" title="Figure 11.2">Figure 11.2</a>. This series is a Fourier series, and we will see more of these in a later section.  Proof: The series converges uniformly because <span class="process-math">\(\sum_{n=1}^\infty \frac{1}{n^2}\)</span> converges and</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_fouriersern2.html" id="example_sinnsqfourier-1-1-5">
+\begin{equation}
+\abs{\frac{\sin(nx)}{n^2}} \leq 
+\frac{1}{n^2} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#example_sinnsqfourier-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 11.2.5"><a aria-label="Copy heading and permalink for Example 11.2.5" href="#example_sinnsqfourier" title="Copy heading and permalink for Example 11.2.5">🔗</a></div>
+</article><hr class="rahr"/>
+<figure class="figure figure-like" id="fig_fouriersern2"><img alt="A graph of a function in a bold line that is a wave with a shallow down slope and steep upslope. Several approximations are given in shades of gray, where the darker (earlier) ones are closer to a regular sine wave and the lighter ones are closer to the dark bold line." class="raimg" role="img" src="figures/fouriersern2-mbx.svg" style="width:209pt; height:137pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Plot of <span class="process-math">\(\sum_{n=1}^\infty \frac{\sin(n x)}{n^2}\)</span> including the first 8 partial sums in various shades of gray.<div class="autopermalink" data-description="Figure 11.2"><a aria-label="Copy heading and permalink for Figure 11.2" href="#fig_fouriersern2" title="Copy heading and permalink for Figure 11.2">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<article class="example example-like" id="sec_swaplim-3-23"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_swaplim-3-23-1-1">
+<div class="para">The series</div>
+<div class="displaymath process-math" id="sec_swaplim-3-23-1-1-1">
+\begin{equation}
+\sum_{n=0}^\infty \frac{x^n}{n!} 
+\end{equation}
+</div>
+<div class="para">converges uniformly on every bounded interval. This series is a power series that we will study shortly. Proof: Take the interval <span class="process-math">\([-r,r] \subset \R\)</span> (every bounded interval is contained in some <span class="process-math">\([-r,r]\)</span>). The series <span class="process-math">\(\sum_{n=0}^\infty \frac{r^n}{n!}\)</span> converges by the ratio test, so <span class="process-math">\(\sum_{n=0}^\infty \frac{x^n}{n!}\)</span> converges uniformly on <span class="process-math">\([-r,r]\)</span> as</div>
+<div class="displaymath process-math" id="sec_swaplim-3-23-1-1-7">
+\begin{equation}
+\abs{\frac{x^n}{n!} } \leq 
+\frac{r^n}{n!} .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-3-23-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 11.2.6"><a aria-label="Copy heading and permalink for Example 11.2.6" href="#sec_swaplim-3-23" title="Copy heading and permalink for Example 11.2.6">🔗</a></div>
+</article>
+<div class="para" id="sec_swaplim-3-24">Now we would love to say something about the limit.  For example, is it continuous?<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-3-24" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop_uniformswitch"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="prop_uniformswitch-1-1">
+<div class="para">Let <span class="process-math">\((X,d_X)\)</span> and <span class="process-math">\((Y,d_Y)\)</span> be metric spaces, and suppose <span class="process-math">\((Y,d_Y)\)</span> is Cauchy-complete. Suppose <span class="process-math">\(f_n \colon X \to Y\)</span> converge uniformly to <span class="process-math">\(f \colon X \to Y\text{.}\)</span> Let <span class="process-math">\(\{ x_k \}_{k=1}^\infty\)</span> be a sequence in <span class="process-math">\(X\)</span> and <span class="process-math">\(x \coloneqq \lim_{k \to \infty} x_k\text{.}\)</span>  Suppose</div>
+<div class="displaymath process-math" id="prop_uniformswitch-1-1-9">
+\begin{equation}
+a_n \coloneqq \lim_{k \to \infty} f_n(x_k)
+\end{equation}
+</div>
+<div class="para">exists for all <span class="process-math">\(n\text{.}\)</span>  Then <span class="process-math">\(\{a_n\}_{n=1}^\infty\)</span> converges and</div>
+<div class="displaymath process-math" id="prop_uniformswitch-1-1-12">
+\begin{equation}
+\lim_{k \to \infty} f(x_k) = \lim_{n\to\infty} a_n .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_uniformswitch-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 11.2.7"><a aria-label="Copy heading and permalink for Proposition 11.2.7" href="#prop_uniformswitch" title="Copy heading and permalink for Proposition 11.2.7">🔗</a></div>
+</article>
+<div class="para logical" id="sec_swaplim-3-26">
+<div class="para">In other words,</div>
+<div class="displaymath process-math" id="sec_swaplim-3-26-1">
+\begin{equation}
+\lim_{k \to \infty} \lim_{n\to\infty} f_n(x_k) =
+\lim_{n \to \infty} \lim_{k\to\infty} f_n(x_k) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-3-26" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_swaplim-3-27"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_swaplim-3-27-1">
+<div class="para">First we show that <span class="process-math">\(\{ a_n \}_{n=1}^\infty\)</span> converges.  As <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> converges uniformly, it is uniformly Cauchy. Let <span class="process-math">\(\epsilon &gt; 0\)</span> be given.  There is an <span class="process-math">\(M\)</span> such that for all <span class="process-math">\(m,n \geq M\text{,}\)</span> we have</div>
+<div class="displaymath process-math" id="sec_swaplim-3-27-1-6">
+\begin{equation}
+d_Y\bigl(f_n(x_k),f_m(x_k)\bigr) &lt; \epsilon \qquad \text{for all } k .
+\end{equation}
+</div>
+<div class="para">Note that <span class="process-math">\(d_Y(a_n,a_m) \leq
+d_Y\bigl(a_n,f_n(x_k)\bigr) +
+d_Y\bigl(f_n(x_k),f_m(x_k)\bigr) +
+d_Y\bigl(f_m(x_k),a_m\bigr)\)</span> and take the limit as <span class="process-math">\(k \to \infty\)</span> to find</div>
+<div class="displaymath process-math" id="sec_swaplim-3-27-1-9">
+\begin{equation}
+d_Y(a_n,a_m) \leq \epsilon .
+\end{equation}
+</div>
+<div class="para">Hence <span class="process-math">\(\{a_n\}_{n=1}^\infty\)</span> is Cauchy and converges since <span class="process-math">\(Y\)</span> is complete.  Write <span class="process-math">\(a \coloneqq \lim_{n \to \infty} a_n\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-3-27-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_swaplim-3-27-2">
+<div class="para">Find an <span class="process-math">\(\ell \in \N\)</span> such that</div>
+<div class="displaymath process-math" id="sec_swaplim-3-27-2-2">
+\begin{equation}
+d_Y\bigl(f_\ell(p),f(p)\bigr) &lt; \nicefrac{\epsilon}{3}
+\end{equation}
+</div>
+<div class="para">for all <span class="process-math">\(p \in X\text{.}\)</span>  Assume <span class="process-math">\(\ell\)</span> is large enough so that</div>
+<div class="displaymath process-math" id="sec_swaplim-3-27-2-5">
+\begin{equation}
+d_Y(a_\ell,a) &lt; \nicefrac{\epsilon}{3}  .
+\end{equation}
+</div>
+<div class="para">Find an <span class="process-math">\(N \in \N\)</span> such that for <span class="process-math">\(m \geq N\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_swaplim-3-27-2-8">
+\begin{equation}
+d_Y\bigl(f_\ell(x_m),a_\ell\bigr) &lt; \nicefrac{\epsilon}{3}  .
+\end{equation}
+</div>
+<div class="para">Then for <span class="process-math">\(m \geq N\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_swaplim-3-27-2-10">
+\begin{equation}
+d_Y\bigl(f(x_m),a\bigr)
+\leq
+d_Y\bigl(f(x_m),f_\ell(x_m)\bigr)
++
+d_Y\bigl(f_\ell(x_m),a_\ell\bigr)
++
+d_Y\bigl(a_\ell,a\bigr)
+&lt;
+\nicefrac{\epsilon}{3} +
+\nicefrac{\epsilon}{3} +
+\nicefrac{\epsilon}{3} = \epsilon . \qedhere
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-3-27-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 11.2.1.2"><a aria-label="Copy heading and permalink for Proof 11.2.1.2" href="#sec_swaplim-3-27" title="Copy heading and permalink for Proof 11.2.1.2">🔗</a></div>
+</article>
+<div class="para" id="sec_swaplim-3-28">We obtain an immediate corollary about continuity. If <span class="process-math">\(f_n\)</span> are all continuous, then <span class="process-math">\(a_n = f_n(x)\text{.}\)</span> Hence, <span class="process-math">\(\{ a_n \}_{n=1}^\infty\)</span> converges automatically to <span class="process-math">\(f(x)\)</span> by the hypothesis and so we do not require completeness of <span class="process-math">\(Y\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-3-28" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="corollary theorem-like" id="cor_metricuniformcontinuous"><h4 class="heading">
+<span class="type">Corollary</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.8</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="cor_metricuniformcontinuous-1-1">Let <span class="process-math">\(X\)</span> and <span class="process-math">\(Y\)</span> be metric spaces. If <span class="process-math">\(f_n \colon X \to Y\)</span> are continuous functions such that <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> converges uniformly to <span class="process-math">\(f \colon X \to Y\text{,}\)</span> then <span class="process-math">\(f\)</span> is continuous.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#cor_metricuniformcontinuous-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Corollary 11.2.8"><a aria-label="Copy heading and permalink for Corollary 11.2.8" href="#cor_metricuniformcontinuous" title="Copy heading and permalink for Corollary 11.2.8">🔗</a></div>
+</article>
+<div class="para" id="sec_swaplim-3-30">The converse is not true.  Just because the limit is continuous does not mean that the convergence is uniform.  For example: <span class="process-math">\(f_n \colon (0,1) \to \R\)</span> defined by <span class="process-math">\(f_n(x) \coloneqq x^n\)</span> converge to the zero function, but not uniformly.  However, if we add extra conditions on the sequence, we can obtain a partial converse such as Dini’s theorem, see <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_liminter.html#exercise_dinisthm" title="Exercise 6.2.10">Exercise 6.2.10</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-3-30" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_swaplim-3-31">In <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_swaplim.html#exercise_CXCnormedspace" title="Exercise 11.2.3">Exercise 11.2.3</a>, the reader is asked to prove that for a compact <span class="process-math">\(X\text{,}\)</span> <span class="process-math">\(C(X,\C)\)</span> is a normed vector space with the uniform norm and hence a metric space.  We have just shown that <span class="process-math">\(C(X,\C)\)</span> is Cauchy-complete:  <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_swaplim.html#prop_unifcauchymetric" title="Proposition 11.2.3">Proposition 11.2.3</a> says that a Cauchy sequence in <span class="process-math">\(C(X,\C)\)</span> converges uniformly to some function, and <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_swaplim.html#cor_metricuniformcontinuous" title="Corollary 11.2.8">Corollary 11.2.8</a> shows that the limit is continuous and hence in <span class="process-math">\(C(X,\C)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-3-31" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="corollary theorem-like" id="sec_swaplim-3-32"><h4 class="heading">
+<span class="type">Corollary</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.9</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_swaplim-3-32-1-1">Let <span class="process-math">\((X,d)\)</span> be a compact metric space. Then <span class="process-math">\(C(X,\C)\)</span> is a Cauchy-complete metric space.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-3-32-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Corollary 11.2.9"><a aria-label="Copy heading and permalink for Corollary 11.2.9" href="#sec_swaplim-3-32" title="Copy heading and permalink for Corollary 11.2.9">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_swaplim-3-33"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.10</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_swaplim-3-33-1-1">
+<div class="para">By <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_swaplim.html#example_sinnsqfourier" title="Example 11.2.5">Example 11.2.5</a>, the Fourier series</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/example_sinnsqfourier.html ./knowl/xref/cor_metricuniformcontinuous.html ./knowl/xref/fig_fouriersern2.html" id="sec_swaplim-3-33-1-1-2">
+\begin{equation}
+\sum_{n=1}^\infty \frac{\sin(nx)}{n^2}
+\end{equation}
+</div>
+<div class="para">converges uniformly and hence is continuous by <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_swaplim.html#cor_metricuniformcontinuous" title="Corollary 11.2.8">Corollary 11.2.8</a> (as is visible in <a class="internal" href="sec_swaplim.html#fig_fouriersern2" title="Figure 11.2">Figure 11.2</a>).</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-3-33-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 11.2.10"><a aria-label="Copy heading and permalink for Example 11.2.10" href="#sec_swaplim-3-33" title="Copy heading and permalink for Example 11.2.10">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 11.2.1: Continuity"><a aria-label="Copy heading and permalink for Subsection 11.2.1: Continuity" href="#sec_swaplim-3" title="Copy heading and permalink for Subsection 11.2.1: Continuity">🔗</a></div>
+</section>
+<section class="subsection" id="sec_swaplim-4">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Integration</span>
+</h3>
+<article class="proposition theorem-like" id="prop_complexlimitswapintegral"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.11</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="prop_complexlimitswapintegral-1-1">
+<div class="para">Suppose <span class="process-math">\(f_n \colon [a,b] \to \C\)</span> are Riemann integrable and suppose that <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> converges uniformly to <span class="process-math">\(f \colon [a,b] \to \C\text{.}\)</span>  Then <span class="process-math">\(f\)</span> is Riemann integrable and</div>
+<div class="displaymath process-math" id="prop_complexlimitswapintegral-1-1-5">
+\begin{equation}
+\int_a^b f = \lim_{n\to \infty} \int_a^b f_n .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#prop_complexlimitswapintegral-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 11.2.11"><a aria-label="Copy heading and permalink for Proposition 11.2.11" href="#prop_complexlimitswapintegral" title="Copy heading and permalink for Proposition 11.2.11">🔗</a></div>
+</article>
+<div class="para" id="sec_swaplim-4-3">Since the integral of a complex-valued function is just the integral of the real and imaginary parts separately, the proof follows directly by the results of <a class="internal" href="fs_chapter.html" title="Chapter 6: Sequences of Functions">Chapter 6</a>. We leave the details as an exercise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-4-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="corollary theorem-like" id="sec_swaplim-4-4"><h4 class="heading">
+<span class="type">Corollary</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.12</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_swaplim-4-4-1-1">
+<div class="para">Suppose <span class="process-math">\(f_n \colon [a,b] \to \C\)</span> are Riemann integrable and suppose that</div>
+<div class="displaymath process-math" id="sec_swaplim-4-4-1-1-2">
+\begin{equation}
+\sum_{n=1}^\infty f_n(x)
+\end{equation}
+</div>
+<div class="para">converges uniformly.  Then the series is Riemann integrable on <span class="process-math">\([a,b]\)</span> and</div>
+<div class="displaymath process-math" id="sec_swaplim-4-4-1-1-4">
+\begin{equation}
+\int_a^b \sum_{n=1}^\infty f_n(x) \,dx
+=
+\sum_{n=1}^\infty \int_a^b f_n(x) \,dx
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-4-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Corollary 11.2.12"><a aria-label="Copy heading and permalink for Corollary 11.2.12" href="#sec_swaplim-4-4" title="Copy heading and permalink for Corollary 11.2.12">🔗</a></div>
+</article>
+<article class="example example-like" id="sec_swaplim-4-5"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.13</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_swaplim-4-5-1-1">
+<div class="para">Let us show how to integrate a Fourier series.</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_weiermtest.html" id="sec_swaplim-4-5-1-1-1">
+\begin{equation}
+\int_{0}^x \sum_{n=1}^\infty \frac{\cos(nt)}{n^2} \,dt
+=
+\sum_{n=1}^\infty \int_{0}^x \frac{\cos(nt)}{n^2}\,dt
+=
+\sum_{n=1}^\infty \frac{\sin(nx)}{n^3}
+\end{equation}
+</div>
+<div class="para">The swapping of integral and sum is possible because of uniform convergence, which we have proved before using the Weierstrass <span class="process-math">\(M\)</span>-test (<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_swaplim.html#thm_weiermtest" title="Theorem 11.2.4: Weierstrass M-test">Theorem 11.2.4</a>).</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-4-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 11.2.13"><a aria-label="Copy heading and permalink for Example 11.2.13" href="#sec_swaplim-4-5" title="Copy heading and permalink for Example 11.2.13">🔗</a></div>
+</article>
+<div class="para" id="sec_swaplim-4-6">We remark that we can swap integrals and limits under far less stringent hypotheses, but for that we would need a stronger integral than the Riemann integral, such as the Lebesgue integral.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-4-6" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection 11.2.2: Integration"><a aria-label="Copy heading and permalink for Subsection 11.2.2: Integration" href="#sec_swaplim-4" title="Copy heading and permalink for Subsection 11.2.2: Integration">🔗</a></div>
+</section>
+<section class="subsection" id="sec_swaplim-5">
+<h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Differentiation</span>
+</h3>
+<div class="para logical" id="sec_swaplim-5-2">
+<div class="para">Recall that a complex-valued function <span class="process-math">\(f \colon [a,b] \to \C\text{,}\)</span> where <span class="process-math">\(f(x) = u(x)+i\,v(x)\text{,}\)</span> is differentiable if <span class="process-math">\(u\)</span> and <span class="process-math">\(v\)</span> are differentiable and the derivative is</div>
+<div class="displaymath process-math" id="sec_swaplim-5-2-5">
+\begin{equation}
+f'(x) = u'(x)+i\,v'(x) .
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-5-2" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_swaplim-5-3">The proof of the following theorem is to apply the corresponding theorem for real functions to <span class="process-math">\(u\)</span> and <span class="process-math">\(v\text{,}\)</span> and is left as an exercise.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-5-3" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="thm_dersconvergecomplex"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.14</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="thm_dersconvergecomplex-1-1">Let <span class="process-math">\(I \subset \R\)</span> be a bounded interval and let <span class="process-math">\(f_n \colon I \to \C\)</span> be continuously differentiable functions. Suppose <span class="process-math">\(\{ f_n' \}_{n=1}^\infty\)</span> converges uniformly to <span class="process-math">\(g \colon I \to \C\text{,}\)</span> and suppose <span class="process-math">\(\{ f_n(c) \}_{n=1}^\infty\)</span> is a convergent sequence for some <span class="process-math">\(c \in I\text{.}\)</span>  Then <span class="process-math">\(\{ f_n \}_{n=1}^\infty\)</span> converges uniformly to a continuously differentiable function <span class="process-math">\(f \colon I \to \C\text{,}\)</span> and <span class="process-math">\(f' = g\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#thm_dersconvergecomplex-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 11.2.14"><a aria-label="Copy heading and permalink for Theorem 11.2.14" href="#thm_dersconvergecomplex" title="Copy heading and permalink for Theorem 11.2.14">🔗</a></div>
+</article>
+<div class="para" id="sec_swaplim-5-5">Uniform convergence of the functions themselves is not enough. The derivatives may not converge and the limit function need not even be differentiable. In <a class="internal" href="sec_stoneweier.html" title="Section 11.7: The Stone–Weierstrass theorem">Section 11.7</a>, we will prove that continuous functions are uniform limits of polynomials, yet as the following example demonstrates, a continuous function need not be differentiable anywhere.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-5-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_swaplim-5-6"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.15</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="sec_swaplim-5-6-1-1">
+<div class="para">There exist continuous nowhere differentiable functions. Such functions are often called <em class="emphasis">Weierstrass functions</em>, although this particular one, essentially due to Takagi<details aria-live="polite" class="ptx-footnote" id="sec_swaplim-5-6-1-1-3"><summary class="ptx-footnote__number" title="Footnote 11.2.1"><sup> 1 </sup></summary>
+<div class="ptx-footnote__contents" id="sec_swaplim-5-6-1-1-3">
+<a class="external" href="https://en.wikipedia.org/wiki/Teiji_Takagi" target="_blank">Teiji Takagi</a> (1875–1960) was a Japanese mathematician.
+</div></details>, is a different example than what Weierstrass gave. Define</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/fig_triangwave.html" id="sec_swaplim-5-6-1-1-4">
+\begin{equation}
+\varphi(x) \coloneqq \sabs{x} \qquad \text{for } x \in [-1,1] .
+\end{equation}
+</div>
+<div class="para">Extend <span class="process-math">\(\varphi\)</span> to all of <span class="process-math">\(\R\)</span> by making it 2-periodic: Decree that <span class="process-math">\(\varphi(x) = \varphi(x+2)\text{.}\)</span>  The function <span class="process-math">\(\varphi \colon \R \to \R\)</span> is continuous, in fact, <span class="process-math">\(\babs{\varphi(x)-\varphi(y)} \leq \sabs{x-y}\)</span> (why?). See <a class="internal" href="sec_swaplim.html#fig_triangwave" title="Figure 11.3">Figure 11.3</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-5-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <hr class="rahr"/>
+<figure class="figure figure-like" id="fig_triangwave"><img alt="A function whose graph is a sequence of triangles, that is, the function is 0 at all the even integers, and it is 1 at all the odd integers. In between the graph is a straight line." class="raimg" role="img" src="figures/triangwave-mbx.svg" style="width:282pt; height:55pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>The 2-periodic function <span class="process-math">\(\varphi\text{.}\)</span><div class="autopermalink" data-description="Figure 11.3"><a aria-label="Copy heading and permalink for Figure 11.3" href="#fig_triangwave" title="Copy heading and permalink for Figure 11.3">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para logical" id="sec_swaplim-5-6-1-5">
+<div class="para">As <span class="process-math">\(\sum_{n=0}^\infty {\left(\frac{3}{4}\right)}^n\)</span> converges and <span class="process-math">\(\babs{\varphi(x)} \leq
+1\)</span> for all <span class="process-math">\(x\text{,}\)</span> by the <span class="process-math">\(M\)</span>-test (<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_swaplim.html#thm_weiermtest" title="Theorem 11.2.4: Weierstrass M-test">Theorem 11.2.4</a>),</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_weiermtest.html ./knowl/xref/fig_nowherediff.html" id="sec_swaplim-5-6-1-5-6">
+\begin{equation}
+f(x) \coloneqq \sum_{n=0}^\infty 
+{\left(\frac{3}{4}\right)}^n \varphi(4^n x)
+\end{equation}
+</div>
+<div class="para">converges uniformly and hence is continuous. See <a class="internal" href="sec_swaplim.html#fig_nowherediff" title="Figure 11.4">Figure 11.4</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-5-6-1-5" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <hr class="rahr"/>
+<figure class="figure figure-like" id="fig_nowherediff"><img alt="A graph of an extremely wild function with lots of thin high peaks and low minima as if it was drawn by scribbling extremely fast up and down with a pen." class="raimg" role="img" src="figures/nowherediff-mbx.svg" style="width:282pt; height:167pt; background-color:white; display:block;"/><figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Plot of the nowhere differentiable function <span class="process-math">\(f\text{.}\)</span><div class="autopermalink" data-description="Figure 11.4"><a aria-label="Copy heading and permalink for Figure 11.4" href="#fig_nowherediff" title="Copy heading and permalink for Figure 11.4">🔗</a></div></figcaption>
+</figure><hr class="rahr"/>
+<div class="para logical" id="sec_swaplim-5-6-1-9">
+<div class="para">We claim <span class="process-math">\(f \colon
+\R \to \R\)</span> is nowhere differentiable. Fix <span class="process-math">\(x\text{,}\)</span> and we will show <span class="process-math">\(f\)</span> is not differentiable at <span class="process-math">\(x\text{.}\)</span> Define</div>
+<div class="displaymath process-math" id="sec_swaplim-5-6-1-9-5">
+\begin{equation}
+\delta_m \coloneqq \pm \frac{1}{2} 4^{-m} ,
+\end{equation}
+</div>
+<div class="para">where the sign is chosen so that there is no integer between <span class="process-math">\(4^m x\)</span> and <span class="process-math">\(4^m(x+\delta_m) = 4^m x \pm \frac{1}{2}\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-5-6-1-9" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_swaplim-5-6-1-10">
+<div class="para">We want to look at the difference quotient</div>
+<div class="displaymath process-math" id="sec_swaplim-5-6-1-10-1">
+\begin{equation}
+\frac{f(x+\delta_m)-f(x)}{\delta_m}
+=
+\sum_{n=0}^\infty 
+{\left(\frac{3}{4}\right)}^n
+\frac{\varphi\bigl(4^n(x+\delta_m)\bigr)-\varphi(4^nx)}{\delta_m} .
+\end{equation}
+</div>
+<div class="para">Fix <span class="process-math">\(m\)</span> for a moment.  Consider the expression inside the series:</div>
+<div class="displaymath process-math" id="sec_swaplim-5-6-1-10-3">
+\begin{equation}
+\gamma_{n} \coloneqq
+\frac{\varphi\bigl(4^n(x+\delta_m)\bigr)-\varphi(4^nx)}{\delta_m} .
+\end{equation}
+</div>
+<div class="para">If <span class="process-math">\(n &gt; m\text{,}\)</span> then <span class="process-math">\(4^n\delta_m\)</span> is an even integer.  As <span class="process-math">\(\varphi\)</span> is 2-periodic we get that <span class="process-math">\(\gamma_n = 0\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-5-6-1-10" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_swaplim-5-6-1-11">
+<div class="para">As there is no integer between <span class="process-math">\(4^m(x+\delta_m) = 4^m x\pm\nicefrac{1}{2}\)</span> and <span class="process-math">\(4^m x\text{,}\)</span> then on this interval <span class="process-math">\(\varphi(t) = \pm t + \ell\)</span> for some integer <span class="process-math">\(\ell\text{.}\)</span> In particular, <span class="process-math">\(\abs{\varphi\bigl(4^m(x+ \delta_m)\bigr)-\varphi(4^mx)} =
+\abs{4^mx\pm\nicefrac{1}{2}-4^mx} = \nicefrac{1}{2}\text{.}\)</span>  Therefore,</div>
+<div class="displaymath process-math" id="sec_swaplim-5-6-1-11-6">
+\begin{equation}
+\sabs{\gamma_m} =
+\abs{
+\frac{\varphi\bigl(4^m(x+\delta_m)\bigr)-\varphi(4^mx)}{\pm (\nicefrac{1}{2}) 4^{-m}}
+}
+= 4^m .
+\end{equation}
+</div>
+<div class="para">Similarly, suppose <span class="process-math">\(n &lt; m\text{.}\)</span>  Since <span class="process-math">\(\babs{\varphi(s) -\varphi(t)} \leq
+\sabs{s-t}\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="sec_swaplim-5-6-1-11-9">
+\begin{equation}
+\sabs{\gamma_n} =
+\abs{\frac{\varphi\bigl(4^nx\pm(\nicefrac{1}{2})4^{n-m}\bigr)-\varphi(4^nx)}{\pm
+(\nicefrac{1}{2}) 4^{-m}}}
+\leq
+\abs{\frac{\pm(\nicefrac{1}{2})4^{n-m}}{\pm (\nicefrac{1}{2}) 4^{-m}}} = 4^n
+.
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-5-6-1-11" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_swaplim-5-6-1-12">
+<div class="para">And so</div>
+<div class="displaymath process-math" id="sec_swaplim-5-6-1-12-1">
+\begin{equation}
+\begin{split}
+\abs{
+\frac{f(x+\delta_m)-f(x)}{\delta_m}
+}
+=
+\abs{
+\sum_{n=0}^\infty 
+{\left(\frac{3}{4}\right)}^n
+\gamma_n
+}
+&amp; =
+\abs{
+\sum_{n=0}^m 
+{\left(\frac{3}{4}\right)}^n
+\gamma_n
+}
+\\
+&amp; \geq
+\abs{
+{\left(\frac{3}{4}\right)}^m
+\gamma_m}
+-
+\abs{
+\sum_{n=0}^{m-1} 
+{\left(\frac{3}{4}\right)}^n
+\gamma_n
+}
+\\
+&amp; \geq
+3^m
+-
+\sum_{n=0}^{m-1} 
+3^n
+=
+3^m
+-
+\frac{3^{m}-1}{3-1}
+=
+\frac{3^m +1}{2} .
+\end{split}
+\end{equation}
+</div>
+<div class="para">As <span class="process-math">\(m \to \infty\text{,}\)</span> we have <span class="process-math">\(\delta_m \to 0\text{,}\)</span> but <span class="process-math">\(\frac{3^m+1}{2}\)</span> goes to infinity.  So <span class="process-math">\(f\)</span> cannot be differentiable at <span class="process-math">\(x\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-5-6-1-12" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 11.2.15"><a aria-label="Copy heading and permalink for Example 11.2.15" href="#sec_swaplim-5-6" title="Copy heading and permalink for Example 11.2.15">🔗</a></div>
+</article><div class="autopermalink" data-description="Subsection 11.2.3: Differentiation"><a aria-label="Copy heading and permalink for Subsection 11.2.3: Differentiation" href="#sec_swaplim-5" title="Copy heading and permalink for Subsection 11.2.3: Differentiation">🔗</a></div>
+</section>
+<section class="exercises" id="sec_swaplim-6">
+<h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">11.2.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="sec_swaplim-6-1"><h4 class="heading"><span class="codenumber">11.2.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_swaplim-6-1-1-1">Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_swaplim.html#prop_uniformconvbounded" title="Proposition 11.2.2">Proposition 11.2.2</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-6-1-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.2.1"><a aria-label="Copy heading and permalink for Exercise 11.2.1" href="#sec_swaplim-6-1" title="Copy heading and permalink for Exercise 11.2.1">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_swaplim-6-2"><h4 class="heading"><span class="codenumber">11.2.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_swaplim-6-2-1-1">Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_swaplim.html#prop_unifcauchymetric" title="Proposition 11.2.3">Proposition 11.2.3</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-6-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.2.2"><a aria-label="Copy heading and permalink for Exercise 11.2.2" href="#sec_swaplim-6-2" title="Copy heading and permalink for Exercise 11.2.2">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="exercise_CXCnormedspace"><h4 class="heading"><span class="codenumber">11.2.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercise_CXCnormedspace-1-1">Suppose <span class="process-math">\((X,d)\)</span> is a compact metric space. Prove that the uniform norm <span class="process-math">\(\snorm{\cdot}_X\)</span> is a norm on the vector space of continuous complex-valued functions <span class="process-math">\(C(X,\C)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#exercise_CXCnormedspace-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.2.3"><a aria-label="Copy heading and permalink for Exercise 11.2.3" href="#exercise_CXCnormedspace" title="Copy heading and permalink for Exercise 11.2.3">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_swaplim-6-4"><h4 class="heading"><span class="codenumber">11.2.4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_swaplim-6-4-1-1"><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-6-4-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div></div>
+<ol class="lower-alpha ol-marker-3" id="sec_swaplim-6-4-1-2">
+<li id="sec_swaplim-6-4-1-2-1">
+<div class="para" id="sec_swaplim-6-4-1-2-1-1">Prove that <span class="process-math">\(f_n(x) \coloneqq 2^{-n} \sin(2^n x)\)</span> converge uniformly to zero, but there exists a dense set <span class="process-math">\(D \subset \R\)</span> such that <span class="process-math">\(\lim_{n\to\infty} f_n'(x) = 1\)</span> for all <span class="process-math">\(x \in D\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-6-4-1-2-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 11.2.4.a"><a aria-label="Copy heading and permalink for Item 11.2.4.a" href="#sec_swaplim-6-4-1-2-1" title="Copy heading and permalink for Item 11.2.4.a">🔗</a></div>
+</li>
+<li id="sec_swaplim-6-4-1-2-2">
+<div class="para" id="sec_swaplim-6-4-1-2-2-1">Prove that <span class="process-math">\(\sum_{n=1}^\infty 2^{-n} \sin(2^n x)\)</span> converges uniformly to a continuous function, and there exists a dense set <span class="process-math">\(D \subset \R\)</span> where the derivatives of the partial sums do not converge.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-6-4-1-2-2-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 11.2.4.b"><a aria-label="Copy heading and permalink for Item 11.2.4.b" href="#sec_swaplim-6-4-1-2-2" title="Copy heading and permalink for Item 11.2.4.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Exercise 11.2.4"><a aria-label="Copy heading and permalink for Exercise 11.2.4" href="#sec_swaplim-6-4" title="Copy heading and permalink for Exercise 11.2.4">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_swaplim-6-5"><h4 class="heading"><span class="codenumber">11.2.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_swaplim-6-5-1-1">Prove that <span class="process-math">\(\snorm{f}_{C^1} \coloneqq \snorm{f}_{[a,b]}+\snorm{f'}_{[a,b]}\)</span> is a norm on the vector space of continuously differentiable complex-valued functions <span class="process-math">\(C^1\bigl([a,b],\C\bigr)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-6-5-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.2.5"><a aria-label="Copy heading and permalink for Exercise 11.2.5" href="#sec_swaplim-6-5" title="Copy heading and permalink for Exercise 11.2.5">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_swaplim-6-6"><h4 class="heading"><span class="codenumber">11.2.6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_swaplim-6-6-1-1">Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_swaplim.html#thm_dersconvergecomplex" title="Theorem 11.2.14">Theorem 11.2.14</a>.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-6-6-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.2.6"><a aria-label="Copy heading and permalink for Exercise 11.2.6" href="#sec_swaplim-6-6" title="Copy heading and permalink for Exercise 11.2.6">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_swaplim-6-7"><h4 class="heading"><span class="codenumber">11.2.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_swaplim-6-7-1-1">Prove <a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_swaplim.html#prop_complexlimitswapintegral" title="Proposition 11.2.11">Proposition 11.2.11</a> by reducing to the real result.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-6-7-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.2.7"><a aria-label="Copy heading and permalink for Exercise 11.2.7" href="#sec_swaplim-6-7" title="Copy heading and permalink for Exercise 11.2.7">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_swaplim-6-8"><h4 class="heading"><span class="codenumber">11.2.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_swaplim-6-8-1-1">
+<div class="para">Work through the following counterexample to the converse of the Weierstrass <span class="process-math">\(M\)</span>-test (<a class="xref" data-close-label="Close" data-reveal-label="Reveal" href="sec_swaplim.html#thm_weiermtest" title="Theorem 11.2.4: Weierstrass M-test">Theorem 11.2.4</a>).  Define <span class="process-math">\(f_n \colon [0,1] \to \R\)</span> by</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_weiermtest.html" id="sec_swaplim-6-8-1-1-4">
+\begin{equation}
+f_n(x) \coloneqq
+\begin{cases}
+\frac{1}{n} &amp; \text{if } \frac{1}{n+1} &lt; x &lt; \frac{1}{n},\\
+0	    &amp; \text{else.}
+\end{cases}
+\end{equation}
+</div>
+<div class="para">Prove that <span class="process-math">\(\sum_{n=1}^\infty f_n\)</span> converges uniformly, but <span class="process-math">\(\sum_{n=1}^\infty \snorm{f_n}_{[0,1]}\)</span> does not converge.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-6-8-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.2.8"><a aria-label="Copy heading and permalink for Exercise 11.2.8" href="#sec_swaplim-6-8" title="Copy heading and permalink for Exercise 11.2.8">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_swaplim-6-9"><h4 class="heading"><span class="codenumber">11.2.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_swaplim-6-9-1-1">Suppose <span class="process-math">\(f_n \colon [0,1] \to \R\)</span> are monotone increasing functions and suppose that <span class="process-math">\(\sum_{n=1}^\infty f_n\)</span> converges pointwise.  Prove that <span class="process-math">\(\sum_{n=1}^\infty f_n\)</span> converges uniformly.<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-6-9-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.2.9"><a aria-label="Copy heading and permalink for Exercise 11.2.9" href="#sec_swaplim-6-9" title="Copy heading and permalink for Exercise 11.2.9">🔗</a></div>
+</article>
+<article class="exercise exercise-like" id="sec_swaplim-6-10"><h4 class="heading"><span class="codenumber">11.2.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="sec_swaplim-6-10-1-1">
+<div class="para">Prove that</div>
+<div class="displaymath process-math" id="sec_swaplim-6-10-1-1-1">
+\begin{equation}
+\sum_{n=1}^\infty e^{-nx}
+\end{equation}
+</div>
+<div class="para">converges for all <span class="process-math">\(x &gt; 0\)</span> to a differentiable function.</div>
+<div class="autopermalink" data-description="Paragraph"><a aria-label="Copy heading and permalink for Paragraph" href="#sec_swaplim-6-10-1-1" title="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11.2.10"><a aria-label="Copy heading and permalink for Exercise 11.2.10" href="#sec_swaplim-6-10" title="Copy heading and permalink for Exercise 11.2.10">🔗</a></div>
+</article><div class="autopermalink" data-description="Exercises 11.2.4"><a aria-label="Copy heading and permalink for Exercises 11.2.4" href="#sec_swaplim-6" title="Copy heading and permalink for Exercises 11.2.4">🔗</a></div>
+</section><div class="autopermalink" data-description="Section 11.2: Swapping limits"><a aria-label="Copy heading and permalink for Section 11.2: Swapping limits" href="#sec_swaplim" title="Copy heading and permalink for Section 11.2: Swapping limits">🔗</a></div>
+</section>
+</div>
+<div class="ptx-content-footer" id="ptx-content-footer">
+<a class="previous-button button" href="sec_complexnums.html" title="Previous"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span aria-hidden="true" class="icon material-symbols-outlined"></span><span class="name">Top</span></a><a class="next-button button" href="sec_analfuncs.html" title="Next"><span class="name">Next</span><span aria-hidden="true" class="icon material-symbols-outlined"></span></a>
+</div></main></body></html>
