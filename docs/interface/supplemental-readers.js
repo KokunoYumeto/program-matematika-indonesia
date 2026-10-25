@@ -555,5 +555,26 @@ export const supplementalReaders = [
   "format": "HTML",
   "offlineAfterDownload": false,
   "contentLanguage": "en"
+},
+{
+  "courseId": "C110",
+  "id": "C110:the-science-of-computing",
+  "href": "https://kokunoyumeto.github.io/program-matematika-indonesia/human/the-science-of-computing/",
+  "hrefs": {
+    "en": "https://kokunoyumeto.github.io/program-matematika-indonesia/human/the-science-of-computing/",
+    "id": "https://kokunoyumeto.github.io/program-matematika-indonesia/human/the-science-of-computing/id.html"
+  },
+  "labels": {
+    "en": "The Science of Computing — Victor Eijkhout, complete English book",
+    "id": "The Science of Computing — Victor Eijkhout, buku lengkap dalam bahasa Inggris"
+  },
+  "notes": {
+    "en": "Computer arithmetic and round-off, finite differences for ordinary and partial differential equations, direct and iterative solvers with conjugate gradients, GMRES and preconditioning, and performance on real machines. English PDF and LaTeX source ZIP; chapters 1–5 also in the author’s HTML edition; English and Indonesian navigation. CC BY 4.0. Programme integration and study pages: Claude Opus 5.5 (Anthropic).",
+    "id": "Aritmetika komputer dan galat pembulatan, beda hingga untuk persamaan diferensial biasa dan parsial, pemecah langsung dan iteratif dengan gradien konjugat, GMRES, dan prakondisi, serta kinerja pada mesin nyata. PDF dan ZIP sumber LaTeX berbahasa Inggris; bab 1–5 juga dalam edisi HTML penulis; navigasi dalam bahasa Indonesia dan Inggris. CC BY 4.0. Integrasi program dan halaman belajar: Claude Opus 5.5 (Anthropic)."
+  },
+  "kind": "companion",
+  "format": "HTML",
+  "offlineAfterDownload": false,
+  "contentLanguage": "en"
 }
 ];
