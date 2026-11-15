@@ -7,7 +7,7 @@ Rincian komponen yang mengikat tersedia tanpa perubahan di `reader/LICENSES.md`,
 Sumber publik yang dipertahankan:
 
 - Edisi/repository: <https://github.com/KokunoYumeto/kerja-matematika-yang-dapat-ditelusuri-id>
-- DOI dan paket HTML luring: <https://zenodo.org/records/22073823>
+- DOI dan paket HTML luring: <Zenodo record 22073823>
 - Commit sumber: `cea42b799b038fcac6f9762386d2e8eecd5b1372`
 - Tree sumber: `01af08fa5170a128c19962b72c7bf6a96428a65e`
 

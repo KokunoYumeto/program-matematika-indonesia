@@ -10,7 +10,7 @@ export const finalEditions = [
     "resources": [
       {
         "id": "A10:textbook",
-        "href": "https://zenodo.org/records/22236314/files/00-elementary-algebra-2e-bahasa-indonesia-EA2-C0082-reader.pdf?download=1",
+        "href": "https://github.com/KokunoYumeto/openstax-elementary-algebra-2e-id/releases/download/v1.0.3/00-elementary-algebra-2e-bahasa-indonesia-EA2-C0082-reader.pdf",
         "labels": {
           "id": "Buku teks lengkap",
           "en": "Complete textbook"
@@ -41,7 +41,7 @@ export const finalEditions = [
     "resources": [
       {
         "id": "A20:textbook",
-        "href": "https://zenodo.org/records/22229860/files/openstax-intermediate-algebra-2e-id-ID-1.0.0-reader.pdf?download=1",
+        "href": "https://github.com/KokunoYumeto/openstax-intermediate-algebra-2e-id/releases/download/v1.0.0/openstax-intermediate-algebra-2e-id-ID-1.0.0-reader.pdf",
         "labels": {
           "id": "Buku teks lengkap",
           "en": "Complete textbook"
@@ -75,7 +75,7 @@ export const finalEditions = [
     "resources": [
       {
         "id": "A30:textbook",
-        "href": "https://zenodo.org/records/22290180/files/OpenStax-Precalculus-2e-id-ID-1.0.0-reader.pdf?download=1",
+        "href": "https://github.com/KokunoYumeto/openstax-precalculus-2e-id/releases/download/v1.0.0/OpenStax-Precalculus-2e-id-ID-1.0.0-reader.pdf",
         "labels": {
           "id": "Buku teks lengkap",
           "en": "Complete textbook"
@@ -109,7 +109,7 @@ export const finalEditions = [
     "resources": [
       {
         "id": "B95:textbook",
-        "href": "https://zenodo.org/records/22261912/files/00_STATISTIKA_BERBASIS_DATA_ID_R011-B039_WORKING_READER.pdf?download=1",
+        "href": "https://github.com/KokunoYumeto/statistika-berbasis-data-id/releases/download/r011-b039-2026.09.01.2/00_STATISTIKA_BERBASIS_DATA_ID_R011-B039_WORKING_READER.pdf",
         "labels": {
           "id": "Buku teks lengkap",
           "en": "Complete textbook"
@@ -164,7 +164,7 @@ export const finalEditions = [
       },
       {
         "id": "C140:course-pdf",
-        "href": "https://zenodo.org/records/22208527/files/00_00_stat415-pengantar-statistika-matematis-id.pdf",
+        "href": "https://github.com/KokunoYumeto/penn-state-stat-415-id/releases/download/v2026.08.31.c140-companion-c5/00_00_stat415-pengantar-statistika-matematis-id.pdf",
         "labels": {
           "id": "Unduh buku STAT 415",
           "en": "Download the STAT 415 textbook"
@@ -208,7 +208,7 @@ export const finalEditions = [
       },
       {
         "id": "C140:companion-offline",
-        "href": "https://zenodo.org/records/22208527/files/06_C140_COMPANION_C5_OFFLINE_READER.zip",
+        "href": "https://github.com/KokunoYumeto/penn-state-stat-415-id/releases/download/v2026.08.31.c140-companion-c5/06_C140_COMPANION_C5_OFFLINE_READER.zip",
         "labels": {
           "id": "Unduh pendamping lengkap C5",
           "en": "Download the complete C5 companion"

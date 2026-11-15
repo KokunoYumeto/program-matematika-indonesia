@@ -2,7 +2,7 @@
 
 [Read the book](reader/index.html) · [Whole-book reading and print view](reader/print.html) · [Mathematics program](https://kokunoyumeto.github.io/program-matematika-indonesia/en/#course-A30) · [Original OpenStax website](https://openstax.org/books/precalculus-2e/pages/1-introduction-to-functions)
 
-[Download the complete offline reader and original source](https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/v0.63.28/A30-Precalculus-2e-original-English-reader-source-v1.zip) (107.4 MB). Extract the ZIP and open `START-HERE.html`. The [preserved program version](https://doi.org/10.5281/zenodo.22651565) includes this package and the expanded offline curriculum.
+[Download the complete offline reader and original source](https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/v0.63.28/A30-Precalculus-2e-original-English-reader-source-v1.zip) (107.4 MB). Extract the ZIP and open `START-HERE.html`. The preserved program version includes this package and the expanded offline curriculum.
 
 All 87 original English modules are included, with 26,583 MathML expressions,
 7,250 exercises, 4,183 source-provided solutions, and 1,873 original image

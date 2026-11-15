@@ -10,7 +10,7 @@ yang diperlukan untuk membaca secara luring disimpan bersama pembaca.
 Sumber publik dan bentuk sumber yang dapat disunting tetap tersedia di
 [repositori edisi](https://github.com/KokunoYumeto/fremlin-measure-theory-id),
 [rilis v1.0.0](https://github.com/KokunoYumeto/fremlin-measure-theory-id/releases/tag/v1.0.0),
-dan [rekaman Zenodo](https://zenodo.org/records/22181780).
+dan rekaman Zenodo.
 
 Salinan ini tidak mengubah byte isi pembaca. Inventaris sumber-ke-cermin,
 hash SHA-256, pemeriksaan tautan lokal, dan batas lisensi komponen dicatat di

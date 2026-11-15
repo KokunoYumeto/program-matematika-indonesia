@@ -21,7 +21,7 @@ The complete editable source, component notices, source archive identities,
 and production provenance remain available from the
 [edition repository](https://github.com/KokunoYumeto/fremlin-measure-theory-id),
 the [v1.0.0 release](https://github.com/KokunoYumeto/fremlin-measure-theory-id/releases/tag/v1.0.0),
-and [Zenodo record 22181780](https://zenodo.org/records/22181780).
+and Zenodo record 22181780.
 
 Production provenance preserved from the edition: OpenAI Codex gpt-5.6-sol,
 Ultra. This adaptation is not represented as an official, endorsed, or
