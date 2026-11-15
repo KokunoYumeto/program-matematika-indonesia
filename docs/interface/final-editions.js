@@ -4,7 +4,7 @@ export const finalEditions = [
   {
     "courseId": "A10",
     "version": "1.0.3",
-    "archive": "https://doi.org/10.5281/zenodo.22236314",
+    "archive": "",
     "repository": "https://github.com/KokunoYumeto/openstax-elementary-algebra-2e-id",
     "supersededSupplementIds": [],
     "resources": [
@@ -35,7 +35,7 @@ export const finalEditions = [
   {
     "courseId": "A20",
     "version": "1.0.0",
-    "archive": "https://doi.org/10.5281/zenodo.22229860",
+    "archive": "",
     "repository": "https://github.com/KokunoYumeto/openstax-intermediate-algebra-2e-id",
     "supersededSupplementIds": [],
     "resources": [
@@ -66,7 +66,7 @@ export const finalEditions = [
   {
     "courseId": "A30",
     "version": "1.0.0",
-    "archive": "https://doi.org/10.5281/zenodo.22290180",
+    "archive": "",
     "repository": "https://github.com/KokunoYumeto/openstax-precalculus-2e-id",
     "supersededSupplementIds": [
       "a30-current-native-backend",
@@ -100,7 +100,7 @@ export const finalEditions = [
   {
     "courseId": "B95",
     "version": "2026.09.01.2-R011-B039",
-    "archive": "https://doi.org/10.5281/zenodo.22261912",
+    "archive": "",
     "repository": "https://github.com/KokunoYumeto/statistika-berbasis-data-id",
     "supersededSupplementIds": [
       "b95-current-native-backend",
@@ -134,7 +134,7 @@ export const finalEditions = [
   {
     "courseId": "C140",
     "version": "2026.08.31.c140-companion-c5",
-    "archive": "https://doi.org/10.5281/zenodo.22208527",
+    "archive": "",
     "repository": "https://github.com/KokunoYumeto/penn-state-stat-415-id",
     "supersededSupplementIds": [
       "c140-companion-reader"
@@ -233,7 +233,7 @@ export const finalEditions = [
   {
     "courseId": "D100",
     "version": "en-v1.0.0+program-nav-2026.09.06",
-    "archive": "https://doi.org/10.5281/zenodo.22543825",
+    "archive": "",
     "repository": "https://github.com/KokunoYumeto/algebraic-geometry-bridge-id",
     "supersededSupplementIds": [
       "bgk-units-01-06"
@@ -241,7 +241,7 @@ export const finalEditions = [
     "resources": [
       {
         "id": "D100:curves-pdf",
-        "href": "https://zenodo.org/api/records/22543825/files/01_Kurva-Aljabar_id-ID_Units-01-30_corr1.pdf/content",
+        "href": "",
         "labels": {
           "id": "Kurva Aljabar — 30 unit lengkap",
           "en": "Algebraic Curves — all 30 units"
@@ -285,7 +285,7 @@ export const finalEditions = [
       },
       {
         "id": "D100:curves-html-download",
-        "href": "https://zenodo.org/api/records/22543825/files/02_Kurva-Aljabar_id-ID_Units-01-30_corr1.html/content",
+        "href": "",
         "labels": {
           "id": "Unduh HTML Kurva Aljabar lengkap",
           "en": "Download complete Algebraic Curves HTML"
@@ -307,7 +307,7 @@ export const finalEditions = [
       },
       {
         "id": "D100:bgk-pdf",
-        "href": "https://zenodo.org/api/records/22543825/files/01_Bundel-Berkas-dan-Kohomologi_id-ID_Units-01-30_corr1.pdf/content",
+        "href": "",
         "labels": {
           "id": "Bundel, Berkas, dan Kohomologi — 30 unit lengkap",
           "en": "Bundles, Sheaves and Cohomology — all 30 units"
@@ -351,7 +351,7 @@ export const finalEditions = [
       },
       {
         "id": "D100:bgk-html-download",
-        "href": "https://zenodo.org/api/records/22543825/files/02_Bundel-Berkas-dan-Kohomologi_id-ID_Units-01-30_corr1.html/content",
+        "href": "",
         "labels": {
           "id": "Unduh HTML Bundel, Berkas, dan Kohomologi lengkap",
           "en": "Download complete Bundles, Sheaves and Cohomology HTML"
@@ -373,7 +373,7 @@ export const finalEditions = [
       },
       {
         "id": "D100:bridge-pdf",
-        "href": "https://zenodo.org/api/records/22543825/files/01_Pendamping-Editorial-Varietas-ke-Skema_id-ID_corr1.pdf/content",
+        "href": "",
         "labels": {
           "id": "Pendamping: dari varietas ke skema",
           "en": "Companion: from varieties to schemes"
@@ -395,7 +395,7 @@ export const finalEditions = [
       },
       {
         "id": "D100:bridge-html",
-        "href": "https://zenodo.org/api/records/22543825/files/02_Pendamping-Editorial-Varietas-ke-Skema_id-ID_corr1_html.zip/content",
+        "href": "",
         "labels": {
           "id": "Unduh paket HTML pendamping",
           "en": "Download the companion HTML package"
