@@ -84,7 +84,7 @@ export const supplementalReaders = [
   {
     "courseId": "A00",
     "id": "A00:id-format-record",
-    "href": "https://zenodo.org/records/23149334",
+    "href": "",
     "labels": {
       "id": "Arsip Zenodo — edisi format Bahasa Indonesia",
       "en": "Zenodo archive — Indonesian format edition"
@@ -268,7 +268,7 @@ export const supplementalReaders = [
   {
     "courseId": "B80",
     "id": "B80:id-format-record",
-    "href": "https://zenodo.org/records/23116530",
+    "href": "",
     "labels": {
       "id": "Arsip Zenodo — edisi format Bahasa Indonesia",
       "en": "Zenodo archive — Indonesian format edition"
@@ -368,7 +368,7 @@ export const supplementalReaders = [
   {
     "courseId": "B80",
     "id": "B80:en-format-record",
-    "href": "https://zenodo.org/records/23116541",
+    "href": "",
     "labels": {
       "id": "Arsip Zenodo — edisi format bahasa Inggris",
       "en": "Zenodo archive — English format edition"
@@ -481,7 +481,7 @@ export const supplementalReaders = [
   {
     "courseId": "D20",
     "id": "D20:complete-offline-html",
-    "href": "https://zenodo.org/records/22088947/files/functional-analysis-erdman-id-2026.08.25-backend-artifact-reconciliation-source-backend-html.zip?download=1",
+    "href": "",
     "labels": {
       "id": "Buku dan pendamping HTML luring — ZIP",
       "en": "Offline textbook and companion HTML — ZIP"
@@ -501,7 +501,7 @@ export const supplementalReaders = [
   {
     "courseId": "B10",
     "id": "B10:complete-html-download",
-    "href": "https://zenodo.org/records/22060439/files/MATEMATIKA_DISKRET_EDISI_KEEMPAT_ID_HTML.zip?download=1",
+    "href": "https://github.com/KokunoYumeto/discrete-mathematics-open-introduction-id/releases/download/v2026.08.17/MATEMATIKA_DISKRET_EDISI_KEEMPAT_ID_HTML.zip",
     "labels": { "id": "Paket HTML lengkap — ZIP", "en": "Complete HTML download — ZIP" },
     "notes": {
       "id": "Ekstrak ZIP, lalu buka matematika-diskret-id-html/index.html. MathJax dan fitur daring memerlukan internet; gunakan PDF untuk membaca luring.",

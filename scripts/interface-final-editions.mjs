@@ -16,7 +16,7 @@ export function validateFinalEditions(input, courseIds) {
     assert.ok(courseIds.includes(edition.courseId) && !ids.has(edition.courseId));
     ids.add(edition.courseId);
     assert.ok(edition.version);
-    assert.match(edition.archive, /^https:\/\/doi\.org\/10\.5281\/zenodo\.\d+$/);
+    assert.equal(edition.archive, ''); // the Zenodo records answer 410 Gone; no archive link is shown
     assert.match(edition.repository, /^https:\/\/github\.com\/[\w-]+\/[\w.-]+$/);
     assert.equal(new Set(edition.supersededSupplementIds).size, edition.supersededSupplementIds.length);
     assert.equal(edition.resources.filter(r=>r.primary).length, 1);
@@ -27,7 +27,7 @@ export function validateFinalEditions(input, courseIds) {
       assert.ok(row.id.startsWith(edition.courseId + ':'));
       const url = new URL(row.href);
       assert.equal(url.protocol, 'https:'); assert.ok(!url.username && !url.password && !url.hash);
-      assert.ok(['zenodo.org','kokunoyumeto.github.io'].includes(url.hostname));
+      assert.ok(['github.com','kokunoyumeto.github.io'].includes(url.hostname));
       assert.ok(!urls.has(row.href)); urls.add(row.href);
       assert.equal(row.contentLanguage, 'id');
       assert.ok(row.labels.id && row.labels.en); exactKeys(row.labels,['id','en']);

@@ -1,5 +1,5 @@
 // Generated presentation bindings; corpus/backend authority remains unchanged.
-export const finalEditionSource = {"path":"docs/interface/final-editions.json","bytes":18287,"sha256":"b9f3aecb3a959e1200da6bde746602168b48796f1e06659edd8b5c26a71ec9c1"};
+export const finalEditionSource = {"path":"docs/interface/final-editions.json","bytes":12095,"sha256":"d0eba6fc631fded81ec0ffbbe57c9e88b9de8c8fbddbf92f2a4e62941bba05b3"};
 export const finalEditions = [
   {
     "courseId": "A10",
@@ -240,28 +240,6 @@ export const finalEditions = [
     ],
     "resources": [
       {
-        "id": "D100:curves-pdf",
-        "href": "",
-        "labels": {
-          "id": "Kurva Aljabar — 30 unit lengkap",
-          "en": "Algebraic Curves — all 30 units"
-        },
-        "contentLanguage": "id",
-        "kind": "reader",
-        "format": "PDF",
-        "primary": true,
-        "offlineAfterDownload": true,
-        "pages": 505,
-        "bytes": 16026554,
-        "sha256": "5af87fd1fd4b85c76bc4fa83e655bdb47d859700a3e57b2d4e7c0ca9c4cf5421",
-        "evidence": {
-          "anonymous_http_status": 200,
-          "actual_sha256": "5af87fd1fd4b85c76bc4fa83e655bdb47d859700a3e57b2d4e7c0ca9c4cf5421",
-          "source_receipt": "backend/authority/federated-navigation-publications/d100-zenodo-22543825.json",
-          "source_receipt_sha256": "0aa2218072ebba22c56d0ff732e29c30f62f5fb40bfaf5cd5859e78ac5168a4e"
-        }
-      },
-      {
         "id": "D100:curves-html",
         "href": "https://kokunoyumeto.github.io/algebraic-geometry-bridge-id/",
         "labels": {
@@ -271,7 +249,7 @@ export const finalEditions = [
         "contentLanguage": "id",
         "kind": "reader",
         "format": "HTML",
-        "primary": false,
+        "primary": true,
         "offlineAfterDownload": false,
         "pages": null,
         "bytes": 23808146,
@@ -281,50 +259,6 @@ export const finalEditions = [
           "actual_sha256": "d9aebfade01203e7b0c20cf468d544365f6a51fcf994ba8419ee28e93ec83b89",
           "source_receipt": "backend/authority/federated-navigation-publications/d100-github-pages-03c200124d1470027b9164e275f9bb078bc07a6a.json",
           "source_receipt_sha256": "7c3741065ae0f88f389441fe656f9872300435839fa151107e827c100cc292d6"
-        }
-      },
-      {
-        "id": "D100:curves-html-download",
-        "href": "",
-        "labels": {
-          "id": "Unduh HTML Kurva Aljabar lengkap",
-          "en": "Download complete Algebraic Curves HTML"
-        },
-        "contentLanguage": "id",
-        "kind": "portable_html",
-        "format": "HTML",
-        "primary": false,
-        "offlineAfterDownload": true,
-        "pages": null,
-        "bytes": 23775120,
-        "sha256": "c956521f3173889099771eebc8815a613d736ea685d4b11ea266710271af777b",
-        "evidence": {
-          "anonymous_http_status": 200,
-          "actual_sha256": "c956521f3173889099771eebc8815a613d736ea685d4b11ea266710271af777b",
-          "source_receipt": "backend/authority/federated-navigation-publications/d100-zenodo-22543825.json",
-          "source_receipt_sha256": "0aa2218072ebba22c56d0ff732e29c30f62f5fb40bfaf5cd5859e78ac5168a4e"
-        }
-      },
-      {
-        "id": "D100:bgk-pdf",
-        "href": "",
-        "labels": {
-          "id": "Bundel, Berkas, dan Kohomologi — 30 unit lengkap",
-          "en": "Bundles, Sheaves and Cohomology — all 30 units"
-        },
-        "contentLanguage": "id",
-        "kind": "companion",
-        "format": "PDF",
-        "primary": false,
-        "offlineAfterDownload": true,
-        "pages": 380,
-        "bytes": 2943608,
-        "sha256": "34fb81e572f60e20e4dadff9f5040da7abf9882bbf5cf64a425a03297428a436",
-        "evidence": {
-          "anonymous_http_status": 200,
-          "actual_sha256": "34fb81e572f60e20e4dadff9f5040da7abf9882bbf5cf64a425a03297428a436",
-          "source_receipt": "backend/authority/federated-navigation-publications/d100-zenodo-22543825.json",
-          "source_receipt_sha256": "0aa2218072ebba22c56d0ff732e29c30f62f5fb40bfaf5cd5859e78ac5168a4e"
         }
       },
       {
@@ -347,72 +281,6 @@ export const finalEditions = [
           "actual_sha256": "8f27972340bbe1dddd45294db6a637c64656cfa1b27d4bd4d54632c84ec3e886",
           "source_receipt": "backend/authority/federated-navigation-publications/d100-github-pages-03c200124d1470027b9164e275f9bb078bc07a6a.json",
           "source_receipt_sha256": "7c3741065ae0f88f389441fe656f9872300435839fa151107e827c100cc292d6"
-        }
-      },
-      {
-        "id": "D100:bgk-html-download",
-        "href": "",
-        "labels": {
-          "id": "Unduh HTML Bundel, Berkas, dan Kohomologi lengkap",
-          "en": "Download complete Bundles, Sheaves and Cohomology HTML"
-        },
-        "contentLanguage": "id",
-        "kind": "portable_html",
-        "format": "HTML",
-        "primary": false,
-        "offlineAfterDownload": true,
-        "pages": null,
-        "bytes": 6839229,
-        "sha256": "a37e060ed1ea3c30860380cc07ccdbc269dc1b115c865fe5b9d063382217414f",
-        "evidence": {
-          "anonymous_http_status": 200,
-          "actual_sha256": "a37e060ed1ea3c30860380cc07ccdbc269dc1b115c865fe5b9d063382217414f",
-          "source_receipt": "backend/authority/federated-navigation-publications/d100-zenodo-22543825.json",
-          "source_receipt_sha256": "0aa2218072ebba22c56d0ff732e29c30f62f5fb40bfaf5cd5859e78ac5168a4e"
-        }
-      },
-      {
-        "id": "D100:bridge-pdf",
-        "href": "",
-        "labels": {
-          "id": "Pendamping: dari varietas ke skema",
-          "en": "Companion: from varieties to schemes"
-        },
-        "contentLanguage": "id",
-        "kind": "companion",
-        "format": "PDF",
-        "primary": false,
-        "offlineAfterDownload": true,
-        "pages": 90,
-        "bytes": 747673,
-        "sha256": "ed54f440409b2aa7beb5a1ff24be0e54de7845576f3f4d06e88fd58c9feb2131",
-        "evidence": {
-          "anonymous_http_status": 200,
-          "actual_sha256": "ed54f440409b2aa7beb5a1ff24be0e54de7845576f3f4d06e88fd58c9feb2131",
-          "source_receipt": "backend/authority/federated-navigation-publications/d100-zenodo-22543825.json",
-          "source_receipt_sha256": "0aa2218072ebba22c56d0ff732e29c30f62f5fb40bfaf5cd5859e78ac5168a4e"
-        }
-      },
-      {
-        "id": "D100:bridge-html",
-        "href": "",
-        "labels": {
-          "id": "Unduh paket HTML pendamping",
-          "en": "Download the companion HTML package"
-        },
-        "contentLanguage": "id",
-        "kind": "portable_html",
-        "format": "HTML ZIP",
-        "primary": false,
-        "offlineAfterDownload": true,
-        "pages": null,
-        "bytes": 2784305,
-        "sha256": "487c13991626f0e2c524d5c455930b83b6b242d54d8915087edf4823f1303bdc",
-        "evidence": {
-          "anonymous_http_status": 200,
-          "actual_sha256": "487c13991626f0e2c524d5c455930b83b6b242d54d8915087edf4823f1303bdc",
-          "source_receipt": "backend/authority/federated-navigation-publications/d100-zenodo-22543825.json",
-          "source_receipt_sha256": "0aa2218072ebba22c56d0ff732e29c30f62f5fb40bfaf5cd5859e78ac5168a4e"
         }
       }
     ]
