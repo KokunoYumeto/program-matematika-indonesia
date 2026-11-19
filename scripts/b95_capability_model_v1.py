@@ -549,7 +549,7 @@ def _chapter_number(chapter: dict[str, Any]) -> int:
 
 
 def _reader_route(page: int) -> str:
-    return f"{READER_ZENODO_URL}#page={page}"
+    return f"{READER_GITHUB_URL}#page={page}"  # learner routes: GitHub copy (same sha as the removed Zenodo record)
 
 
 def _safe_span(value: Any) -> Any:
@@ -929,7 +929,7 @@ def derive_projection(native_root: Path) -> dict[str, Any]:
         "reader": {
             "kind": "page_based_pdf",
             "home": RELEASE_URL,
-            "pdf": READER_ZENODO_URL,
+            "pdf": READER_GITHUB_URL,
             "github_pdf": READER_GITHUB_URL,
             "pages": 462,
             "download": True,
@@ -1150,7 +1150,7 @@ def projection_errors(bundle: dict[str, Any]) -> list[str]:
         errors.append("B95-PUBLIC-ACCESS")
     if public.get("reader", {}).get("pdf_pages") != 462 or public.get("reader", {}).get("semantic_html_established"):
         errors.append("B95-READER-CLAIMS")
-    expected_routes = [f"{READER_ZENODO_URL}#page={CHAPTER_PAGE_STARTS[number]}" for number in range(1, 10)]
+    expected_routes = [f"{READER_GITHUB_URL}#page={CHAPTER_PAGE_STARTS[number]}" for number in range(1, 10)]
     actual_routes = [row.get("public_route") for row in bundle.get("learner_map", {}).get("chapters", [])]
     if actual_routes != expected_routes:
         errors.append("B95-CHAPTER-ROUTES")

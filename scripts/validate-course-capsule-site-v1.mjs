@@ -1224,7 +1224,7 @@ assert.equal(a30Validation.checks.public_source_receipt_state, 'pass');
 assert.equal(a30Validation.checks.public_source_assets, 7);
 assert.equal(a30Validation.checks.public_zenodo_assets, 7);
 assert.equal(a30Validation.checks.two_run_build_identity.file_count, 49);
-assert.equal(a30Validation.checks.two_run_build_identity.tree_sha256, '51b3c1cf9f3709a540fe59c9df63b186968ceb6c41fccce265c504bf970244cd');
+assert.equal(a30Validation.checks.two_run_build_identity.tree_sha256, '577523b1a66520878eaff8d63aaa9ee3957fed2dedeecbee33f777d7cbc3c4aa');
 assert.equal(a30Capabilities.schema, 'a30-capabilities/1');
 assert.equal(a30Capabilities.contract, 'course-learning-capability/1');
 assert.equal(a30Capabilities.native_role_id, 'R002');
@@ -1359,14 +1359,15 @@ for (const [adapterPath, publicPath] of a30PublicMappings) {
 assert.deepEqual(docsBytes['backend/a30/validation.json'], a30AdapterValidationBytes, 'Public A30 validation receipt differs from the sealed adapter.');
 for (const a30Page of [docsBytes['backend/a30/A30.html'].toString('utf8'), docsBytes['backend/a30/A30-pengajar.html'].toString('utf8')]) {
   assert.match(a30Page, /<html lang="id">/);
-  assert.match(a30Page, /https:\/\/zenodo\.org\/records\/22290180/);
+  assert.match(a30Page, /https:\/\/github\.com\/KokunoYumeto\/openstax-precalculus-2e-id\/releases\/download\/v1\.0\.0\//);
+  assert.doesNotMatch(a30Page, /zenodo\.org\/records\/22290180/);  // record removed (410), 19 Nov 2026
   assert.doesNotMatch(a30Page, /<script\b/i);
 }
 assert.equal(b95.course.state, 'published');
 assert.equal(b95.course_native.version, '2026.09.01.2-R011-B039');
 assert.equal(b95.course_native.repository, 'https://github.com/KokunoYumeto/statistika-berbasis-data-id');
 assert.equal(b95.course_native.zenodo, '');
-assert.match(b95.course_native.edition, /00_STATISTIKA_BERBASIS_DATA_ID_R011-B039_WORKING_READER\.pdf\?download=1$/);
+assert.match(b95.course_native.edition, /releases\/download\/[^/]+\/00_STATISTIKA_BERBASIS_DATA_ID_R011-B039_WORKING_READER\.pdf$/);
 assert.equal(b95.layers.interoperability.semantic_adapter.status, 'verified');
 assert.equal(b95.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
 assert.deepEqual(b95.layers.learner.tools.map(({ tool_id, href }) => ({ tool_id, href })), [
@@ -1436,7 +1437,7 @@ assert.equal(b95Validation.checks.public_completion_receipt_preserved_byte_for_b
 assert.equal(b95Validation.checks.public_github_zenodo_readback_preserved, true);
 assert.equal(b95Validation.checks.public_reader_pages, 462);
 assert.equal(b95Validation.checks.two_run_build_identity.file_count, 36);
-assert.equal(b95Validation.checks.two_run_build_identity.tree_sha256, 'dd580a0af4fb9b2262489ec46e4692069b7949b3dbdd19c8206254f1c0c156ae');
+assert.equal(b95Validation.checks.two_run_build_identity.tree_sha256, 'c5e1bfc6fd58f2b9a38f5c00cfee36c9b5ae5b5119f8aff608bec3f83256af1f');
 assert.equal(b95Capabilities.schema, 'b95-capabilities/1');
 assert.equal(b95Capabilities.contract, 'course-learning-capability/1');
 assert.equal(b95Capabilities.native_role_id, 'R011');
@@ -1586,7 +1587,8 @@ for (const [adapterPath, publicPath] of b95PublicMappings) {
 assert.deepEqual(docsBytes['backend/b95/validation.json'], b95AdapterValidationBytes, 'Public B95 validation receipt differs from the sealed adapter.');
 for (const b95Page of [b95Html, b95EducatorHtml]) {
   assert.match(b95Page, /<html lang="id">/);
-  assert.match(b95Page, /https:\/\/zenodo\.org\/records\/22261912/);
+  assert.match(b95Page, /https:\/\/github\.com\/KokunoYumeto\/statistika-berbasis-data-id\/releases\/download\//);
+  assert.doesNotMatch(b95Page, /zenodo\.org\/records\/22261912/);  // record removed (410), 19 Nov 2026
   assert.doesNotMatch(b95Page, /\.\.\/data\//);
   assert.doesNotMatch(b95Page, /<script\b/i);
 }
@@ -1705,7 +1707,8 @@ for (const d30Page of [d30Html, d30EducatorHtml]) {
   assert.match(d30Page, /href="\/id\/"/);
   assert.match(d30Page, /https:\/\/kokunoyumeto\.github\.io\/measure-theoretic-probability-stochastic-processes-id\//);
   assert.match(d30Page, /https:\/\/github\.com\/KokunoYumeto\/measure-theoretic-probability-stochastic-processes-id\/tree\/d0111bc20dc813f5fde12eb715be4cf6dd5a94bd/);
-  assert.match(d30Page, /https:\/\/zenodo\.org\/records\/22182655/);
+  assert.match(d30Page, /https:\/\/github\.com\/KokunoYumeto\/measure-theoretic-probability-stochastic-processes-id/);
+  assert.doesNotMatch(d30Page, /zenodo\.org\/records\/22182655/);  // record removed (410), 19 Nov 2026
   assert.match(d30Page, /https:\/\/www\.randomservices\.org\/random\//);
   assert.match(d30Page, /https:\/\/continuous-time-mcs\.quantecon\.org\//);
   assert.match(d30Page, /https:\/\/gordanz\.github\.io\/stochastic-book\//);
@@ -1977,8 +1980,8 @@ const c100 = rows.find(({ course_id }) => course_id === 'C100');
 const c60 = rows.find(({ course_id }) => course_id === 'C60');
 const d20 = rows.find(({ course_id }) => course_id === 'D20');
 const d90 = rows.find(({ course_id }) => course_id === 'D90');
-assert.match(b20.layers.learner.primary.url, /records\/22183943\//);
-assert.match(b50.layers.learner.primary.url, /records\/22184443\//);
+assert.match(b20.layers.learner.primary.url, /^https:\/\/github\.com\/KokunoYumeto\/clp1-differential-calculus-id\/releases\/download\//);  // record 22183943 removed (410)
+assert.match(b50.layers.learner.primary.url, /^https:\/\/github\.com\/KokunoYumeto\/program-matematika-indonesia\/releases\/download\//);  // record 22184443 removed (410)
 assert.equal(c100.layers.learner.primary.format, 'text/html');
 assert.equal(d20.layers.learner.primary.format, 'text/html');
 assert.equal(c60.layers.learner.primary.format, 'text/html');

@@ -130,6 +130,9 @@ await cp(source, target, {
     if (name === 'data' || name === 'schema' || name.startsWith('schema/')) return true;
     if (name === 'backend' || name.startsWith('backend/')) return true;
     if (name === 'library' || approvedLibraryFiles.has(name)) return true;
+    // Hand-built companion books and portable edition pages (6-25 Oct 2026) are public on Pages; the mirror carries
+    // them too, so that every classified docs page has its mirror copy.
+    if (['editions', 'human'].some((part) => name === part || name.startsWith(part + '/'))) return true;
     // Preserve central learner route wrappers for the hosted mirror.  These
     // pages contain navigation and links only; owner-native prose remains on
     // the canonical course reader.

@@ -1675,8 +1675,8 @@ assert.equal(d120MirrorManifest.schema, 'd120-reader-mirror-manifest-v1');
 assert.equal(d120MirrorManifest.course_id, 'D120');
 assert.equal(d120MirrorManifest.reader.file_count, 60);
 assert.equal(d120MirrorManifest.reader.files.length, 60);
-assert.equal(d120MirrorManifest.reader.bytes, 2_848_112);
-assert.equal(d120MirrorManifest.reader.aggregate_sha256, '3efa09a24fa3cf90a5fb643d9e0b5d02bbc83b57d5ca2cf189b232e9142ef2b4');
+assert.equal(d120MirrorManifest.reader.bytes, 2_849_881);
+assert.equal(d120MirrorManifest.reader.aggregate_sha256, 'e7fcc1122183db78cde02eb2a542bd75aa964f5589eecf6826a54c0a2ba639ac');
 let d120MirrorBytes = 0;
 const d120MirrorAggregate = createHash('sha256');
 for (const row of d120MirrorManifest.reader.files) {
@@ -1864,8 +1864,10 @@ assert.equal(centralNavigation.schema, 'central-reader-navigation-v1');
 assert.equal(centralNavigation.summary.course_surface_roots, 42);
 assert.equal(centralNavigation.summary.course_surface_html_documents, 130);
 assert.equal(centralNavigation.summary.navigation_overlay_documents, 1883);
-assert.equal(centralNavigation.summary.classified_html_documents, 1932);
-assert.equal(centralNavigation.summary.generic_html_documents, 62);
+// 19 Nov 2026: +2 source-evidence views (registered earlier, pins not updated) and +93 hand-built companion and
+// edition pages registered with their own programme links (companion-native-programme-links-v1).
+assert.equal(centralNavigation.summary.classified_html_documents, 2027);
+assert.equal(centralNavigation.summary.generic_html_documents, 157);
 assert.equal(centralNavigation.course_surfaces.length,42);
 assert.equal(centralNavigation.course_surfaces.reduce((n,r)=>n+r.documents.length,0),130);
 for(const code of ['d80','d20']) {

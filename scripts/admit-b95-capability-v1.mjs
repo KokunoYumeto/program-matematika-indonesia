@@ -137,22 +137,22 @@ const [
 assert.deepEqual(await identity(paths.manifest), {
   path: paths.manifest,
   bytes: 15919,
-  sha256: '9e8b98e938a2e5b8015a2b4ede1e260a9ae5a8097cbe95c7d95d373a90d8db42',
+  sha256: 'd1e1e8418d6b45c14a006ad5b43fae47f844d68f8b9e8d40872912325cd274ba',
 });
 assert.deepEqual(await identity(paths.validation), {
   path: paths.validation,
   bytes: 11857,
-  sha256: 'c5a7802d03870943b7590a94825c24402aadc99324fa4a83e327aff2e5f211f8',
+  sha256: '9d829a59c625eabf4f07e9fbf07d4350263eea735cc29072af109dce9ab2e842',
 });
 assert.deepEqual(await identity(paths.packetReceipt), {
   path: paths.packetReceipt,
   bytes: 1285,
-  sha256: 'fbbdd57084e3903f17648d275bde327765fc2979711b5dee3b5e6cf922bba4bb',
+  sha256: '89ff4d8593541d5c68f9a7046b4b5ec056bdc1353077db9adcfba35e923ddeab',
 });
 assert.deepEqual(await identity(paths.packet), {
   path: paths.packet,
-  bytes: 7767446,
-  sha256: '420633fe6becff8874033c3c1f79fe014014ab078782fb40d8247aaed0b37f08',
+  bytes: 7770973,
+  sha256: 'e7e85346a75744864aba74c28360b1e8ab5b7ae97509b21864223f521aa8a2eb',
 });
 
 assert.equal(manifest.schema, 'b95-capability-manifest/1');
@@ -234,7 +234,7 @@ for (const key of [
 assert.equal(validation.checks.negative_fixtures_rejected, 12);
 assert.equal(validation.checks.public_reader_pages, 462);
 assert.equal(validation.checks.two_run_build_identity.file_count, 36);
-assert.equal(validation.checks.two_run_build_identity.tree_sha256, 'dd580a0af4fb9b2262489ec46e4692069b7949b3dbdd19c8206254f1c0c156ae');
+assert.equal(validation.checks.two_run_build_identity.tree_sha256, 'c5e1bfc6fd58f2b9a38f5c00cfee36c9b5ae5b5119f8aff608bec3f83256af1f');
 
 assert.equal(packetReceipt.schema, 'b95-capability-thin-packet-build-receipt/1');
 assert.equal(packetReceipt.course_id, 'B95');
@@ -242,17 +242,17 @@ assert.equal(packetReceipt.result, 'PASS');
 assert.deepEqual(packetReceipt.adapter_manifest, {
   path: 'manifest.json',
   bytes: 15919,
-  sha256: '9e8b98e938a2e5b8015a2b4ede1e260a9ae5a8097cbe95c7d95d373a90d8db42',
+  sha256: 'd1e1e8418d6b45c14a006ad5b43fae47f844d68f8b9e8d40872912325cd274ba',
 });
 assert.deepEqual(packetReceipt.adapter_validation, {
   path: 'validation.json',
   bytes: 11857,
-  sha256: 'c5a7802d03870943b7590a94825c24402aadc99324fa4a83e327aff2e5f211f8',
+  sha256: '9d829a59c625eabf4f07e9fbf07d4350263eea735cc29072af109dce9ab2e842',
 });
 assert.deepEqual(packetReceipt.archive, {
   path: 'build/B95_THIN_CAPABILITY_METADATA_V1.zip',
-  bytes: 7767446,
-  sha256: '420633fe6becff8874033c3c1f79fe014014ab078782fb40d8247aaed0b37f08',
+  bytes: 7770973,
+  sha256: 'e7e85346a75744864aba74c28360b1e8ab5b7ae97509b21864223f521aa8a2eb',
 });
 assert.equal(packetReceipt.content_policy, 'adapter_metadata_only_external_native_replay_dependency');
 for (const key of [
@@ -273,7 +273,7 @@ assert.deepEqual(packetReceipt.zip_checks, {
   crc_and_full_entry_readback: true,
   fixed_member_metadata: true,
   member_count: 44,
-  payload_bytes: 49359747,
+  payload_bytes: 49539530,
   sorted_member_order: true,
 });
 

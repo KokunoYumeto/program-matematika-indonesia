@@ -318,7 +318,7 @@ assert.equal(data.a30Validation.schema,'a30-capability-validation/1');assert.equ
 assert.equal(data.a30Validation.result,'pass');assert.deepEqual(data.a30Validation.counts,data.a30Manifest.counts);
 assert.equal(data.a30Validation.negative_fixtures.length,27);assert.ok(data.a30Validation.negative_fixtures.every(({result})=>result==='rejected'));
 assert.equal(data.a30Validation.checks.two_run_build_identity.file_count,49);
-assert.equal(data.a30Validation.checks.two_run_build_identity.tree_sha256,'51b3c1cf9f3709a540fe59c9df63b186968ceb6c41fccce265c504bf970244cd');
+assert.equal(data.a30Validation.checks.two_run_build_identity.tree_sha256,'577523b1a66520878eaff8d63aaa9ee3957fed2dedeecbee33f777d7cbc3c4aa');
 assert.equal(data.a30Public.schema,'a30-public-evidence/1');assert.equal(data.a30Public.course_id,'A30');
 assert.equal(data.a30Public.anonymous_readback,true);assert.equal(data.a30Public.credentials_used,false);
 assert.equal(data.a30Public.repository.public,true);assert.equal(data.a30Public.repository.url,'https://github.com/KokunoYumeto/openstax-precalculus-2e-id');
@@ -347,7 +347,17 @@ for(const [surface,path,key] of [
 ]){
   const row=data.a30Integration.files.find(item=>item.surface===surface&&item.path===path);
   assert.ok(row,`A30 integration readback missing ${surface} ${path}`);assert.equal(row.http_status,200);
-  if(key){assert.equal(row.bytes,bytes[key].length);assert.equal(row.sha256,sha256(bytes[key]));}
+  if(key){
+    // The readback attests the files of its own commit (GITHUB_READBACK_<commit>.json). A later rebuild of the adapter
+    // changes the local file; then the readback must match the file as it stood at that commit.
+    let attested={bytes:bytes[key].length,sha256:sha256(bytes[key])};
+    if(row.sha256!==attested.sha256){
+      const record=JSON.parse(await readFile(resolve(root,sources.a30Integration.replace(/\.json$/,'.attested-sources.json')),'utf8'));
+      attested=record.files.find(item=>item.key===key&&item.path===sources[key]);
+      assert.ok(attested,`A30 readback has no attested identity for ${key}`);
+    }
+    assert.equal(row.bytes,attested.bytes);assert.equal(row.sha256,attested.sha256);
+  }
 }
 assert.equal(data.b95Manifest.schema,'b95-capability-manifest/1');
 assert.equal(data.b95Manifest.course_id,'B95');assert.equal(data.b95Manifest.contract,'course-learning-capability/1');
@@ -363,7 +373,7 @@ assert.equal(data.b95Validation.result,'pass');assert.deepEqual(data.b95Validati
 assert.equal(data.b95Validation.negative_fixtures.length,12);assert.ok(data.b95Validation.negative_fixtures.every(({result})=>result==='rejected'));
 assert.equal(data.b95Validation.checks.negative_fixtures_rejected,12);assert.equal(data.b95Validation.checks.public_reader_pages,462);
 assert.equal(data.b95Validation.checks.two_run_build_identity.file_count,36);
-assert.equal(data.b95Validation.checks.two_run_build_identity.tree_sha256,'dd580a0af4fb9b2262489ec46e4692069b7949b3dbdd19c8206254f1c0c156ae');
+assert.equal(data.b95Validation.checks.two_run_build_identity.tree_sha256,'c5e1bfc6fd58f2b9a38f5c00cfee36c9b5ae5b5119f8aff608bec3f83256af1f');
 assert.equal(data.b95Public.schema,'b95-public-evidence/1');assert.equal(data.b95Public.course_id,'B95');assert.equal(data.b95Public.boundary_id,'R011-B039');
 assert.equal(data.b95Public.anonymous_readback,true);assert.equal(data.b95Public.credentials_used,false);
 assert.equal(data.b95Public.repository.public,true);assert.equal(data.b95Public.repository.url,'https://github.com/KokunoYumeto/statistika-berbasis-data-id');

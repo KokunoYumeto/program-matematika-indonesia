@@ -1083,6 +1083,9 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes((ROOT / path).read_bytes())
 
+    attested = 'backend/course-capsule-v1/adapters/a30-capability-v1/publication/GITHUB_READBACK_74b208108a25.attested-sources.json'
+    (sandbox / attested).parent.mkdir(parents=True, exist_ok=True)
+    (sandbox / attested).write_bytes((ROOT / attested).read_bytes())
     english_helper = 'scripts/d100-english-backend-replay-evidence-v1.mjs'
     (sandbox / english_helper).write_bytes((ROOT / english_helper).read_bytes())
 

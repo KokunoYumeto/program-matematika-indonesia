@@ -493,7 +493,7 @@ assert.equal(a30AdapterValidation.result, 'pass');
 assert.equal(a30AdapterValidation.negative_fixtures.length, 27);
 assert.ok(a30AdapterValidation.negative_fixtures.every(({ result }) => result === 'rejected'));
 assert.equal(a30AdapterValidation.checks.two_run_build_identity.file_count, 49);
-assert.equal(a30AdapterValidation.checks.two_run_build_identity.tree_sha256, '51b3c1cf9f3709a540fe59c9df63b186968ceb6c41fccce265c504bf970244cd');
+assert.equal(a30AdapterValidation.checks.two_run_build_identity.tree_sha256, '577523b1a66520878eaff8d63aaa9ee3957fed2dedeecbee33f777d7cbc3c4aa');
 assert.equal(a30.layers.learner.tools.length, 1);
 assert.equal(a30.layers.learner.tools[0].tool_id, 'a30.open_learner_hub');
 assert.equal(a30.layers.learner.tools[0].href, 'backend/a30/A30.html');
