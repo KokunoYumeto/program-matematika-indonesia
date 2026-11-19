@@ -35,11 +35,13 @@ ZENODO_RECORD_ID = 22142120
 ZENODO_CONCEPT_ID = 22059741
 ZENODO_RECORD = f"https://zenodo.org/records/{ZENODO_RECORD_ID}"
 INTEGRATED_BASENAME = "D90-O015-optimisasi-lanjut-analisis-konveks-id"
-INTEGRATED_HTML = (
-    f"{ZENODO_RECORD}/files/{INTEGRATED_BASENAME}.html?download=1"
-)
-INTEGRATED_PDF = f"{ZENODO_RECORD}/files/{INTEGRATED_BASENAME}.pdf?download=1"
-INTEGRATED_EPUB = f"{ZENODO_RECORD}/files/{INTEGRATED_BASENAME}.epub?download=1"
+# Learner links go to the GitHub home of the same integrated edition: the hosted HTML reader on
+# GitHub Pages and the PDF/EPUB in the repository. The Zenodo record (410 Gone since Nov 2026)
+# remains only as release evidence below.
+GITHUB_PAGES = "https://kokunoyumeto.github.io/advanced-optimization-convex-analysis-id"
+INTEGRATED_HTML = f"{GITHUB_PAGES}/readers/{INTEGRATED_BASENAME}.html"
+INTEGRATED_PDF = f"{REPOSITORY}/raw/main/output/pdf/{INTEGRATED_BASENAME}.pdf"
+INTEGRATED_EPUB = f"{REPOSITORY}/raw/main/output/epub/{INTEGRATED_BASENAME}.epub"
 
 SOURCE_INPUTS = (
     "backend/backend_schema.json",

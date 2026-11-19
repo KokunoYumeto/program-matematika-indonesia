@@ -13,17 +13,17 @@ ROOT = Path(__file__).resolve().parents[1]
 DESTINATION = ROOT / "work/a10-native-inputs-v1"
 INPUTS = {
     "reader.pdf": {
-        "url": "https://zenodo.org/records/22236314/files/00-elementary-algebra-2e-bahasa-indonesia-EA2-C0082-reader.pdf?download=1",
+        "url": "https://github.com/KokunoYumeto/openstax-elementary-algebra-2e-id/releases/download/v1.0.3/00-elementary-algebra-2e-bahasa-indonesia-EA2-C0082-reader.pdf",
         "bytes": 74917277,
         "sha256": "e4bc958edeb60a41604862dd0b67692bbfbcbb85b5de906c92af1f6c93bda505",
     },
     "backend-core.zip": {
-        "url": "https://zenodo.org/records/22236314/files/elementary-algebra-2e-id-ID-1.0.3-backend-core.zip?download=1",
+        "url": "https://github.com/KokunoYumeto/openstax-elementary-algebra-2e-id/releases/download/v1.0.3/elementary-algebra-2e-id-ID-1.0.3-backend-core.zip",
         "bytes": 147766660,
         "sha256": "6dc5ddafb3178d82308819ced69f724919dcb388168c5c63ec39db9e99777b13",
     },
     "reader-build-manifest.json": {
-        "url": "https://zenodo.org/api/records/22236314/files/00-elementary-algebra-2e-bahasa-indonesia-EA2-C0082-reader-build-manifest.json/content",
+        "url": "https://github.com/KokunoYumeto/openstax-elementary-algebra-2e-id/releases/download/v1.0.3/00-elementary-algebra-2e-bahasa-indonesia-EA2-C0082-reader-build-manifest.json",
         "bytes": 4282699,
         "sha256": "821d123602e75f6c1008c0d91350c2cc2c6c9ddeea5c76d00e922f59bd34a7b3",
     },

@@ -113,7 +113,7 @@ assert.equal(validation.checks.csv_jsonl_lossless_native_receipt_preserved, true
 assert.equal(validation.checks.public_anchor_observations, 438);
 assert.equal(validation.checks.public_hash_receipts_preserved, 6);
 assert.equal(validation.checks.two_run_build_identity.file_count, 30);
-assert.equal(validation.checks.two_run_build_identity.tree_sha256, '9a8d8a68342c3bb0ebbd1fbe7cbe39695ffa1763ba006cfc84b337e8453543de');
+assert.equal(validation.checks.two_run_build_identity.tree_sha256, '4ad1cc0e606530d12cb0f1162352b70695f4c3f73fe917cdaa292756e419b821');
 
 assert.equal(packageReceipt.schema, 'd90-capability-thin-packet-build-receipt/1');
 assert.equal(packageReceipt.result, 'PASS');
@@ -142,7 +142,7 @@ assert.deepEqual(packageReceipt.zip_checks, {
   crc_and_full_entry_readback: true,
   fixed_member_metadata: true,
   member_count: 37,
-  payload_bytes: 3021290,
+  payload_bytes: 3069520,
   sorted_member_order: true,
 });
 
@@ -360,7 +360,7 @@ resources.push({
   title: 'Rekaman rilis native D90 untuk asesmen, rubrik, dan lab',
   resource_type: 'assessment-blueprints',
   status: 'available_unverified',
-  url: 'https://zenodo.org/records/22142120',
+  url: 'https://github.com/KokunoYumeto/advanced-optimization-convex-analysis-id',
   scope: 'Rekaman native yang mendahului adapter pusat; dipertahankan terpisah dari bukti konsumsi bersama.',
 });
 resources.push({
@@ -426,7 +426,10 @@ const learner = await load(learnerTarget);
 const nativeFile = filename => {
   const matches = publicEvidence.zenodo.files.filter(row => row.filename === filename);
   assert.equal(matches.length, 1, `Missing or duplicate native public file: ${filename}`);
-  return matches[0];
+  // The Zenodo record is gone (410); the same bytes (checked by size and SHA-256 on 19 Nov 2026)
+  // are served from the D90 repository, which is the learner-facing location.
+  const extension = filename.split('.').at(-1);
+  return { ...matches[0], url: `https://github.com/KokunoYumeto/advanced-optimization-convex-analysis-id/raw/main/output/${extension}/${filename}` };
 };
 const publicReceipt = {
   kind: 'anonymous_public_byte_readback',
