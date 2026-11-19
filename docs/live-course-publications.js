@@ -17,6 +17,90 @@ function publication(value) {
 }
 
 export const liveCoursePublications = Object.freeze({
+  D110: publication({
+    "edition": "https://github.com/KokunoYumeto/mathematics-in-lean-id/releases/download/v4.30.0-id.3/matematika-dalam-lean-bahasa-indonesia.pdf",
+    "zenodo": "",
+  }),
+  C130: publication({
+    "edition": "https://github.com/KokunoYumeto/open-optimization-or-book-id/releases/download/v2026.08.23-id.5/pemrograman-matematis-dan-riset-operasi-buku-1-id-ID.pdf",
+    "zenodo": "",
+  }),
+  C120: publication({
+    "edition": "https://github.com/KokunoYumeto/mathematical-modeling-nonlinear-dynamics-id/releases/download/v1.01-id-complete-reader-20260823-r5/01_Pengantar_Pemodelan_Matematika_Edisi_Bahasa_Indonesia_Lengkap.pdf",
+    "zenodo": "",
+  }),
+  C110: publication({
+    "edition": "",
+    "zenodo": "",
+  }),
+  C70: publication({
+    "edition": "https://github.com/KokunoYumeto/applied-combinatorics-id/releases/download/2026.08.22.2/00_KOMBINATORIKA_TERAPAN_ID-ID_COMPLETE_LINKED_READER_2026.08.22.2.pdf",
+    "zenodo": "",
+  }),
+  C60: publication({
+    "zenodo": "",
+  }),
+  C40: publication({
+    "edition": "https://kokunoyumeto.github.io/abstract-algebra-theory-and-applications-id/",
+    "zenodo": "",
+  }),
+  C30: publication({
+    "edition": "https://kokunoyumeto.github.io/abstract-algebra-theory-and-applications-id/",
+    "zenodo": "",
+  }),
+  B90: publication({
+    "edition": "https://github.com/KokunoYumeto/introduction-to-probability-id/releases/download/v2026.08.22.1/PENGANTAR_PELUANG_GRINSTEAD_SNELL_ID.pdf",
+    "zenodo": "",
+  }),
+  B80: publication({
+    "edition": "https://github.com/KokunoYumeto/mathematical-computing-reproducible-experiments-id/releases/download/v2026.08.22.1/Komputasi-Matematis-dan-Eksperimen-yang-Dapat-Direproduksi.pdf",
+    "zenodo": "",
+  }),
+  B60: publication({
+    "edition": "",
+    "zenodo": "",
+    "supplements": [],
+  }),
+  B40: publication({
+    "edition": "https://github.com/KokunoYumeto/hefferon-linear-algebra-id/releases/download/v2026.08.22/01_HEFFERON_LINEAR_ALGEBRA_ID_TEXTBOOK_2026.08.22.pdf",
+    "zenodo": "",
+    "supplements": [
+      {
+        "id": "hefferon-jawaban-bekerja",
+        "title": "Jawaban Bekerja Aljabar Linear",
+        "resourceType": "solutions",
+        "state": "complete",
+        "scope": "Jawaban bekerja lengkap, 435 halaman.",
+        "license": "CC BY-SA 2.5",
+        "pages": 435,
+        "url": "https://github.com/KokunoYumeto/hefferon-linear-algebra-id/releases/download/v2026.08.22/02_HEFFERON_LINEAR_ALGEBRA_ID_WORKED_ANSWERS_2026.08.22.pdf",
+        "zenodo": "",
+        "bytes": 2672266,
+        "sha256": "61f8a344cade529249d4f165bb62bce17579b6a4408b11634999e9f73ec9c01b"
+      },
+      {
+        "id": "hefferon-laboratorium-sage",
+        "title": "Laboratorium Sage Aljabar Linear",
+        "resourceType": "workbook",
+        "state": "complete",
+        "scope": "Laboratorium komputasi Sage lengkap, 109 halaman.",
+        "license": "CC BY-SA 2.5",
+        "pages": 109,
+        "url": "https://github.com/KokunoYumeto/hefferon-linear-algebra-id/releases/download/v2026.08.22/03_HEFFERON_LINEAR_ALGEBRA_ID_SAGE_LAB_2026.08.22.pdf",
+        "zenodo": "",
+        "bytes": 13164259,
+        "sha256": "adb78966020355a90442c7ae68c734f1fd6b44b5d935a3f75e531ea666eeee4a"
+      }
+    ],
+  }),
+  B10: publication({
+    "edition": "https://github.com/KokunoYumeto/discrete-mathematics-open-introduction-id/releases/download/v2026.08.17/00_MATEMATIKA_DISKRET_EDISI_KEEMPAT_BAHASA_INDONESIA_READER.pdf",
+    "zenodo": "",
+  }),
+  A00: publication({
+    "edition": "https://github.com/KokunoYumeto/openstax-prealgebra-2e-id-ID/releases/download/prealgebra-2e-id-ID-v0.2.7/prealgebra-2e-id-ID-v0.2.7-reader.pdf",
+    "zenodo": "",
+  }),
   C80: publication({
     edition: 'https://github.com/KokunoYumeto/OpenLogic-id/releases/download/id-olp-0722-20260814/08_OPENLOGIC_id_STANDALONE_READER_ALL_722_20260905.pdf',
     zenodo: '',
@@ -717,6 +801,8 @@ export const liveCoursePublications = Object.freeze({
     },
   }),
   D120: publication({
+    "edition": "https://github.com/KokunoYumeto/kerja-matematika-yang-dapat-ditelusuri-id/releases/download/v2026.08.24/o017-d120-id-2026.08.24-reader-html.zip",
+    "zenodo": "",
     reader: 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/D120/reader/',
     additionalSupplements: [
       {

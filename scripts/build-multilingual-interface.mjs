@@ -35,7 +35,7 @@ if (!libraryHub || libraryHub.public_url !== siteOrigin + 'library/' || !support
 }
 const libraryLink = locale => '<a data-library-link="v1" href="' + libraryHub.public_url + '">' + escapeMarkup(libraryHub.labels[locale]) + '</a>';
 const openCoursesHub = centralNavigationContract.reciprocal_hubs.find(row => row.id === 'open-mathematics-courses');
-if (!openCoursesHub || openCoursesHub.public_url !== 'https://kokunoyumeto.github.io/open-mathematics-courses/' || !supportedLocales.every(locale => openCoursesHub.labels?.[locale])) {
+if (!openCoursesHub || openCoursesHub.public_url !== 'https://kokunoyumeto.github.io/open-math-courses-public/' || !supportedLocales.every(locale => openCoursesHub.labels?.[locale])) {
   throw new Error('Verified open-courses navigation binding is missing');
 }
 // A separate English site: the link names its content language for every interface locale.
@@ -199,7 +199,7 @@ function renderDocument(locale, offline, paired = false) {
     + '<nav class="primary-nav" aria-label="' + t.nav + '"><a href="#katalog">' + t.catalog + '</a><a class="js-only" href="#progress">' + t.progress + '</a><a href="#about">' + t.about + '</a>' + downloadsLink(locale) + sourceEvidenceLink(locale) + libraryLink(locale) + openCoursesLink(locale) + '</nav>'
     + '<nav class="locale-switcher" aria-label="' + t.language + '"><span>' + t.language + '</span>' + languageLinks + chineseStarterLink + '</nav></div></header>'
     + '<main id="top"><section class="intro"><h1>' + esc(t.title) + '</h1><p>' + esc(t.description) + '</p></section>'
-    + '<div class="offline-bar"><a href="' + (offline ? '#katalog' : 'learning-map.html') + '"' + (offline ? '' : ' download') + '>' + (offline ? t.catalog : t.offlineMap) + '</a><a href="https://doi.org/10.5281/zenodo.22059707">' + t.offlineBundle + '</a></div><p class="footnote">' + t.offlineHelp + '</p>'
+    + '<div class="offline-bar"><a href="' + (offline ? '#katalog' : 'learning-map.html') + '"' + (offline ? '' : ' download') + '>' + (offline ? t.catalog : t.offlineMap) + '</a><a href="https://github.com/KokunoYumeto/program-matematika-indonesia/releases">' + t.offlineBundle + '</a></div><p class="footnote">' + t.offlineHelp + '</p>'
     + '<p class="footnote">' + (paired ? t.pairedHelp : t.standaloneHelp) + '</p>'
     + '<details class="progress-panel js-only" id="progress"><summary>' + t.progress + ' — <span id="progress-summary"></span></summary><p>' + t.progressHelp + '</p>'
     + '<div class="progress-controls">' + claimForm('placement') + claimForm('equivalence')
