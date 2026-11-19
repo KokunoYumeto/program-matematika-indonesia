@@ -46,7 +46,9 @@ GITHUB_RECEIPT = Path("qa/GITHUB_READER_1.0.0_20260904.json")
 ZENODO_RECEIPT = Path("qa/ZENODO_READER_1.0.0_20260904.json")
 
 PDF_NAME = "OpenStax-Precalculus-2e-id-ID-1.0.0-reader.pdf"
-PDF_URL = f"https://zenodo.org/records/{ZENODO_RECORD_ID}/files/{PDF_NAME}?download=1"
+# Learner links: the GitHub release copy (same bytes and SHA-256 as the removed Zenodo record; release asset in the
+# public evidence). ZENODO_RECORD_ID stays as the historical record of that readback.
+PDF_URL = f"{PUBLIC_REPOSITORY}/releases/download/{RELEASE_TAG}/{PDF_NAME}"
 EXPECTED_PDF = {
     "bytes": 305_654_938,
     "pages": 3_165,

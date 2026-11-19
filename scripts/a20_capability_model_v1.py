@@ -43,7 +43,9 @@ NATIVE_READER_PINS = Path("publication/final-staging/FINAL_READER_INPUT_PINS.jso
 NATIVE_FINAL_BUILD = Path("publication/final-release-1.0.0/FINAL_RELEASE_BUNDLE_BUILD_RECEIPT.json")
 
 PDF_NAME = "openstax-intermediate-algebra-2e-id-ID-1.0.0-reader.pdf"
-PDF_URL = f"https://zenodo.org/records/{ZENODO_RECORD_ID}/files/{PDF_NAME}?download=1"
+# Learner links: the GitHub release copy (same bytes and SHA-256 as the removed Zenodo record, verified in the
+# public evidence). ZENODO_RECORD_ID stays as the historical record of that readback.
+PDF_URL = f"{REPOSITORY}/releases/download/v1.0.0/{PDF_NAME}"
 VOLUME_1_NAME = "openstax-intermediate-algebra-2e-id-ID-1.0.0-reader-volume-1.pdf"
 VOLUME_2_NAME = "openstax-intermediate-algebra-2e-id-ID-1.0.0-reader-volume-2.pdf"
 

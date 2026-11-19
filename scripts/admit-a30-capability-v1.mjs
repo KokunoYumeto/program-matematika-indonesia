@@ -152,7 +152,7 @@ assert.equal(validation.checks.public_zenodo_assets, 7);
 assert.equal(validation.checks.module_identities_rendered_for_learner, 87);
 assert.equal(validation.checks.module_identities_rendered_for_educator, 87);
 assert.equal(validation.checks.two_run_build_identity.file_count, 49);
-assert.equal(validation.checks.two_run_build_identity.tree_sha256, '51b3c1cf9f3709a540fe59c9df63b186968ceb6c41fccce265c504bf970244cd');
+assert.equal(validation.checks.two_run_build_identity.tree_sha256, '577523b1a66520878eaff8d63aaa9ee3957fed2dedeecbee33f777d7cbc3c4aa');
 
 assert.equal(packageReceipt.schema, 'a30-capability-thin-packet-build-receipt/1');
 assert.equal(packageReceipt.result, 'PASS');
@@ -178,7 +178,7 @@ assert.deepEqual(packageReceipt.zip_checks, {
   crc_and_full_entry_readback: true,
   fixed_member_metadata: true,
   member_count: 57,
-  payload_bytes: 26656051,
+  payload_bytes: 26672555,
   sorted_member_order: true,
 });
 
@@ -518,7 +518,7 @@ assert.equal(pdfAssets.length, 1);
 const pdfAsset = pdfAssets[0];
 assert.equal(pdfAsset.bytes, 305654938);
 assert.equal(pdfAsset.sha256, '3cfd5294b91252cc766992f158b6601e80aa31b719b0b8bf69e1ff6d08a4fa3e');
-assert.equal(publicEvidence.indonesian_reader.url, 'https://zenodo.org/records/22290180/files/OpenStax-Precalculus-2e-id-ID-1.0.0-reader.pdf?download=1');
+assert.equal(publicEvidence.indonesian_reader.url, 'https://github.com/KokunoYumeto/openstax-precalculus-2e-id/releases/download/v1.0.0/OpenStax-Precalculus-2e-id-ID-1.0.0-reader.pdf');
 const publicReceipt = {
   kind: 'anonymous_public_byte_readback',
   locator: `https://github.com/KokunoYumeto/program-matematika-indonesia/blob/main/${base}/data/public-evidence.json`,

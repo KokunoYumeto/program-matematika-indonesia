@@ -1,5 +1,5 @@
 // Generated presentation bindings; corpus/backend authority remains unchanged.
-export const finalEditionSource = {"path":"docs/interface/final-editions.json","bytes":18728,"sha256":"47029ac2283d0f8f7aff587c6426e37e49201870c677f05387d730812d331dd7"};
+export const finalEditionSource = {"path":"docs/interface/final-editions.json","bytes":18728,"sha256":"494413b2c634b81f7fbeb22a255b58ebc49aeecafb642aae37ccaa9c19df8cbc"};
 export const finalEditions = [
   {
     "courseId": "A10",
@@ -258,7 +258,7 @@ export const finalEditions = [
           "anonymous_http_status": 200,
           "actual_sha256": "5af87fd1fd4b85c76bc4fa83e655bdb47d859700a3e57b2d4e7c0ca9c4cf5421",
           "source_receipt": "backend/authority/federated-navigation-publications/d100-corr1-github-release-readback-20261119.json",
-          "source_receipt_sha256": "183c2db46d93fcdd013bbb45d47fb5ddf6dbcfa49eed037181a3a8030f1b4aea"
+          "source_receipt_sha256": "2a5c54550db78e32c31308b6a9ffbee32690319b5fa0ef626f66b7d98afd4fdd"
         }
       },
       {
@@ -296,13 +296,13 @@ export const finalEditions = [
         "primary": false,
         "offlineAfterDownload": true,
         "pages": null,
-        "bytes": 23773577,
-        "sha256": "ea23c11b6a710a058e9d782eea1a7e0f2971a1551606f6cd51fc45209e9f87b5",
+        "bytes": 23808146,
+        "sha256": "d9aebfade01203e7b0c20cf468d544365f6a51fcf994ba8419ee28e93ec83b89",
         "evidence": {
           "anonymous_http_status": 200,
-          "actual_sha256": "ea23c11b6a710a058e9d782eea1a7e0f2971a1551606f6cd51fc45209e9f87b5",
+          "actual_sha256": "d9aebfade01203e7b0c20cf468d544365f6a51fcf994ba8419ee28e93ec83b89",
           "source_receipt": "backend/authority/federated-navigation-publications/d100-corr1-github-release-readback-20261119.json",
-          "source_receipt_sha256": "183c2db46d93fcdd013bbb45d47fb5ddf6dbcfa49eed037181a3a8030f1b4aea"
+          "source_receipt_sha256": "2a5c54550db78e32c31308b6a9ffbee32690319b5fa0ef626f66b7d98afd4fdd"
         }
       },
       {
@@ -324,7 +324,7 @@ export const finalEditions = [
           "anonymous_http_status": 200,
           "actual_sha256": "34fb81e572f60e20e4dadff9f5040da7abf9882bbf5cf64a425a03297428a436",
           "source_receipt": "backend/authority/federated-navigation-publications/d100-corr1-github-release-readback-20261119.json",
-          "source_receipt_sha256": "183c2db46d93fcdd013bbb45d47fb5ddf6dbcfa49eed037181a3a8030f1b4aea"
+          "source_receipt_sha256": "2a5c54550db78e32c31308b6a9ffbee32690319b5fa0ef626f66b7d98afd4fdd"
         }
       },
       {
@@ -362,13 +362,13 @@ export const finalEditions = [
         "primary": false,
         "offlineAfterDownload": true,
         "pages": null,
-        "bytes": 6837686,
-        "sha256": "1805fb6325a12d0400999d5fab5bd4fe101174e088a7a2e54fa47ffb32ce243e",
+        "bytes": 6839675,
+        "sha256": "8f27972340bbe1dddd45294db6a637c64656cfa1b27d4bd4d54632c84ec3e886",
         "evidence": {
           "anonymous_http_status": 200,
-          "actual_sha256": "1805fb6325a12d0400999d5fab5bd4fe101174e088a7a2e54fa47ffb32ce243e",
+          "actual_sha256": "8f27972340bbe1dddd45294db6a637c64656cfa1b27d4bd4d54632c84ec3e886",
           "source_receipt": "backend/authority/federated-navigation-publications/d100-corr1-github-release-readback-20261119.json",
-          "source_receipt_sha256": "183c2db46d93fcdd013bbb45d47fb5ddf6dbcfa49eed037181a3a8030f1b4aea"
+          "source_receipt_sha256": "2a5c54550db78e32c31308b6a9ffbee32690319b5fa0ef626f66b7d98afd4fdd"
         }
       },
       {
@@ -390,7 +390,7 @@ export const finalEditions = [
           "anonymous_http_status": 200,
           "actual_sha256": "ed54f440409b2aa7beb5a1ff24be0e54de7845576f3f4d06e88fd58c9feb2131",
           "source_receipt": "backend/authority/federated-navigation-publications/d100-corr1-github-release-readback-20261119.json",
-          "source_receipt_sha256": "183c2db46d93fcdd013bbb45d47fb5ddf6dbcfa49eed037181a3a8030f1b4aea"
+          "source_receipt_sha256": "2a5c54550db78e32c31308b6a9ffbee32690319b5fa0ef626f66b7d98afd4fdd"
         }
       },
       {
@@ -412,7 +412,7 @@ export const finalEditions = [
           "anonymous_http_status": 200,
           "actual_sha256": "487c13991626f0e2c524d5c455930b83b6b242d54d8915087edf4823f1303bdc",
           "source_receipt": "backend/authority/federated-navigation-publications/d100-corr1-github-release-readback-20261119.json",
-          "source_receipt_sha256": "183c2db46d93fcdd013bbb45d47fb5ddf6dbcfa49eed037181a3a8030f1b4aea"
+          "source_receipt_sha256": "2a5c54550db78e32c31308b6a9ffbee32690319b5fa0ef626f66b7d98afd4fdd"
         }
       }
     ]

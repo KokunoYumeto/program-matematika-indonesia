@@ -73,7 +73,6 @@ const effectiveCourses = materializeLiveCourses(courses);
 const effectiveCoursesById = new Map(effectiveCourses.map((course) => [course.id, course]));
 const effectiveNextCourseIdsById = deriveNextCourseIdsById(effectiveCourses);
 const effectivePublishedCourses = effectiveCourses.filter(({ state }) => state === 'published');
-const effectivePublishedRecordDois = new Set(effectivePublishedCourses.map(({ zenodo }) => zenodo).filter(Boolean));
 
 const [
   html,
@@ -767,7 +766,49 @@ for (const id of liveOverlayRequiredRoleIds) {
 assert.deepEqual(effectiveCourses.map(({ id }) => id), courses.map(({ id }) => id), 'Overlay mengubah urutan atau identitas mata kuliah.');
 assert.equal(effectiveCourses.length, courses.length, 'Overlay mengubah jumlah mata kuliah.');
 assert.equal(effectivePublishedCourses.length, 40, 'Overlay harus menampilkan tepat 40 peran dengan edisi selesai.');
-assert.equal(effectivePublishedRecordDois.size, 36, 'Empat puluh peran selesai harus memakai tepat 36 rekaman DOI edisi berbeda.');
+// Edition records (19 Nov 2026, replacing the Zenodo-era rule of exactly 36 distinct edition DOI records):
+// every published role's edition is a file in a GitHub release of ours, or a GitHub Pages reader of ours,
+// and that exact URL is bound to a readback: bytes and SHA-256 from an anonymous read, or a verified
+// hosted-reader audit row. No edition may point at Zenodo.
+const editionReadbackFacts = new Map();
+const collectEditionFacts = (value) => {
+  if (Array.isArray(value)) { value.forEach(collectEditionFacts); return; }
+  if (!value || typeof value !== 'object') return;
+  const url = value.url ?? value.href ?? value.locator;
+  const digest = value.sha256 ?? value.actual_sha256;
+  if (typeof url === 'string' && url.startsWith('https://') && /^[0-9a-f]{64}$/.test(digest ?? '') && Number.isInteger(value.bytes) && value.bytes > 0) {
+    editionReadbackFacts.set(url, { bytes: value.bytes, sha256: digest });
+  }
+  Object.values(value).forEach(collectEditionFacts);
+};
+const editionEvidenceFiles = [
+  'backend/authority/learner-delivery-overrides-v1.json',
+  'backend/authority/restored-github-releases-readback-20261119.json',
+  'backend/authority/edition-release-readback-20261119.json',
+  'docs/interface/final-editions.json',
+  ...(await readdir(resolve(root, 'docs/interface/evidence'))).filter((name) => name.endsWith('.json')).map((name) => `docs/interface/evidence/${name}`),
+];
+for (const adapter of await readdir(resolve(root, 'backend/course-capsule-v1/adapters'))) {
+  const candidate = `backend/course-capsule-v1/adapters/${adapter}/data/public-evidence.json`;
+  try { await readFile(resolve(root, candidate)); editionEvidenceFiles.push(candidate); } catch { /* adapter without public evidence */ }
+}
+for (const path of editionEvidenceFiles) collectEditionFacts(await readJson(path));
+const hostedReaderAudit = await readJson('backend/authority/federated-hosted-reader-navigation-v1.json');
+const verifiedHostedReaders = new Set(hostedReaderAudit.rows.filter((row) => row.state === 'verified').map((row) => row.url));
+const editionReleaseRecords = new Set();
+for (const course of effectivePublishedCourses) {
+  const edition = course.edition ?? '';
+  assert.doesNotMatch(edition, /zenodo\.org|10\.5281\/zenodo/, `${course.id}: edisi tidak boleh menunjuk ke Zenodo.`);
+  const release = /^https:\/\/github\.com\/KokunoYumeto\/([\w.-]+)\/releases\/download\/([^/]+)\/[^/]+$/.exec(edition);
+  const hostedReader = /^https:\/\/kokunoyumeto\.github\.io\//.test(edition);
+  assert.ok(release || hostedReader, `${course.id}: edisi harus berupa berkas rilis GitHub atau pembaca GitHub Pages.`);
+  if (release) {
+    assert.ok(editionReadbackFacts.has(edition), `${course.id}: berkas edisi belum terikat pada pembacaan ulang (byte dan SHA-256).`);
+    editionReleaseRecords.add(`${release[1]}@${release[2]}`);
+  } else {
+    assert.ok(verifiedHostedReaders.has(edition) || editionReadbackFacts.has(edition), `${course.id}: pembaca edisi belum terverifikasi oleh audit pembaca.`);
+  }
+}
 assert.equal(
   effectiveCourses.filter(({ state }) => state === 'production').length,
   0,
@@ -785,7 +826,7 @@ for (const course of effectiveCourses) {
     assert.ok(idSet.has(prerequisite), `${course.id}: prasyarat efektif ${prerequisite} tidak ditemukan.`);
   }
   for (const field of ['learner', 'reader', 'edition', 'repository', 'zenodo', 'release']) {
-    if (course[field] !== undefined && course[field] !== null) {
+    if (course[field] !== undefined && course[field] !== null && course[field] !== '') { // '' = no link (removed Zenodo record, 15 Nov 2026)
       assert.match(course[field], /^https:\/\//, `${course.id}: ${field} efektif harus memakai HTTPS atau null.`);
     }
   }
@@ -862,7 +903,7 @@ assert.equal(effectiveCoursesById.get('B30').state, 'published');
 assert.equal(effectiveCoursesById.get('B30').version, '2026.08.31');
 assert.equal(effectiveCoursesById.get('B30').progress.publicPages, 1243);
 assert.equal(effectiveCoursesById.get('B30').zenodo, '');
-assert.match(effectiveCoursesById.get('B30').edition, /CLP-2_Kalkulus_Integral_Bahasa_Indonesia_edisi_lengkap_2026-08-30\.pdf\?download=1$/);
+assert.match(effectiveCoursesById.get('B30').edition, /CLP-2_Kalkulus_Integral_Bahasa_Indonesia_edisi_lengkap_2026-08-30\.pdf$/);
 assert.equal(effectiveCoursesById.get('B50').progress.publicUnits, 138);
 assert.equal(effectiveCoursesById.get('B50').supplements.length, 2);
 assert.equal(effectiveCoursesById.get('B50').zenodo, '');
@@ -873,7 +914,7 @@ assert.match(effectiveCoursesById.get('B95').release, /r011-b039-2026\.09\.01\.2
 assert.equal(effectiveCoursesById.get('B95').progress.publicPages, 462);
 assert.equal(effectiveCoursesById.get('B95').progress.publicUnits, 1245);
 assert.equal(effectiveCoursesById.get('B95').progress.publicBoundary, 'R011-B039 — seluruh korpus yang dapat didistribusikan');
-assert.match(effectiveCoursesById.get('B95').edition, /00_STATISTIKA_BERBASIS_DATA_ID_R011-B039_WORKING_READER\.pdf\?download=1$/);
+assert.match(effectiveCoursesById.get('B95').edition, /00_STATISTIKA_BERBASIS_DATA_ID_R011-B039_WORKING_READER\.pdf$/);
 assert.deepEqual(effectiveCoursesById.get('B95').verification, {
   anonymousReadback: true,
   readerBytes: 57049904,
@@ -897,7 +938,7 @@ for (const [id, expected] of Object.entries(leblPublicationExpectations)) {
   assert.equal(course.version, 'lebl-family-id-complete.2026.08.30');
   assert.equal(course.progress.publicPages, expected.pages);
   assert.equal(course.zenodo, '');
-  assert.match(course.edition, new RegExp(`22182427/files/${expected.file.replaceAll('.', '\\.')}\\?download=1$`));
+  assert.match(course.edition, new RegExp(`\/releases\/download\/[^/]+\/${expected.file.replaceAll('.', '\\.')}\$`));
   assert.match(course.release, /lebl-family-id\.2026\.08\.30\.complete$/);
   assert.deepEqual(course.verification, {
     readerBytes: expected.bytes,
@@ -928,7 +969,7 @@ assert.equal(effectiveCoursesById.get('D30').state, 'published');
 assert.equal(effectiveCoursesById.get('D30').progress.publicPages, 447);
 assert.equal(effectiveCoursesById.get('D30').zenodo, '');
 assert.equal(effectiveCoursesById.get('D30').version, '2026.08.30-checkpoint.38');
-assert.match(effectiveCoursesById.get('D30').edition, /READER_CHECKPOINT_38\.pdf\?download=1$/);
+assert.match(effectiveCoursesById.get('D30').edition, /READER_CHECKPOINT_38\.pdf$/);
 assert.equal(effectiveCoursesById.get('D40').state, 'published');
 assert.equal(effectiveCoursesById.get('D40').progress.totalUnits, 18);
 assert.equal(effectiveCoursesById.get('D40').progress.translationBearingUnits, 18);
@@ -937,7 +978,7 @@ assert.equal(effectiveCoursesById.get('D40').progress.canonicalUnits, 18);
 assert.equal(effectiveCoursesById.get('D40').progress.publicUnits, 18);
 assert.equal(effectiveCoursesById.get('D40').progress.publicPages, 679);
 assert.match(effectiveCoursesById.get('D40').reader, /readers\/d40\/unit14\/$/);
-assert.match(effectiveCoursesById.get('D40').edition, /PERSAMAAN_DIFERENSIAL_PARSIAL_DIONNE_ID_LENGKAP\.pdf\?download=1$/);
+assert.match(effectiveCoursesById.get('D40').edition, /PERSAMAAN_DIFERENSIAL_PARSIAL_DIONNE_ID_LENGKAP\.pdf$/);
 assert.equal(effectiveCoursesById.get('D40').zenodo, '');
 assert.equal(effectiveCoursesById.get('D40').repository, undefined, 'D40 belum memiliki repositori GitHub edisi Indonesia.');
 assert.equal(effectiveCoursesById.get('D40').supplements.length, 2);
@@ -967,7 +1008,7 @@ assert.equal(effectiveCoursesById.get('D60').state, 'published');
 assert.equal(effectiveCoursesById.get('D60').progress.publicUnits, 4);
 assert.equal(effectiveCoursesById.get('D60').progress.publicPages, 564);
 assert.match(effectiveCoursesById.get('D60').reader, /lab01-lab02-lab03-lab04-capstone\/$/);
-assert.match(effectiveCoursesById.get('D60').edition, /22168033\/files\/00_TOPOLOGI_ALJABAR_ID_.*_CAPSTONE_READER\.pdf\?download=1$/);
+assert.match(effectiveCoursesById.get('D60').edition, /\/releases\/download\/[^/]+\/00_TOPOLOGI_ALJABAR_ID_.*_CAPSTONE_READER\.pdf$/);
 assert.equal(effectiveCoursesById.get('D60').zenodo, '');
 assert.equal(effectiveCoursesById.get('D60').version, '0.31.7');
 assert.match(effectiveCoursesById.get('D60').note, /108\/108 butir penguasaan bersolusi/);
@@ -985,7 +1026,7 @@ assert.equal(effectiveCoursesById.get('D60').supplements[0].resourceType, 'refer
 assert.match(effectiveCoursesById.get('D60').supplements[0].scope, /bukan pembaca utama/i);
 assert.equal(effectiveCoursesById.get('D60').supplements[0].bytes, 8406450);
 assert.equal(effectiveCoursesById.get('D60').supplements[0].sha256, 'f7670f6e6ad9a95ff808a1ddf4c2fdd8b41c6bce1916d33ac6fe5063be184b1b');
-assert.match(effectiveCoursesById.get('D60').supplements[0].url, /22168033\/files\/TOPOLOGI_ALJABAR_ID_.*_CAPSTONE_EDITABLE_SOURCE_BACKEND\.zip\?download=1$/);
+assert.match(effectiveCoursesById.get('D60').supplements[0].url, /\/releases\/download\/[^/]+\/TOPOLOGI_ALJABAR_ID_.*_CAPSTONE_EDITABLE_SOURCE_BACKEND\.zip$/);
 assert.doesNotMatch(effectiveCoursesById.get('D60').reader, /\.(?:json|jsonl|csv|zip)(?:[?#]|$)/i, 'Rute utama D60 harus tetap pembaca HTML.');
 assert.equal(effectiveCoursesById.get('D70').state, 'published');
 assert.equal(effectiveCoursesById.get('D70').progress.publicUnits, 4);
@@ -999,16 +1040,16 @@ assert.equal(effectiveCoursesById.get('D80').progress.canonicalUnits, 146);
 assert.equal(effectiveCoursesById.get('D80').progress.publicUnits, 146);
 assert.equal(effectiveCoursesById.get('D80').progress.publicPages, 864);
 assert.equal(effectiveCoursesById.get('D80').reader, 'https://kokunoyumeto.github.io/metode-aljabar-jilid-2-id/');
-assert.match(effectiveCoursesById.get('D80').edition, /22167691\/files\/00_metode-dalam-aljabar-jilid-2-edisi-bahasa-indonesia\.pdf\?download=1$/);
+assert.match(effectiveCoursesById.get('D80').edition, /\/releases\/download\/[^/]+\/00_metode-dalam-aljabar-jilid-2-edisi-bahasa-indonesia\.pdf$/);
 assert.equal(effectiveCoursesById.get('D80').zenodo, '');
 assert.equal(effectiveCoursesById.get('D80').version, 'complete-edition-html-reader-correction-2026-08-30');
 assert.equal(effectiveCoursesById.get('D80').supplements.length, 2);
 assert.equal(effectiveCoursesById.get('D80').supplements[0].id, 'metode-aljabar-jilid-2-backend');
-assert.match(effectiveCoursesById.get('D80').supplements[0].url, /22167691\/files\/02_backend-semantik\.zip\?download=1$/);
+assert.match(effectiveCoursesById.get('D80').supplements[0].url, /\/releases\/download\/[^/]+\/02_backend-semantik\.zip$/);
 assert.equal(effectiveCoursesById.get('D80').supplements[1].id, 'metode-aljabar-jilid-2-html-offline-corrected');
 assert.equal(effectiveCoursesById.get('D80').supplements[1].bytes, 1373063);
 assert.equal(effectiveCoursesById.get('D80').supplements[1].sha256, '064dc97e9ae58217622a768f1a989eb316892a607d219211f4be17e6cf44d03c');
-assert.match(effectiveCoursesById.get('D80').supplements[1].url, /22167691\/files\/03_pembaca-html-offline\.zip\?download=1$/);
+assert.match(effectiveCoursesById.get('D80').supplements[1].url, /\/releases\/download\/[^/]+\/03_pembaca-html-offline\.zip$/);
 assert.match(effectiveCoursesById.get('D80').note, /27\.308 formula/);
 assert.match(effectiveCoursesById.get('D80').note, /nol kesalahan MathJax/);
 assert.match(effectiveCoursesById.get('D80').note, /Paket HTML luring terkoreksi telah diterbitkan/);
@@ -1128,14 +1169,16 @@ assert.match(html, new RegExp(escapeRegex(program.website)));
 // `program.zenodo` may remain the immutable backend-authority record.  Require
 // the public concept link (or the authority link for older snapshots) without
 // coupling the static reader to one historical record number.
+// 19 Nov 2026: the programme's Zenodo records answer 410 Gone, so the page must not link them any more.
 assert.ok(
-  html.includes(program.zenodoConcept) || html.includes(program.zenodo),
-  'Halaman siswa harus menautkan arsip Zenodo konsep atau otoritas.',
+  !html.includes(program.zenodoConcept) && !html.includes(program.zenodo),
+  'Halaman siswa tidak boleh menautkan arsip Zenodo program yang sudah dihapus.',
 );
 assert.match(html, new RegExp(`${courses.length} korpus terpilih`));
 assert.match(html, /lapisan mesin agar mahasiswa tidak diarahkan ke JSON sebagai pintu masuk/i);
 assert.match(html, new RegExp(`<strong id="live-completed-role-count">${effectiveCourses.filter(({ state }) => state === 'published').length}<\\/strong><span>peran dengan edisi selesai<\\/span>`));
-assert.match(html, new RegExp(`Keempat puluh peran kini memiliki edisi publik lengkap melalui ${effectivePublishedRecordDois.size} rekaman DOI berbeda`));
+assert.match(html, /Keempat puluh peran kini memiliki edisi publik lengkap dalam rilis GitHub atau pembaca GitHub Pages, masing-masing terikat pada pembacaan ulang anonim/);
+assert.doesNotMatch(html, /rekaman DOI berbeda/);
 assert.match(html, /40 dari 40 peran/);
 assert.match(html, /seluruh 33 keluarga backend native/);
 assert.match(html, /identitas unit telah terbukti untuk 26 peran/);
@@ -1345,6 +1388,7 @@ assert.doesNotMatch(styles, /@media \(max-width: 820px\)[\s\S]{0,300}nav \{ disp
 assert.match(styles, /p a:not\(\.button\):not\(\.card-action\)/);
 const shellFiles = [Buffer.from(html), stylesBytes, Buffer.from(app), coursesModuleBytes, Buffer.from(livePublicationsModule), Buffer.from(learnerStateModule), deliveryModuleBytes, learnerToolsModuleBytes];
 const shellRawBytes = shellFiles.reduce((sum, bytes) => sum + bytes.length, 0);
+const SHELL_GZIP_BUDGET = 56_160; // measured 55,902 on 19 Nov 2026 + 256 bytes headroom
 const shellGzipBytes = shellFiles.reduce((sum, bytes) => sum + gzipSync(bytes, { level: 9 }).length, 0);
 // Legacy entry gained two language links, fragment-preserving handoff, and the
 // hash-bound B90, D100, C110, C70, D90, A20, B95, and C140 learner/educator
@@ -1358,8 +1402,11 @@ const shellGzipBytes = shellFiles.reduce((sum, bytes) => sum + gzipSync(bytes, {
 // D50's verified reader/PDF/source identities and explicit CDN limitation bring
 // the measured compressed shell to 54,500 bytes. Keep 256 bytes of headroom;
 // retain the independent raw-size and zero-remote-runtime requirements.
-assert.ok(shellRawBytes <= 216_000, `Shell melewati 216.000 byte: ${shellRawBytes}.`);
-assert.ok(shellGzipBytes <= 54_756, `Shell gzip melewati 54.756 byte: ${shellGzipBytes}.`);
+// 19 Nov 2026: the editions and supplements restored from the removed Zenodo records to GitHub releases
+// (B30, B50, B60, C90, D20, D30, D40, D60, D70, D80, D90, D100) and the edition-record wording measure
+// 221,649 raw and 55,902 gzip bytes; keep about 2 KB raw and 256 bytes compressed headroom as before.
+assert.ok(shellRawBytes <= 224_000, `Shell melewati 224.000 byte: ${shellRawBytes}.`);
+assert.ok(shellGzipBytes <= SHELL_GZIP_BUDGET, `Shell gzip melewati ${SHELL_GZIP_BUDGET} byte: ${shellGzipBytes}.`);
 const runtimeAssetUrls = [
   ...[...html.matchAll(/<script\b[^>]*src="([^"]+)"[^>]*>/g)].map((match) => match[1]),
   ...[...html.matchAll(/<link\b(?=[^>]*rel="stylesheet")[^>]*href="([^"]+)"[^>]*>/g)].map((match) => match[1]),
@@ -2020,7 +2067,7 @@ console.log(JSON.stringify({
   unresolved: unresolvedIds.length,
   publishedCanonRoles: publishedIds.length,
   effectivePublishedRoles: effectivePublishedCourses.length,
-  effectiveDistinctPublishedRecords: effectivePublishedRecordDois.size,
+  effectiveEditionReleaseRecords: editionReleaseRecords.size,
   liveOverlayRows: Object.keys(liveCoursePublications).length,
   completedPublicCourseRoles: publishedIds.length,
   completedPublicRecords: program.completedPublicRecordDois.length,

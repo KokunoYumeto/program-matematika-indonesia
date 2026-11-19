@@ -610,7 +610,18 @@ const v23AdapterIndex = JSON.parse(docsBytes['data/v23-adapter-index-v1.json'].t
 const v23AdapterIndexV2 = JSON.parse(docsBytes['data/v23-adapter-index-v2.json'].toString('utf8'));
 const clpSuccessorIndex = JSON.parse(docsBytes['data/clp-successor/v0.62.17/v23-adapter-index-v2.json'].toString('utf8'));
 const clpSuccessorAuthority = await readFile(resolve(project, 'backend/course-capsule-v1/authority/clp-family-v231/v23-adapter-index-v2.json'));
-assert.deepEqual(docsBytes['data/clp-successor/v0.62.17/v23-adapter-index-v2.json'], clpSuccessorAuthority, 'CLP successor public index differs from its authority.');
+// The authority stays sealed; its public copy may differ only by links to removed Zenodo records (410 Gone)
+// replaced with their GitHub successors, each read back anonymously in the successor record.
+const removedRecordSuccessors = JSON.parse(await readFile(resolve(project, 'backend/authority/removed-record-url-successors-20261119.json'), 'utf8'));
+let clpSuccessorExpected = clpSuccessorAuthority.toString('utf8');
+for (const successor of removedRecordSuccessors.successors) {
+  assert.match(successor.from, /^https:\/\/zenodo\.org\/records\/\d+\/files\//, 'Successor must replace a removed Zenodo file link.');
+  assert.match(successor.to, /^https:\/\/github\.com\/KokunoYumeto\/[\w.-]+\/releases\/download\//, 'Successor must be a GitHub release file.');
+  assert.equal(successor.http_status, 200); assert.match(successor.sha256, /^[0-9a-f]{64}$/); assert.ok(successor.bytes > 0);
+  assert.notEqual(successor.former_identity_matches, false, 'Successor bytes differ from the removed record.');
+  clpSuccessorExpected = clpSuccessorExpected.split(successor.from).join(successor.to);
+}
+assert.equal(docsBytes['data/clp-successor/v0.62.17/v23-adapter-index-v2.json'].toString('utf8'), clpSuccessorExpected, 'CLP successor public index differs from its authority.');
 // The frozen CLP successor index predates the later A10 and D50 central
 // admissions and must stay byte-stable. The live course capsules add both
 // roles without rewriting that history.

@@ -406,7 +406,7 @@ assert.equal(liveB95.version, '2026.09.01.2-R011-B039');
 assert.equal(liveB95.zenodo, '');
 assert.equal(liveB95.repository, publicEvidence.repository.url);
 assert.equal(liveB95.release, publicEvidence.repository.release_url);
-assert.equal(liveB95.edition, publicEvidence.reader.zenodo_url);
+assert.equal(liveB95.edition, publicEvidence.reader.github_url);
 assert.equal(liveB95.progress.publicPages, 462);
 assert.equal(liveB95.verification.readerBytes, 57049904);
 assert.equal(liveB95.verification.readerSha256, publicEvidence.reader.pdf_sha256);
@@ -685,7 +685,7 @@ const publicReceipt = {
 const pdf = {
   status: 'verified',
   format: 'application/pdf',
-  url: publicEvidence.reader.zenodo_url,
+  url: publicEvidence.reader.github_url,
   bytes: publicReadback.reader.bytes,
   sha256: publicReadback.reader.sha256,
   scope: 'whole_course_462_pages_with_exact_chapter_start_routes_and_context_only_nonchapter_routes',

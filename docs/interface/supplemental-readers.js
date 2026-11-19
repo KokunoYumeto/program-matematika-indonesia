@@ -410,6 +410,26 @@ export const supplementalReaders = [
     "sha256": "e3e615c98717eef968097044f1feb00afc61175f29f4e4cc346685db5c512984"
   },
   {
+    "courseId": "D20",
+    "id": "D20:complete-offline-html",
+    "href": "https://github.com/KokunoYumeto/functional-analysis-erdman-id/releases/download/v2026.08.25-backend-artifact-reconciliation/functional-analysis-erdman-id-2026.08.25-backend-artifact-reconciliation-source-backend-html.zip",
+    "labels": {
+      "id": "Buku dan pendamping HTML luring — ZIP",
+      "en": "Offline textbook and companion HTML — ZIP"
+    },
+    "notes": {
+      "id": "Paket yang sudah terbit juga memuat sumber/backend. Ekstrak seluruh ZIP; dalam folder buku, buka output/html/index.html atau output/html-companion/index.html. Pertahankan folder. Kutipan eksternal tetap memerlukan internet.",
+      "en": "This existing package also contains source/backend files. Extract the whole ZIP; inside the book folder, open output/html/index.html or output/html-companion/index.html. Keep the folders. External citations still require internet."
+    },
+    "kind": "portable_html",
+    "format": "HTML ZIP",
+    "offlineAfterDownload": true,
+    "evidenceFile": "docs/interface/evidence/d20-existing-readers.json",
+    "contentLanguage": "id",
+    "bytes": 3793368,
+    "sha256": "ac5b3ec1fe7c2cf0a17eacce29c920ca5976c0c7d15e37f0ba0476afe9c48e32"
+  },
+  {
     "courseId": "B10",
     "id": "B10:complete-html-download",
     "href": "https://github.com/KokunoYumeto/discrete-mathematics-open-introduction-id/releases/download/v2026.08.17/MATEMATIKA_DISKRET_EDISI_KEEMPAT_ID_HTML.zip",

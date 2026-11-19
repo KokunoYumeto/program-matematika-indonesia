@@ -431,8 +431,9 @@ assert.equal(d120Manifest.schema, 'd120-reader-mirror-manifest-v1');
 assert.equal(d120Manifest.course_id, 'D120');
 assert.equal(d120Manifest.reader.file_count, 60);
 assert.equal(d120Manifest.reader.files.length, 60);
-assert.equal(d120Manifest.reader.bytes, 2_848_112);
-assert.equal(d120Manifest.reader.aggregate_sha256, '3efa09a24fa3cf90a5fb643d9e0b5d02bbc83b57d5ca2cf189b232e9142ef2b4');
+// 19 Nov 2026: D120 unit 01 restaged (dead archive record rehomed to GitHub, Turing Way links restored).
+assert.equal(d120Manifest.reader.bytes, 2_849_881);
+assert.equal(d120Manifest.reader.aggregate_sha256, 'e7fcc1122183db78cde02eb2a542bd75aa964f5589eecf6826a54c0a2ba639ac');
 let d120Bytes = 0;
 const d120Aggregate = createHash('sha256');
 for (const row of d120Manifest.reader.files) {

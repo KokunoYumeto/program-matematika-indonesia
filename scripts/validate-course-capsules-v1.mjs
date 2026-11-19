@@ -88,25 +88,45 @@ const nativePackageEvidence = await readFile(resolve(project, 'backend/course-ca
 assert.equal(nativePackageEvidence.length, nativePackages.evidence.bytes, 'Native package evidence byte drift.');
 assert.equal(sha256(nativePackageEvidence), nativePackages.evidence.sha256, 'Native package evidence hash drift.');
 const packageAddendum = JSON.parse(nativePackageEvidence);
+const restoredReleaseReadback = JSON.parse(await readFile(resolve(project, 'backend/authority/restored-github-releases-readback-20261119.json'), 'utf8'));
 const pointer = (value, path) => path.split('/').slice(1).reduce((at, key) => at?.[key.replaceAll('~1', '/').replaceAll('~0', '~')], value);
 // A claim keeps the recorded evidence location, or moves to a new public location only with a
 // recorded byte-and-hash check against that same evidence, or (former record removed and no public
 // copy) carries no location at all.
 function assertClaimLocation(operation, evidenceForm, evidenceUrl, fact) {
   const claimed = operation.expected_component.url;
+  if (operation.hosting_state === 'former_public_record_removed_privacy_repaired_successor_public') {
+    // The evidenced bytes named a local profile folder; the public successor replaces that folder name and changes
+    // nothing else. The component points at the successor with the successor's own identity; the operation keeps
+    // the evidenced identity (artifact_sha256), so the claim is never moved onto bytes it does not describe.
+    const successor = operation.privacy_repaired_successor;
+    const files = restoredReleaseReadback.releases.flatMap((release) => release.files);
+    const readback = files.find((file) => file.url === successor?.url);
+    assert.ok(readback, 'Privacy-repaired successor lacks an anonymous readback.');
+    assert.equal(successor.bytes, readback.bytes, 'Privacy-repaired successor size differs from its readback.');
+    assert.equal(successor.sha256, readback.sha256, 'Privacy-repaired successor hash differs from its readback.');
+    assert.notEqual(successor.sha256, fact.sha256, 'Privacy-repaired successor cannot carry the evidenced identity.');
+    const record = files.find((file) => file.url === successor.repair_record_url);
+    assert.ok(record && record.sha256 === successor.repair_record_sha256, 'Privacy-repaired successor lacks its repair record.');
+    assert.equal(claimed, successor.url, 'Privacy-repaired component must point at its successor.');
+    assert.equal(operation.expected_component.sha256, successor.sha256, 'Privacy-repaired component must carry the successor identity.');
+    assert.equal(operation.expected_component.access, 'public');
+    return 'successor';
+  }
   if (claimed && claimed.startsWith('https://zenodo.org/')) {
     assert.equal(evidenceUrl, evidenceForm(claimed), 'Native package claim/evidence URL mismatch.');
-    return;
+    return 'evidence';
   }
   if (claimed) {
     const check = operation.current_location_check;
     assert.ok(check && check.url === claimed, 'Native package moved location lacks a recorded check.');
     assert.equal(check.sha256, fact.sha256, 'Native package moved location hash differs from its evidence.');
     assert.equal(check.bytes, fact.bytes, 'Native package moved location size differs from its evidence.');
-    return;
+    return 'moved';
   }
   assert.equal(operation.hosting_state, 'former_public_record_removed_no_public_copy', 'Native package without location lacks its hosting state.');
   assert.equal(operation.expected_component.access, 'unknown', 'Native package without location claims access.');
+  return 'absent';
 }
 for (const operation of nativePackages.operations) {
   let fact;
@@ -117,18 +137,18 @@ for (const operation of nativePackages.operations) {
     fact = pointer(JSON.parse(bytes), operation.evidence_package_pointer);
     assert.ok(fact, 'Native package evidence pointer missing.');
     assert.ok(new URL(fact.url).origin === 'https://zenodo.org', 'Native package evidence origin differs.');
-    assertClaimLocation(operation, (url) => {
+    const location = assertClaimLocation(operation, (url) => {
       const parsed = new URL(url);
       return parsed.origin + '/api' + parsed.pathname + '/content';
     }, fact.url, fact);
-    assert.equal(fact.sha256, operation.expected_component.sha256, 'Native package claim/evidence hash mismatch.');
+    if (location !== 'successor') assert.equal(fact.sha256, operation.expected_component.sha256, 'Native package claim/evidence hash mismatch.');
     assert.equal(fact.bytes, operation.artifact_bytes, 'Native package claim/evidence byte mismatch.');
   } else {
     fact = pointer(packageAddendum, operation.evidence_addendum_pointer);
     assert.ok(fact, 'Native package evidence pointer missing.');
     assert.equal(fact.role, operation.artifact_role, 'Native package evidence role mismatch.');
-    assertClaimLocation(operation, (url) => url, fact.public_record_file_url, fact);
-    assert.equal(fact.sha256, operation.expected_component.sha256, 'Native package claim/evidence hash mismatch.');
+    const location = assertClaimLocation(operation, (url) => url, fact.public_record_file_url, fact);
+    if (location !== 'successor') assert.equal(fact.sha256, operation.expected_component.sha256, 'Native package claim/evidence hash mismatch.');
     assert.equal(fact.bytes, operation.artifact_bytes, 'Native package claim/evidence byte mismatch.');
   }
   assert.equal(fact.sha256, operation.artifact_sha256, 'Native package artifact/evidence hash mismatch.');

@@ -98,7 +98,7 @@ assert.equal(validation.checks.stale_repository_landing_bounded, true);
 assert.equal(validation.checks.module_identities_rendered_for_learner, 83);
 assert.equal(validation.checks.module_identities_rendered_for_educator, 83);
 assert.equal(validation.checks.two_run_build_identity.file_count, 35);
-assert.equal(validation.checks.two_run_build_identity.tree_sha256, 'c901a9fed2835538094b552b571c886ebe66c2b5519e30bfc32ad8afea818667');
+assert.equal(validation.checks.two_run_build_identity.tree_sha256, 'ca34fd88bd97d5fa5d504b4270b5c70066961b003607328ea02999768ecf773f');
 
 assert.equal(packageReceipt.schema, 'a20-capability-thin-packet-build-receipt/1');
 assert.equal(packageReceipt.result, 'PASS');
@@ -119,7 +119,7 @@ assert.deepEqual(packageReceipt.zip_checks, {
   crc_and_full_entry_readback: true,
   fixed_member_metadata: true,
   member_count: 43,
-  payload_bytes: 21295460,
+  payload_bytes: 21642712,
   sorted_member_order: true,
 });
 

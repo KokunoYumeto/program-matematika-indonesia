@@ -103,7 +103,7 @@ def validate_html(html, registry):
         raise ValueError('Library home must work both locally and under a subdirectory')
     if 'href="./styles.css"' not in html or 'src="./library.js"' not in html:
         raise ValueError('Missing portable Library assets')
-    if len(registry['items']) != 13 or len(registry['collections']) != 5:
+    if len(registry['items']) != 15 or len(registry['collections']) != 5:  # 13 sealed in r2; 15 since the 19/25 Oct additions (r3)
         raise ValueError('Unexpected sealed Library scope')
     for item in registry['items']:
         if item['id'] not in parser.ids:

@@ -209,7 +209,9 @@ for (const row of supplementalReaders) {
     if(row.courseId==='B80')assert.ok(row.href.startsWith(`https://github.com/KokunoYumeto/mathematical-computing-reproducible-experiments-${row.contentLanguage}/releases/download/${row.contentLanguage==='id'?'v2026.08.22.1':'v2026.08.31.en1'}/`));
     else if(row.courseId==='A00')assert.ok(row.href.startsWith(row.contentLanguage==='en'?'https://github.com/KokunoYumeto/openstax-prealgebra-2e-original-en/releases/download/v1.0.0/':'https://github.com/KokunoYumeto/openstax-prealgebra-2e-id-ID/releases/download/prealgebra-2e-id-ID-v0.2.7/'));
     else if(row.courseId==='B10')assert.ok(row.href.startsWith('https://github.com/KokunoYumeto/discrete-mathematics-open-introduction-id/releases/download/v2026.08.17/'));
-    else assert.match(row.href,/^https:\/\/github\.com\/KokunoYumeto\/tea-time-numerical-analysis-id\/releases\/download\/v3\.0-id\.2-r1\//);
+    else if(row.courseId==='C110')assert.match(row.href,/^https:\/\/github\.com\/KokunoYumeto\/tea-time-numerical-analysis-id\/releases\/download\/v3\.0-id\.2-r1\//);
+    // Other courses: a release asset of one of our repositories; the readback check below binds its bytes and SHA-256.
+    else assert.match(row.href,/^https:\/\/github\.com\/KokunoYumeto\/[\w.-]+\/releases\/download\/[^/]+\/[^/]+$/);
   }
   assert.match(row.sha256,/^[a-f0-9]{64}$/);
   assert.match(row.evidenceFile,/^docs\/interface\/evidence\/[a-z0-9-]+\.json$/);
@@ -287,7 +289,7 @@ for (const row of supplementalReaders) {
     if(row.courseId==='B40'&&locale==='en')assert.ok(!actual[0].label.startsWith('Bahasa Indonesia'));
   }
 }
-assert.deepEqual(supplementalReaders.map(row=>row.id),[...['pdf','tex','source','epub'].map(format=>'A00:id-format-'+format),...['pdf','tex','source','epub'].map(format=>'A00:en-format-'+format),...['id','en'].flatMap(lang=>['pdf','tex','source','epub'].map(format=>'B80:'+lang+'-format-'+format)),'B80:id-epub','B80:id-native-source','B80:en-epub','B80:en-native-source','C110:cumulative-tex','C110:released-source-archive','B40:original-en-partial-tex','D20:complete-companion-html','B10:complete-html-download','D90:original-02-central-html','B80:open-data-structures','C110:the-science-of-computing']);
+assert.deepEqual(supplementalReaders.map(row=>row.id),[...['pdf','tex','source','epub'].map(format=>'A00:id-format-'+format),...['pdf','tex','source','epub'].map(format=>'A00:en-format-'+format),...['id','en'].flatMap(lang=>['pdf','tex','source','epub'].map(format=>'B80:'+lang+'-format-'+format)),'B80:id-epub','B80:id-native-source','B80:en-epub','B80:en-native-source','C110:cumulative-tex','C110:released-source-archive','B40:original-en-partial-tex','D20:complete-companion-html','D20:complete-offline-html','B10:complete-html-download','D90:original-02-central-html','B80:open-data-structures','C110:the-science-of-computing']);
 const c110Proof=JSON.parse(await readFile(resolve(root,'docs/interface/evidence/c110-cumulative-source.json'),'utf8'));
 assert.equal(c110Proof.status,'published_and_anonymously_verified');
 assert.equal(c110Proof.equivalence.native_and_assembled_pdf_byte_identical,true);
@@ -1147,7 +1149,10 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
     // increment: the largest hosted map is 131,455 bytes versus 130,583 before.
     // Allow two KiB of engineering headroom; do not remove useful bilingual
     // content to meet the former ceiling. All exact parity checks still apply.
-    assert.ok(gzipSync(html).length < 130 * 1024, 'Compressed map size budget');
+    // 19 Nov 2026: the editions, supplements and offline packages restored from the removed Zenodo records to
+    // GitHub releases bring the largest hosted map to 133,225 compressed bytes. Keep every resource; allow
+    // two KiB of headroom over that measurement, as for the earlier increments.
+    assert.ok(gzipSync(html).length < 132 * 1024, 'Compressed map size budget');
     const run = executeOffline(html, locale);
     assert.deepEqual(JSON.parse(vm.runInContext('JSON.stringify(hostedSurfaceIdentities)',run.context)),JSON.parse(JSON.stringify(hostedSurfaceIdentities)), 'Offline tuple encoding preserves every hosted identity field');
     // Compact payload must preserve all effective data, not just course counts.

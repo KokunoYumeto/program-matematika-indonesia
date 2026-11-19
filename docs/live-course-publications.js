@@ -38,6 +38,7 @@ export const liveCoursePublications = Object.freeze({
     "zenodo": "",
   }),
   C60: publication({
+    "edition": "https://github.com/KokunoYumeto/yet-another-introductory-number-theory-textbook-id/releases/download/v1.0.0/YAINTT_ID.pdf",
     "zenodo": "",
   }),
   C40: publication({
@@ -57,9 +58,11 @@ export const liveCoursePublications = Object.freeze({
     "zenodo": "",
   }),
   B60: publication({
-    "edition": "",
+    "edition": "https://github.com/KokunoYumeto/clp4-vector-calculus-id/releases/download/v2026.08.26-complete/CLP-4-Kalkulus-Vektor-Bahasa-Indonesia.pdf",
     "zenodo": "",
-    "supplements": [],
+    "supplements": [
+      {"id": "clp4-problem-book-complete", "title": "Buku latihan CLP4 lengkap", "resourceType": "problem-book", "state": "complete", "scope": "Seluruh buku latihan kalkulus vektor, 486 halaman.", "license": "CC BY-NC-SA 4.0", "pages": 486, "url": "https://github.com/KokunoYumeto/clp4-vector-calculus-id/releases/download/v2026.08.26-complete/CLP-4-Latihan-Kalkulus-Vektor-Bahasa-Indonesia.pdf", "zenodo": "", "bytes": 3939483, "sha256": "a6253809eaa4a465d5efcc4372b1321ad828aa4964ec45042aab9130a358835b"},
+    ],
   }),
   B40: publication({
     "edition": "https://github.com/KokunoYumeto/hefferon-linear-algebra-id/releases/download/v2026.08.22/01_HEFFERON_LINEAR_ALGEBRA_ID_TEXTBOOK_2026.08.22.pdf",
@@ -260,6 +263,7 @@ export const liveCoursePublications = Object.freeze({
         bytes: 3263082,
         sha256: '911b2a0e3a9de6eccb9dd93042fa697e8f02e4bb1ecdacec86ade68744245021',
       },
+      {"id":"clp1-modular-backend","title":"Backend modular CLP1 — arsip rights-repair","resourceType":"reference","state":"complete","scope":"Backend rights-repair, manifest, skema, dan bukti provenans; rujukan backend mutakhir, bukan pembaca utama.","license":"CC BY-NC-SA 4.0","pages":1,"url":"https://github.com/KokunoYumeto/clp1-differential-calculus-id/releases/download/v2026.08.31-rights-repair.1/09_CLP1_KALKULUS_DIFERENSIAL_2026.08.31_BACKEND_RIGHTS_REPAIR.zip","zenodo":"","conceptDoi":"https://doi.org/10.5281/zenodo.21938929","bytes":2502563,"sha256":"813fc553f52e0d6d4463c1ee8732a921f51180734acca8d3c2822c573999360f"},
       
     ],
     progress: {
@@ -276,7 +280,7 @@ export const liveCoursePublications = Object.freeze({
   }),
   B30: publication({
     state: 'published',
-    edition: '',
+    edition: 'https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/b30-clp2-2026.08.31/CLP-2_Kalkulus_Integral_Bahasa_Indonesia_edisi_lengkap_2026-08-30.pdf',
     zenodo: '',
     repository: null,
     version: '2026.08.31',
@@ -296,12 +300,14 @@ export const liveCoursePublications = Object.freeze({
   }),
   B50: publication({
     state: 'published',
-    edition: '',
+    edition: 'https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/b50-clp3-2026.08.31/CLP-3-Kalkulus-Multivariabel-Bahasa-Indonesia.pdf',
     zenodo: '',
     repository: null,
     version: '2026.08.31-complete.3',
     note: 'CLP Calculus 3 lengkap dan terverifikasi publik pada rilis complete.3: buku teks 410 halaman, buku latihan 534 halaman, 138 permukaan sumber PreTeXt/LaTeX, serta sumber dan backend rights-repair yang dibaca kembali secara anonim. Repositori khusus CLP3 belum tersedia pada readback sehingga tautan repositori sengaja tidak ditampilkan.',
     supplements: [
+      {"id":"clp3-problem-book-complete","title":"Buku latihan CLP3 lengkap","resourceType":"problem-book","state":"complete","scope":"Buku latihan CLP3 lengkap, 534 halaman; soal, petunjuk, jawaban, dan solusi dipertahankan.","license":"CC BY-NC-SA 4.0","pages":534,"url":"https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/b50-clp3-2026.08.31/CLP-3-Latihan-Kalkulus-Multivariabel-Bahasa-Indonesia.pdf","zenodo":"","conceptDoi":"https://doi.org/10.5281/zenodo.22161303","bytes":5750878,"sha256":"ad1d184825fd7ac58933512b62a60997ddcfb2beae87dde5ec679503f31dae2d"},
+      {"id":"clp3-source-backend-archive","title":"Sumber dan backend CLP3 — arsip reproduksibilitas","resourceType":"reference","state":"complete","scope":"Arsip sumber, overlay, backend, dan bukti rilis CLP3, 7.019 entri; bukan pembaca utama.","license":"CC BY-NC-SA 4.0","pages":1,"url":"https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/b50-clp3-2026.08.31/CLP-3-Kalkulus-Multivariabel-Bahasa-Indonesia-sumber-backend.zip","zenodo":"","conceptDoi":"https://doi.org/10.5281/zenodo.22161303","bytes":64200140,"sha256":"156ffc793249a68e1fbc078ec965d507cdee73150c7a71f4b638d612e40c7d29"},
       
       
     ],
@@ -470,7 +476,7 @@ export const liveCoursePublications = Object.freeze({
   C90: publication({
     state: 'published',
     reader: 'https://kokunoyumeto.github.io/topology-an-inquiry-based-approach-id/reader/complete/',
-    edition: 'https://kokunoyumeto.github.io/topology-an-inquiry-based-approach-id/reader/complete/',
+    edition: 'https://github.com/KokunoYumeto/topology-an-inquiry-based-approach-id/releases/download/complete-edition-2026.09.01/topologi-pendekatan-berbasis-inkuiri-edisi-lengkap-id.pdf',
     zenodo: '',
     repository: 'https://github.com/KokunoYumeto/topology-an-inquiry-based-approach-id',
     version: '2026.08.29-complete',
@@ -598,7 +604,7 @@ export const liveCoursePublications = Object.freeze({
     state: 'published',
     learner: 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/D20/',
     reader: 'https://kokunoyumeto.github.io/functional-analysis-erdman-id/',
-    edition: 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/D20/',
+    edition: 'https://github.com/KokunoYumeto/functional-analysis-erdman-id/releases/download/v2026.08.25-backend-artifact-reconciliation/analisis-fungsional-dan-aljabar-operator-id-edisi-lengkap-dengan-pendamping.pdf',
     zenodo: '',
     repository: 'https://github.com/KokunoYumeto/functional-analysis-erdman-id',
     version: '2026.08.25-backend-artifact-reconciliation',
@@ -620,7 +626,7 @@ export const liveCoursePublications = Object.freeze({
     state: 'published',
     learner: 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/D30/',
     reader: 'https://kokunoyumeto.github.io/measure-theoretic-probability-stochastic-processes-id/',
-    edition: 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/D30/',
+    edition: 'https://github.com/KokunoYumeto/measure-theoretic-probability-stochastic-processes-id/releases/download/checkpoint-38-2026.08.31/00_PROBABILITAS_TEORI_UKURAN_PROSES_STOKASTIK_ID_READER_CHECKPOINT_38.pdf',
     zenodo: '',
     repository: 'https://github.com/KokunoYumeto/measure-theoretic-probability-stochastic-processes-id',
     version: '2026.08.30-checkpoint.38',
@@ -660,6 +666,18 @@ export const liveCoursePublications = Object.freeze({
         bytes: 9436983,
         sha256: 'a370bba5ddb54081387a484a304b24af92691c3bc167db964c486625a79add59',
       },
+      {
+        id: 'dionne-unit14-source',
+        title: 'Sumber, backend, dan bukti rilis Unit 14',
+        resourceType: 'reference',
+        state: 'partial',
+        scope: 'Arsip sumber checkpoint kumulatif Unit 14; bukan pembaca utama.',
+        license: 'CC BY-NC-SA 4.0',
+        url: 'https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/d40-unit14-source-2026.08.29/SUMBER_DIONNE_UNIT14_20260829.zip',
+        zenodo: '',
+        bytes: 12141309,
+        sha256: '248b65a225e96f0a342ab2f6288aa303d28bfd2a8e108db14f7e125ef5401f0e',
+      },
     ],
     progress: {
       unitLabel: 'berkas sumber Dionne tingkat atas',
@@ -698,12 +716,13 @@ export const liveCoursePublications = Object.freeze({
   D60: publication({
     state: 'published',
     reader: 'https://kokunoyumeto.github.io/algebraic-topology-id/roberts-001-030-fomberg-001-007-ca01-hints-r01-r06-ca02-ca03-lab01-lab02-lab03-lab04-capstone/',
-    edition: 'https://kokunoyumeto.github.io/algebraic-topology-id/roberts-001-030-fomberg-001-007-ca01-hints-r01-r06-ca02-ca03-lab01-lab02-lab03-lab04-capstone/',
+    edition: 'https://github.com/KokunoYumeto/algebraic-topology-id/releases/download/roberts-001-030-fomberg-001-007-capstone/00_TOPOLOGI_ALJABAR_ID_ROBERTS_001_030_FOMBERG_001_007_CA01_HINTS_R01_R06_CA02_CA03_LAB01_LAB02_LAB03_LAB04_CAPSTONE_READER.pdf',
     zenodo: '',
     repository: 'https://github.com/KokunoYumeto/algebraic-topology-id',
     version: '0.31.7',
     note: 'Edisi komposit lengkap memuat Roberts 30/30, Fomberg §§1.1–1.13, 84/84 butir penguasaan biasa, 24/24 asesmen kumulatif, 108/108 butir penguasaan bersolusi, laboratorium komputasi 4/4, empat graf perbaikan bukti, dan capstone D60. Pembaca PDF berjumlah 564 halaman; sembilan berkas Zenodo telah dibaca balik dua kali secara anonim dan cocok byte demi byte. Adapter v2.3.1 memvalidasi 27.642 rekaman kanonik, 2.204 unit, 6.279 pemetaan reversibel, 19 tabel JSONL/CSV, dan mempertahankan 8.338 rekaman native tanpa menyalin prosa.',
     supplements: [
+      {"id":"d60-editable-source-backend-complete","title":"Sumber dan backend D60 — arsip reproduksibilitas sekunder","resourceType":"reference","state":"complete","scope":"Sumber sunting dan backend native edisi komposit lengkap; bukan pembaca utama. Mulai belajar melalui HTML di atas.","license":"Hak komponen dipertahankan; lihat manifest hak dalam arsip","url":"https://github.com/KokunoYumeto/algebraic-topology-id/releases/download/roberts-001-030-fomberg-001-007-capstone/TOPOLOGI_ALJABAR_ID_ROBERTS_001_030_FOMBERG_001_007_CA01_HINTS_R01_R06_CA02_CA03_LAB01_LAB02_LAB03_LAB04_CAPSTONE_EDITABLE_SOURCE_BACKEND.zip","zenodo":"","bytes":8406450,"sha256":"f7670f6e6ad9a95ff808a1ddf4c2fdd8b41c6bce1916d33ac6fe5063be184b1b"},
       
     ],
     progress: {
@@ -720,7 +739,7 @@ export const liveCoursePublications = Object.freeze({
   }),
   D70: publication({
     state: 'published',
-    edition: '',
+    edition: 'https://github.com/KokunoYumeto/metode-aljabar-jilid-1-id/releases/download/o013-aggregate-1.0.0/01_metode-aljabar-jilid-1-id-lengkap.pdf',
     zenodo: '',
     repository: 'https://github.com/KokunoYumeto/metode-aljabar-jilid-1-id',
     version: '1.0.0',
@@ -741,12 +760,14 @@ export const liveCoursePublications = Object.freeze({
   D80: publication({
     state: 'published',
     reader: 'https://kokunoyumeto.github.io/metode-aljabar-jilid-2-id/',
-    edition: 'https://kokunoyumeto.github.io/metode-aljabar-jilid-2-id/',
+    edition: 'https://github.com/KokunoYumeto/metode-aljabar-jilid-2-id/releases/download/complete-2026.08.31/00_metode-dalam-aljabar-jilid-2-edisi-bahasa-indonesia.pdf',
     zenodo: '',
     repository: 'https://github.com/KokunoYumeto/metode-aljabar-jilid-2-id',
     version: 'complete-edition-html-reader-correction-2026-08-30',
     note: 'Edisi lengkap memuat 146 unit berurutan, 194 latihan sumber, 117 petunjuk sumber, dua Jembatan Penguasaan asli, pembaca PDF 864 halaman, serta 6.347 segmen backend semantik. Pembaca HTML daring yang diperbaiki pada commit Pages b6ea8ca menampilkan 27.308 formula dengan nol kesalahan MathJax; audit desktop dan seluler membuktikan kolom baca terpusat, tanpa luapan halaman, dan matematika lebar menggulir secara lokal. Paket HTML luring terkoreksi telah diterbitkan dalam versi Zenodo yang sama dengan edisi lengkap dan tersedia sebagai unduhan tambahan.',
     supplements: [
+      {"id":"metode-aljabar-jilid-2-backend","title":"Backend semantik lengkap","resourceType":"reference","state":"complete","scope":"Arsip backend modular untuk 146 unit dan 6.347 segmen; bukan pembaca utama.","license":"CC BY 4.0; kredit komponen dipertahankan","pages":1,"url":"https://github.com/KokunoYumeto/metode-aljabar-jilid-2-id/releases/download/complete-2026.08.31/02_backend-semantik.zip","zenodo":"","bytes":235654,"sha256":"6fe9db92148b6adb7a2c8cd2bc12eedebffd133ee485f78c3e36ed455f56e9fc"},
+      {"id":"metode-aljabar-jilid-2-html-offline-corrected","title":"Pembaca HTML luring terkoreksi","resourceType":"reference","state":"complete","scope":"Paket 31 berkas untuk membaca edisi lengkap tanpa jaringan; pembaca HTML daring tetap rute utama.","license":"CC BY 4.0; kredit komponen dipertahankan","pages":1,"url":"https://github.com/KokunoYumeto/metode-aljabar-jilid-2-id/releases/download/complete-2026.08.31/03_pembaca-html-offline.zip","zenodo":"","bytes":1373063,"sha256":"064dc97e9ae58217622a768f1a989eb316892a607d219211f4be17e6cf44d03c"},
       
       
     ],
@@ -766,7 +787,7 @@ export const liveCoursePublications = Object.freeze({
   D90: publication({
     state: 'published',
     reader: 'https://kokunoyumeto.github.io/advanced-optimization-convex-analysis-id/',
-    edition: 'https://kokunoyumeto.github.io/advanced-optimization-convex-analysis-id/',
+    edition: 'https://github.com/KokunoYumeto/advanced-optimization-convex-analysis-id/releases/download/d90-integrated-2026.08.28/D90-O015-optimisasi-lanjut-analisis-konveks-id.pdf',
     zenodo: '',
     repository: 'https://github.com/KokunoYumeto/advanced-optimization-convex-analysis-id',
     version: 'd90-integrated-2026.08.28+program-nav-2026.09.06',
@@ -775,7 +796,7 @@ export const liveCoursePublications = Object.freeze({
   D100: publication({
     state: 'published',
     reader: 'https://kokunoyumeto.github.io/algebraic-geometry-bridge-id/',
-    edition: 'https://kokunoyumeto.github.io/algebraic-geometry-bridge-id/',
+    edition: 'https://github.com/KokunoYumeto/algebraic-geometry-bridge-id/releases/download/unit-30-corr1/01_Kurva-Aljabar_id-ID_Units-01-30_corr1.pdf',
     zenodo: '',
     repository: 'https://github.com/KokunoYumeto/algebraic-geometry-bridge-id',
     version: 'en-v1.0.0+program-nav-2026.09.06',
@@ -795,6 +816,7 @@ export const liveCoursePublications = Object.freeze({
         bytes: 2943608,
         sha256: '34fb81e572f60e20e4dadff9f5040da7abf9882bbf5cf64a425a03297428a436',
       },
+      {"id":"original-bridge-corr1","title":"Pendamping Editorial: Dari Varietas ke Skema","resourceType":"companion-reader","state":"complete","scope":"Pendamping editorial 90 halaman: 32 unit, 44 solusi penguasaan baru, 13 rujukan solusi sumber, 12 masalah integratif, satu seam, dan satu capstone.","license":"CC BY-SA 4.0; atribusi dan hak komponen dipertahankan","pages":90,"url":"https://github.com/KokunoYumeto/algebraic-geometry-bridge-id/releases/download/original-bridge-corr1/01_Pendamping-Editorial-Varietas-ke-Skema_id-ID_corr1.pdf","zenodo":"","conceptDoi":"https://doi.org/10.5281/zenodo.22059686","bytes":747673,"sha256":"ed54f440409b2aa7beb5a1ff24be0e54de7845576f3f4d06e88fd58c9feb2131"},
       
     ],
     progress: {

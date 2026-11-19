@@ -1032,6 +1032,15 @@ def main() -> int:
                 verified = native_navigation_cache["expanded"]
                 if row["document"] not in {item["document"] for item in verified["files"]}:
                     raise ValueError("Expanded B40 navigation cannot exempt another page")
+            elif row.get("navigation_provider") == "companion-native-programme-links-v1":
+                # Hand-built companion books and edition pages (6 Oct - 25 Oct 2026) carry their own links to the
+                # programme instead of the central overlay: require at least one such link and no overlay.
+                text = path.read_text(encoding="utf-8")
+                own_links = re.findall(r'href="(?:\.\./\.\./(?:en|id)/[^"]*|https://kokunoyumeto\.github\.io/program-matematika-indonesia/(?:en|id)/[^"]*)"', text)
+                if not own_links:
+                    raise ValueError(f"{path}: companion page has no link back to the programme")
+                if parser.surface_navigation_markers:
+                    raise ValueError(f"{path}: companion page with native links must not also carry the overlay")
             elif row.get("navigation_provider") == "finite-hermitian-native-v1":
                 native = runpy.run_path(str(ROOT / "scripts/finite-hermitian-navigation-v1.py"))
                 verified = native["validate"](ROOT)
