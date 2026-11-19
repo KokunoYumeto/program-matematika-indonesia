@@ -81,26 +81,6 @@ export const supplementalReaders = [
     "bytes": 61582591,
     "sha256": "9507100a2060f664df673d64abb93fe19503745b497dc09529eca8dc87d4dd6e"
   },
-  {
-    "courseId": "A00",
-    "id": "A00:id-format-record",
-    "href": "",
-    "labels": {
-      "id": "Arsip Zenodo — edisi format Bahasa Indonesia",
-      "en": "Zenodo archive — Indonesian format edition"
-    },
-    "notes": {
-      "id": "Edisi format 5 Oktober 2026, Bahasa Indonesia: 75 modul; PDF, LaTeX, ZIP sumber dan EPUB merupakan satu set yang cocok. PDF dan EPUB dapat dibangun ulang byte-identik. Sumber utama CNXML/MathML dan edisi terdahulu tetap tersedia. Penulis asli: Lynn Marecek, MaryAnne Anthony-Smith dan Andrea Honeycutt Mathis, OpenStax. Terjemahan: OpenAI Codex gpt-5.6-sol, upaya Ultra. Ekspor dan integrasi format: OpenAI Codex — GPT-6 Astra, upaya Ultra. Bukan penerjemahan atau peninjauan matematika baru. Ketentuan lisensi setiap komponen mengikuti paket sumber. Rujukan eksternal memerlukan internet.",
-      "en": "Format edition 5 October 2026, Indonesian content: 75 modules; PDF, LaTeX, source ZIP and EPUB form one matching set. PDF and EPUB rebuild byte-identically. The CNXML/MathML master and earlier editions remain available. Original authors: Lynn Marecek, MaryAnne Anthony-Smith and Andrea Honeycutt Mathis, OpenStax. Translation: OpenAI Codex gpt-5.6-sol, Ultra effort. Format exports and integration: OpenAI Codex — GPT-6 Astra, Ultra effort. Not a new translation or mathematical review. Component licence terms remain in the source package. External references need internet."
-    },
-    "kind": "companion",
-    "format": "HTML",
-    "offlineAfterDownload": false,
-    "evidenceFile": "docs/interface/evidence/a00-portable-formats.json",
-    "contentLanguage": "id",
-    "bytes": 105085,
-    "sha256": "02efeffcaf25d72dbca9ef52129c266bad6ac7ff777d3580ebf88a89081350ea"
-  },
   // END A00 FORMAT PAIRS
   // BEGIN A00 ENGLISH FORMAT PAIRS
   {
@@ -267,26 +247,6 @@ export const supplementalReaders = [
   },
   {
     "courseId": "B80",
-    "id": "B80:id-format-record",
-    "href": "",
-    "labels": {
-      "id": "Arsip Zenodo — edisi format Bahasa Indonesia",
-      "en": "Zenodo archive — Indonesian format edition"
-    },
-    "notes": {
-      "id": "Edisi format 3 Oktober 2026: PDF, LaTeX, ZIP sumber dan EPUB membentuk satu set yang cocok. PDF dan EPUB direproduksi byte-identik; EPUBCheck tanpa kesalahan/peringatan. Teks asli tetap; Quarto tetap sumber utama. Bukan penerjemahan atau peninjauan matematika baru. Rujukan eksternal memerlukan internet.",
-      "en": "Format edition 3 October 2026: PDF, LaTeX, source ZIP and EPUB form one matching set. PDF and EPUB rebuild byte-identically; EPUBCheck has no errors/warnings. Original text is preserved; Quarto remains the native master. Not a new translation or mathematical review. External references need internet."
-    },
-    "kind": "companion",
-    "format": "HTML",
-    "offlineAfterDownload": false,
-    "evidenceFile": "docs/interface/evidence/b80-repaired-formats.json",
-    "contentLanguage": "id",
-    "bytes": 92347,
-    "sha256": "fe0f996d70d85838e631c32d9fde6575f14ddec4c417a6186d9460cfc740157a"
-  },
-  {
-    "courseId": "B80",
     "id": "B80:en-format-pdf",
     "href": "https://github.com/KokunoYumeto/mathematical-computing-reproducible-experiments-en/releases/download/v2026.08.31.en1/00-b80-en.pdf",
     "labels": {
@@ -365,26 +325,6 @@ export const supplementalReaders = [
     "bytes": 296181,
     "sha256": "79cd708b48ec2b9b64ef53a360253c0d09e00ac384c36a62642ddba6b7a6701d"
   },
-  {
-    "courseId": "B80",
-    "id": "B80:en-format-record",
-    "href": "",
-    "labels": {
-      "id": "Arsip Zenodo — edisi format bahasa Inggris",
-      "en": "Zenodo archive — English format edition"
-    },
-    "notes": {
-      "id": "Edisi format 3 Oktober 2026: PDF, LaTeX, ZIP sumber dan EPUB membentuk satu set yang cocok. PDF dan EPUB direproduksi byte-identik; EPUBCheck tanpa kesalahan/peringatan. Teks asli tetap; Quarto tetap sumber utama. Bukan penerjemahan atau peninjauan matematika baru. Rujukan eksternal memerlukan internet.",
-      "en": "Format edition 3 October 2026: PDF, LaTeX, source ZIP and EPUB form one matching set. PDF and EPUB rebuild byte-identically; EPUBCheck has no errors/warnings. Original text is preserved; Quarto remains the native master. Not a new translation or mathematical review. External references need internet."
-    },
-    "kind": "companion",
-    "format": "HTML",
-    "offlineAfterDownload": false,
-    "evidenceFile": "docs/interface/evidence/b80-repaired-formats.json",
-    "contentLanguage": "en",
-    "bytes": 91141,
-    "sha256": "9fbfb0c67d6a3172e32eee5240c7e294124c968a092eded7ff560c2457a68fe5"
-  },
   // END B80 FORMAT PAIRS
   {
     courseId: 'B80', id: 'B80:id-epub',
@@ -421,15 +361,6 @@ export const supplementalReaders = [
     kind: 'source_archive', format: 'ZIP', offlineAfterDownload: false,
     evidenceFile: 'docs/interface/evidence/b80-portable-editions.json', contentLanguage: 'en',
     bytes: 438288, sha256: '79005c4717b834ea8b53a292ce01eae293e46528310aff0d86d5ebf36ba2e697'
-  },
-  {
-    courseId: 'C110', id: 'C110:released-pdf-mirror',
-    href: 'https://github.com/KokunoYumeto/tea-time-numerical-analysis-id/releases/download/v3.0-id.2-r1/Tea-Time-Numerical-Analysis-id-ID.pdf',
-    labels: {id: 'PDF edisi 3.0-id.2-r1 — 387 halaman', en: 'Edition 3.0-id.2-r1 PDF — 387 pages'},
-    notes: {id: 'Salinan PDF rilis yang sama; sumber kumulatif menghasilkan kembali berkas ini byte-identik.', en: 'The same released Indonesian PDF; the cumulative source reproduces this file byte-for-byte.'},
-    kind: 'companion', format: 'PDF', offlineAfterDownload: false,
-    evidenceFile: 'docs/interface/evidence/c110-cumulative-source.json', contentLanguage: 'id',
-    bytes: 8202487, sha256: 'd573b7233d0baa07381e2052a749757885db3a31fbfe695c5a4851ea42d91b6d'
   },
   {
     courseId: 'C110', id: 'C110:cumulative-tex',
@@ -477,26 +408,6 @@ export const supplementalReaders = [
     "contentLanguage": "id",
     "bytes": 5682,
     "sha256": "e3e615c98717eef968097044f1feb00afc61175f29f4e4cc346685db5c512984"
-  },
-  {
-    "courseId": "D20",
-    "id": "D20:complete-offline-html",
-    "href": "",
-    "labels": {
-      "id": "Buku dan pendamping HTML luring — ZIP",
-      "en": "Offline textbook and companion HTML — ZIP"
-    },
-    "notes": {
-      "id": "Paket yang sudah terbit juga memuat sumber/backend. Ekstrak seluruh ZIP; dalam folder buku, buka output/html/index.html atau output/html-companion/index.html. Pertahankan folder. Kutipan eksternal tetap memerlukan internet.",
-      "en": "This existing package also contains source/backend files. Extract the whole ZIP; inside the book folder, open output/html/index.html or output/html-companion/index.html. Keep the folders. External citations still require internet."
-    },
-    "kind": "portable_html",
-    "format": "HTML ZIP",
-    "offlineAfterDownload": true,
-    "evidenceFile": "docs/interface/evidence/d20-existing-readers.json",
-    "contentLanguage": "id",
-    "bytes": 3793368,
-    "sha256": "ac5b3ec1fe7c2cf0a17eacce29c920ca5976c0c7d15e37f0ba0476afe9c48e32"
   },
   {
     "courseId": "B10",
@@ -554,7 +465,10 @@ export const supplementalReaders = [
   "kind": "companion",
   "format": "HTML",
   "offlineAfterDownload": false,
-  "contentLanguage": "en"
+  "evidenceFile": "docs/interface/evidence/human-companions-public-readback.json",
+  "contentLanguage": "en",
+  "bytes": 6443,
+  "sha256": "dfd9500d3ea05983bf66d5dda009014bbbe95647a56901e76fdb63648306d9a1"
 },
 {
   "courseId": "C110",
@@ -575,6 +489,9 @@ export const supplementalReaders = [
   "kind": "companion",
   "format": "HTML",
   "offlineAfterDownload": false,
-  "contentLanguage": "en"
+  "evidenceFile": "docs/interface/evidence/human-companions-public-readback.json",
+  "contentLanguage": "en",
+  "bytes": 7985,
+  "sha256": "c8806ab3177012ed0f57b83e95a7a1d7671fccd30d3e4db3d69841495478206a"
 }
 ];

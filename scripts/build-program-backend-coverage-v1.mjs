@@ -546,9 +546,9 @@ const rows=data.capsules.map(capsule=>{
       assert.equal(evidence.bytes,bytes[key].length);assert.equal(evidence.sha256,sha256(bytes[key]));
     }
     assert.equal(capsule.course_native.repository,data.a30Public.repository.url);
-    assert.equal(capsule.course_native.zenodo,`https://doi.org/${data.a30Public.zenodo.version_doi}`);
+    assert.equal(capsule.course_native.zenodo,'');
     assert.equal(capsule.layers.production.repository,data.a30Public.repository.url);
-    assert.equal(capsule.layers.production.zenodo,`https://doi.org/${data.a30Public.zenodo.version_doi}`);
+    assert.equal(capsule.layers.production.zenodo,'');
     assert.equal(capsule.course_native.status, data.gapAdmission.roles.A30.course_truth.publication_evidence ? 'verified' : 'available_unverified');
     assert.equal(capsule.layers.production.release_status, data.gapAdmission.roles.A30.course_truth.publication_evidence ? 'verified' : 'available_unverified');
     const pdf=data.a30Public.github_release.assets.find(row=>row.name==='OpenStax-Precalculus-2e-id-ID-1.0.0-reader.pdf');
@@ -568,17 +568,17 @@ const rows=data.capsules.map(capsule=>{
       assert.equal(evidence.bytes,bytes[key].length);assert.equal(evidence.sha256,sha256(bytes[key]));
     }
     assert.equal(capsule.course_native.repository,data.b95Public.repository.url);
-    assert.equal(capsule.course_native.zenodo,`https://doi.org/${data.b95Public.zenodo.doi}`);
-    assert.equal(capsule.course_native.edition,data.b95Public.reader.zenodo_url);
+    assert.equal(capsule.course_native.zenodo,'');
+    assert.equal(capsule.course_native.edition,data.b95Public.reader.github_url);
     assert.equal(capsule.layers.production.repository,data.b95Public.repository.url);
-    assert.equal(capsule.layers.production.zenodo,`https://doi.org/${data.b95Public.zenodo.doi}`);
-    assert.equal(capsule.layers.production.edition,data.b95Public.reader.zenodo_url);
+    assert.equal(capsule.layers.production.zenodo,'');
+    assert.equal(capsule.layers.production.edition,data.b95Public.reader.github_url);
     assert.equal(capsule.layers.production.release_status,'verified');
     assert.equal(capsule.layers.production.build_status,'verified');assert.equal(capsule.layers.production.deterministic_replay_status,'verified');
     assert.equal(capsule.layers.learner.status,'verified');
     assert.deepEqual(capsule.layers.learner.tools.map(({tool_id,label,href,state,primary})=>({tool_id,label,href,state,primary})),[{tool_id:'b95.open_learner_hub',label:'B95 · Statistika Terapan dan Analisis Data',href:'backend/b95/B95.html',state:'verified',primary:false}]);
     for(const key of ['primary','pdf']){
-      assert.equal(capsule.layers.learner[key].status,'verified');assert.equal(capsule.layers.learner[key].url,data.b95Public.reader.zenodo_url);
+      assert.equal(capsule.layers.learner[key].status,'verified');assert.equal(capsule.layers.learner[key].url,data.b95Public.reader.github_url);
       assert.equal(capsule.layers.learner[key].bytes,data.b95NativeReadback.reader.bytes);assert.equal(capsule.layers.learner[key].sha256,data.b95NativeReadback.reader.sha256);
     }
     for(const key of ['epub','portable_html'])assert.equal(capsule.layers.learner[key].status,'not_yet_produced');
@@ -606,9 +606,9 @@ const rows=data.capsules.map(capsule=>{
       assert.equal(evidence.bytes,bytes[key].length);assert.equal(evidence.sha256,sha256(bytes[key]));
     }
     assert.equal(capsule.course_native.repository,data.c140Public.repository.url);
-    assert.equal(capsule.course_native.zenodo,`https://doi.org/${data.c140Public.zenodo.doi}`);
+    assert.equal(capsule.course_native.zenodo,'');
     assert.equal(capsule.layers.production.repository,data.c140Public.repository.url);
-    assert.equal(capsule.layers.production.zenodo,`https://doi.org/${data.c140Public.zenodo.doi}`);
+    assert.equal(capsule.layers.production.zenodo,'');
     assert.equal(capsule.layers.production.release_status,'available_unverified');
     assert.equal(capsule.layers.production.build_status,'verified');assert.equal(capsule.layers.production.deterministic_replay_status,'verified');
     assert.equal(capsule.layers.learner.status,'verified');assert.equal(capsule.layers.learner.online_html.status,'verified');
@@ -630,9 +630,9 @@ const rows=data.capsules.map(capsule=>{
       assert.equal(evidence.bytes,bytes[key].length);assert.equal(evidence.sha256,sha256(bytes[key]));
     }
     assert.equal(capsule.course_native.repository,data.d30Public.repository);
-    assert.equal(capsule.course_native.zenodo,`https://doi.org/${data.d30Public.doi}`);
+    assert.equal(capsule.course_native.zenodo,'');
     assert.equal(capsule.layers.production.repository,data.d30Public.repository);
-    assert.equal(capsule.layers.production.zenodo,`https://doi.org/${data.d30Public.doi}`);
+    assert.equal(capsule.layers.production.zenodo,'');
     assert.equal(capsule.layers.production.release_status,'verified');
     assert.equal(capsule.layers.learner.online_html.url,data.d30Public.reader);
     assert.equal(capsule.layers.learner.primary.url,data.d30Public.reader);

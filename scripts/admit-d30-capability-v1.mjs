@@ -117,14 +117,20 @@ const managedResourceIds = new Set([
   'D30:corrections-index-v1',
   'D30:relations-index-v1',
 ]);
-const resources = (oldEducator?.resources ?? []).filter(resource => !managedResourceIds.has(resource.id));
+const resources = (oldEducator?.resources ?? [])
+  .filter(resource => !managedResourceIds.has(resource.id))
+  // The former Zenodo record is gone (410); its observation points at the native repository.
+  .map(resource => resource.id === 'D30:native-educator-observation' && String(resource.url).startsWith('https://zenodo.org/')
+    ? { ...resource, url: 'https://github.com/KokunoYumeto/measure-theoretic-probability-stochastic-processes-id' }
+    : resource);
 if (!resources.some(resource => resource.id === 'D30:native-educator-observation')) {
   resources.unshift({
     id: 'D30:native-educator-observation',
     title: 'Observasi pengajar pada rilis native D30',
     resource_type: 'teacher-guide',
     status: oldEducator?.status ?? 'available_unverified',
-    url: oldEducator?.locator ?? 'https://zenodo.org/records/22182655',
+    // The former Zenodo record is gone (410); the observation points at the native repository.
+    url: 'https://github.com/KokunoYumeto/measure-theoretic-probability-stochastic-processes-id',
     scope: 'Bukti pengajar historis pada rilis native dipertahankan sebagai sumber tambahan; lapisan pusat tidak menghapus atau menggantikannya.',
   });
 }

@@ -155,10 +155,31 @@ def navigation_fragments(relative: str) -> tuple[str, str]:
     return navigation, program_return
 
 
+# The release's Zenodo record and concept DOI were removed (410 Gone, November 2026). The frozen body
+# keeps its bytes; the hosted projection points those links at the same release on GitHub. Other
+# authors' Zenodo DOIs in the body are left as they are.
+D120_GITHUB_RELEASE = "https://github.com/KokunoYumeto/kerja-matematika-yang-dapat-ditelusuri-id/releases"
+DEAD_ARCHIVE_REHOME = (
+    (
+        "https://zenodo.org/records/22073823/files/kerja-matematika-yang-dapat-ditelusuri-id-2026.08.24.pdf?download=1",
+        D120_GITHUB_RELEASE + "/download/v2026.08.24/kerja-matematika-yang-dapat-ditelusuri-id-2026.08.24.pdf",
+    ),
+    ("https://doi.org/10.5281/zenodo.22073823", D120_GITHUB_RELEASE + "/tag/v2026.08.24"),
+    ("https://zenodo.org/records/22073823", D120_GITHUB_RELEASE + "/tag/v2026.08.24"),
+    ("https://doi.org/10.5281/zenodo.22051866", D120_GITHUB_RELEASE),
+)
+
+
+def rehome_dead_archive_links(text: str) -> str:
+    for old, new in DEAD_ARCHIVE_REHOME:
+        text = text.replace(old, new)
+    return text
+
+
 def centralized_payload(relative: str, source_bytes: bytes) -> bytes:
     if not relative.endswith(".html"):
         return source_bytes
-    text = source_bytes.decode("utf-8")
+    text = rehome_dead_archive_links(source_bytes.decode("utf-8"))
     navigation, program_return = navigation_fragments(relative)
     if PROGRAM_NAVIGATION_MARKER in text or 'data-program-return' in text:
         raise ValueError("D120 source unexpectedly contains central navigation")

@@ -480,16 +480,16 @@ assert b95_public['zenodo']['record_id'] == 22261912
 assert b95_public['reader']['pdf_pages'] == 462
 assert b95_public['reader']['pdf_sha256'] == '7ef1ed4390cd846cc636345d34a1ba3765f8afc32eb9446fd60c7862b7fde049'
 assert b95_capsule['course_native']['repository'] == b95_public['repository']['url']
-assert b95_capsule['course_native']['zenodo'] == 'https://doi.org/' + b95_public['zenodo']['doi']
-assert b95_capsule['course_native']['edition'] == b95_public['reader']['zenodo_url']
+assert b95_capsule['course_native']['zenodo'] == ''
+assert b95_capsule['course_native']['edition'] == b95_public['reader']['github_url']
 assert b95_capsule['layers']['production']['repository'] == b95_public['repository']['url']
-assert b95_capsule['layers']['production']['zenodo'] == 'https://doi.org/' + b95_public['zenodo']['doi']
-assert b95_capsule['layers']['production']['edition'] == b95_public['reader']['zenodo_url']
+assert b95_capsule['layers']['production']['zenodo'] == ''
+assert b95_capsule['layers']['production']['edition'] == b95_public['reader']['github_url']
 assert b95_capsule['layers']['production']['release_status'] == 'verified'
 assert b95_capsule['layers']['learner']['status'] == 'verified'
 for layer in ('primary', 'pdf'):
     assert b95_capsule['layers']['learner'][layer]['status'] == 'verified'
-    assert b95_capsule['layers']['learner'][layer]['url'] == b95_public['reader']['zenodo_url']
+    assert b95_capsule['layers']['learner'][layer]['url'] == b95_public['reader']['github_url']
     assert b95_capsule['layers']['learner'][layer]['bytes'] == 57049904
     assert b95_capsule['layers']['learner'][layer]['sha256'] == b95_public['reader']['pdf_sha256']
 for layer in ('epub', 'portable_html'):
@@ -526,7 +526,7 @@ assert c140['educator']['unit_alignment'] == 'verified'
 assert len(c140['educator']['resources']) == 15
 assert c140_capsule['course']['state'] == 'published'
 assert c140_capsule['course_native']['repository'] == 'https://github.com/KokunoYumeto/penn-state-stat-415-id'
-assert c140_capsule['course_native']['zenodo'] == 'https://doi.org/10.5281/zenodo.22208527'
+assert c140_capsule['course_native']['zenodo'] == ''
 assert c140_capsule['layers']['production']['release_status'] == 'available_unverified'
 assert c140_capsule['layers']['learner']['online_html']['status'] == 'verified'
 assert c140_capsule['layers']['learner']['online_html']['url'] == 'https://kokunoyumeto.github.io/penn-state-stat-415-id/'
@@ -943,9 +943,9 @@ public = inputs['d30Public']
 assert public['content_commit'] == inputs['d30Manifest']['native_release']['commit']
 assert public['content_tree'] == inputs['d30Manifest']['native_release']['tree']
 assert d30_capsule['course_native']['repository'] == public['repository']
-assert d30_capsule['course_native']['zenodo'] == 'https://doi.org/' + public['doi']
+assert d30_capsule['course_native']['zenodo'] == ''
 assert d30_capsule['layers']['production']['repository'] == public['repository']
-assert d30_capsule['layers']['production']['zenodo'] == 'https://doi.org/' + public['doi']
+assert d30_capsule['layers']['production']['zenodo'] == ''
 assert d30_capsule['layers']['production']['release_status'] == 'verified'
 assert d30_capsule['layers']['learner']['online_html']['url'] == public['reader']
 assert d30_capsule['layers']['learner']['primary']['url'] == public['reader']

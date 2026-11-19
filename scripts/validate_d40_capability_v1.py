@@ -40,6 +40,8 @@ from d40_capability_model_v1 import (
     RELEASE_MANIFEST_IDENTITY,
     ZIP_IDENTITY,
     ZIP_URL,
+    LEARNER_PDF_URL,
+    LEARNER_ZIP_URL,
     apply_negative_mutation,
     expected_source_ids,
     expected_unit_ids,
@@ -565,18 +567,18 @@ def verify_learning_map_projection(
     for unit, row in zip(units, projected_map_units):
         support = unit["support_ids"]
         if unit["unit_type"] == "practice_problem":
-            hint = support_record("complete", support["hint"][0], "Petunjuk", ZIP_URL)
+            hint = support_record("complete", support["hint"][0], "Petunjuk", LEARNER_ZIP_URL)
             check = support_record("not_present", None, None, None)
-            solution = support_record("complete", support["solution"][0], "Solusi lengkap", ZIP_URL)
+            solution = support_record("complete", support["solution"][0], "Solusi lengkap", LEARNER_ZIP_URL)
         elif unit["unit_type"] == "assessment_item":
             hint = support_record("not_present", None, None, None)
-            check = support_record("complete", support["rubric"][0], "Rubrik", ZIP_URL)
-            solution = support_record("complete", support["solution"][0], "Solusi lengkap", ZIP_URL)
+            check = support_record("complete", support["rubric"][0], "Rubrik", LEARNER_ZIP_URL)
+            solution = support_record("complete", support["solution"][0], "Solusi lengkap", LEARNER_ZIP_URL)
         else:
             hint = support_record("not_present", None, None, None)
             validation_ids = support.get("lab_validation", [])
             check = (
-                support_record("complete", validation_ids[0], "Validasi native", ZIP_URL)
+                support_record("complete", validation_ids[0], "Validasi native", LEARNER_ZIP_URL)
                 if validation_ids
                 else support_record("not_present", None, None, None)
             )
@@ -584,7 +586,7 @@ def verify_learning_map_projection(
                 "complete",
                 support["lab_solution_document"][0],
                 "Dokumen solusi",
-                ZIP_URL,
+                LEARNER_ZIP_URL,
             )
         exercise = {
             "id": unit["unit_id"],
@@ -593,7 +595,7 @@ def verify_learning_map_projection(
             "kind": unit["unit_type"],
             "sequence": 1,
             "curriculum_status": "complete_native_record",
-            "href": ZIP_URL,
+            "href": LEARNER_ZIP_URL,
             "hint": hint,
             "check": check,
             "solution": solution,
@@ -601,7 +603,7 @@ def verify_learning_map_projection(
         expected = {
             "id": unit["unit_id"],
             "title": unit["title_id"],
-            "href": ZIP_URL,
+            "href": LEARNER_ZIP_URL,
             "sections": unit["archive_member_paths"],
             "objectives_href": None,
             "previous_units": sorted(set(previous_by_target[unit["unit_id"]])),
@@ -1284,7 +1286,7 @@ def verify_views(output: Path, bundle: dict[str, Any]) -> None:
         for link in view.hrefs + view.sources
         if urlsplit(link).scheme in {"http", "https"} and link.endswith("/content")
     }
-    if not direct_content.issubset(allowed_direct) or not {PDF_URL, ZIP_URL}.issubset(
+    if not direct_content.issubset(allowed_direct) or not {LEARNER_PDF_URL, LEARNER_ZIP_URL}.issubset(
         set(learner.hrefs) | set(educator.hrefs)
     ):
         fail("D40-VALIDATE-VIEW-DIRECT-URLS")

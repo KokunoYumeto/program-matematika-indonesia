@@ -30,6 +30,9 @@ from d40_capability_model_v1 import (
     RELEASE_MANIFEST_IDENTITY,
     ZIP_IDENTITY,
     ZIP_URL,
+    LEARNER_PDF_URL,
+    LEARNER_ZIP_URL,
+    LEARNER_RELEASE_PAGE,
     D40Error,
     expected_source_ids,
     expected_unit_ids,
@@ -236,7 +239,7 @@ def build_views(
                     f"<p><strong>ID native:</strong> <code>{html.escape(unit['unit_id'])}</code></p>"
                     f"<p><strong>Lokasi di dalam ZIP:</strong><br>{paths}</p>"
                     f"<p><strong>Dukungan:</strong> {html.escape(support or 'metadata anak tidak ada')}</p>"
-                    f"{detail}<p><a href=\"{ZIP_URL}\">Unduh ZIP terverifikasi</a></p></article>"
+                    f"{detail}<p><a href=\"{LEARNER_ZIP_URL}\">Unduh ZIP terverifikasi</a></p></article>"
                 )
             sections.append(f"<section><h2>{heading}</h2><div class=\"grid\">{''.join(cards)}</div></section>")
         return "".join(sections)
@@ -254,9 +257,9 @@ def build_views(
         f"<style>{style}</style><title>D40 — Persamaan Diferensial Parsial</title></head><body>"
     )
     actions = (
-        f'<nav aria-label="Akses publik"><a href="{PDF_URL}">PDF lengkap</a>'
-        f'<a href="{ZIP_URL}">ZIP lengkap + HTML luring</a>'
-        f'<a href="{RECORD_URL}">Rekaman Zenodo</a></nav>'
+        f'<nav aria-label="Akses publik"><a href="{LEARNER_PDF_URL}">PDF lengkap</a>'
+        f'<a href="{LEARNER_ZIP_URL}">ZIP lengkap + HTML luring</a>'
+        f'<a href="{LEARNER_RELEASE_PAGE}">Rilis GitHub</a></nav>'
     )
     learner = (
         common_header
@@ -733,22 +736,22 @@ def build(
     for unit in units:
         support = unit["support_ids"]
         if unit["unit_type"] == "practice_problem":
-            hint = support_record("complete", support["hint"][0], "Petunjuk", ZIP_URL)
+            hint = support_record("complete", support["hint"][0], "Petunjuk", LEARNER_ZIP_URL)
             check = support_record("not_present", None, None, None)
-            solution = support_record("complete", support["solution"][0], "Solusi lengkap", ZIP_URL)
+            solution = support_record("complete", support["solution"][0], "Solusi lengkap", LEARNER_ZIP_URL)
         elif unit["unit_type"] == "assessment_item":
             hint = support_record("not_present", None, None, None)
-            check = support_record("complete", support["rubric"][0], "Rubrik", ZIP_URL)
-            solution = support_record("complete", support["solution"][0], "Solusi lengkap", ZIP_URL)
+            check = support_record("complete", support["rubric"][0], "Rubrik", LEARNER_ZIP_URL)
+            solution = support_record("complete", support["solution"][0], "Solusi lengkap", LEARNER_ZIP_URL)
         else:
             hint = support_record("not_present", None, None, None)
             validation_ids = support.get("lab_validation", [])
             check = (
-                support_record("complete", validation_ids[0], "Validasi native", ZIP_URL)
+                support_record("complete", validation_ids[0], "Validasi native", LEARNER_ZIP_URL)
                 if validation_ids
                 else support_record("not_present", None, None, None)
             )
-            solution = support_record("complete", support["lab_solution_document"][0], "Dokumen solusi", ZIP_URL)
+            solution = support_record("complete", support["lab_solution_document"][0], "Dokumen solusi", LEARNER_ZIP_URL)
         exercise = {
             "id": unit["unit_id"],
             "unit_id": unit["unit_id"],
@@ -756,7 +759,7 @@ def build(
             "kind": unit["unit_type"],
             "sequence": 1,
             "curriculum_status": "complete_native_record",
-            "href": ZIP_URL,
+            "href": LEARNER_ZIP_URL,
             "hint": hint,
             "check": check,
             "solution": solution,
@@ -765,7 +768,7 @@ def build(
             {
                 "id": unit["unit_id"],
                 "title": unit["title_id"],
-                "href": ZIP_URL,
+                "href": LEARNER_ZIP_URL,
                 "sections": unit["archive_member_paths"],
                 "objectives_href": None,
                 "previous_units": sorted(set(previous_by_target[unit["unit_id"]])),
@@ -788,7 +791,7 @@ def build(
             "required_for_course": True,
             "sections": route_by_id[row["target_id"]]["member_paths"],
             "exercises": [row["target_id"]],
-            "href": ZIP_URL,
+            "href": LEARNER_ZIP_URL,
             "native_evidence": row["evidence"],
         }
         for row in prerequisites

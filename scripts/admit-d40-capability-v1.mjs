@@ -21,9 +21,11 @@ assert.equal(manifest.contract_2_3_1_conformance, 'not_claimed');
 assert.equal(validation.state, 'pass');
 assert.equal(validation.contract, manifest.contract);
 assert.equal(validation.manifest_sha256, (await identity(`${base}/manifest.json`)).sha256);
-assert.equal(validation.input_hashes_verified, 27);
+// Since 19 Nov 2026 the two public release files (PDF, complete ZIP) are present in the native release
+// folder, so all 29 locked inputs are hash-verified and none is identity-only.
+assert.equal(validation.input_hashes_verified, 29);
 assert.equal(validation.locked_input_identities_bound, 29);
-assert.equal(validation.identity_only_public_artifacts, 2);
+assert.equal(validation.identity_only_public_artifacts, 0);
 assert.equal(validation.mastery_primary_roots, 68);
 assert.equal(validation.practice_problems, 48);
 assert.equal(validation.assessment_items, 16);

@@ -196,7 +196,9 @@ assert.deepEqual(['B80','D120'].map(id=>additionalOriginalSources[id][0].origin)
 assert.equal(new Set(supplementalReaders.map(row=>row.id)).size,supplementalReaders.length);
 for (const row of supplementalReaders) {
   assert.ok(ids.includes(row.courseId) && row.id.startsWith(row.courseId+':'));
-  assert.equal(row.contentLanguage,row.courseId==='B40'||/^(?:A00|B80):en-/.test(row.id)?'en':'id');
+  // English hosted companion books (B80 Open Data Structures, C110 The Science of Computing) are English content.
+  const englishHumanCompanions=['B80:open-data-structures','C110:the-science-of-computing'];
+  assert.equal(row.contentLanguage,row.courseId==='B40'||/^(?:A00|B80):en-/.test(row.id)||englishHumanCompanions.includes(row.id)?'en':'id');
   assert.ok(row.labels.id && row.labels.en && row.notes.id && row.notes.en);
   assert.ok(['companion','portable_html','html_download','editable_source','source_archive'].includes(row.kind));
   assert.ok(['HTML','HTML ZIP','TEX','PDF','ZIP','EPUB'].includes(row.format));
@@ -206,6 +208,7 @@ for (const row of supplementalReaders) {
   if(new URL(row.href).hostname==='github.com'){
     if(row.courseId==='B80')assert.ok(row.href.startsWith(`https://github.com/KokunoYumeto/mathematical-computing-reproducible-experiments-${row.contentLanguage}/releases/download/${row.contentLanguage==='id'?'v2026.08.22.1':'v2026.08.31.en1'}/`));
     else if(row.courseId==='A00')assert.ok(row.href.startsWith(row.contentLanguage==='en'?'https://github.com/KokunoYumeto/openstax-prealgebra-2e-original-en/releases/download/v1.0.0/':'https://github.com/KokunoYumeto/openstax-prealgebra-2e-id-ID/releases/download/prealgebra-2e-id-ID-v0.2.7/'));
+    else if(row.courseId==='B10')assert.ok(row.href.startsWith('https://github.com/KokunoYumeto/discrete-mathematics-open-introduction-id/releases/download/v2026.08.17/'));
     else assert.match(row.href,/^https:\/\/github\.com\/KokunoYumeto\/tea-time-numerical-analysis-id\/releases\/download\/v3\.0-id\.2-r1\//);
   }
   assert.match(row.sha256,/^[a-f0-9]{64}$/);
@@ -275,13 +278,16 @@ for (const row of supplementalReaders) {
   } else assert.notEqual(row.kind,'portable_html');
   for (const locale of supportedLocales) {
     const rows=resourceBindings(interfaceCourses.find(c=>c.id===row.courseId),locale);
-    const actual=rows.filter(item=>item.href===row.href);
+    // A row with per-locale pages (hrefs) binds each interface to its own page; each such page needs its own public readback.
+    const localeHref=row.hrefs?.[locale] ?? row.href;
+    if(row.hrefs){const localeFact=publicFacts.find(item=>item.url===localeHref);assert.ok(localeFact,`${row.id}/${locale}: per-locale page needs public-byte evidence`);}
+    const actual=rows.filter(item=>item.href===localeHref);
     assert.equal(actual.length,1); assert.equal(actual[0].primary,false);
     assert.equal(actual[0].contentLanguage,row.contentLanguage); assert.equal(actual[0].note,row.notes[locale]);
     if(row.courseId==='B40'&&locale==='en')assert.ok(!actual[0].label.startsWith('Bahasa Indonesia'));
   }
 }
-assert.deepEqual(supplementalReaders.map(row=>row.id),[...['pdf','tex','source','epub','record'].map(format=>'A00:id-format-'+format),...['pdf','tex','source','epub'].map(format=>'A00:en-format-'+format),...['id','en'].flatMap(lang=>['pdf','tex','source','epub','record'].map(format=>'B80:'+lang+'-format-'+format)),'B80:id-epub','B80:id-native-source','B80:en-epub','B80:en-native-source','C110:released-pdf-mirror','C110:cumulative-tex','C110:released-source-archive','B40:original-en-partial-tex','D20:complete-companion-html','D20:complete-offline-html','B10:complete-html-download','D90:original-02-central-html']);
+assert.deepEqual(supplementalReaders.map(row=>row.id),[...['pdf','tex','source','epub'].map(format=>'A00:id-format-'+format),...['pdf','tex','source','epub'].map(format=>'A00:en-format-'+format),...['id','en'].flatMap(lang=>['pdf','tex','source','epub'].map(format=>'B80:'+lang+'-format-'+format)),'B80:id-epub','B80:id-native-source','B80:en-epub','B80:en-native-source','C110:cumulative-tex','C110:released-source-archive','B40:original-en-partial-tex','D20:complete-companion-html','B10:complete-html-download','D90:original-02-central-html','B80:open-data-structures','C110:the-science-of-computing']);
 const c110Proof=JSON.parse(await readFile(resolve(root,'docs/interface/evidence/c110-cumulative-source.json'),'utf8'));
 assert.equal(c110Proof.status,'published_and_anonymously_verified');
 assert.equal(c110Proof.equivalence.native_and_assembled_pdf_byte_identical,true);
@@ -290,7 +296,8 @@ for(const locale of supportedLocales){
   const bindings=resourceBindings(interfaceCourses.find(c=>c.id==='C110'),locale);
   assert.equal(bindings.filter(r=>r.primary).length,1);
   assert.equal(bindings.find(r=>r.supplementalReaderId==='C110:released-source-archive').accessRole,'source-package');
-  assert.ok(bindings.filter(r=>r.supplementalReaderId).every(r=>r.contentLanguage==='id'&&!r.primary));
+  assert.ok(bindings.filter(r=>r.supplementalReaderId&&r.supplementalReaderId!=='C110:the-science-of-computing').every(r=>r.contentLanguage==='id'&&!r.primary));
+  assert.ok(bindings.filter(r=>r.supplementalReaderId==='C110:the-science-of-computing').every(r=>r.contentLanguage==='en'&&!r.primary));
 }
 const b40Proof=JSON.parse(await readFile(resolve(root,'docs/interface/evidence/b40-original-english-reading.json'),'utf8'));
 const b40NativeBytes=await readFile(resolve(root,b40Proof.source_manifest.path));
@@ -595,7 +602,7 @@ for(const hub of [d30LearnerHub,d30EducatorHub]){
   for(const href of [
     'https://kokunoyumeto.github.io/measure-theoretic-probability-stochastic-processes-id/',
     'https://github.com/KokunoYumeto/measure-theoretic-probability-stochastic-processes-id/tree/d0111bc20dc813f5fde12eb715be4cf6dd5a94bd',
-    'https://zenodo.org/records/22182655',
+    'https://github.com/KokunoYumeto/measure-theoretic-probability-stochastic-processes-id',
     'https://www.randomservices.org/random/',
     'https://continuous-time-mcs.quantecon.org/',
     'https://gordanz.github.io/stochastic-book/',
@@ -695,7 +702,7 @@ for (let index=0;index<d100CentralResources.length;index+=1) {
   assert.deepEqual([d100BoundResources[index].bytes,d100BoundResources[index].sha256],[local.length,createHash('sha256').update(local).digest('hex')]);
   assert.equal(d100BoundResources[index].hostedNavigationOverlay,'v1');
 }
-assert.ok(englishResources.D100.some(r=>r.kind==='archive' && r.href==='https://doi.org/10.5281/zenodo.22543825'));
+assert.ok(!englishResources.D100.some(r=>/zenodo\.org|10\.5281\/zenodo/.test(r.href||'')));  // record 22543825 removed (410)
 assert.deepEqual(englishResources.D100.filter(r=>r.pages).map(r=>r.pages),[504,381,89]);
 assert.equal(englishResources.D100.filter(r=>r.pages).reduce((n,r)=>n+r.pages,0),974);
 assert.deepEqual(englishResources.D100.filter(r=>r.pages).map(r=>[r.bytes,r.sha256]),[
@@ -877,7 +884,8 @@ for (const locale of supportedLocales) {
   }
   for(const courseId of ['A10','A20','B80','D50','D70','D80','D100','D110']) {
     const resources=resourceBindings(interfaceCourses.find(c=>c.id===courseId),locale);
-    for(const target of englishResources[courseId]) assert.equal(resources.filter(r=>r.href===target.href && r.contentLanguage==='en').length,1);
+    // Rows whose removed Zenodo record had no other public copy keep their text with an empty href (15 Nov 2026); the view renders no link for them.
+    for(const target of englishResources[courseId]) if(target.href) assert.equal(resources.filter(r=>r.href===target.href && r.contentLanguage==='en').length,1); else assert.equal(resources.filter(r=>r.label===target.label&&r.contentLanguage==='en'&&r.href).length,0);
     if(locale==='en') assert.equal(resources.filter(r=>r.primary).length,1);
   }
 }
@@ -904,14 +912,16 @@ for (const edition of finalEditions) for(const locale of supportedLocales) {
   assert.equal(course.state,'published');
   const bindings=resourceBindings(course,locale);
   assert.deepEqual(bindings.filter(r=>r.editionResourceId).map(r=>r.editionResourceId),edition.resources.map(r=>r.id));
-  assert.ok(bindings.some(r=>r.href===edition.archive));
+  assert.equal(edition.archive,'');  // the edition archive records were removed (410 Gone); no archive binding remains
+  assert.ok(!bindings.some(r=>/zenodo\.org|10\.5281\/zenodo/.test(r.href||'')));
   for(const id of edition.supersededSupplementIds) assert.ok(!bindings.some(r=>r.supplementId===id));
   for(const old of ['22142022','22184511','22192066','22164344','22164552']) assert.ok(!bindings.some(r=>r.href.includes(old)));
   for(const row of bindings.filter(r=>r.editionResourceId)) assert.equal(row.contentLanguage,'id');
 }
 for(const locale of supportedLocales) {
   const stats=resourceBindings(interfaceCourses.find(r=>r.id==='C140'),locale);
-  for(const id of ['random-mathematical-statistics-html','random-mathematical-statistics-pdf','random-mathematical-statistics-doi']) assert.ok(stats.some(r=>r.supplementId===id));
+  for(const id of ['random-mathematical-statistics-html','random-mathematical-statistics-pdf']) assert.ok(stats.some(r=>r.supplementId===id));
+  assert.ok(!stats.some(r=>r.supplementId==='random-mathematical-statistics-doi'));  // its record (zenodo 22076539) was removed (410 Gone)
   const geo=resourceBindings(interfaceCourses.find(r=>r.id==='D100'),locale).filter(r=>r.editionResourceId);
   const d100Edition=editionInput.editions.find(e=>e.courseId==='D100');
   assert.equal(geo.length,8); assert.equal(geo.reduce((n,r)=>n+(d100Edition.resources.find(e=>e.id===r.editionResourceId)?.pages??0),0),975);
@@ -1057,7 +1067,7 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   assert.equal([...staticHtml.matchAll(/data-capability-tool="([^"]+)"/g)].length,capabilityTools.length);
   assert.equal([...staticHtml.matchAll(/data-supplemental-reader="([^"]+)"/g)].length,supplementalReaders.length);
   for (const row of supplementalReaders) assert.ok(staticHtml.includes(row.href.replaceAll('&','&amp;')));
-  for(const courseId of ['A10','A20','B80','D50','D70','D80','D100','D110']) for(const row of englishResources[courseId]) assert.ok(staticHtml.includes(row.href.replaceAll('&','&amp;')));
+  for(const courseId of ['A10','A20','B80','D50','D70','D80','D100','D110']) for(const row of englishResources[courseId].filter(row=>row.href)) assert.ok(staticHtml.includes(row.href.replaceAll('&','&amp;')));
   const elementIds = [...staticHtml.matchAll(/\bid="([^"]+)"/g)].map((m) => m[1]);
   assert.equal(new Set(elementIds).size, elementIds.length, 'No duplicate DOM ids');
   for (const match of staticHtml.matchAll(/href="#([^"]+)"/g)) assert.ok(elementIds.includes(match[1]), 'Resolvable fragment: ' + match[1]);

@@ -402,7 +402,7 @@ def render_html(title: str, intro: str, units: list[dict[str, Any]], educator: b
 <html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{html.escape(title)}</title><style>body{{font:16px/1.5 system-ui;max-width:1100px;margin:auto;padding:2rem;color:#172033}}nav a{{margin-right:1rem}}li{{display:grid;gap:.25rem;padding:1rem 0;border-bottom:1px solid #ccd5e0}}code,span{{color:#526174}}strong{{font-size:1.08rem}}a{{color:#075ea8}}</style></head>
 <body><nav aria-label="Program"><a href="/en/">English program /en/</a><a href="/id/">Program Indonesia /id/</a></nav>
-<header><p>D30 · course-learning-capability/1 · zero-copy</p><h1>{html.escape(title)}</h1><p>{html.escape(intro)}</p><p>{html.escape(role_note)}</p><p><a href="{PAGES}">Pembaca native lengkap</a> · <a href="{ZENODO_RECORD}">Rekaman asli Zenodo</a> · <a href="{REPOSITORY}/tree/{CONTENT_COMMIT}">Sumber asli pada commit terkunci</a></p></header>
+<header><p>D30 · course-learning-capability/1 · zero-copy</p><h1>{html.escape(title)}</h1><p>{html.escape(intro)}</p><p>{html.escape(role_note)}</p><p><a href="{PAGES}">Pembaca native lengkap</a> · <a href="{REPOSITORY}">Repositori asli GitHub</a> · <a href="{REPOSITORY}/tree/{CONTENT_COMMIT}">Sumber asli pada commit terkunci</a></p></header>
 <section aria-labelledby="authoritative-originals"><h2 id="authoritative-originals">Sumber asli otoritatif</h2><ul>{originals}</ul></section>
 <main><ol>{''.join(rows)}</ol></main></body></html>
 '''

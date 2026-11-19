@@ -89,6 +89,25 @@ assert.equal(nativePackageEvidence.length, nativePackages.evidence.bytes, 'Nativ
 assert.equal(sha256(nativePackageEvidence), nativePackages.evidence.sha256, 'Native package evidence hash drift.');
 const packageAddendum = JSON.parse(nativePackageEvidence);
 const pointer = (value, path) => path.split('/').slice(1).reduce((at, key) => at?.[key.replaceAll('~1', '/').replaceAll('~0', '~')], value);
+// A claim keeps the recorded evidence location, or moves to a new public location only with a
+// recorded byte-and-hash check against that same evidence, or (former record removed and no public
+// copy) carries no location at all.
+function assertClaimLocation(operation, evidenceForm, evidenceUrl, fact) {
+  const claimed = operation.expected_component.url;
+  if (claimed && claimed.startsWith('https://zenodo.org/')) {
+    assert.equal(evidenceUrl, evidenceForm(claimed), 'Native package claim/evidence URL mismatch.');
+    return;
+  }
+  if (claimed) {
+    const check = operation.current_location_check;
+    assert.ok(check && check.url === claimed, 'Native package moved location lacks a recorded check.');
+    assert.equal(check.sha256, fact.sha256, 'Native package moved location hash differs from its evidence.');
+    assert.equal(check.bytes, fact.bytes, 'Native package moved location size differs from its evidence.');
+    return;
+  }
+  assert.equal(operation.hosting_state, 'former_public_record_removed_no_public_copy', 'Native package without location lacks its hosting state.');
+  assert.equal(operation.expected_component.access, 'unknown', 'Native package without location claims access.');
+}
 for (const operation of nativePackages.operations) {
   let fact;
   if (operation.evidence_file) {
@@ -97,16 +116,18 @@ for (const operation of nativePackages.operations) {
     assert.equal(sha256(bytes), operation.evidence_sha256, 'Native package extra evidence hash drift.');
     fact = pointer(JSON.parse(bytes), operation.evidence_package_pointer);
     assert.ok(fact, 'Native package evidence pointer missing.');
-    const url = new URL(operation.expected_component.url);
-    assert.equal(url.origin, 'https://zenodo.org', 'Native package evidence origin differs.');
-    assert.equal(fact.url, url.origin + '/api' + url.pathname + '/content', 'Native package claim/evidence URL mismatch.');
+    assert.ok(new URL(fact.url).origin === 'https://zenodo.org', 'Native package evidence origin differs.');
+    assertClaimLocation(operation, (url) => {
+      const parsed = new URL(url);
+      return parsed.origin + '/api' + parsed.pathname + '/content';
+    }, fact.url, fact);
     assert.equal(fact.sha256, operation.expected_component.sha256, 'Native package claim/evidence hash mismatch.');
     assert.equal(fact.bytes, operation.artifact_bytes, 'Native package claim/evidence byte mismatch.');
   } else {
     fact = pointer(packageAddendum, operation.evidence_addendum_pointer);
     assert.ok(fact, 'Native package evidence pointer missing.');
     assert.equal(fact.role, operation.artifact_role, 'Native package evidence role mismatch.');
-    assert.equal(fact.public_record_file_url, operation.expected_component.url, 'Native package claim/evidence URL mismatch.');
+    assertClaimLocation(operation, (url) => url, fact.public_record_file_url, fact);
     assert.equal(fact.sha256, operation.expected_component.sha256, 'Native package claim/evidence hash mismatch.');
     assert.equal(fact.bytes, operation.artifact_bytes, 'Native package claim/evidence byte mismatch.');
   }
@@ -401,7 +422,7 @@ assert.equal(a30.course.state, 'published');
 assert.equal(a30.course_native.status, overrides.course_truth?.A30?.publication_evidence ? 'verified' : 'available_unverified');
 assert.equal(a30.course_native.version, '1.0.0');
 assert.equal(a30.course_native.repository, 'https://github.com/KokunoYumeto/openstax-precalculus-2e-id');
-assert.equal(a30.course_native.zenodo, 'https://doi.org/10.5281/zenodo.22290180');
+assert.equal(a30.course_native.zenodo, ''); // record removed (410); the edition is on GitHub
 const a30Adapter = a30.layers.interoperability.semantic_adapter;
 assert.equal(a30Adapter.status, 'verified');
 assert.equal(a30Adapter.contract_version, 'course-learning-capability/1');
@@ -480,7 +501,7 @@ const d30 = byId.D30;
 assert.equal(d30.course.state, 'published');
 assert.equal(d30.course_native.status, 'verified');
 assert.equal(d30.course_native.version, '2026.08.30-checkpoint.38');
-assert.equal(d30.course_native.zenodo, 'https://doi.org/10.5281/zenodo.22182655');
+assert.equal(d30.course_native.zenodo, ''); // record removed (410); the edition is on GitHub
 assert.match(d30.course_native.corpus, /5 laboratorium/);
 assert.doesNotMatch(d30.course_native.corpus, /2 irisan/);
 const d30PublicationEvidence = d30.evidence.filter(({ sha256: hash }) => hash === 'dda34267df928672e03e04b4c8a36d768aab2d33bc1194b269074da0d2d24e40');
@@ -555,7 +576,7 @@ assert.equal(Object.keys(d30EducatorResources).length, d30.layers.educator.resou
 const d30NativeEducatorObservation = d30EducatorResources['D30:native-educator-observation'];
 assert.ok(d30NativeEducatorObservation, 'D30 native educator observation must survive shared admission.');
 assert.equal(d30NativeEducatorObservation.status, 'available_unverified');
-assert.equal(d30NativeEducatorObservation.url, 'https://zenodo.org/records/22182655');
+assert.equal(d30NativeEducatorObservation.url, 'https://github.com/KokunoYumeto/measure-theoretic-probability-stochastic-processes-id');
 for (const resourceId of [
   'D30:educator-hub-v1',
   'D30:educator-map-v1',
@@ -659,14 +680,18 @@ assert.equal(
   13989998,
   'D40 public-readback aggregate byte count drifted.',
 );
-const d40DoiUrl = `https://doi.org/${d40Readback.doi}`;
-const d40RecordFileUrl = (fileName) => `${d40Readback.public_record_url}/files/${encodeURIComponent(fileName)}?download=1`;
+// The record behind this readback answers 410 since Nov 2026. Learners get the same files (bytes and
+// SHA-256 checked against this readback) from the GitHub release d40-complete-2026.08.31; the record and
+// its DOI stay only as evidence.
+const d40DoiUrl = '';
+const d40EvidenceFileUrl = (fileName) => `${d40Readback.public_record_url}/files/${encodeURIComponent(fileName)}?download=1`;
+const d40RecordFileUrl = (fileName) => `https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/d40-complete-2026.08.31/${encodeURIComponent(fileName)}`;
 const d40PdfReadback = d40ReadbackFiles['PERSAMAAN_DIFERENSIAL_PARSIAL_DIONNE_ID_LENGKAP.pdf'];
 const d40ZipReadback = d40ReadbackFiles['D40_COMPLETE_ID_20260831.zip'];
 const d40ManifestReadback = d40ReadbackFiles['RELEASE_MANIFEST.json'];
 const d40PdfUrl = d40RecordFileUrl(d40PdfReadback.filename);
 const d40ZipUrl = d40RecordFileUrl(d40ZipReadback.filename);
-const d40ManifestUrl = d40RecordFileUrl(d40ManifestReadback.filename);
+const d40ManifestUrl = d40EvidenceFileUrl(d40ManifestReadback.filename);
 const d40FederationById = Object.fromEntries(d40.layers.federation.components.map((component) => [component.id, component]));
 
 assert.equal(d40.course_native.zenodo, d40DoiUrl, 'D40 native DOI URL drifted from independent readback.');
@@ -734,7 +759,7 @@ const leblFamily = {
 for (const [id, expected] of Object.entries(leblFamily)) {
   const capsule = byId[id];
   assert.equal(capsule.course.state, 'published');
-  assert.equal(capsule.course_native.zenodo, 'https://doi.org/10.5281/zenodo.22182427');
+  assert.equal(capsule.course_native.zenodo, ''); // record removed (410); the edition is on GitHub
   assert.equal(capsule.layers.learner.pdf.status, 'verified');
   assert.equal(capsule.layers.learner.pdf.bytes, expected.bytes);
   assert.equal(capsule.layers.learner.pdf.sha256, expected.sha256);
@@ -992,8 +1017,8 @@ assert.ok(!b90.layers.educator.resources.some(resource => /answer|solution/i.tes
 const d90 = byId.D90;
 assert.equal(d90.layers.interoperability.semantic_adapter.status, 'verified');
 assert.equal(d90.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
-assert.equal(d90.layers.interoperability.semantic_adapter.evidence[0].sha256, '9df3955d918c1c010be7e7b8beca01dcc199b9edfe7686966ac049dc4585663f');
-assert.equal(d90.layers.interoperability.semantic_adapter.evidence[1].sha256, '74d93103d66bddd11c1c12dadceb0209d004547c29685017b81aff5b603ddfe7');
+assert.equal(d90.layers.interoperability.semantic_adapter.evidence[0].sha256, 'e4454adf7605f1511f595719dc58847fb4cd0cb0948af4c76b0de3f47dd21c46');
+assert.equal(d90.layers.interoperability.semantic_adapter.evidence[1].sha256, 'edf2eba1f761768ae07530945867e729163e56246071df5e1dca7d7ff35c56d1');
 assert.equal(d90.layers.learner.tools.length, 1);
 assert.equal(d90.layers.learner.tools[0].tool_id, 'd90.open_learner_hub');
 assert.equal(d90.layers.learner.tools[0].href, 'backend/d90/D90.html');

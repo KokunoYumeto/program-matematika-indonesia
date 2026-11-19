@@ -13,7 +13,7 @@ import {
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const manifestPath = 'docs/interface/learner-access-manifest.json';
-const receiptPath = 'docs/interface/evidence/federated-hosted-reader-navigation-audit-20260906.json';
+const receiptPath = 'docs/interface/evidence/federated-hosted-reader-navigation-audit-20261119.json';
 const manifestBytes = await readFile(resolve(root, manifestPath));
 const receiptBytes = await readFile(resolve(root, receiptPath));
 const manifest = JSON.parse(manifestBytes);

@@ -12,6 +12,8 @@ const publicOrigin = 'https://kokunoyumeto.github.io/program-matematika-indonesi
 const nativeOrigin = 'https://kokunoyumeto.github.io/penn-state-stat-415-id/';
 const verifiedDate = '2026-09-07';
 const zenodoPrimaryPdfUrl = 'https://zenodo.org/records/22208527/files/00_00_stat415-pengantar-statistika-matematis-id.pdf?download=1';
+// The Zenodo record is gone (410); learners get the same PDF from the GitHub release.
+const githubPrimaryPdfUrl = 'https://github.com/KokunoYumeto/penn-state-stat-415-id/releases/download/v2026.08.31.c140-companion-c5/00_00_stat415-pengantar-statistika-matematis-id.pdf';
 
 const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');
 const load = async (path) => JSON.parse(await readFile(resolve(root, path), 'utf8'));
@@ -109,8 +111,8 @@ assert.deepEqual({
 }, {
   state: 'published',
   reader: nativeOrigin,
-  edition: zenodoPrimaryPdfUrl,
-  zenodo: 'https://doi.org/10.5281/zenodo.22208527',
+  edition: githubPrimaryPdfUrl,
+  zenodo: '',
   repository: 'https://github.com/KokunoYumeto/penn-state-stat-415-id',
   release: 'https://github.com/KokunoYumeto/penn-state-stat-415-id/releases/tag/v2026.08.31.c140-companion-c5',
   version: '2026.08.31.c140-companion-c5',
@@ -549,10 +551,10 @@ overrides.course_truth.C140 = {
   corpus: 'Statistika Matematis C140 — tulang punggung Penn, donor kelengkapan Random, dan pendamping orisinal',
   note: 'Batas C5 lengkap dan terbuka: 54 dokumen HTML publik, 8.358 identitas entitas stabil, 2.423 relasi, 146 masalah terselesaikan, 62 rubrik, serta sembilan proyeksi hak yang tetap terpisah.',
   reader: nativeOrigin,
-  edition: zenodoPrimaryPdfUrl,
+  edition: githubPrimaryPdfUrl,
   repository: publicEvidence.repository.url,
   release: publicEvidence.repository.release_url,
-  zenodo: `https://doi.org/${publicEvidence.zenodo.doi}`,
+  zenodo: '',
   progress: {
     unitLabel: 'dokumen kursus C140',
     totalUnits: 54,

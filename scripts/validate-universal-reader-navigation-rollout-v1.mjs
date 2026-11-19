@@ -133,7 +133,7 @@ assert.equal(publicRegistry.schema_version, '1.1.0');
 
 const d100 = finalEditions.editions.find((row) => row.courseId === 'D100');
 assert.ok(d100);
-assert.equal(d100.archive, 'https://doi.org/10.5281/zenodo.22543825');
+assert.equal(d100.archive, '');
 assert.equal(d100.resources.length, 8);
 for (const id of ['D100:curves-html', 'D100:bgk-html']) {
   const resource = d100.resources.find((row) => row.id === id);
@@ -149,10 +149,10 @@ for (const id of ['D100:curves-html-download', 'D100:bgk-html-download', 'D100:b
 
 assert.equal(liveCoursePublications.D90.reader,
   'https://kokunoyumeto.github.io/advanced-optimization-convex-analysis-id/');
-assert.equal(liveCoursePublications.D90.zenodo, 'https://doi.org/10.5281/zenodo.22543810');
+assert.equal(liveCoursePublications.D90.zenodo, '');
 assert.equal(liveCoursePublications.D100.reader,
   'https://kokunoyumeto.github.io/algebraic-geometry-bridge-id/');
-assert.equal(liveCoursePublications.D100.zenodo, 'https://doi.org/10.5281/zenodo.22543825');
+assert.equal(liveCoursePublications.D100.zenodo, '');
 
 assert.equal(rollout.integrity_and_limits.mathematical_content_changed_by_navigation_rollout, false);
 assert.equal(rollout.integrity_and_limits.authoritative_originals_replaced_by_mirrors, false);

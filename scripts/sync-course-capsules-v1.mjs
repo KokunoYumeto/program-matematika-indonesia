@@ -185,7 +185,7 @@ assert.deepEqual(productionIds, [], 'No course may remain in the temporary produ
 const d40 = rows.find(({ course_id }) => course_id === 'D40');
 assert.equal(d40.course.state, 'published');
 assert.equal(d40.course_native.version, '2026.08.31-d40-complete');
-assert.equal(d40.course_native.zenodo, 'https://doi.org/10.5281/zenodo.22184259');
+assert.equal(d40.course_native.zenodo, ''); // record removed (410); edition on GitHub
 assert.equal(d40.course_native.repository, undefined, 'D40 must not invent a producer repository.');
 assert.equal(d40.layers.learner.pdf.sha256, 'c4e4f470eeb096129e7bf7306422d316c93aaeed99d2b12890e08f15777ac13f');
 assert.equal(d40.layers.learner.portable_html.sha256, 'a370bba5ddb54081387a484a304b24af92691c3bc167db964c486625a79add59');
@@ -218,7 +218,7 @@ for (const id of ['A10']) {
 const a30 = rows.find(({ course_id }) => course_id === 'A30');
 assert.equal(a30.course.state, 'published');
 assert.equal(a30.course_native.version, '1.0.0');
-assert.equal(a30.course_native.zenodo, 'https://doi.org/10.5281/zenodo.22290180');
+assert.equal(a30.course_native.zenodo, ''); // record removed (410); edition on GitHub
 assert.equal(a30.layers.interoperability.semantic_adapter.status, 'verified');
 assert.equal(a30.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
 assert.equal(a30.layers.learner.tools.length, 1);
@@ -236,7 +236,7 @@ assert.equal(a30.layers.educator.unit_alignment_status, 'verified');
 const b95 = rows.find(({ course_id }) => course_id === 'B95');
 assert.equal(b95.course.state, 'published');
 assert.equal(b95.course_native.version, '2026.09.01.2-R011-B039');
-assert.equal(b95.course_native.zenodo, 'https://doi.org/10.5281/zenodo.22261912');
+assert.equal(b95.course_native.zenodo, ''); // record removed (410); edition on GitHub
 assert.equal(b95.course_native.repository, 'https://github.com/KokunoYumeto/statistika-berbasis-data-id');
 assert.equal(b95.layers.interoperability.semantic_adapter.status, 'verified');
 assert.equal(b95.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
@@ -322,7 +322,7 @@ assert.equal(d30.layers.production.release_status, 'verified');
 assert.equal(d30.layers.educator.status, 'verified');
 assert.equal(d30.layers.educator.unit_alignment_status, 'verified');
 assert.ok(d30.layers.educator.resources.some(({ id, status, url }) => id === 'D30:native-educator-observation'
-  && status === 'available_unverified' && url === 'https://zenodo.org/records/22182655'));
+  && status === 'available_unverified' && url === 'https://github.com/KokunoYumeto/measure-theoretic-probability-stochastic-processes-id'));
 assert.ok(d30.layers.educator.resources.some(({ id, status }) => id === 'D30:educator-hub-v1' && status === 'verified'));
 assert.ok(d30.layers.educator.resources.some(({ id, status }) => id === 'D30:educator-map-v1' && status === 'verified'));
 assert.ok(d30.layers.educator.resources.some(({ id, status }) => id === 'D30:terms-index-v1' && status === 'verified'));

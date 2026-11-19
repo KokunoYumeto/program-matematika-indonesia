@@ -403,7 +403,7 @@ const liveB95 = liveCoursePublications.B95;
 assert.ok(liveB95, 'B95 live-publication overlay is missing.');
 assert.ok(['production', 'published'].includes(liveB95.state), 'B95 course state is invalid.');
 assert.equal(liveB95.version, '2026.09.01.2-R011-B039');
-assert.equal(liveB95.zenodo, 'https://doi.org/10.5281/zenodo.22261912');
+assert.equal(liveB95.zenodo, '');
 assert.equal(liveB95.repository, publicEvidence.repository.url);
 assert.equal(liveB95.release, publicEvidence.repository.release_url);
 assert.equal(liveB95.edition, publicEvidence.reader.zenodo_url);

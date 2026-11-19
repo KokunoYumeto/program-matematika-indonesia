@@ -30,7 +30,7 @@ export const liveCoursePublications = Object.freeze({
     "zenodo": "",
   }),
   C110: publication({
-    "edition": "",
+    "edition": "https://github.com/KokunoYumeto/tea-time-numerical-analysis-id/releases/download/v3.0-id.2-r1/Tea-Time-Numerical-Analysis-id-ID.pdf",
     "zenodo": "",
   }),
   C70: publication({
@@ -540,7 +540,7 @@ export const liveCoursePublications = Object.freeze({
       { id: 'c140-companion-offline', title: 'Pendamping orisinal C140 — HTML luring lengkap', resourceType: 'offline-reader', state: 'complete', url: 'https://github.com/KokunoYumeto/penn-state-stat-415-id/releases/download/v2026.08.31.c140-companion-c5/06_C140_COMPANION_C5_OFFLINE_READER.zip', bytes: 15803617, sha256: '1abdd3746b2886216ef70b35e6f3064ddc60afa490bdd134b92995068abccf4b' },
       { id: 'c140-companion-source-backend', title: 'Sumber, backend, data, dan hak C140 lengkap', resourceType: 'reference', state: 'complete', url: 'https://github.com/KokunoYumeto/penn-state-stat-415-id/releases/download/v2026.08.31.c140-companion-c5/16_C140_COMPANION_C5_SOURCE_BACKEND_DATA_RIGHTS.zip', bytes: 24928931, sha256: '4de938596957e2116d6292f4a5e493a98212e7f9d1c49de32ae6e57c5b746deb' },
       { id: 'random-mathematical-statistics-html', title: 'Komponen Random lengkap — HTML', resourceType: 'donor-reader', state: 'complete', url: 'https://kokunoyumeto.github.io/mathematical-statistics-id/' },
-      
+      { id: 'random-mathematical-statistics-pdf', title: 'Komponen Random lengkap — PDF', resourceType: 'donor-reader', state: 'complete', url: 'https://github.com/KokunoYumeto/mathematical-statistics-id/releases/download/v2026.08.24.29/statistika-matematis-id-reader.pdf' },
       
     ],
     verification: {
@@ -642,14 +642,24 @@ export const liveCoursePublications = Object.freeze({
     state: 'published',
     learner: 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/D40/',
     reader: 'https://kokunoyumeto.github.io/program-matematika-indonesia/readers/d40/unit14/',
-    edition: 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/D40/',
+    edition: 'https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/d40-complete-2026.08.31/PERSAMAAN_DIFERENSIAL_PARSIAL_DIONNE_ID_LENGKAP.pdf',
     zenodo: '',
     version: '2026.08.31-d40-complete',
     corpus: 'Dionne lengkap (18 berkas sumber tingkat atas) + pendamping FEniCSx + 48 masalah dengan petunjuk dan solusi + 16 butir asesmen + 4 laboratorium + 2 backend semantik',
     note: 'Edisi lengkap publik memuat pembaca PDF Bahasa Indonesia 679 halaman, pembaca HTML luring 72 berkas, pendamping FEniCSx yang dieksekusi, 48 masalah terselesaikan, 16 butir asesmen, empat laboratorium, dan dua backend semantik. Seluruh tujuh berkas Zenodo / 13.989.998 byte telah dibaca kembali secara anonim. Pembaca HTML Unit 14 lama tetap ditautkan sebagai checkpoint web; repositori GitHub khusus edisi D40 belum diproduksi.',
     supplements: [
-      
-      
+      {
+        id: 'd40-complete-package',
+        title: 'Paket lengkap D40: HTML luring, sumber, backend, latihan, dan bukti',
+        resourceType: 'reference',
+        state: 'complete',
+        scope: 'Arsip lengkap berorientasi pembaca dengan entry point reader/html/index.html; mencakup backend dan bahan pengajar tanpa mengganti PDF utama.',
+        license: 'Lisensi komponen campuran; batas lisensi dipertahankan dalam COMPONENT_LICENSE_BOUNDARIES.json',
+        url: 'https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/d40-complete-2026.08.31/D40_COMPLETE_ID_20260831.zip',
+        zenodo: '',
+        bytes: 9436983,
+        sha256: 'a370bba5ddb54081387a484a304b24af92691c3bc167db964c486625a79add59',
+      },
     ],
     progress: {
       unitLabel: 'berkas sumber Dionne tingkat atas',

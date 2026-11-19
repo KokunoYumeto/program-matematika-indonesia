@@ -1139,7 +1139,7 @@ assert.equal(a30.course.state, 'published');
 assert.equal(a30.course_native.status, 'verified');
 assert.equal(a30.course_native.version, '1.0.0');
 assert.equal(a30.course_native.repository, 'https://github.com/KokunoYumeto/openstax-precalculus-2e-id');
-assert.equal(a30.course_native.zenodo, 'https://doi.org/10.5281/zenodo.22290180');
+assert.equal(a30.course_native.zenodo, '');
 assert.equal(a30.layers.interoperability.semantic_adapter.status, 'verified');
 assert.equal(a30.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
 assert.equal(
@@ -1354,7 +1354,7 @@ for (const a30Page of [docsBytes['backend/a30/A30.html'].toString('utf8'), docsB
 assert.equal(b95.course.state, 'published');
 assert.equal(b95.course_native.version, '2026.09.01.2-R011-B039');
 assert.equal(b95.course_native.repository, 'https://github.com/KokunoYumeto/statistika-berbasis-data-id');
-assert.equal(b95.course_native.zenodo, 'https://doi.org/10.5281/zenodo.22261912');
+assert.equal(b95.course_native.zenodo, '');
 assert.match(b95.course_native.edition, /00_STATISTIKA_BERBASIS_DATA_ID_R011-B039_WORKING_READER\.pdf\?download=1$/);
 assert.equal(b95.layers.interoperability.semantic_adapter.status, 'verified');
 assert.equal(b95.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
@@ -1607,7 +1607,7 @@ assert.deepEqual(d30.layers.educator.resources.map(({ id, status }) => ({ id, st
   { id: 'D30:corrections-index-v1', status: 'verified' },
   { id: 'D30:relations-index-v1', status: 'verified' },
 ]);
-assert.equal(d30.layers.educator.resources[0].url, 'https://zenodo.org/records/22182655');
+assert.equal(d30.layers.educator.resources[0].url, 'https://github.com/KokunoYumeto/measure-theoretic-probability-stochastic-processes-id');
 assert.equal(d30.layers.learner.primary.url, 'https://kokunoyumeto.github.io/measure-theoretic-probability-stochastic-processes-id/');
 assert.equal(d30.layers.learner.pdf.sha256, 'dda34267df928672e03e04b4c8a36d768aab2d33bc1194b269074da0d2d24e40');
 assert.equal(d30.layers.learner.portable_html.sha256, 'e32dba5a896fb847192bbe944e7fd3db4d95f61ee57e33751bbff3108fca214a');
@@ -1703,7 +1703,7 @@ for (const d30Page of [d30Html, d30EducatorHtml]) {
 const d40 = rows.find(({ course_id }) => course_id === 'D40');
 assert.equal(d40.course.state, 'published');
 assert.equal(d40.course_native.repository, undefined);
-assert.equal(d40.course_native.zenodo, 'https://doi.org/10.5281/zenodo.22184259');
+assert.equal(d40.course_native.zenodo, '');
 assert.equal(d40.layers.learner.pdf.sha256, 'c4e4f470eeb096129e7bf7306422d316c93aaeed99d2b12890e08f15777ac13f');
 assert.equal(d40.layers.learner.portable_html.sha256, 'a370bba5ddb54081387a484a304b24af92691c3bc167db964c486625a79add59');
 assert.equal(d40.layers.interoperability.semantic_adapter.status, 'verified');

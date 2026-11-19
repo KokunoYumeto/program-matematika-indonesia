@@ -33,6 +33,12 @@ ZIP_URL = (
 MANIFEST_URL = (
     "https://zenodo.org/api/records/22184259/files/RELEASE_MANIFEST.json/content"
 )
+# Learner links: the same release files on GitHub (the Zenodo record answers 410 since Nov 2026;
+# the constants above stay as the recorded public evidence).
+LEARNER_RELEASE = "https://github.com/KokunoYumeto/program-matematika-indonesia/releases"
+LEARNER_PDF_URL = LEARNER_RELEASE + "/download/d40-complete-2026.08.31/PERSAMAAN_DIFERENSIAL_PARSIAL_DIONNE_ID_LENGKAP.pdf"
+LEARNER_ZIP_URL = LEARNER_RELEASE + "/download/d40-complete-2026.08.31/D40_COMPLETE_ID_20260831.zip"
+LEARNER_RELEASE_PAGE = LEARNER_RELEASE + "/tag/d40-complete-2026.08.31"
 PDF_IDENTITY = {
     "bytes": 4_393_637,
     "sha256": "c4e4f470eeb096129e7bf7306422d316c93aaeed99d2b12890e08f15777ac13f",

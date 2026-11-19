@@ -201,7 +201,7 @@ for (const [name, fetch] of [
   const a30 = courses.find(course => course.course_id === 'A30');
   assert.equal(a30.course.state, 'published');
   assert.equal(a30.course_native.version, '1.0.0');
-  assert.equal(a30.course_native.zenodo, 'https://doi.org/10.5281/zenodo.22290180');
+  assert.equal(a30.course_native.zenodo, '');
   assert.equal(a30.layers.interoperability.semantic_adapter.status, 'verified');
   assert.equal(a30.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
   assert.match(a30.layers.interoperability.semantic_adapter.mapping_scope, /220680_native_records/);
@@ -227,7 +227,7 @@ for (const [name, fetch] of [
   const b95 = courses.find(course => course.course_id === 'B95');
   assert.equal(b95.course.state, 'published');
   assert.equal(b95.course_native.version, '2026.09.01.2-R011-B039');
-  assert.equal(b95.course_native.zenodo, 'https://doi.org/10.5281/zenodo.22261912');
+  assert.equal(b95.course_native.zenodo, '');
   assert.equal(b95.layers.interoperability.semantic_adapter.status, 'verified');
   assert.equal(b95.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
   assert.match(b95.layers.interoperability.semantic_adapter.mapping_scope, /21746_native_records/);
@@ -291,7 +291,7 @@ for (const [name, fetch] of [
   assert.equal(d30.layers.educator.status,'verified');
   assert.equal(d30.layers.educator.unit_alignment_status,'verified');
   assert.equal(d30.layers.educator.resources.length,7);
-  assert.ok(d30.layers.educator.resources.some(r=>r.id==='D30:native-educator-observation'&&r.status==='available_unverified'&&r.url==='https://zenodo.org/records/22182655'));
+  assert.ok(d30.layers.educator.resources.some(r=>r.id==='D30:native-educator-observation'&&r.status==='available_unverified'&&r.url==='https://github.com/KokunoYumeto/measure-theoretic-probability-stochastic-processes-id'));
   for(const resourceId of ['D30:educator-hub-v1','D30:educator-map-v1','D30:terms-index-v1','D30:rights-index-v1','D30:corrections-index-v1','D30:relations-index-v1']) {
     assert.ok(d30.layers.educator.resources.some(r=>r.id===resourceId&&r.status==='verified'));
   }
