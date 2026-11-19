@@ -5,6 +5,7 @@ import { spawnSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { rehomeRemovedRecordLinks, countRemovedRecordLinks } from './removed-record-links-v1.mjs';
 
 const project = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const temporaryParent = resolve(tmpdir());
@@ -69,7 +70,10 @@ try {
     assert.ok(html.includes(course.authoritative_original.url.replaceAll('&', '&amp;')));
     assert.equal(course.authoritative_original.content_language, 'en');
     for (const action of course.actions) {
-      assert.ok(html.includes(action.url.replaceAll('&', '&amp;')));
+      // Links to removed Zenodo records are rendered as their GitHub copies (or as text where none exists).
+      const shown = rehomeRemovedRecordLinks(action.url);
+      if (shown) assert.ok(html.includes(shown.replaceAll('&', '&amp;')));
+      assert.equal(countRemovedRecordLinks(html), 0);
       assert.ok(html.includes(action.sha256));
     }
   }

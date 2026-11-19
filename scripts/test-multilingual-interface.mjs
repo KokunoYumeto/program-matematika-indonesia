@@ -30,6 +30,7 @@ import {
 } from './interface-capability-tools.mjs';
 import { LEARNER_STATE_STORAGE_KEY, createEmptyLearnerState, evaluateLearnerState, setCourseCompletion, setCourseClaim, setPrerequisiteWaiver, normalizeLearnerState } from '../docs/learner-state.js';
 import {learnerToolsByCourseId} from '../docs/learner-tools.js';
+import { rehomeRemovedRecordLinks, countRemovedRecordLinks } from './removed-record-links-v1.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const ids = canonicalCourses.map((c) => c.id);
@@ -1154,9 +1155,9 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
     // two KiB of headroom over that measurement, as for the earlier increments.
     assert.ok(gzipSync(html).length < 132 * 1024, 'Compressed map size budget');
     const run = executeOffline(html, locale);
-    assert.deepEqual(JSON.parse(vm.runInContext('JSON.stringify(hostedSurfaceIdentities)',run.context)),JSON.parse(JSON.stringify(hostedSurfaceIdentities)), 'Offline tuple encoding preserves every hosted identity field');
+    assert.deepEqual(JSON.parse(vm.runInContext('JSON.stringify(hostedSurfaceIdentities)',run.context)),JSON.parse(rehomeRemovedRecordLinks(JSON.stringify(hostedSurfaceIdentities))), 'Offline tuple encoding preserves every hosted identity field');
     // Compact payload must preserve all effective data, not just course counts.
-    assert.deepEqual(JSON.parse(vm.runInContext('JSON.stringify(interfaceCourses)',run.context)),JSON.parse(JSON.stringify(interfaceCourses)));
+    assert.deepEqual(JSON.parse(vm.runInContext('JSON.stringify(interfaceCourses)',run.context)),JSON.parse(rehomeRemovedRecordLinks(JSON.stringify(interfaceCourses))));
     for (const c of interfaceCourses) {
       const actual=JSON.parse(vm.runInContext('JSON.stringify(resourceBindings(interfaceCourses.find(c=>c.id==='+JSON.stringify(c.id)+'),'+JSON.stringify(locale)+'))',run.context));
       assert.deepEqual(actual,resourceBindings(c,locale),'Online/offline binding equality: '+c.id);

@@ -8,6 +8,7 @@ import { syncFinalEditions, finalEditionInput } from './interface-final-editions
 import { syncCapabilityTools, capabilityInput, clpCapabilityInput, clpCapabilityValidationInput, existingEnglishCapabilityInputs } from './interface-capability-tools.mjs';
 import { supportedLocales, localeMetadata, interfaceCopy, localizedTopic, siteOrigin, englishBindingExceptions } from '../docs/interface/locales.js';
 import { supplementalReaders } from '../docs/interface/supplemental-readers.js';
+import { rehomeRemovedRecordLinks } from './removed-record-links-v1.mjs';
 
 const interfaceRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const docsRoot = resolve(interfaceRoot, 'docs');
@@ -231,7 +232,7 @@ for (const locale of supportedLocales) {
   await mkdir(resolve(docsRoot, routeSegment), { recursive: true });
   for (const [file, offline, paired] of [['index.html', false, false], ['learning-map.html', true, false], ['learning-map-paired.html', true, true]]) {
     const relative = 'docs/' + routeSegment + '/' + file;
-    const bytes = Buffer.from(renderDocument(locale, offline, paired));
+    const bytes = Buffer.from(rehomeRemovedRecordLinks(renderDocument(locale, offline, paired)));
     await writeFile(resolve(docsRoot, routeSegment, file), bytes);
     outputFiles.push({ path: relative, bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex') });
   }

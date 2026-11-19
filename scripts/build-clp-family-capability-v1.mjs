@@ -4,6 +4,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { englishResources } from '../docs/interface/locales.js';
+import { rehomeRemovedRecordLinks } from './removed-record-links-v1.mjs';
 
 const project = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const outputArgument = process.argv.find((value) => value.startsWith('--output-root='));
@@ -150,8 +151,8 @@ const renderPage = (selectedCourse = null) => {
   const body = selected ? section(selected) : courses.map(section).join('\n');
   return `<!doctype html>\n<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><link rel="stylesheet" href="../backend.css"><style>.course{margin:2rem 0;padding:1.25rem;border:1px solid #cad6d0;border-radius:.8rem;background:#fff}.resources{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}.resource{padding:1rem;border:1px solid #dfe7e2;border-radius:.6rem}.button{display:inline-block;padding:.55rem .75rem;background:#086b63;color:#fff;border-radius:.35rem}.course-picker{display:flex;flex-wrap:wrap;gap:.7rem}.course-picker a{padding:.35rem .55rem;background:#e0eae3;border-radius:.35rem}code{overflow-wrap:anywhere}.eyebrow{font-weight:700;color:#086b63}</style></head><body><main id="top"><nav><a href="../index.html">Indeks backend</a> · <a href="../../id/">Program Matematika</a>${selected ? ' · <a href="CLP.html">Seluruh keluarga CLP</a>' : ''}</nav><h1>${esc(title)}</h1><p>${esc(lead)}</p><nav class="course-picker" aria-label="Pilih mata kuliah">${navigation}<a href="CLP.html">Tampilkan semua</a></nav><aside><h2>Batas bukti</h2><p>Halaman ini hanya mengindeks rute PDF seluruh berkas yang terikat pada bukti publik. Halaman ini tidak mengklaim pembaca HTML native, jangkar bab atau unit, atau penyalinan isi buku ke backend pusat. Setelah PDF diunduh, pembacaannya tidak memerlukan jaringan.</p></aside>${body}<details><summary>Data mesin bersama (sekunder)</summary><p>Keempat mata kuliah memakai satu paket adapter bersama—bukan empat salinan—dengan ${sharedAdapter.canonical_records.toLocaleString('id-ID')} rekaman kanonis, ${sharedAdapter.unit_records.toLocaleString('id-ID')} rekaman unit, ${sharedAdapter.relation_records.toLocaleString('id-ID')} relasi, dan ${sharedAdapter.reversible_native_mappings.toLocaleString('id-ID')} pemetaan reversibel. Backend native pemilik tetap menjadi otoritas; PDF tidak diklaim mengonsumsi adapter ini.</p><p><a href="${esc(sharedAdapter.public_asset_url)}">Unduh paket adapter CLP v2.3.1</a> · <a href="${esc(sharedAdapter.release_url)}">Rilis dan bukti publik</a></p></details><p><a href="learning-map.json">Data terbuka untuk tampilan ini</a> · <a href="../../data/course-capsule-v1/learner-reader-actions-v1.json">Proyeksi tindakan baca kanonis</a></p></main></body></html>\n`;
 };
-const htmlBytes = Buffer.from(renderPage());
-const courseEntryBytes = Object.fromEntries(expectedCourses.map((courseId) => [courseId, Buffer.from(renderPage(courseId))]));
+const htmlBytes = Buffer.from(rehomeRemovedRecordLinks(renderPage()));
+const courseEntryBytes = Object.fromEntries(expectedCourses.map((courseId) => [courseId, Buffer.from(rehomeRemovedRecordLinks(renderPage(courseId)))]));
 const validation = {
   schema: 'clp-family-capability-validation/1',
   state: 'pass',

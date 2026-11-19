@@ -1,6 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { rehomeRemovedRecordLinks } from './removed-record-links-v1.mjs';
 
 const outputPath = process.argv[2];
 if (!outputPath) throw new Error('Pemakaian: node scripts/export-single-file-site.mjs <output.html>');
@@ -74,4 +75,4 @@ for (const courseId of ['C30', 'C40']) {
   }
 }
 
-await writeFile(outputPath, standalone, 'utf8');
+await writeFile(outputPath, rehomeRemovedRecordLinks(standalone), 'utf8');

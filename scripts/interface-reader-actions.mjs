@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { readFile, writeFile } from 'node:fs/promises';
+import { rehomeRemovedRecordLinks } from './removed-record-links-v1.mjs';
 import { createHash } from 'node:crypto';
 import { resolve } from 'node:path';
 
@@ -34,7 +35,8 @@ export function projectReaderActions(source, knownCourseIds) {
   assert.equal(new Set(actions.map((row) => row.courseId)).size, source.summary.course_count);
   assert.equal(actions.reduce((sum, row) => sum + row.pages, 0), source.summary.pages);
   assert.equal(actions.reduce((sum, row) => sum + row.bytes, 0), source.summary.bytes);
-  return actions;
+  // Links to removed Zenodo records become their GitHub copies (removed-record-links-v1.mjs).
+  return JSON.parse(rehomeRemovedRecordLinks(JSON.stringify(actions)));
 }
 export async function syncReaderActions(root, knownCourseIds) {
   const bytes = await readFile(resolve(root, readerActionInput));
